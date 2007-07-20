@@ -21,6 +21,7 @@ ExclusiveArch: %{ix86} x86_64 ia64
 
 BuildRequires: gtk2-devel
 BuildRequires: gtk-vnc-devel
+BuildRequires: /usr/bin/pod2man
 
 %description
 Virtual Machine Viewer provides a graphical console client for connecting
@@ -46,6 +47,7 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(-,root,root,-)
 %doc README COPYING AUTHORS ChangeLog NEWS
 %{_bindir}/%{name}
+%{_mandir}/man1/%{name}*
 
 %changelog
 * Fri Jul 20 2007 Daniel P. Berrange <berrange@redhat.com> - 0.0.1-1

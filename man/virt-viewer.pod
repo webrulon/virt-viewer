@@ -1,0 +1,81 @@
+
+=head1 NAME
+
+virt-viewer - display the graphical console for a virtual machine
+
+=head1 SYNOPSIS
+
+B<virt-viewer> [OPTIONS] DOMAIN-NAME|ID|UUID
+
+=head1 DESCRIPTION
+
+B<virt-viewer> is a minimal tool for displaying the graphical console
+of a virtual machine. The console is accessed using the VNC protocol.
+The guest can be referred to based on its name, ID, or UUID. If the
+guest is not already running, then the viewer can be told to wait
+until is starts before attempting to connect to the console
+
+=head1 OPTIONS
+
+The following options are accepted when running C<virt-viewer>:
+
+=over 4
+
+=item -h, -help
+
+Display command line help summary
+
+=item -V, --version
+
+Display program version number
+
+=item -v, --verbose
+
+Display information about the connection
+
+=item -c URI, --connect=URI
+
+Specify the hypervisor connection URI
+
+=item -w, --wait
+
+Wait for the domain to start up before attempting to connect to the console
+
+=back
+
+=head1 EXAMPLES
+
+To connect to the guest called 'demo' running under Xen
+
+   virt-viewer demo
+
+To connect to the guest with ID 7 running under QEMU
+
+   virt-viewer --connect qemu:///system 7
+
+To wait for the guest with UUID 66ab33c0-6919-a3f7-e659-16c82d248521 to
+startup and then connect
+
+   virt-viewer --wait 66ab33c0-6919-a3f7-e659-16c82d248521
+
+=head1 AUTHOR
+
+Writen by Daniel P. Berrange, based on the GTK-VNC example program gvncviewer.
+
+=head1 BUGS
+
+Report bugs to the mailing list C<http://www.redhat.com/mailman/listinfo/et-mgmt-tools>
+
+=head1 COPYRIGHT
+
+Copright (C) 2007 Red Hat, Inc, and various contributors.
+This is free software. You may redistribute copies of it under the terms of the GNU General
+Public License C<http://www.gnu.org/licenses/gpl.html>. There is NO WARRANTY, to the extent
+permitted by law.
+
+=head1 SEE ALSO
+
+C<virsh(1)>, C<virt-manager(1)>, the project website C<http://virt-manager.org>
+
+=cut
+

@@ -1,5 +1,5 @@
 
-SUBDIRS = src
+SUBDIRS = src man
 
 EXTRA_DIST = @PACKAGE@.spec
 

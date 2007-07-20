@@ -12,4 +12,5 @@ PKG_CHECK_MODULES(GTKVNC, gtk-vnc-1.0 >= 0.0.1)
 
 AC_OUTPUT(Makefile
           src/Makefile
+          man/Makefile
           virt-viewer.spec)

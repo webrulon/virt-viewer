@@ -1,0 +1,53 @@
+# -*- rpm-spec -*-
+
+# This macro is used for the continuous automated builds. It just
+# allows an extra fragment based on the timestamp to be appended
+# to the release. This distinguishes automated builds, from formal
+# Fedora RPM builds
+%define _extra_release %{?dist:%{dist}}%{!?dist:%{?extra_release:%{extra_release}}}
+
+Name: @PACKAGE@
+Version: @VERSION@
+Release: 1%{_extra_release}
+Summary: Virtual Machine Viewer
+
+Group: Applications/Emulators
+License: GPL
+URL: http://virt-manager.org/
+Source0: http://virt-manager.org/download/sources/%{name}/%{name}-%{version}.tar.gz
+BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
+
+ExclusiveArch: %{ix86} x86_64 ia64
+
+BuildRequires: gtk2-devel
+BuildRequires: gtk-vnc-devel
+
+%description
+Virtual Machine Viewer provides a graphical console client for connecting
+to virtual machines. It uses the GTK-VNC widget to provide the display,
+and libvirt for looking up VNC server details.
+
+%prep
+%setup -q
+
+%build
+%configure
+make %{?_smp_mflags}
+
+
+%install
+rm -rf $RPM_BUILD_ROOT
+make install  DESTDIR=$RPM_BUILD_ROOT
+
+%clean
+rm -rf $RPM_BUILD_ROOT
+
+%files
+%defattr(-,root,root,-)
+%doc README COPYING AUTHORS ChangeLog NEWS
+%{_bindir}/%{name}
+
+%changelog
+* Fri Jul 20 2007 Daniel P. Berrange <berrange@redhat.com> - 0.0.1-1
+- First release
+

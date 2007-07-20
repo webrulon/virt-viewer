@@ -1,0 +1,8 @@
+.*~$
+^build/
+^aclocal\.m4$
+^autom4te\.cache/
+Makefile\.in$
+^config\.guess$
+^config\.sub$
+^configure$

@@ -51,6 +51,7 @@ struct  keyComboDef {
 static const struct keyComboDef keyCombos[] = {
 	{ { GDK_Control_L, GDK_Alt_L, GDK_Delete }, 3, "Ctrl+Alt+_Del"},
 	{ { GDK_Control_L, GDK_Alt_L, GDK_BackSpace }, 3, "Ctrl+Alt+_Backspace"},
+	{ {}, 0, "" },
 	{ { GDK_Control_L, GDK_Alt_L, GDK_F1 }, 3, "Ctrl+Alt+F_1"},
 	{ { GDK_Control_L, GDK_Alt_L, GDK_F2 }, 3, "Ctrl+Alt+F_2"},
 	{ { GDK_Control_L, GDK_Alt_L, GDK_F3 }, 3, "Ctrl+Alt+F_3"},
@@ -59,6 +60,7 @@ static const struct keyComboDef keyCombos[] = {
 	{ { GDK_Control_L, GDK_Alt_L, GDK_F6 }, 3, "Ctrl+Alt+F_6"},
 	{ { GDK_Control_L, GDK_Alt_L, GDK_F7 }, 3, "Ctrl+Alt+F_7"},
 	{ { GDK_Control_L, GDK_Alt_L, GDK_F8 }, 3, "Ctrl+Alt+F_8"},
+	{ {}, 0, "" },
 	{ { GDK_Print }, 1, "_PrintScreen"},
 };
 
@@ -133,7 +135,7 @@ static void viewer_send_key(GtkWidget *menu, GtkWidget *vnc)
 	DEBUG_LOG("Failed to find key combo %s\n", gtk_label_get_text(GTK_LABEL(label)));
 }
 
-#if 0
+
 static void viewer_save_screenshot(GtkWidget *vnc, const char *file)
 {
 	GdkPixbuf *pix = vnc_display_get_pixbuf(VNC_DISPLAY(vnc));
@@ -142,7 +144,7 @@ static void viewer_save_screenshot(GtkWidget *vnc, const char *file)
 	gdk_pixbuf_unref(pix);
 }
 
-static void viewer_screenshot(GtkWidget *menu, GtkWidget *vnc)
+static void viewer_screenshot(GtkWidget *menu G_GNUC_UNUSED, GtkWidget *vnc)
 {
 	GtkWidget *dialog;
 
@@ -167,7 +169,7 @@ static void viewer_screenshot(GtkWidget *menu, GtkWidget *vnc)
 
 	gtk_widget_destroy (dialog);
 }
-#endif
+
 
 static void viewer_credential(GtkWidget *vnc, GValueArray *credList)
 {
@@ -232,16 +234,60 @@ static void viewer_credential(GtkWidget *vnc, GValueArray *credList)
 	gtk_widget_destroy(GTK_WIDGET(dialog));
 }
 
+static void viewer_about(GtkWidget *menu G_GNUC_UNUSED)
+{
+	GtkWidget *about;
+	const char *authors[] = {
+		"Daniel P. Berrange <berrange@redhat.com>",
+		NULL
+	};
+
+	about = gtk_about_dialog_new();
+
+	gtk_about_dialog_set_name(GTK_ABOUT_DIALOG(about), "Virtual Machine Viewer");
+	gtk_about_dialog_set_version(GTK_ABOUT_DIALOG(about), VERSION);
+	gtk_about_dialog_set_website(GTK_ABOUT_DIALOG(about), "http://virt-manager.org/");
+	gtk_about_dialog_set_website_label(GTK_ABOUT_DIALOG(about), "http://virt-manager.org/");
+	gtk_about_dialog_set_authors(GTK_ABOUT_DIALOG(about), authors);
+	gtk_about_dialog_set_license(GTK_ABOUT_DIALOG(about), 
+ "This program is free software; you can redistribute it and/or modify\n" \
+ "it under the terms of the GNU General Public License as published by\n" \
+ "the Free Software Foundation; either version 2 of the License, or\n" \
+ "(at your option) any later version.\n" \
+ "\n" \
+ "This program is distributed in the hope that it will be useful,\n" \
+ "but WITHOUT ANY WARRANTY; without even the implied warranty of\n" \
+ "MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\n" \
+ "GNU General Public License for more details.\n" \
+ "\n" \
+ "You should have received a copy of the GNU General Public License\n" \
+ "along with this program; if not, write to the Free Software\n" \
+ "Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA\n");
+
+
+	gtk_dialog_run(GTK_DIALOG(about));
+
+	gtk_widget_destroy(about);
+}
+
 static GtkWidget *viewer_build_file_menu(VncDisplay *vnc)
 {
 	GtkWidget *file;
 	GtkWidget *filemenu;
 	GtkWidget *quit;
+	GtkWidget *screenshot;
 
 	file = gtk_menu_item_new_with_mnemonic("_File");
 
 	filemenu = gtk_menu_new();
 	gtk_menu_item_set_submenu(GTK_MENU_ITEM(file), filemenu);
+
+	screenshot = gtk_menu_item_new_with_mnemonic("_Screenshot");
+	gtk_menu_append(GTK_MENU(filemenu), screenshot);
+	g_signal_connect(screenshot, "activate", GTK_SIGNAL_FUNC(viewer_screenshot), vnc);
+
+	gtk_menu_append(GTK_MENU(filemenu), gtk_separator_menu_item_new());
+
 
 	quit = gtk_image_menu_item_new_from_stock(GTK_STOCK_QUIT, NULL);
 	gtk_menu_append(GTK_MENU(filemenu), quit);
@@ -264,9 +310,13 @@ static GtkWidget *viewer_build_sendkey_menu(VncDisplay *vnc)
 	for (i = 0 ; i < (sizeof(keyCombos)/sizeof(keyCombos[0])) ; i++) {
 		GtkWidget *key;
 
-		key = gtk_menu_item_new_with_mnemonic(keyCombos[i].label);
-		gtk_menu_append(GTK_MENU(sendkeymenu), key);
-		g_signal_connect(key, "activate", GTK_SIGNAL_FUNC(viewer_send_key), vnc);
+		if (keyCombos[i].nkeys) {
+			key = gtk_menu_item_new_with_mnemonic(keyCombos[i].label);
+			gtk_menu_append(GTK_MENU(sendkeymenu), key);
+			g_signal_connect(key, "activate", GTK_SIGNAL_FUNC(viewer_send_key), vnc);
+		} else {
+			gtk_menu_append(GTK_MENU(sendkeymenu), gtk_separator_menu_item_new());
+		}
 	}
 
 	return sendkey;
@@ -285,7 +335,7 @@ static GtkWidget *viewer_build_help_menu(void)
 
 	about = gtk_image_menu_item_new_from_stock(GTK_STOCK_ABOUT, NULL);
 	gtk_menu_append(GTK_MENU(helpmenu), about);
-	//g_signal_connect(about, "activate", GTK_SIGNAL_FUNC(viewer_shutdown), vnc);
+	g_signal_connect(about, "activate", GTK_SIGNAL_FUNC(viewer_about), NULL);
 
 	return help;
 }

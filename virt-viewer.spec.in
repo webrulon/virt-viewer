@@ -5,15 +5,15 @@ Version: @VERSION@
 Release: 1%{?dist}%{?extra_release}
 Summary: Virtual Machine Viewer
 
-Group: Applications/Emulators
+Group: Applications/System
 License: GPL
 URL: http://virt-manager.org/
 Source0: http://virt-manager.org/download/sources/%{name}/%{name}-%{version}.tar.gz
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-ExclusiveArch: %{ix86} x86_64 ia64
-
 BuildRequires: gtk2-devel
+BuildRequires: libvirt-devel
+BuildRequires: libxml2-devel
 BuildRequires: gtk-vnc-devel >= 0.1.0
 BuildRequires: /usr/bin/pod2man
 
@@ -44,6 +44,6 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man1/%{name}*
 
 %changelog
-* Fri Jul 20 2007 Daniel P. Berrange <berrange@redhat.com> - 0.0.1-1
+* Wed Aug 15 2007 Daniel P. Berrange <berrange@redhat.com> - 0.0.1-1
 - First release
 

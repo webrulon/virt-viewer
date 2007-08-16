@@ -1,14 +1,8 @@
 # -*- rpm-spec -*-
 
-# This macro is used for the continuous automated builds. It just
-# allows an extra fragment based on the timestamp to be appended
-# to the release. This distinguishes automated builds, from formal
-# Fedora RPM builds
-%define _extra_release %{?dist:%{dist}}%{!?dist:%{?extra_release:%{extra_release}}}
-
 Name: @PACKAGE@
 Version: @VERSION@
-Release: 1%{_extra_release}
+Release: 1%{?dist}%{?extra_release}
 Summary: Virtual Machine Viewer
 
 Group: Applications/Emulators
@@ -20,7 +14,7 @@ BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 ExclusiveArch: %{ix86} x86_64 ia64
 
 BuildRequires: gtk2-devel
-BuildRequires: gtk-vnc-devel
+BuildRequires: gtk-vnc-devel >= 0.1.0
 BuildRequires: /usr/bin/pod2man
 
 %description

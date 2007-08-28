@@ -31,6 +31,7 @@
 #include <getopt.h>
 #include <libvirt/libvirt.h>
 #include <libxml/xpath.h>
+#include <libxml/uri.h>
 
 
 #define DEBUG 0
@@ -479,7 +480,7 @@ static virDomainPtr viewer_lookup_domain(virConnectPtr conn, const char *name)
 	return dom;
 }
 
-static int viewer_extract_vnc_graphics(virDomainPtr dom, char **host, char **port)
+static int viewer_extract_vnc_graphics(virDomainPtr dom, char **port)
 {
 	char *xmldesc = virDomainGetXMLDesc(dom, 0);
 	xmlDocPtr xml = NULL;
@@ -512,11 +513,6 @@ static int viewer_extract_vnc_graphics(virDomainPtr dom, char **host, char **por
 	*port = strdup((const char*)obj->stringval);
 	xmlXPathFreeObject(obj);
 	obj = NULL;
-	/*
-	obj = xmlXPathEval((const xmlChar *)"string(/domain/devices/graphics[@type='vnc']/@listen)", ctxt);
-	if (!obj || obj->type != XPATH_STRING || !obj->stringval || !obj->stringval[0])
-	*/
-	*host = NULL;
 
  missing:
 	ret = 0;
@@ -532,6 +528,44 @@ static int viewer_extract_vnc_graphics(virDomainPtr dom, char **host, char **por
 		xmlFreeParserCtxt(pctxt);
 	return ret;
 }
+
+static int viewer_extract_host(const char *uristr, char **host, char **transport)
+{
+	xmlURIPtr uri;
+	char *offset;
+
+	*host = NULL;
+	*transport = NULL;
+
+	if (uristr == NULL ||
+	    !strcasecmp(uristr, "xen"))
+		uristr = "xen:///";
+
+	uri = xmlParseURI(uristr);
+	if (!uri || !uri->server) {
+		*host = strdup("localhost");
+	} else {
+		*host = strdup(uri->server);
+	}
+	if (!*host) {
+		xmlFreeURI(uri);
+		return -1;
+	}
+
+	offset = strchr(uri->scheme, '+');
+	if (offset) {
+		*transport = strdup(offset+1);
+		if (!*transport) {
+			free(*host);
+			*host = NULL;
+			xmlFreeURI(uri);
+			return -1;
+		}
+	}
+	xmlFreeURI(uri);
+	return 0;
+}
+
 
 int main(int argc, char **argv)
 {
@@ -554,6 +588,7 @@ int main(int argc, char **argv)
 	virDomainPtr dom = NULL;
 	char *host = NULL;
 	char *port = NULL;
+	char *transport = NULL;
 
 	while ((ch = getopt_long(argc, argv, sopts, lopts, &opt_ind)) != -1) {
 		switch (ch) {
@@ -603,7 +638,7 @@ int main(int argc, char **argv)
 	} while (!dom);
 
 	do {
-		viewer_extract_vnc_graphics(dom, &host, &port);
+		viewer_extract_vnc_graphics(dom, &port);
 		if (!port && !waitvnc) {
 			fprintf(stderr, "unable to find vnc graphics for %s\n", argv[optind]);
 			return 4;
@@ -611,8 +646,11 @@ int main(int argc, char **argv)
 		usleep(300*1000);
 	} while (!port);
 
-	if (!host)
-		host = strdup("localhost");
+	if (viewer_extract_host(uri, &host, &transport) < 0) {
+		fprintf(stderr, "unable to determine hostname for URI %s\n", uri);
+		return 5;
+	}
+	DEBUG_LOG("Remote host is %s and transport %s\n", host, transport ? transport : "");
 
 	vnc = vnc_display_new();
 	window = viewer_build_window(VNC_DISPLAY(vnc));

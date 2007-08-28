@@ -33,7 +33,7 @@
 #include <libxml/xpath.h>
 
 
-#define DEBUG 1
+#define DEBUG 0
 #ifdef DEBUG
 #define DEBUG_LOG(s, ...) fprintf(stderr, (s), ## __VA_ARGS__)
 #else

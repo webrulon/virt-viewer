@@ -32,7 +32,8 @@
 #include <libvirt/libvirt.h>
 #include <libxml/xpath.h>
 #include <libxml/uri.h>
-
+#include <sys/socket.h>
+#include <sys/un.h>
 
 #define DEBUG 0
 #ifdef DEBUG
@@ -98,6 +99,11 @@ static void viewer_shutdown(GtkWidget *src G_GNUC_UNUSED, void *dummy G_GNUC_UNU
 {
 	vnc_display_close(VNC_DISPLAY(vnc));
 	gtk_main_quit();
+}
+
+static void viewer_quit(GtkWidget *src G_GNUC_UNUSED, GtkWidget *vnc)
+{
+	viewer_shutdown(src, NULL, vnc);
 }
 
 static void viewer_connected(GtkWidget *vnc G_GNUC_UNUSED)
@@ -292,7 +298,7 @@ static GtkWidget *viewer_build_file_menu(VncDisplay *vnc)
 
 	quit = gtk_image_menu_item_new_from_stock(GTK_STOCK_QUIT, NULL);
 	gtk_menu_append(GTK_MENU(filemenu), quit);
-	g_signal_connect(quit, "activate", GTK_SIGNAL_FUNC(viewer_shutdown), vnc);
+	g_signal_connect(quit, "activate", GTK_SIGNAL_FUNC(viewer_quit), vnc);
 
 	return file;
 }
@@ -529,13 +535,14 @@ static int viewer_extract_vnc_graphics(virDomainPtr dom, char **port)
 	return ret;
 }
 
-static int viewer_extract_host(const char *uristr, char **host, char **transport)
+static int viewer_extract_host(const char *uristr, char **host, char **transport, char **user)
 {
 	xmlURIPtr uri;
 	char *offset;
 
 	*host = NULL;
 	*transport = NULL;
+	*user = NULL;
 
 	if (uristr == NULL ||
 	    !strcasecmp(uristr, "xen"))
@@ -551,6 +558,15 @@ static int viewer_extract_host(const char *uristr, char **host, char **transport
 		xmlFreeURI(uri);
 		return -1;
 	}
+	if (uri->user) {
+		*user = strdup(uri->user);
+		if (!*user) {
+			xmlFreeURI(uri);
+			free(*host);
+			*host =NULL;
+			return -1;
+		}
+	}
 
 	offset = strchr(uri->scheme, '+');
 	if (offset) {
@@ -558,12 +574,73 @@ static int viewer_extract_host(const char *uristr, char **host, char **transport
 		if (!*transport) {
 			free(*host);
 			*host = NULL;
+			free(*user);
+			*user = NULL;
 			xmlFreeURI(uri);
 			return -1;
 		}
 	}
 	xmlFreeURI(uri);
 	return 0;
+}
+
+static int viewer_open_tunnel(const char **cmd)
+{
+        int fd[2];
+        pid_t pid;
+
+        if (socketpair(PF_UNIX, SOCK_STREAM, 0, fd) < 0)
+                return -1;
+
+        pid = fork();
+        if (pid == -1) {
+		close(fd[0]);
+		close(fd[1]);
+		return -1;
+	}
+
+        if (pid == 0) { /* child */
+                close(fd[0]);
+                close(0);
+                close(1);
+                if (dup(fd[1]) < 0)
+                        _exit(1);
+                if (dup(fd[1]) < 0)
+                        _exit(1);
+                close(fd[1]);
+                execvp("ssh", (char *const*)cmd);
+                _exit(1);
+        }
+        close(fd[1]);
+	return fd[0];
+}
+
+
+static int viewer_open_tunnel_ssh(const char *host, const char *port, const char *user)
+{
+	const char *cmd[6];
+	char *dst = malloc((user ? strlen(user) + 1: 0) + strlen(host) + 1);
+	int ret;
+	if (!dst)
+		return -1;
+	if (user) {
+		strcpy(dst, user);
+		strcat(dst, "@");
+		strcat(dst, host);
+	} else {
+		strcpy(dst, host);
+	}
+
+	cmd[0] = "ssh";
+	cmd[1] = dst;
+	cmd[2] = "nc";
+	cmd[3] = "localhost";
+	cmd[4] = port;
+	cmd[5] = NULL;
+
+	ret = viewer_open_tunnel(cmd);
+	free(dst);
+	return ret;
 }
 
 
@@ -589,6 +666,8 @@ int main(int argc, char **argv)
 	char *host = NULL;
 	char *port = NULL;
 	char *transport = NULL;
+	char *user = NULL;
+	int fd = -1;
 
 	while ((ch = getopt_long(argc, argv, sopts, lopts, &opt_ind)) != -1) {
 		switch (ch) {
@@ -645,12 +724,17 @@ int main(int argc, char **argv)
 		}
 		usleep(300*1000);
 	} while (!port);
+	virDomainFree(dom);
+	virConnectClose(conn);
 
-	if (viewer_extract_host(uri, &host, &transport) < 0) {
+	if (viewer_extract_host(uri, &host, &transport, &user) < 0) {
 		fprintf(stderr, "unable to determine hostname for URI %s\n", uri);
 		return 5;
 	}
-	DEBUG_LOG("Remote host is %s and transport %s\n", host, transport ? transport : "");
+	DEBUG_LOG("Remote host is %s and transport %s user %s\n", host, transport ? transport : "", user ? user : "");
+
+	if (strcasecmp(transport, "ssh") == 0)
+		fd = viewer_open_tunnel_ssh(host, port, user);
 
 	vnc = vnc_display_new();
 	window = viewer_build_window(VNC_DISPLAY(vnc));
@@ -659,7 +743,10 @@ int main(int argc, char **argv)
 	vnc_display_set_keyboard_grab(VNC_DISPLAY(vnc), TRUE);
 	vnc_display_set_pointer_grab(VNC_DISPLAY(vnc), TRUE);
 
-	vnc_display_open_host(VNC_DISPLAY(vnc), host, port);
+	if (fd >= 0)
+		vnc_display_open_fd(VNC_DISPLAY(vnc), fd);
+	else
+		vnc_display_open_host(VNC_DISPLAY(vnc), host, port);
 
 	gtk_main();
 

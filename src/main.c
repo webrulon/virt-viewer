@@ -93,7 +93,7 @@ static void viewer_ungrab(GtkWidget *vnc, GtkWidget *window)
 	viewer_set_title(VNC_DISPLAY(vnc), window, FALSE);
 }
 
-static void viewer_shutdown(GtkWidget *src G_GNUC_UNUSED, GtkWidget *vnc)
+static void viewer_shutdown(GtkWidget *src G_GNUC_UNUSED, void *dummy G_GNUC_UNUSED, GtkWidget *vnc)
 {
 	vnc_display_close(VNC_DISPLAY(vnc));
 	gtk_main_quit();

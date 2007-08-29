@@ -1,5 +1,5 @@
 AC_INIT(virt-viewer.spec.in)
-AM_INIT_AUTOMAKE(virt-viewer, 0.0.1)
+AM_INIT_AUTOMAKE(virt-viewer, 0.0.2)
 
 AC_PROG_CC
 

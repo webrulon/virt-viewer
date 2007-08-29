@@ -44,6 +44,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man1/%{name}*
 
 %changelog
+* Tue Aug 28 2007 Daniel P. Berrange <berrange@redhat.com> - 0.0.2-1
+- Added support for remote console access
+
 * Wed Aug 15 2007 Daniel P. Berrange <berrange@redhat.com> - 0.0.1-1
 - First release
 

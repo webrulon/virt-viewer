@@ -1,0 +1,70 @@
+2007-08-28  "Daniel P. Berrange  <berrange@redhat.com>
+
+	* man/virt-viewer.pod:
+	Document the '--direct' option
+	[0d9a8fd612d9] [tip]
+
+	* src/main.c:
+	Support TLS credentials & improved SSH tunnelling
+	[2ca6f1a9ba64]
+
+	* src/main.c:
+	Support for connecting over an SSH tunnel
+	[33102c06fd50]
+
+2007-08-27  "Daniel P. Berrange  <berrange@redhat.com>
+
+	* Merge
+	[c40130b3a7ec]
+
+2007-08-15  "Daniel P. Berrange  <berrange@redhat.com>
+
+	* COPYING, INSTALL:
+	Added COPYING/INSTALL files
+	[1f83ef35bb59]
+
+2007-08-27  "Daniel P. Berrange  <berrange@redhat.com>
+
+	* src/main.c:
+	Added initial ability to connect remote hosts
+	[ac9cae161efb]
+
+	* src/main.c:
+	Disable debug flag
+	[61d8448ba53f]
+
+	* src/main.c:
+	Fixed delete-event handler args
+	[21f7b4c5c93c]
+
+2007-08-15  "Daniel P. Berrange  <berrange@redhat.com>
+
+	* .hgtags:
+	Added tag release-0.0.1 for changeset 2b78ab2d18ce
+	[916abae9a263]
+
+	* virt-viewer.spec.in:
+	Fixed build requires & group. Removed exclusivearch
+	[2b78ab2d18ce] [release-0.0.1]
+
+	* AUTHORS, NEWS, README, virt-viewer.spec.in:
+	Fill out authors, news & readme
+	[6a74d1951e33]
+
+2007-07-20  "Daniel P. Berrange  <berrange@redhat.com>
+
+	* src/main.c:
+	Connected up screenshot & about menus
+	[7cd9b16e3185]
+
+	* Makefile.am, configure.ac, man/Makefile.am, man/virt-viewer.pod,
+	virt-viewer.spec.in:
+	Added manual page
+	[db9f0ff467e5]
+
+	* .hgignore, AUTHORS, ChangeLog, Makefile.am, NEWS, README,
+	acinclude.m4, autobuild.sh, autogen.sh, configure.ac,
+	src/Makefile.am, src/main.c, virt-viewer.spec.in:
+	Initial commit
+	[df454dc97f2f]
+

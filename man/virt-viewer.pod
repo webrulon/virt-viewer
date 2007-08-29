@@ -13,7 +13,9 @@ B<virt-viewer> is a minimal tool for displaying the graphical console
 of a virtual machine. The console is accessed using the VNC protocol.
 The guest can be referred to based on its name, ID, or UUID. If the
 guest is not already running, then the viewer can be told to wait
-until is starts before attempting to connect to the console
+until is starts before attempting to connect to the console The viewer
+can connect to remote hosts to lookup the console information and then
+also connect to the remote console using the same network transport.
 
 =head1 OPTIONS
 
@@ -41,6 +43,11 @@ Specify the hypervisor connection URI
 
 Wait for the domain to start up before attempting to connect to the console
 
+=item -d, --direct
+
+Do not attempt to tunnel the console over SSH, even if the main connection URI
+used SSH.
+
 =back
 
 =head1 EXAMPLES
@@ -57,6 +64,15 @@ To wait for the guest with UUID 66ab33c0-6919-a3f7-e659-16c82d248521 to
 startup and then connect
 
    virt-viewer --wait 66ab33c0-6919-a3f7-e659-16c82d248521
+
+To connect to a remote console using TLS
+
+   virt-viewer --connect xen://example.org/ demo
+
+To connect to a remote host using SSH, lookup the guest config and
+then make a direct non-tunnelled connection of the console
+
+   virt-viewer --connect xen+ssh://root@example.org/ demo
 
 =head1 AUTHOR
 

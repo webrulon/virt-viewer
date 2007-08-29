@@ -781,7 +781,7 @@ int main(int argc, char **argv)
 	}
 	DEBUG_LOG("Remote host is %s and transport %s user %s\n", host, transport ? transport : "", user ? user : "");
 
-	if (strcasecmp(transport, "ssh") == 0 && !direct)
+	if (transport && strcasecmp(transport, "ssh") == 0 && !direct)
 		fd = viewer_open_tunnel_ssh(host, port, user, vncport);
 
 	vnc = vnc_display_new();

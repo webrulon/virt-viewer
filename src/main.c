@@ -35,7 +35,7 @@
 #include <sys/socket.h>
 #include <sys/un.h>
 
-#define DEBUG 0
+// #define DEBUG 1
 #ifdef DEBUG
 #define DEBUG_LOG(s, ...) fprintf(stderr, (s), ## __VA_ARGS__)
 #else
@@ -180,65 +180,103 @@ static void viewer_screenshot(GtkWidget *menu G_GNUC_UNUSED, GtkWidget *vnc)
 
 static void viewer_credential(GtkWidget *vnc, GValueArray *credList)
 {
-	GtkWidget *dialog, **label, **entry, *box, *vbox;
-	int response;
-	unsigned int i;
+        GtkWidget *dialog = NULL;
+        int response;
+        unsigned int i, prompt = 0;
+        const char **data;
 
-	DEBUG_LOG("Got credential request for %d credential(s)\n", credList->n_values);
+        DEBUG_LOG("Got credential request for %d credential(s)\n", credList->n_values);
 
-	dialog = gtk_dialog_new_with_buttons("Authentication required",
-					     NULL,
-					     0,
-					     GTK_STOCK_CANCEL,
-					     GTK_RESPONSE_CANCEL,
-					     GTK_STOCK_OK,
-					     GTK_RESPONSE_OK,
-					     NULL);
-	gtk_dialog_set_default_response(GTK_DIALOG(dialog), GTK_RESPONSE_OK);
+        data = g_new0(const char *, credList->n_values);
 
-	box = gtk_table_new(credList->n_values, 2, FALSE);
-	label = g_new(GtkWidget *, credList->n_values);
-	entry = g_new(GtkWidget *, credList->n_values);
+        for (i = 0 ; i < credList->n_values ; i++) {
+                GValue *cred = g_value_array_get_nth(credList, i);
+                switch (g_value_get_enum(cred)) {
+                case VNC_DISPLAY_CREDENTIAL_USERNAME:
+                case VNC_DISPLAY_CREDENTIAL_PASSWORD:
+                        prompt++;
+                        break;
+                case VNC_DISPLAY_CREDENTIAL_CLIENTNAME:
+                        data[i] = "libvirt";
+                default:
+                        break;
+                }
+        }
 
-	for (i = 0 ; i < credList->n_values ; i++) {
-		GValue *cred = g_value_array_get_nth(credList, i);
-		int credType = g_value_get_enum(cred);
-		switch (credType) {
-		case VNC_DISPLAY_CREDENTIAL_USERNAME:
-			label[i] = gtk_label_new("Username:");
-			break;
-		default:
-			label[i] = gtk_label_new("Password:");
-			break;
-		}
-		entry[i] = gtk_entry_new();
+        if (prompt) {
+                GtkWidget **label, **entry, *box, *vbox;
+                int row;
+                dialog = gtk_dialog_new_with_buttons("Authentication required",
+                                                     NULL,
+                                                     0,
+                                                     GTK_STOCK_CANCEL,
+                                                     GTK_RESPONSE_CANCEL,
+                                                     GTK_STOCK_OK,
+                                                     GTK_RESPONSE_OK,
+                                                     NULL);
+                gtk_dialog_set_default_response(GTK_DIALOG(dialog), GTK_RESPONSE_OK);
 
-		gtk_table_attach(GTK_TABLE(box), label[i], 0, 1, i, i+1, GTK_SHRINK, GTK_SHRINK, 3, 3);
-		gtk_table_attach(GTK_TABLE(box), entry[i], 1, 2, i, i+1, GTK_SHRINK, GTK_SHRINK, 3, 3);
-	}
+                box = gtk_table_new(credList->n_values, 2, FALSE);
+                label = g_new(GtkWidget *, prompt);
+                entry = g_new(GtkWidget *, prompt);
 
+                for (i = 0, row =0 ; i < credList->n_values ; i++) {
+                        GValue *cred = g_value_array_get_nth(credList, i);
+                        switch (g_value_get_enum(cred)) {
+                        case VNC_DISPLAY_CREDENTIAL_USERNAME:
+                                label[row] = gtk_label_new("Username:");
+                                break;
+                        case VNC_DISPLAY_CREDENTIAL_PASSWORD:
+                                label[row] = gtk_label_new("Password:");
+                                break;
+                        default:
+                                continue;
+                        }
+                        entry[row] = gtk_entry_new();
 
-	vbox = gtk_bin_get_child(GTK_BIN(dialog));
+                        gtk_table_attach(GTK_TABLE(box), label[i], 0, 1, row, row+1, GTK_SHRINK, GTK_SHRINK, 3, 3);
+                        gtk_table_attach(GTK_TABLE(box), entry[i], 1, 2, row, row+1, GTK_SHRINK, GTK_SHRINK, 3, 3);
+                        row++;
+                }
 
-	gtk_container_add(GTK_CONTAINER(vbox), box);
+                vbox = gtk_bin_get_child(GTK_BIN(dialog));
+                gtk_container_add(GTK_CONTAINER(vbox), box);
 
-	gtk_widget_show_all(dialog);
-	response = gtk_dialog_run(GTK_DIALOG(dialog));
-	gtk_widget_hide(GTK_WIDGET(dialog));
+                gtk_widget_show_all(dialog);
+                response = gtk_dialog_run(GTK_DIALOG(dialog));
+                gtk_widget_hide(GTK_WIDGET(dialog));
 
-	if (response == GTK_RESPONSE_OK) {
-		for (i = 0 ; i < credList->n_values ; i++) {
-			GValue *cred = g_value_array_get_nth(credList, i);
-			int credType = g_value_get_enum(cred);
-			const char *data = gtk_entry_get_text(GTK_ENTRY(entry[i]));
-			vnc_display_set_credential(VNC_DISPLAY(vnc), credType, data);
-		}
-	} else {
-		DEBUG_LOG("Aborting connection\n");
-		vnc_display_close(VNC_DISPLAY(vnc));
-	}
+                if (response == GTK_RESPONSE_OK) {
+                        for (i = 0, row = 0 ; i < credList->n_values ; i++) {
+                                GValue *cred = g_value_array_get_nth(credList, i);
+                                switch (g_value_get_enum(cred)) {
+                                case VNC_DISPLAY_CREDENTIAL_USERNAME:
+                                case VNC_DISPLAY_CREDENTIAL_PASSWORD:
+                                        data[i] = gtk_entry_get_text(GTK_ENTRY(entry[row]));
+                                        break;
+                                }
+                        }
+                }
+        }
 
-	gtk_widget_destroy(GTK_WIDGET(dialog));
+        for (i = 0 ; i < credList->n_values ; i++) {
+                GValue *cred = g_value_array_get_nth(credList, i);
+                if (data[i]) {
+                        if (vnc_display_set_credential(VNC_DISPLAY(vnc),
+                                                       g_value_get_enum(cred),
+                                                       data[i])) {
+                                DEBUG_LOG("Failed to set credential type %d\n", g_value_get_enum(cred));
+                                vnc_display_close(VNC_DISPLAY(vnc));
+                        }
+                } else {
+                        DEBUG_LOG("Unsupported credential type %d\n", g_value_get_enum(cred));
+                        vnc_display_close(VNC_DISPLAY(vnc));
+                }
+        }
+
+        g_free(data);
+        if (dialog)
+                gtk_widget_destroy(GTK_WIDGET(dialog));
 }
 
 static void viewer_about(GtkWidget *menu G_GNUC_UNUSED)
@@ -421,6 +459,7 @@ static void viewer_help(FILE *out, const char *app)
 	fprintf(out, "  -h, --help              display command line help\n");
 	fprintf(out, "  -v, --verbose           display verbose information\n");
 	fprintf(out, "  -V, --version           display verion informaton\n");
+	fprintf(out, "  -d, --direct            direct connection with no automatic tunnels\n");
 	fprintf(out, "  -c URI, --connect URI   connect to hypervisor URI\n");
 	fprintf(out, "  -w, --wait              wait for domain to start\n");
 	fprintf(out, "\n");
@@ -535,7 +574,7 @@ static int viewer_extract_vnc_graphics(virDomainPtr dom, char **port)
 	return ret;
 }
 
-static int viewer_extract_host(const char *uristr, char **host, char **transport, char **user)
+static int viewer_extract_host(const char *uristr, char **host, char **transport, char **user, int *port)
 {
 	xmlURIPtr uri;
 	char *offset;
@@ -567,6 +606,7 @@ static int viewer_extract_host(const char *uristr, char **host, char **transport
 			return -1;
 		}
 	}
+	*port = uri->port;
 
 	offset = strchr(uri->scheme, '+');
 	if (offset) {
@@ -616,31 +656,31 @@ static int viewer_open_tunnel(const char **cmd)
 }
 
 
-static int viewer_open_tunnel_ssh(const char *host, const char *port, const char *user)
+static int viewer_open_tunnel_ssh(const char *sshhost, int sshport, const char *sshuser, const char *vncport)
 {
-	const char *cmd[6];
-	char *dst = malloc((user ? strlen(user) + 1: 0) + strlen(host) + 1);
-	int ret;
-	if (!dst)
-		return -1;
-	if (user) {
-		strcpy(dst, user);
-		strcat(dst, "@");
-		strcat(dst, host);
-	} else {
-		strcpy(dst, host);
+	const char *cmd[10];
+	char portstr[50];
+	int n = 0;
+
+	if (!sshport)
+		sshport = 22;
+
+	sprintf(portstr, "%d", sshport);
+
+	cmd[n++] = "ssh";
+	cmd[n++] = "-p";
+	cmd[n++] = portstr;
+	if (sshuser) {
+		cmd[n++] = "-l";
+		cmd[n++] = sshuser;
 	}
+	cmd[n++] = sshhost;
+	cmd[n++] = "nc";
+	cmd[n++] = "localhost";
+	cmd[n++] = vncport;
+	cmd[n++] = NULL;
 
-	cmd[0] = "ssh";
-	cmd[1] = dst;
-	cmd[2] = "nc";
-	cmd[3] = "localhost";
-	cmd[4] = port;
-	cmd[5] = NULL;
-
-	ret = viewer_open_tunnel(cmd);
-	free(dst);
-	return ret;
+	return viewer_open_tunnel(cmd);
 }
 
 
@@ -657,6 +697,7 @@ int main(int argc, char **argv)
 		{ "verbose", 0, 0, 'v' },
 		{ "connect", 1, 0, 'c' },
 		{ "wait", 0, 0, 'w' },
+		{ "direct", 0, 0, 'd' },
 		{ 0, 0, 0, 0 }
 	};
 	int ch;
@@ -664,10 +705,12 @@ int main(int argc, char **argv)
 	virConnectPtr conn = NULL;
 	virDomainPtr dom = NULL;
 	char *host = NULL;
-	char *port = NULL;
+	char *vncport = NULL;
 	char *transport = NULL;
 	char *user = NULL;
+	int port = 0;
 	int fd = -1;
+	int direct = 0;
 
 	while ((ch = getopt_long(argc, argv, sopts, lopts, &opt_ind)) != -1) {
 		switch (ch) {
@@ -685,6 +728,9 @@ int main(int argc, char **argv)
 			break;
 		case 'w':
 			waitvnc = 1;
+			break;
+		case 'd':
+			direct = 1;
 			break;
 		case '?':
 			viewer_help(stderr, argv[0]);
@@ -713,28 +759,30 @@ int main(int argc, char **argv)
 			fprintf(stderr, "unable to lookup domain %s\n", argv[optind]);
 			return 3;
 		}
-		usleep(500*1000);
+		if (!dom)
+			usleep(500*1000);
 	} while (!dom);
 
 	do {
-		viewer_extract_vnc_graphics(dom, &port);
-		if (!port && !waitvnc) {
+		viewer_extract_vnc_graphics(dom, &vncport);
+		if (!vncport && !waitvnc) {
 			fprintf(stderr, "unable to find vnc graphics for %s\n", argv[optind]);
 			return 4;
 		}
-		usleep(300*1000);
-	} while (!port);
+		if (!vncport)
+			usleep(300*1000);
+	} while (!vncport);
 	virDomainFree(dom);
 	virConnectClose(conn);
 
-	if (viewer_extract_host(uri, &host, &transport, &user) < 0) {
+	if (viewer_extract_host(uri, &host, &transport, &user, &port) < 0) {
 		fprintf(stderr, "unable to determine hostname for URI %s\n", uri);
 		return 5;
 	}
 	DEBUG_LOG("Remote host is %s and transport %s user %s\n", host, transport ? transport : "", user ? user : "");
 
-	if (strcasecmp(transport, "ssh") == 0)
-		fd = viewer_open_tunnel_ssh(host, port, user);
+	if (strcasecmp(transport, "ssh") == 0 && !direct)
+		fd = viewer_open_tunnel_ssh(host, port, user, vncport);
 
 	vnc = vnc_display_new();
 	window = viewer_build_window(VNC_DISPLAY(vnc));
@@ -746,7 +794,7 @@ int main(int argc, char **argv)
 	if (fd >= 0)
 		vnc_display_open_fd(VNC_DISPLAY(vnc), fd);
 	else
-		vnc_display_open_host(VNC_DISPLAY(vnc), host, port);
+		vnc_display_open_host(VNC_DISPLAY(vnc), host, vncport);
 
 	gtk_main();
 

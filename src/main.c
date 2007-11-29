@@ -42,6 +42,7 @@
 #define DEBUG_LOG(s, ...) do {} while (0)
 #endif
 
+static char *domname = NULL;
 static int verbose = 0;
 #define MAX_KEY_COMBO 3
 struct  keyComboDef {
@@ -66,10 +67,8 @@ static const struct keyComboDef keyCombos[] = {
 	{ { GDK_Print }, 1, "_PrintScreen"},
 };
 
-
 static void viewer_set_title(VncDisplay *vnc, GtkWidget *window, gboolean grabbed)
 {
-	const char *name;
 	char title[1024];
 	const char *subtitle;
 
@@ -78,9 +77,8 @@ static void viewer_set_title(VncDisplay *vnc, GtkWidget *window, gboolean grabbe
 	else
 		subtitle = "";
 
-	name = vnc_display_get_name(VNC_DISPLAY(vnc));
 	snprintf(title, sizeof(title), "%s%s - Virt Viewer",
-		 subtitle, name);
+		 subtitle, domname);
 
 	gtk_window_set_title(GTK_WINDOW(window), title);
 }
@@ -708,6 +706,7 @@ int main(int argc, char **argv)
 	char *vncport = NULL;
 	char *transport = NULL;
 	char *user = NULL;
+	const char *tmpname = NULL;
 	int port = 0;
 	int fd = -1;
 	int direct = 0;
@@ -772,6 +771,10 @@ int main(int argc, char **argv)
 		if (!vncport)
 			usleep(300*1000);
 	} while (!vncport);
+	tmpname = virDomainGetName(dom);
+	if (tmpname != NULL) {
+		domname = strdup(tmpname);
+	}
 	virDomainFree(dom);
 	virConnectClose(conn);
 

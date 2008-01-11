@@ -455,7 +455,7 @@ static void viewer_help(FILE *out, const char *app)
 	fprintf(out, "\n");
 	viewer_version(out);
 	fprintf(out, "\n");
-	fprintf(out, "Options:");
+	fprintf(out, "Options:\n\n");
 	fprintf(out, "  -h, --help              display command line help\n");
 	fprintf(out, "  -v, --verbose           display verbose information\n");
 	fprintf(out, "  -V, --version           display version information\n");

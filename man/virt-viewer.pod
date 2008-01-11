@@ -76,7 +76,7 @@ then make a direct non-tunnelled connection of the console
 
 =head1 AUTHOR
 
-Writen by Daniel P. Berrange, based on the GTK-VNC example program gvncviewer.
+Written by Daniel P. Berrange, based on the GTK-VNC example program gvncviewer.
 
 =head1 BUGS
 
@@ -84,7 +84,7 @@ Report bugs to the mailing list C<http://www.redhat.com/mailman/listinfo/et-mgmt
 
 =head1 COPYRIGHT
 
-Copright (C) 2007 Red Hat, Inc, and various contributors.
+Copyright (C) 2007 Red Hat, Inc, and various contributors.
 This is free software. You may redistribute copies of it under the terms of the GNU General
 Public License C<http://www.gnu.org/licenses/gpl.html>. There is NO WARRANTY, to the extent
 permitted by law.

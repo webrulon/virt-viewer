@@ -8,12 +8,12 @@ as user demand dicatates. The viewer can connect directly
 to both local and remotely hosted guest OS, optionally 
 using SSL/TLS encryption.
 
-Viewer Viewer uses the GTK-VNC widget to provide a display
+Virt Viewer uses the GTK-VNC widget to provide a display
 of the VNC protocol. This is available from
 
   http://gtk-vnc.sourceforge.net/
 
-Viewer Viewer uses libvirt to lookup information about the
+Virt Viewer uses libvirt to lookup information about the
 guest OS display. This is available from
 
   http://libvirt.org/

@@ -6,7 +6,7 @@ August 28, 2008
 
   - Support connecting to remote libvirt servers
   - Support connecting to remote VNC consoles
-  - Support tunnelling VNC over SSH
+  - Support tunneling VNC over SSH
   - Support TLS x509 certificate credentials
 
 August 15, 2007

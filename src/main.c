@@ -456,7 +456,7 @@ static void viewer_help(FILE *out, const char *app)
 	fprintf(out, "Options:");
 	fprintf(out, "  -h, --help              display command line help\n");
 	fprintf(out, "  -v, --verbose           display verbose information\n");
-	fprintf(out, "  -V, --version           display verion informaton\n");
+	fprintf(out, "  -V, --version           display version information\n");
 	fprintf(out, "  -d, --direct            direct connection with no automatic tunnels\n");
 	fprintf(out, "  -c URI, --connect URI   connect to hypervisor URI\n");
 	fprintf(out, "  -w, --wait              wait for domain to start\n");

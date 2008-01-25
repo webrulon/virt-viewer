@@ -35,6 +35,8 @@
 #include <sys/socket.h>
 #include <sys/un.h>
 
+#include "viewer.h"
+
 // #define DEBUG 1
 #ifdef DEBUG
 #define DEBUG_LOG(s, ...) fprintf(stderr, (s), ## __VA_ARGS__)
@@ -67,7 +69,7 @@ static const struct keyComboDef keyCombos[] = {
 	{ { GDK_Print }, 1, "_PrintScreen"},
 };
 
-static void viewer_set_title(VncDisplay *vnc, GtkWidget *window, gboolean grabbed)
+static void viewer_set_title(VncDisplay *vnc G_GNUC_UNUSED, GtkWidget *window, gboolean grabbed)
 {
 	char title[1024];
 	const char *subtitle;
@@ -406,20 +408,39 @@ static GtkWidget *viewer_build_menu(VncDisplay *vnc)
 	return menubar;
 }
 
-static GtkWidget *viewer_build_window(VncDisplay *vnc)
+static GtkWidget *viewer_get_toplevel (void *data G_GNUC_UNUSED)
+{
+	GtkWidget *window;
+
+	window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
+	gtk_window_set_resizable(GTK_WINDOW(window), FALSE);
+	return window;
+}
+
+static GtkWidget *viewer_build_window(VncDisplay *vnc,
+				      GtkWidget *(*get_toplevel)(void *),
+				      void *data,
+				      int with_menubar)
 {
 	GtkWidget *window;
 	GtkWidget *menubar;
 	GtkWidget *layout;
 
-	window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
-	layout = gtk_vbox_new(FALSE, 3);
-	menubar = viewer_build_menu(vnc);
+	/* In the standalone program, calls viewer_get_toplevel above
+	 * to make a window.  In the browser plugin this calls a function
+	 * in the plugin which returns the GtkPlug that we live inside.
+	 * In both cases they are GTK_CONTAINERs and NOT resizable.
+	 */
+	window = get_toplevel (data);
 
-	gtk_container_add(GTK_CONTAINER(window), layout);
-	gtk_container_add(GTK_CONTAINER(layout), menubar);
-	gtk_container_add(GTK_CONTAINER(layout), GTK_WIDGET(vnc));
-	gtk_window_set_resizable(GTK_WINDOW(window), FALSE);
+	if (with_menubar) {
+		layout = gtk_vbox_new(FALSE, 3);
+		menubar = viewer_build_menu(vnc);
+		gtk_container_add(GTK_CONTAINER(window), layout);
+		gtk_container_add(GTK_CONTAINER(layout), menubar);
+		gtk_container_add(GTK_CONTAINER(layout), GTK_WIDGET(vnc));
+	} else
+		gtk_container_add(GTK_CONTAINER(window), GTK_WIDGET(vnc));
 
 	gtk_signal_connect(GTK_OBJECT(vnc), "vnc-pointer-grab",
 			   GTK_SIGNAL_FUNC(viewer_grab), window);
@@ -440,29 +461,6 @@ static GtkWidget *viewer_build_window(VncDisplay *vnc)
 			 GTK_SIGNAL_FUNC(viewer_credential), NULL);
 
 	return window;
-}
-
-
-static void viewer_version(FILE *out)
-{
-	fprintf(out, "%s version %s\n", PACKAGE, VERSION);
-}
-
-static void viewer_help(FILE *out, const char *app)
-{
-	fprintf(out, "\n");
-	fprintf(out, "syntax: %s [OPTIONS] DOMAIN-NAME|ID|UUID\n", app);
-	fprintf(out, "\n");
-	viewer_version(out);
-	fprintf(out, "\n");
-	fprintf(out, "Options:\n\n");
-	fprintf(out, "  -h, --help              display command line help\n");
-	fprintf(out, "  -v, --verbose           display verbose information\n");
-	fprintf(out, "  -V, --version           display version information\n");
-	fprintf(out, "  -d, --direct            direct connection with no automatic tunnels\n");
-	fprintf(out, "  -c URI, --connect URI   connect to hypervisor URI\n");
-	fprintf(out, "  -w, --wait              wait for domain to start\n");
-	fprintf(out, "\n");
 }
 
 static int viewer_parse_uuid(const char *name, unsigned char *uuid)
@@ -683,25 +681,14 @@ static int viewer_open_tunnel_ssh(const char *sshhost, int sshport, const char *
 	return viewer_open_tunnel(cmd);
 }
 
-
-int main(int argc, char **argv)
+int
+viewer_start (const char *uri, const char *name,
+	      int direct, int waitvnc, int set_verbose,
+	      GtkWidget *(*get_toplevel)(void *), void *data,
+	      int with_menubar)
 {
 	GtkWidget *window;
 	GtkWidget *vnc;
-	char *uri = NULL;
-	int opt_ind;
-	const char *sopts = "hVc:";
-	static const struct option lopts[] = {
-		{ "help", 0, 0, 'h' },
-		{ "version", 0, 0, 'V' },
-		{ "verbose", 0, 0, 'v' },
-		{ "connect", 1, 0, 'c' },
-		{ "wait", 0, 0, 'w' },
-		{ "direct", 0, 0, 'd' },
-		{ 0, 0, 0, 0 }
-	};
-	int ch;
-	int waitvnc = 0;
 	virConnectPtr conn = NULL;
 	virDomainPtr dom = NULL;
 	char *host = NULL;
@@ -711,41 +698,8 @@ int main(int argc, char **argv)
 	const char *tmpname = NULL;
 	int port = 0;
 	int fd = -1;
-	int direct = 0;
 
-	while ((ch = getopt_long(argc, argv, sopts, lopts, &opt_ind)) != -1) {
-		switch (ch) {
-		case 'h':
-			viewer_help(stdout, argv[0]);
-			return 0;
-		case 'V':
-			viewer_version(stdout);
-			return 0;
-		case 'v':
-			verbose = 1;
-			break;
-		case 'c':
-			uri = strdup(optarg);
-			break;
-		case 'w':
-			waitvnc = 1;
-			break;
-		case 'd':
-			direct = 1;
-			break;
-		case '?':
-			viewer_help(stderr, argv[0]);
-			return 1;
-		}
-	}
-
-
-	if (argc != (optind+1)) {
-		viewer_help(stderr, argv[0]);
-		return 1;
-	}
-
-	gtk_init(&argc, &argv);
+	verbose = set_verbose;
 
 	conn = virConnectOpenReadOnly(uri);
 	if (!conn) {
@@ -755,9 +709,9 @@ int main(int argc, char **argv)
 	}
 
 	do {
-		dom = viewer_lookup_domain(conn, argv[optind]);
+		dom = viewer_lookup_domain(conn, name);
 		if (!dom && !waitvnc) {
-			fprintf(stderr, "unable to lookup domain %s\n", argv[optind]);
+			fprintf(stderr, "unable to lookup domain %s\n", name);
 			return 3;
 		}
 		if (!dom)
@@ -767,7 +721,7 @@ int main(int argc, char **argv)
 	do {
 		viewer_extract_vnc_graphics(dom, &vncport);
 		if (!vncport && !waitvnc) {
-			fprintf(stderr, "unable to find vnc graphics for %s\n", argv[optind]);
+			fprintf(stderr, "unable to find vnc graphics for %s\n", name);
 			return 4;
 		}
 		if (!vncport)
@@ -790,7 +744,8 @@ int main(int argc, char **argv)
 		fd = viewer_open_tunnel_ssh(host, port, user, vncport);
 
 	vnc = vnc_display_new();
-	window = viewer_build_window(VNC_DISPLAY(vnc));
+	window = viewer_build_window (VNC_DISPLAY(vnc),
+				      get_toplevel, data, with_menubar);
 	gtk_widget_realize(vnc);
 
 	vnc_display_set_keyboard_grab(VNC_DISPLAY(vnc), TRUE);
@@ -801,10 +756,98 @@ int main(int argc, char **argv)
 	else
 		vnc_display_open_host(VNC_DISPLAY(vnc), host, vncport);
 
+	return 0;
+}
+
+#ifndef PLUGIN
+/* Standalone program. */
+
+static void viewer_version(FILE *out)
+{
+	fprintf(out, "%s version %s\n", PACKAGE, VERSION);
+}
+
+static void viewer_help(FILE *out, const char *app)
+{
+	fprintf(out, "\n");
+	fprintf(out, "syntax: %s [OPTIONS] DOMAIN-NAME|ID|UUID\n", app);
+	fprintf(out, "\n");
+	viewer_version(out);
+	fprintf(out, "\n");
+	fprintf(out, "Options:\n\n");
+	fprintf(out, "  -h, --help              display command line help\n");
+	fprintf(out, "  -v, --verbose           display verbose information\n");
+	fprintf(out, "  -V, --version           display version information\n");
+	fprintf(out, "  -d, --direct            direct connection with no automatic tunnels\n");
+	fprintf(out, "  -c URI, --connect URI   connect to hypervisor URI\n");
+	fprintf(out, "  -w, --wait              wait for domain to start\n");
+	fprintf(out, "\n");
+}
+
+int main(int argc, char **argv)
+{
+	char *uri = NULL;
+	char *name = NULL;
+	int opt_ind;
+	const char *sopts = "hVc:";
+	static const struct option lopts[] = {
+		{ "help", 0, 0, 'h' },
+		{ "version", 0, 0, 'V' },
+		{ "verbose", 0, 0, 'v' },
+		{ "connect", 1, 0, 'c' },
+		{ "wait", 0, 0, 'w' },
+		{ "direct", 0, 0, 'd' },
+		{ 0, 0, 0, 0 }
+	};
+	int ch;
+	int direct = 0;
+	int waitvnc = 0;
+	int set_verbose = 0;
+	int ret;
+
+	while ((ch = getopt_long(argc, argv, sopts, lopts, &opt_ind)) != -1) {
+		switch (ch) {
+		case 'h':
+			viewer_help(stdout, argv[0]);
+			return 0;
+		case 'V':
+			viewer_version(stdout);
+			return 0;
+		case 'v':
+			set_verbose = 1;
+			break;
+		case 'c':
+			uri = strdup(optarg);
+			break;
+		case 'w':
+			waitvnc = 1;
+			break;
+		case 'd':
+			direct = 1;
+			break;
+		case '?':
+			viewer_help(stderr, argv[0]);
+			return 1;
+		}
+	}
+
+	if (argc != (optind+1)) {
+		viewer_help(stderr, argv[0]);
+		return 1;
+	}
+
+	gtk_init(&argc, &argv);
+
+	name = argv[optind];
+	ret = viewer_start (uri, name, direct, waitvnc, set_verbose,
+			    viewer_get_toplevel, NULL, 1);
+	if (ret != 0) return ret;
+
 	gtk_main();
 
 	return 0;
 }
+#endif /* !PLUGIN */
 
 /*
  * Local variables:

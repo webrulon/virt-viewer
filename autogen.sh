@@ -36,6 +36,7 @@ if test -z "$*"; then
         echo "the $0 command line."
 fi
 
+libtoolize --copy --force
 aclocal
 automake --add-missing
 autoconf

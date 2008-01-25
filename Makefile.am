@@ -1,5 +1,5 @@
 
-SUBDIRS = src man
+SUBDIRS = src man plugin
 
 EXTRA_DIST = @PACKAGE@.spec
 

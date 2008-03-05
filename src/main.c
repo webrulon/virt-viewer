@@ -69,6 +69,26 @@ static const struct keyComboDef keyCombos[] = {
 	{ { GDK_Print }, 1, "_PrintScreen"},
 };
 
+enum menuNums {
+	FILE_MENU,
+	SEND_KEY_MENU,
+	HELP_MENU,
+	LAST_MENU // sentinel
+};
+
+struct menuItem {
+	guint menu;
+	GtkWidget *label;
+	const char *ungrabbed_text;
+	const char *grabbed_text;
+};
+
+static struct menuItem menuItems[] = {
+	{ FILE_MENU, NULL, "_File", "File" },
+	{ SEND_KEY_MENU, NULL, "_Send Key", "Send Key" },
+	{ HELP_MENU, NULL, "_Help", "Help" }
+};
+
 static void viewer_set_title(VncDisplay *vnc G_GNUC_UNUSED, GtkWidget *window, gboolean grabbed)
 {
 	char title[1024];
@@ -87,12 +107,24 @@ static void viewer_set_title(VncDisplay *vnc G_GNUC_UNUSED, GtkWidget *window, g
 
 static void viewer_grab(GtkWidget *vnc, GtkWidget *window)
 {
+	int i;
+
 	viewer_set_title(VNC_DISPLAY(vnc), window, TRUE);
+
+	for (i = 0 ; i < LAST_MENU; i++) {
+		gtk_label_set_text_with_mnemonic(GTK_LABEL(menuItems[i].label), menuItems[i].grabbed_text);
+	}
 }
 
 static void viewer_ungrab(GtkWidget *vnc, GtkWidget *window)
 {
+	int i;
+
 	viewer_set_title(VNC_DISPLAY(vnc), window, FALSE);
+
+	for (i = 0 ; i < LAST_MENU; i++) {
+		gtk_label_set_text_with_mnemonic(GTK_LABEL(menuItems[i].label), menuItems[i].ungrabbed_text);
+	}
 }
 
 static void viewer_shutdown(GtkWidget *src G_GNUC_UNUSED, void *dummy G_GNUC_UNUSED, GtkWidget *vnc)
@@ -317,6 +349,28 @@ static void viewer_about(GtkWidget *menu G_GNUC_UNUSED)
 	gtk_widget_destroy(about);
 }
 
+static GtkWidget *menu_item_new(int which_menu)
+{
+	GtkWidget *widget;
+	GtkWidget *label;
+	const char *text;
+
+	text = menuItems[which_menu].ungrabbed_text;
+
+	widget = gtk_menu_item_new();
+	label = g_object_new(GTK_TYPE_ACCEL_LABEL, NULL);
+	gtk_label_set_text_with_mnemonic(GTK_LABEL(label), text);
+	gtk_misc_set_alignment(GTK_MISC(label), 0.0, 0.5);
+
+	gtk_container_add(GTK_CONTAINER(widget), label);
+	gtk_accel_label_set_accel_widget(GTK_ACCEL_LABEL(label), widget);
+	gtk_widget_show(label);
+
+	menuItems[which_menu].label = label;
+
+	return widget;
+}
+
 static GtkWidget *viewer_build_file_menu(VncDisplay *vnc)
 {
 	GtkWidget *file;
@@ -324,7 +378,7 @@ static GtkWidget *viewer_build_file_menu(VncDisplay *vnc)
 	GtkWidget *quit;
 	GtkWidget *screenshot;
 
-	file = gtk_menu_item_new_with_mnemonic("_File");
+	file = menu_item_new(FILE_MENU);
 
 	filemenu = gtk_menu_new();
 	gtk_menu_item_set_submenu(GTK_MENU_ITEM(file), filemenu);
@@ -349,7 +403,7 @@ static GtkWidget *viewer_build_sendkey_menu(VncDisplay *vnc)
 	GtkWidget *sendkeymenu;
 	int i;
 
-	sendkey = gtk_menu_item_new_with_mnemonic("_Send Key");
+	sendkey = menu_item_new(SEND_KEY_MENU);
 
 	sendkeymenu = gtk_menu_new();
 	gtk_menu_item_set_submenu(GTK_MENU_ITEM(sendkey), sendkeymenu);
@@ -375,7 +429,7 @@ static GtkWidget *viewer_build_help_menu(void)
 	GtkWidget *helpmenu;
 	GtkWidget *about;
 
-	help = gtk_menu_item_new_with_mnemonic("_Help");
+	help = menu_item_new(HELP_MENU);
 
 	helpmenu = gtk_menu_new();
 	gtk_menu_item_set_submenu(GTK_MENU_ITEM(help), helpmenu);

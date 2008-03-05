@@ -11,3 +11,12 @@ Makefile\.in$
 ^install-sh$
 ^ltmain.sh$
 ^missing$
+^libtool$
+^src/\.deps
+^src/virt-viewer$
+^src/.*\.o
+^src/Makefile$
+^virt-viewer\.spec$
+^config.h.in$
+^man/Makefile$
+^man/virt-viewer\.1$

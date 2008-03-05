@@ -1,9 +1,16 @@
-AC_INIT(virt-viewer.spec.in)
-AM_INIT_AUTOMAKE(virt-viewer, 0.0.2)
+
+AC_INIT(virt-viewer, 0.0.2)
+AC_CONFIG_SRCDIR(src/main.c)
+AM_CONFIG_HEADER(config.h)
+dnl Make automake keep quiet about wildcards & other GNUmake-isms
+AM_INIT_AUTOMAKE([-Wno-portability])
+AC_CANONICAL_HOST
 
 AC_PROG_CC
 AM_PROG_CC_C_O
 AC_PROG_LIBTOOL
+
+AC_DEFINE([_GNU_SOURCE], [], [Enable GNU extensions])
 
 VIRT_VIEWER_COMPILE_WARNINGS(maximum)
 

@@ -28,8 +28,6 @@ virt-viewer-plugin.so: virt-viewer-plugin.la
 install-data-hook:
 	rm -f $(plugindir)/virt-viewer-plugin.a $(plugindir)/virt-viewer-plugin.la
 
-EXTRA_DIST = README
-
 CLEANFILES = virt-viewer-plugin.so
 
 endif

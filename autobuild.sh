@@ -3,14 +3,11 @@
 set -e
 set -v
 
-# Make things clean.
-test -f Makefile && make -k distclean || :
-
 rm -rf build
 mkdir build
 cd build
 
-../autogen.sh --prefix=$AUTOBUILD_INSTALL_ROOT --enable-fatal-warnings
+../autogen.sh --prefix=$AUTOBUILD_INSTALL_ROOT --enable-compile-warnings=error --enable-plugin
 
 make
 make install

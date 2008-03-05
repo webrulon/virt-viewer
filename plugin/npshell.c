@@ -76,10 +76,12 @@ Portions created by Adobe Systems Incorporated are Copyright (C) 2007. All Right
 Contributor(s): Adobe Systems Incorporated.
 */
 
+#include <config.h>
 
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <strings.h>
 
 #include <npapi.h>
 #include <npupp.h>

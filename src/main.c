@@ -20,7 +20,7 @@
  * Author: Daniel P. Berrange <berrange@redhat.com>
  */
 
-#define _GNU_SOURCE
+#include <config.h>
 
 #include <vncdisplay.h>
 #include <gtk/gtk.h>
@@ -462,15 +462,6 @@ static GtkWidget *viewer_build_menu(VncDisplay *vnc)
 	return menubar;
 }
 
-static GtkWidget *viewer_get_toplevel (void *data G_GNUC_UNUSED)
-{
-	GtkWidget *window;
-
-	window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
-	gtk_window_set_resizable(GTK_WINDOW(window), FALSE);
-	return window;
-}
-
 static GtkWidget *viewer_build_window(VncDisplay *vnc,
 				      GtkWidget *(*get_toplevel)(void *),
 				      void *data,
@@ -815,6 +806,15 @@ viewer_start (const char *uri, const char *name,
 
 #ifndef PLUGIN
 /* Standalone program. */
+
+static GtkWidget *viewer_get_toplevel (void *data G_GNUC_UNUSED)
+{
+	GtkWidget *window;
+
+	window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
+	gtk_window_set_resizable(GTK_WINDOW(window), FALSE);
+	return window;
+}
 
 static void viewer_version(FILE *out)
 {

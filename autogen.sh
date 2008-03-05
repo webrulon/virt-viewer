@@ -45,5 +45,5 @@ cd $THEDIR
 
 $srcdir/configure --enable-warnings "$@" && {
     echo 
-    echo "Now type 'make' to compile gtk-vnc."
+    echo "Now type 'make' to compile virt-viewer."
 }

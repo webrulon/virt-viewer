@@ -71,6 +71,7 @@ static const struct keyComboDef keyCombos[] = {
 
 enum menuNums {
 	FILE_MENU,
+	VIEW_MENU,
 	SEND_KEY_MENU,
 	HELP_MENU,
 	LAST_MENU // sentinel
@@ -85,6 +86,7 @@ struct menuItem {
 
 static struct menuItem menuItems[] = {
 	{ FILE_MENU, NULL, "_File", "File" },
+	{ VIEW_MENU, NULL, "_View", "View" },
 	{ SEND_KEY_MENU, NULL, "_Send Key", "Send Key" },
 	{ HELP_MENU, NULL, "_Help", "Help" }
 };
@@ -168,10 +170,8 @@ static void viewer_fullscreen(GtkWidget *menu, GtkWidget *window)
 static void viewer_scalable(GtkWidget *menu, GtkWidget *vnc)
 {
 	if (gtk_check_menu_item_get_active(GTK_CHECK_MENU_ITEM(menu))) {
-		printf("On\n");
 		vnc_display_set_scaling(VNC_DISPLAY(vnc), TRUE);
 	} else {
-		printf("Off\n");
 		vnc_display_set_scaling(VNC_DISPLAY(vnc), FALSE);
 	}
 }
@@ -424,7 +424,7 @@ static GtkWidget *viewer_build_view_menu(VncDisplay *vnc, GtkWidget *window)
 	GtkWidget *fullscreen;
 	GtkWidget *scalable;
 
-	view = gtk_menu_item_new_with_mnemonic("_View");
+	view = menu_item_new(VIEW_MENU);
 
 	viewmenu = gtk_menu_new();
 	gtk_menu_item_set_submenu(GTK_MENU_ITEM(view), viewmenu);

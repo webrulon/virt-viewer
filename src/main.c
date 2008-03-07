@@ -156,6 +156,26 @@ static void viewer_disconnected(GtkWidget *vnc G_GNUC_UNUSED)
 	gtk_main_quit();
 }
 
+static void viewer_fullscreen(GtkWidget *menu, GtkWidget *window)
+{
+	if (gtk_check_menu_item_get_active(GTK_CHECK_MENU_ITEM(menu))) {
+		gtk_window_fullscreen(GTK_WINDOW(window));
+	} else {
+		gtk_window_unfullscreen(GTK_WINDOW(window));
+	}
+}
+
+static void viewer_scalable(GtkWidget *menu, GtkWidget *vnc)
+{
+	if (gtk_check_menu_item_get_active(GTK_CHECK_MENU_ITEM(menu))) {
+		printf("On\n");
+		vnc_display_set_scaling(VNC_DISPLAY(vnc), TRUE);
+	} else {
+		printf("Off\n");
+		vnc_display_set_scaling(VNC_DISPLAY(vnc), FALSE);
+	}
+}
+
 static void viewer_send_key(GtkWidget *menu, GtkWidget *vnc)
 {
 	int i;
@@ -397,6 +417,30 @@ static GtkWidget *viewer_build_file_menu(VncDisplay *vnc)
 	return file;
 }
 
+static GtkWidget *viewer_build_view_menu(VncDisplay *vnc, GtkWidget *window)
+{
+	GtkWidget *view;
+	GtkWidget *viewmenu;
+	GtkWidget *fullscreen;
+	GtkWidget *scalable;
+
+	view = gtk_menu_item_new_with_mnemonic("_View");
+
+	viewmenu = gtk_menu_new();
+	gtk_menu_item_set_submenu(GTK_MENU_ITEM(view), viewmenu);
+
+	fullscreen = gtk_check_menu_item_new_with_mnemonic("_Fullscreen");
+	gtk_menu_append(GTK_MENU(viewmenu), fullscreen);
+	g_signal_connect(fullscreen, "toggled", GTK_SIGNAL_FUNC(viewer_fullscreen), window);
+
+	scalable = gtk_check_menu_item_new_with_mnemonic("_Scale display");
+	gtk_check_menu_item_set_active(GTK_CHECK_MENU_ITEM(scalable), TRUE);
+	gtk_menu_append(GTK_MENU(viewmenu), scalable);
+	g_signal_connect(scalable, "toggled", GTK_SIGNAL_FUNC(viewer_scalable), vnc);
+
+	return view;
+}
+
 static GtkWidget *viewer_build_sendkey_menu(VncDisplay *vnc)
 {
 	GtkWidget *sendkey;
@@ -441,20 +485,23 @@ static GtkWidget *viewer_build_help_menu(void)
 	return help;
 }
 
-static GtkWidget *viewer_build_menu(VncDisplay *vnc)
+static GtkWidget *viewer_build_menu(VncDisplay *vnc, GtkWidget *window)
 {
 	GtkWidget *menubar;
 	GtkWidget *file;
+	GtkWidget *view;
 	GtkWidget *sendkey;
 	GtkWidget *help;
 
 	menubar = gtk_menu_bar_new();
 
 	file = viewer_build_file_menu(vnc);
+	view = viewer_build_view_menu(vnc, window);
 	sendkey = viewer_build_sendkey_menu(vnc);
 	help = viewer_build_help_menu();
 
 	gtk_menu_bar_append(GTK_MENU_BAR(menubar), file);
+	gtk_menu_bar_append(GTK_MENU_BAR(menubar), view);
 	gtk_menu_bar_append(GTK_MENU_BAR(menubar), sendkey);
 	gtk_menu_bar_append(GTK_MENU_BAR(menubar), help);
 
@@ -477,13 +524,14 @@ static GtkWidget *viewer_build_window(VncDisplay *vnc,
 	 * In both cases they are GTK_CONTAINERs and NOT resizable.
 	 */
 	window = get_toplevel (data);
+	gtk_window_set_resizable(GTK_WINDOW(window), TRUE);
 
 	if (with_menubar) {
 		layout = gtk_vbox_new(FALSE, 3);
-		menubar = viewer_build_menu(vnc);
+		menubar = viewer_build_menu(vnc, window);
 		gtk_container_add(GTK_CONTAINER(window), layout);
-		gtk_container_add(GTK_CONTAINER(layout), menubar);
-		gtk_container_add(GTK_CONTAINER(layout), GTK_WIDGET(vnc));
+		gtk_container_add_with_properties(GTK_CONTAINER(layout), menubar, "expand", FALSE, NULL);
+		gtk_container_add_with_properties(GTK_CONTAINER(layout), GTK_WIDGET(vnc), "expand", TRUE, NULL);
 	} else
 		gtk_container_add(GTK_CONTAINER(window), GTK_WIDGET(vnc));
 
@@ -795,6 +843,7 @@ viewer_start (const char *uri, const char *name,
 
 	vnc_display_set_keyboard_grab(VNC_DISPLAY(vnc), TRUE);
 	vnc_display_set_pointer_grab(VNC_DISPLAY(vnc), TRUE);
+	vnc_display_set_scaling(VNC_DISPLAY(vnc), TRUE);
 
 	if (fd >= 0)
 		vnc_display_open_fd(VNC_DISPLAY(vnc), fd);

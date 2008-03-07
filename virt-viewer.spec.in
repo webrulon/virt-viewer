@@ -6,15 +6,16 @@ Release: 1%{?dist}%{?extra_release}
 Summary: Virtual Machine Viewer
 
 Group: Applications/System
-License: GPL
+License: GPLv2+
 URL: http://virt-manager.org/
 Source0: http://virt-manager.org/download/sources/%{name}/%{name}-%{version}.tar.gz
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
+Requires: openssh-clients
 
 BuildRequires: gtk2-devel
 BuildRequires: libvirt-devel
 BuildRequires: libxml2-devel
-BuildRequires: gtk-vnc-devel >= 0.1.0
+BuildRequires: gtk-vnc-devel >= 0.3.4
 BuildRequires: /usr/bin/pod2man
 
 %description
@@ -27,12 +28,12 @@ and libvirt for looking up VNC server details.
 
 %build
 %configure
-make %{?_smp_mflags}
+%__make %{?_smp_mflags}
 
 
 %install
 rm -rf $RPM_BUILD_ROOT
-make install  DESTDIR=$RPM_BUILD_ROOT
+%__make install  DESTDIR=$RPM_BUILD_ROOT
 
 %clean
 rm -rf $RPM_BUILD_ROOT

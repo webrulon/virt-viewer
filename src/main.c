@@ -417,7 +417,7 @@ static GtkWidget *viewer_build_file_menu(VncDisplay *vnc)
 	return file;
 }
 
-static GtkWidget *viewer_build_view_menu(VncDisplay *vnc, GtkWidget *window)
+static GtkWidget *viewer_build_view_menu(VncDisplay *vnc, GtkWidget *window, gboolean composited)
 {
 	GtkWidget *view;
 	GtkWidget *viewmenu;
@@ -434,7 +434,8 @@ static GtkWidget *viewer_build_view_menu(VncDisplay *vnc, GtkWidget *window)
 	g_signal_connect(fullscreen, "toggled", GTK_SIGNAL_FUNC(viewer_fullscreen), window);
 
 	scalable = gtk_check_menu_item_new_with_mnemonic("_Scale display");
-	gtk_check_menu_item_set_active(GTK_CHECK_MENU_ITEM(scalable), TRUE);
+	if (!composited)
+		gtk_check_menu_item_set_active(GTK_CHECK_MENU_ITEM(scalable), TRUE);
 	gtk_menu_append(GTK_MENU(viewmenu), scalable);
 	g_signal_connect(scalable, "toggled", GTK_SIGNAL_FUNC(viewer_scalable), vnc);
 
@@ -485,7 +486,7 @@ static GtkWidget *viewer_build_help_menu(void)
 	return help;
 }
 
-static GtkWidget *viewer_build_menu(VncDisplay *vnc, GtkWidget *window)
+static GtkWidget *viewer_build_menu(VncDisplay *vnc, GtkWidget *window, gboolean composited)
 {
 	GtkWidget *menubar;
 	GtkWidget *file;
@@ -496,7 +497,7 @@ static GtkWidget *viewer_build_menu(VncDisplay *vnc, GtkWidget *window)
 	menubar = gtk_menu_bar_new();
 
 	file = viewer_build_file_menu(vnc);
-	view = viewer_build_view_menu(vnc, window);
+	view = viewer_build_view_menu(vnc, window, composited);
 	sendkey = viewer_build_sendkey_menu(vnc);
 	help = viewer_build_help_menu();
 
@@ -528,7 +529,7 @@ static GtkWidget *viewer_build_window(VncDisplay *vnc,
 
 	if (with_menubar) {
 		layout = gtk_vbox_new(FALSE, 3);
-		menubar = viewer_build_menu(vnc, window);
+		menubar = viewer_build_menu(vnc, window, gtk_widget_is_composited(window));
 		gtk_container_add(GTK_CONTAINER(window), layout);
 		gtk_container_add_with_properties(GTK_CONTAINER(layout), menubar, "expand", FALSE, NULL);
 		gtk_container_add_with_properties(GTK_CONTAINER(layout), GTK_WIDGET(vnc), "expand", TRUE, NULL);
@@ -843,7 +844,8 @@ viewer_start (const char *uri, const char *name,
 
 	vnc_display_set_keyboard_grab(VNC_DISPLAY(vnc), TRUE);
 	vnc_display_set_pointer_grab(VNC_DISPLAY(vnc), TRUE);
-	vnc_display_set_scaling(VNC_DISPLAY(vnc), TRUE);
+	if (!gtk_widget_is_composited(window))
+		vnc_display_set_scaling(VNC_DISPLAY(vnc), TRUE);
 
 	if (fd >= 0)
 		vnc_display_open_fd(VNC_DISPLAY(vnc), fd);

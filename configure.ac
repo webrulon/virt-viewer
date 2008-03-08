@@ -21,7 +21,7 @@ PKG_CHECK_MODULES(GTKVNC, gtk-vnc-1.0 >= 0.0.1)
 
 dnl --enable-plugin to enable the browser plugin.
 NSPR_REQUIRED=4.0.0
-FIREFOX_PLUGIN_REQUIRED=2.0.0
+FIREFOX_PLUGIN_REQUIRED=1.5.0
 AC_ARG_ENABLE(plugin,
         [  --enable-plugin=[no/yes] enable browser plugin [default=no]],,
         enable_plugin=no)

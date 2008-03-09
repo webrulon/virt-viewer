@@ -1,10 +1,13 @@
 # -*- rpm-spec -*-
 
+# Plugin isn't ready for real world use yet - it needs
+# a security audit at very least
+%define _with_plugin %{?with_plugin:1}%{!?with_plugin:0}
+
 Name: @PACKAGE@
 Version: @VERSION@
 Release: 1%{?dist}%{?extra_release}
 Summary: Virtual Machine Viewer
-
 Group: Applications/System
 License: GPLv2+
 URL: http://virt-manager.org/
@@ -17,23 +20,53 @@ BuildRequires: libvirt-devel
 BuildRequires: libxml2-devel
 BuildRequires: gtk-vnc-devel >= 0.3.4
 BuildRequires: /usr/bin/pod2man
+%if %{_with_plugin}
+%if "%{fedora}" > "8"
+BuildRequires: xulrunner-devel
+%else
+BuildRequires: firefox-devel
+%endif
+%endif
 
 %description
 Virtual Machine Viewer provides a graphical console client for connecting
 to virtual machines. It uses the GTK-VNC widget to provide the display,
 and libvirt for looking up VNC server details.
 
+%if %{_with_plugin}
+%package plugin
+Summary: Mozilla plugin for the gtk-vnc library
+Group: Development/Libraries
+Requires: %{name} = %{version}
+
+%description plugin
+gtk-vnc is a VNC viewer widget for GTK. It is built using coroutines
+allowing it to be completely asynchronous while remaining single threaded.
+
+This package provides a web browser plugin for Mozilla compatible
+browsers.
+%endif
+
 %prep
 %setup -q
 
 %build
+%if %{_with_plugin}
+%configure --enable-plugin=yes
+%else
 %configure
+%endif
+%__make %{?_smp_mflags}
 %__make %{?_smp_mflags}
 
 
 %install
 rm -rf $RPM_BUILD_ROOT
 %__make install  DESTDIR=$RPM_BUILD_ROOT
+%if %{_with_plugin}
+rm -f %{buildroot}%{_libdir}/mozilla/plugins/%{name}-plugin.a
+rm -f %{buildroot}%{_libdir}/mozilla/plugins/%{name}-plugin.la
+%endif
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -44,7 +77,16 @@ rm -rf $RPM_BUILD_ROOT
 %{_bindir}/%{name}
 %{_mandir}/man1/%{name}*
 
+%if %{_with_plugin}
+%files plugin
+%defattr(-, root, root)
+%{_libdir}/mozilla/plugins/%{name}-plugin.so
+%endif
+
 %changelog
+* Sun Mar  9 2008 Daniel P. Berrange <berrange@redhat.com> - 0.0.3-1
+- Added optional plugin subRPM
+
 * Tue Aug 28 2007 Daniel P. Berrange <berrange@redhat.com> - 0.0.2-1
 - Added support for remote console access
 

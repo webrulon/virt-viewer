@@ -1,8 +1,98 @@
+2008-03-09  "Daniel P. Berrange  <berrange@redhat.com>
+
+	* autobuild.sh, configure.ac, virt-viewer.spec.in:
+	Added -plugin sub RPM, disabled by default, except for autobuild
+	[efcac0fc56b5] [tip]
+
+2008-03-08  "Daniel P. Berrange  <berrange@redhat.com>
+
+	* configure.ac:
+	Relax firefox plugin version to 1.5.0
+	[0252cf01fe3c]
+
+2008-03-07  "Daniel P. Berrange  <berrange@redhat.com>
+
+	* src/main.c:
+	Disable scaling by default if running on composited window
+	[aadb3fb8316e]
+
+	* src/main.c:
+	Block view menu accelerator & remove debug
+	[01e11e3566ff]
+
+	* src/main.c, virt-viewer.spec.in:
+	Added support for desktop scaling with OpenGL
+	[23cd61984e4c]
+
+2008-03-05  "Daniel P. Berrange  <berrange@redhat.com>
+
+	* .hgignore, acinclude.m4, autobuild.sh, autogen.sh, configure.ac,
+	plugin/Makefile.am, plugin/npshell.c, plugin/npunix.c, plugin/virt-
+	viewer-plugin.c, src/main.c:
+	Kill automake portability warnings. Use a config.h Cleanup misc
+	build issues. Build with fatal compile warnings
+	[7254e127a017]
+
+	* src/main.c:
+	Disable menu accelerators when keyboard is grabbed (Chris Lalancett)
+	[50ed4d0b0632]
+
+	* autogen.sh:
+	Fix type in autogen.sh output (Chris Lalancett)
+	[25932c2b565a]
+
+2008-01-25  "Daniel P. Berrange  <berrange@redhat.com>
+
+	* .hgignore, Makefile.am, autogen.sh, configure.ac,
+	plugin/Makefile.am, plugin/npshell.c, plugin/npunix.c,
+	plugin/test.html, plugin/virt-viewer-plugin.c, plugin/virt-viewer-
+	plugin.h:
+	Added browser plugin (Richard Jones)
+	[09761c04bdcd]
+
+	* AUTHORS, src/Makefile.am, src/main.c, src/viewer.h:
+	Refactor main method for viewer to prepare for plugin (Richard Jones
+	[270fbc7d4192]
+
+2008-01-11  "Daniel P. Berrange  <berrange@redhat.com>
+
+	* src/main.c:
+	Whitespace fix
+	[fe1efb558b4b]
+
+	* src/main.c:
+	Hide chars in passwd field
+	[69daa8257222]
+
+2008-01-10  "Daniel P. Berrange  <berrange@redhat.com>
+
+	* AUTHORS, NEWS, README, man/virt-viewer.pod, src/main.c:
+	Fix a few typos (Atsushi SAKAI)
+	[a0d79af724b0]
+
+2007-11-29  "Daniel P. Berrange  <berrange@redhat.com>
+
+	* AUTHORS, src/main.c:
+	Use proper domain name in title bar, rather than VNC server title
+	[59fccec87973]
+
 2007-08-28  "Daniel P. Berrange  <berrange@redhat.com>
+
+	* .hgtags:
+	Added tag release-0.0.2 for changeset f3accb51c6f5
+	[97f00b8df38a]
+
+	* src/main.c:
+	Fix crash with no transport
+	[f3accb51c6f5] [release-0.0.2]
+
+	* ChangeLog, NEWS, configure.ac, virt-viewer.spec.in:
+	New release 0.0.2
+	[3d88506cc468]
 
 	* man/virt-viewer.pod:
 	Document the '--direct' option
-	[0d9a8fd612d9] [tip]
+	[0d9a8fd612d9]
 
 	* src/main.c:
 	Support TLS credentials & improved SSH tunnelling
@@ -17,14 +107,6 @@
 	* Merge
 	[c40130b3a7ec]
 
-2007-08-15  "Daniel P. Berrange  <berrange@redhat.com>
-
-	* COPYING, INSTALL:
-	Added COPYING/INSTALL files
-	[1f83ef35bb59]
-
-2007-08-27  "Daniel P. Berrange  <berrange@redhat.com>
-
 	* src/main.c:
 	Added initial ability to connect remote hosts
 	[ac9cae161efb]
@@ -38,6 +120,10 @@
 	[21f7b4c5c93c]
 
 2007-08-15  "Daniel P. Berrange  <berrange@redhat.com>
+
+	* COPYING, INSTALL:
+	Added COPYING/INSTALL files
+	[1f83ef35bb59]
 
 	* .hgtags:
 	Added tag release-0.0.1 for changeset 2b78ab2d18ce

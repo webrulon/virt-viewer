@@ -1,7 +1,16 @@
   Virt Viewer News
   ================
 
-August 28, 2008
+March 10, 2008
+--------------
+
+  - Block accelerators when grab is active
+  - Enable smooth scaling of desktop to fill screen
+  - Added an experimental firefox plugin (disabled by default)
+  - Hide characters in password entry field
+  - Use domain name in title bar instead of VNC desktop name
+
+August 28, 2007
 ---------------
 
   - Support connecting to remote libvirt servers

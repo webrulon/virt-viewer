@@ -23,7 +23,7 @@ The following options are accepted when running C<virt-viewer>:
 
 =over 4
 
-=item -h, -help
+=item -h, --help
 
 Display command line help summary
 

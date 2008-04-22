@@ -910,6 +910,8 @@ int main(int argc, char **argv)
 	int set_verbose = 0;
 	int ret;
 
+	gtk_init(&argc, &argv);
+
 	while ((ch = getopt_long(argc, argv, sopts, lopts, &opt_ind)) != -1) {
 		switch (ch) {
 		case 'h':
@@ -941,7 +943,6 @@ int main(int argc, char **argv)
 		return 1;
 	}
 
-	gtk_init(&argc, &argv);
 
 	name = argv[optind];
 	ret = viewer_start (uri, name, direct, waitvnc, set_verbose,

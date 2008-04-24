@@ -803,23 +803,25 @@ viewer_start (const char *uri, const char *name,
 	}
 
 	do {
-		dom = viewer_lookup_domain(conn, name);
-		if (!dom && !waitvnc) {
-			fprintf(stderr, "unable to lookup domain %s\n", name);
-			return 3;
-		}
-		if (!dom)
-			usleep(500*1000);
-	} while (!dom);
+		do {
+			dom = viewer_lookup_domain(conn, name);
+			if (!dom && !waitvnc) {
+				fprintf(stderr, "unable to lookup domain %s\n", name);
+				return 3;
+			}
+			if (!dom)
+				usleep(500*1000);
+		} while (!dom);
 
-	do {
 		viewer_extract_vnc_graphics(dom, &vncport);
 		if (!vncport && !waitvnc) {
 			fprintf(stderr, "unable to find vnc graphics for %s\n", name);
 			return 4;
 		}
-		if (!vncport)
+		if (!vncport) {
+			virDomainFree(dom);
 			usleep(300*1000);
+		}
 	} while (!vncport);
 	tmpname = virDomainGetName(dom);
 	if (tmpname != NULL) {
@@ -894,7 +896,7 @@ int main(int argc, char **argv)
 	char *uri = NULL;
 	char *name = NULL;
 	int opt_ind;
-	const char *sopts = "hVc:";
+	const char *sopts = "hVvc:wd";
 	static const struct option lopts[] = {
 		{ "help", 0, 0, 'h' },
 		{ "version", 0, 0, 'V' },

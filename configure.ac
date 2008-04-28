@@ -17,7 +17,7 @@ VIRT_VIEWER_COMPILE_WARNINGS(maximum)
 PKG_CHECK_MODULES(LIBXML2, libxml-2.0 >= 2.6.0)
 PKG_CHECK_MODULES(LIBVIRT, libvirt >= 0.2.0)
 PKG_CHECK_MODULES(GTK2, gtk+-2.0 >= 2.10.0)
-PKG_CHECK_MODULES(GTKVNC, gtk-vnc-1.0 >= 0.0.1)
+PKG_CHECK_MODULES(GTKVNC, gtk-vnc-1.0 >= 0.3.5)
 
 dnl --enable-plugin to enable the browser plugin.
 NSPR_REQUIRED=4.0.0

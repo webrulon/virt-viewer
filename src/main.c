@@ -874,82 +874,62 @@ static void viewer_version(FILE *out)
 	fprintf(out, "%s version %s\n", PACKAGE, VERSION);
 }
 
-static void viewer_help(FILE *out, const char *app)
-{
-	fprintf(out, "\n");
-	fprintf(out, "syntax: %s [OPTIONS] DOMAIN-NAME|ID|UUID\n", app);
-	fprintf(out, "\n");
-	viewer_version(out);
-	fprintf(out, "\n");
-	fprintf(out, "Options:\n\n");
-	fprintf(out, "  -h, --help              display command line help\n");
-	fprintf(out, "  -v, --verbose           display verbose information\n");
-	fprintf(out, "  -V, --version           display version information\n");
-	fprintf(out, "  -d, --direct            direct connection with no automatic tunnels\n");
-	fprintf(out, "  -c URI, --connect URI   connect to hypervisor URI\n");
-	fprintf(out, "  -w, --wait              wait for domain to start\n");
-	fprintf(out, "\n");
-}
 
 int main(int argc, char **argv)
 {
-	char *uri = NULL;
-	char *name = NULL;
-	int opt_ind;
-	const char *sopts = "hVvc:wd";
-	static const struct option lopts[] = {
-		{ "help", 0, 0, 'h' },
-		{ "version", 0, 0, 'V' },
-		{ "verbose", 0, 0, 'v' },
-		{ "connect", 1, 0, 'c' },
-		{ "wait", 0, 0, 'w' },
-		{ "direct", 0, 0, 'd' },
-		{ 0, 0, 0, 0 }
-	};
-	int ch;
-	int direct = 0;
-	int waitvnc = 0;
-	int set_verbose = 0;
+	GOptionContext *context;
+	GError *error = NULL;
 	int ret;
+	char *uri = NULL;
+	gchar **args = NULL;
+	gboolean print_version = FALSE;
+	gboolean set_verbose = FALSE;
+	gboolean direct = FALSE;
+	gboolean waitvnc = FALSE;
+	const char *help_msg = "Run '" PACKAGE " --help' to see a full list of available command line options";
+	const GOptionEntry options [] = {
+		{ "version", 'V', 0, G_OPTION_ARG_NONE, &print_version,
+		  "display version information", NULL },
+		{ "verbose", 'v', 0, G_OPTION_ARG_NONE, &set_verbose,
+		  "display verbose information", NULL },
+		{ "direct", 'd', 0, G_OPTION_ARG_NONE, &direct,
+		  "direct connection with no automatic tunnels", NULL },
+		{ "connect", 'c', 0, G_OPTION_ARG_STRING, &uri,
+		  "connect to hypervisor", "URI"},
+		{ "wait", 'w', 0, G_OPTION_ARG_NONE, &waitvnc,
+		  "wait for domain to start", NULL },
+  	     	{ G_OPTION_REMAINING, '\0', 0, G_OPTION_ARG_STRING_ARRAY, &args,
+		  NULL, "DOMAIN-NAME|ID|UUID" },
+  		{ NULL, 0, 0, G_OPTION_ARG_NONE, NULL, NULL, NULL }
+	};
 
-	gtk_init(&argc, &argv);
-
-	while ((ch = getopt_long(argc, argv, sopts, lopts, &opt_ind)) != -1) {
-		switch (ch) {
-		case 'h':
-			viewer_help(stdout, argv[0]);
-			return 0;
-		case 'V':
-			viewer_version(stdout);
-			return 0;
-		case 'v':
-			set_verbose = 1;
-			break;
-		case 'c':
-			uri = strdup(optarg);
-			break;
-		case 'w':
-			waitvnc = 1;
-			break;
-		case 'd':
-			direct = 1;
-			break;
-		case '?':
-			viewer_help(stderr, argv[0]);
-			return 1;
-		}
+	/* Setup command line options */
+	context = g_option_context_new ("- Virtual machine graphical console");
+	g_option_context_add_main_entries (context, options, NULL);
+	g_option_context_add_group (context, gtk_get_option_group (TRUE));
+	g_option_context_add_group (context, vnc_display_get_option_group ());
+	g_option_context_parse (context, &argc, &argv, &error);
+	if (error) {
+		g_print ("%s\n%s\n",
+			 error->message,
+			 help_msg);
+		g_error_free (error);
+		return 1;
+	}
+	if (print_version) {
+		viewer_version(stdout);
+		return 0;
 	}
 
-	if (argc != (optind+1)) {
-		viewer_help(stderr, argv[0]);
+	if (!args || (g_strv_length(args) != 1)) {
+		fprintf(stderr, "\nUsage: %s [OPTIONS] DOMAIN-NAME|ID|UUID\n\n%s\n\n", argv[0], help_msg);
 		return 1;
 	}
 
-
-	name = argv[optind];
-	ret = viewer_start (uri, name, direct, waitvnc, set_verbose,
+	ret = viewer_start (uri, args[0], direct, waitvnc, set_verbose,
 			    viewer_get_toplevel, NULL, 1);
-	if (ret != 0) return ret;
+	if (ret != 0)
+		return ret;
 
 	gtk_main();
 

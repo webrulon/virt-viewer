@@ -785,6 +785,7 @@ viewer_start (const char *uri, const char *name,
 	GtkWidget *vnc;
 	virConnectPtr conn = NULL;
 	virDomainPtr dom = NULL;
+	virDomainInfo domInfo;
 	char *host = NULL;
 	char *vncport = NULL;
 	char *transport = NULL;
@@ -813,11 +814,24 @@ viewer_start (const char *uri, const char *name,
 				usleep(500*1000);
 		} while (!dom);
 
-		viewer_extract_vnc_graphics(dom, &vncport);
-		if (!vncport && !waitvnc) {
-			fprintf(stderr, "unable to find vnc graphics for %s\n", name);
-			return 4;
+		if (virDomainGetInfo(dom, &domInfo) != 0) {
+			fprintf(stderr, "unable to get information for %s\n", name);
+			return 6;
 		}
+
+		if (domInfo.state == VIR_DOMAIN_SHUTOFF && !waitvnc) {
+			fprintf(stderr, "%s is not running\n", name);
+			return 7;
+		}
+
+		if (domInfo.state != VIR_DOMAIN_SHUTOFF) {
+			viewer_extract_vnc_graphics(dom, &vncport);
+			if (!vncport) {
+				fprintf(stderr, "unable to find vnc graphics for %s\n", name);
+				return 4;
+			}
+		}
+
 		if (!vncport) {
 			virDomainFree(dom);
 			usleep(300*1000);

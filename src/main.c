@@ -32,10 +32,24 @@
 #include <libvirt/libvirt.h>
 #include <libxml/xpath.h>
 #include <libxml/uri.h>
+
+#ifdef HAVE_SYS_SOCKET_H
 #include <sys/socket.h>
+#endif
+
+#ifdef HAVE_SYS_UN_H
 #include <sys/un.h>
+#endif
+
+#ifdef HAVE_WINDOWS_H
+#include <windows.h>
+#endif
 
 #include "viewer.h"
+
+#ifndef HAVE_USLEEP
+int usleep (unsigned int usecs);
+#endif
 
 // #define DEBUG 1
 #ifdef DEBUG
@@ -716,6 +730,8 @@ static int viewer_extract_host(const char *uristr, char **host, char **transport
 	return 0;
 }
 
+#if defined(HAVE_SOCKETPAIR) && defined(HAVE_FORK)
+
 static int viewer_open_tunnel(const char **cmd)
 {
         int fd[2];
@@ -774,6 +790,8 @@ static int viewer_open_tunnel_ssh(const char *sshhost, int sshport, const char *
 
 	return viewer_open_tunnel(cmd);
 }
+
+#endif /* defined(HAVE_SOCKETPAIR) && defined(HAVE_FORK) */
 
 int
 viewer_start (const char *uri, const char *name,
@@ -850,8 +868,10 @@ viewer_start (const char *uri, const char *name,
 	}
 	DEBUG_LOG("Remote host is %s and transport %s user %s\n", host, transport ? transport : "", user ? user : "");
 
+#if defined(HAVE_SOCKETPAIR) && defined(HAVE_FORK)
 	if (transport && strcasecmp(transport, "ssh") == 0 && !direct)
 		fd = viewer_open_tunnel_ssh(host, port, user, vncport);
+#endif
 
 	vnc = vnc_display_new();
 	window = viewer_build_window (VNC_DISPLAY(vnc),

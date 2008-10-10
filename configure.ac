@@ -10,6 +10,8 @@ AC_PROG_CC
 AM_PROG_CC_C_O
 AC_PROG_LIBTOOL
 
+AC_CONFIG_LIBOBJ_DIR([src])
+
 AC_DEFINE([_GNU_SOURCE], [], [Enable GNU extensions])
 
 VIRT_VIEWER_COMPILE_WARNINGS(maximum)
@@ -18,6 +20,13 @@ PKG_CHECK_MODULES(LIBXML2, libxml-2.0 >= 2.6.0)
 PKG_CHECK_MODULES(LIBVIRT, libvirt >= 0.2.0)
 PKG_CHECK_MODULES(GTK2, gtk+-2.0 >= 2.10.0)
 PKG_CHECK_MODULES(GTKVNC, gtk-vnc-1.0 >= 0.3.5)
+
+dnl Decide if this platform can support the SSH tunnel feature.
+AC_CHECK_HEADERS([sys/socket.h sys/un.h windows.h])
+AC_CHECK_FUNCS([fork socketpair])
+
+dnl Do we need to replace the usleep function (Windows).
+AC_REPLACE_FUNCS([usleep])
 
 dnl --enable-plugin to enable the browser plugin.
 NSPR_REQUIRED=4.0.0

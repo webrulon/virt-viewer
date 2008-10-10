@@ -1,3 +1,11 @@
+2008-03-10  "Richard W.M. Jones" <rjones@redhat.com>
+
+	* configure.ac, src/Makefile.am, src/main.c, src/usleep.c: Support
+	for building on Windows using MinGW compiler toolchain (or
+	for cross-compiling using the same).
+
+	* .hgignore: Ignore some generated files.
+
 2008-03-09  "Daniel P. Berrange  <berrange@redhat.com>
 
 	* autobuild.sh, configure.ac, virt-viewer.spec.in:

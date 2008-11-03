@@ -26,7 +26,7 @@ virt-viewer-plugin.so: virt-viewer-plugin.la
 
 # Only leave the .so file in the plugins directory.
 install-data-hook:
-	rm -f $(plugindir)/virt-viewer-plugin.a $(plugindir)/virt-viewer-plugin.la
+	rm -f $(DESTDIR)$(plugindir)/virt-viewer-plugin.a $(DESTDIR)$(plugindir)/virt-viewer-plugin.la
 
 CLEANFILES = virt-viewer-plugin.so
 

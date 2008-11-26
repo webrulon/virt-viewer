@@ -41,12 +41,6 @@
 
 #include "virt-viewer-plugin.h"
 
-static GtkWidget *
-get_container (void *thisv)
-{
-  PluginInstance *This = (PluginInstance *) thisv;
-  return This->container;
-}
 
 NPError
 VirtViewerXSetWindow (NPP instance, NPWindow *window)
@@ -88,9 +82,9 @@ VirtViewerXSetWindow (NPP instance, NPWindow *window)
 
   /* Make the VNC widget. */
   if (This->uri && This->name) {
-    debug ("calling viewer_start uri=%s name=%s direct=%d waitvnc=%d container=%p", This->uri, This->name, This->direct, This->waitvnc, This->container);
-    r = viewer_start (This->uri, This->name, This->direct, This->waitvnc, 1,
-		      get_container, This, 0);
+    debug ("calling viewer_start uri=%s name=%s direct=%d waitvm=%d reconnect=%d container=%p",
+	   This->uri, This->name, This->direct, This->waitvm, This->reconnect, This->container);
+    r = viewer_start (This->uri, This->name, This->direct, This->waitvm, This->reconnect, 1, This->container);
     if (r != 0)
       fprintf (stderr, "viewer_start returned %d != 0\n", r);
   }

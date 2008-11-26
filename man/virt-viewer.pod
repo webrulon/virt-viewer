@@ -43,6 +43,10 @@ Specify the hypervisor connection URI
 
 Wait for the domain to start up before attempting to connect to the console
 
+=item -w, --reconnect
+
+Automatically reconnect to the domain if it shuts down and restarts
+
 =item -d, --direct
 
 Do not attempt to tunnel the console over SSH, even if the main connection URI
@@ -61,9 +65,9 @@ To connect to the guest with ID 7 running under QEMU
    virt-viewer --connect qemu:///system 7
 
 To wait for the guest with UUID 66ab33c0-6919-a3f7-e659-16c82d248521 to
-startup and then connect
+startup and then connect, also reconnecting upon restart of VM
 
-   virt-viewer --wait 66ab33c0-6919-a3f7-e659-16c82d248521
+   virt-viewer --reconnect --wait 66ab33c0-6919-a3f7-e659-16c82d248521
 
 To connect to a remote console using TLS
 
@@ -72,7 +76,7 @@ To connect to a remote console using TLS
 To connect to a remote host using SSH, lookup the guest config and
 then make a direct non-tunnelled connection of the console
 
-   virt-viewer --connect xen+ssh://root@example.org/ demo
+   virt-viewer --direct --connect xen+ssh://root@example.org/ demo
 
 =head1 AUTHOR
 
@@ -84,7 +88,7 @@ Report bugs to the mailing list C<http://www.redhat.com/mailman/listinfo/et-mgmt
 
 =head1 COPYRIGHT
 
-Copyright (C) 2007 Red Hat, Inc, and various contributors.
+Copyright (C) 2007-2008 Red Hat, Inc, and various contributors.
 This is free software. You may redistribute copies of it under the terms of the GNU General
 Public License C<http://www.gnu.org/licenses/gpl.html>. There is NO WARRANTY, to the extent
 permitted by law.

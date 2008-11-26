@@ -198,7 +198,7 @@ NPP_New(NPMIMEType pluginType G_GNUC_UNUSED,
   This->mode = mode;
   This->instance = instance;
   This->uri = This->name = NULL;
-  This->direct = This->waitvnc = 0;
+  This->direct = This->waitvm = This->reconnect = 0;
 
   /* Read the parameters passed to the plugin. */
   for (i = 0; i < argc; i++)
@@ -209,8 +209,10 @@ NPP_New(NPMIMEType pluginType G_GNUC_UNUSED,
         This->name = strdup (argv[i]);
       else if (strcasecmp (argn[i], "direct") == 0)
         This->direct = strcmp (argv[i], "1") == 0;
-      else if (strcasecmp (argn[i], "waitvnc") == 0)
-        This->waitvnc = strcmp (argv[i], "1") == 0;
+      else if (strcasecmp (argn[i], "wait") == 0)
+        This->waitvm = strcmp (argv[i], "1") == 0;
+      else if (strcasecmp (argn[i], "reconnect") == 0)
+        This->reconnect = strcmp (argv[i], "1") == 0;
     }
 
   return NPERR_NO_ERROR;

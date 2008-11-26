@@ -31,7 +31,7 @@ if test "$DIE" -eq 1; then
 fi
 
 if test -z "$*"; then
-	echo "I am going to run ./configure with --enable-warnings - if you "
+	echo "I am going to run ./configure with not arguments - if you "
         echo "wish to pass any extra arguments to it, please specify them on "
         echo "the $0 command line."
 fi
@@ -44,7 +44,7 @@ autoconf
 
 cd $THEDIR
 
-$srcdir/configure --enable-warnings "$@" && {
+$srcdir/configure "$@" && {
     echo 
     echo "Now type 'make' to compile virt-viewer."
 }

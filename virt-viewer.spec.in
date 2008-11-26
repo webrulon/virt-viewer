@@ -75,6 +75,11 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(-,root,root,-)
 %doc README COPYING AUTHORS ChangeLog NEWS
 %{_bindir}/%{name}
+%dir %{_datadir}/%{name}
+%dir %{_datadir}/%{name}/ui/
+%{_datadir}/%{name}/ui/auth.glade
+%{_datadir}/%{name}/ui/about.glade
+%{_datadir}/%{name}/ui/viewer.glade
 %{_mandir}/man1/%{name}*
 
 %if %{_with_plugin}

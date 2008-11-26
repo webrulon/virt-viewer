@@ -25,11 +25,15 @@
 #include <vncdisplay.h>
 #include <gtk/gtk.h>
 #include <gdk/gdkkeysyms.h>
+#include <sys/types.h>
+#include <sys/stat.h>
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
 #include <getopt.h>
+#include <glade/glade.h>
 #include <libvirt/libvirt.h>
+#include <libvirt-glib/libvirt-glib.h>
 #include <libxml/xpath.h>
 #include <libxml/uri.h>
 
@@ -53,13 +57,24 @@ int usleep (unsigned int usecs);
 
 // #define DEBUG 1
 #ifdef DEBUG
-#define DEBUG_LOG(s, ...) fprintf(stderr, (s), ## __VA_ARGS__)
+#define DEBUG_LOG(s, ...) g_debug((s), ## __VA_ARGS__)
 #else
 #define DEBUG_LOG(s, ...) do {} while (0)
 #endif
 
-static char *domname = NULL;
-static int verbose = 0;
+enum menuNums {
+        FILE_MENU,
+        VIEW_MENU,
+        SEND_KEY_MENU,
+        HELP_MENU,
+        LAST_MENU // sentinel
+};
+
+static const char * const menuNames[LAST_MENU] = {
+	"menu-file", "menu-view", "menu-send", "menu-help"
+};
+
+
 #define MAX_KEY_COMBO 3
 struct  keyComboDef {
 	guint keys[MAX_KEY_COMBO];
@@ -68,47 +83,191 @@ struct  keyComboDef {
 };
 
 static const struct keyComboDef keyCombos[] = {
-	{ { GDK_Control_L, GDK_Alt_L, GDK_Delete }, 3, "Ctrl+Alt+_Del"},
-	{ { GDK_Control_L, GDK_Alt_L, GDK_BackSpace }, 3, "Ctrl+Alt+_Backspace"},
-	{ {}, 0, "" },
-	{ { GDK_Control_L, GDK_Alt_L, GDK_F1 }, 3, "Ctrl+Alt+F_1"},
-	{ { GDK_Control_L, GDK_Alt_L, GDK_F2 }, 3, "Ctrl+Alt+F_2"},
-	{ { GDK_Control_L, GDK_Alt_L, GDK_F3 }, 3, "Ctrl+Alt+F_3"},
-	{ { GDK_Control_L, GDK_Alt_L, GDK_F4 }, 3, "Ctrl+Alt+F_4"},
-	{ { GDK_Control_L, GDK_Alt_L, GDK_F5 }, 3, "Ctrl+Alt+F_5"},
-	{ { GDK_Control_L, GDK_Alt_L, GDK_F6 }, 3, "Ctrl+Alt+F_6"},
-	{ { GDK_Control_L, GDK_Alt_L, GDK_F7 }, 3, "Ctrl+Alt+F_7"},
-	{ { GDK_Control_L, GDK_Alt_L, GDK_F8 }, 3, "Ctrl+Alt+F_8"},
-	{ {}, 0, "" },
-	{ { GDK_Print }, 1, "_PrintScreen"},
+        { { GDK_Control_L, GDK_Alt_L, GDK_Delete }, 3, "Ctrl+Alt+_Del"},
+        { { GDK_Control_L, GDK_Alt_L, GDK_BackSpace }, 3, "Ctrl+Alt+_Backspace"},
+        { {}, 0, "" },
+        { { GDK_Control_L, GDK_Alt_L, GDK_F1 }, 3, "Ctrl+Alt+F_1"},
+        { { GDK_Control_L, GDK_Alt_L, GDK_F2 }, 3, "Ctrl+Alt+F_2"},
+        { { GDK_Control_L, GDK_Alt_L, GDK_F3 }, 3, "Ctrl+Alt+F_3"},
+        { { GDK_Control_L, GDK_Alt_L, GDK_F4 }, 3, "Ctrl+Alt+F_4"},
+        { { GDK_Control_L, GDK_Alt_L, GDK_F5 }, 3, "Ctrl+Alt+F_5"},
+        { { GDK_Control_L, GDK_Alt_L, GDK_F6 }, 3, "Ctrl+Alt+F_6"},
+        { { GDK_Control_L, GDK_Alt_L, GDK_F7 }, 3, "Ctrl+Alt+F_7"},
+        { { GDK_Control_L, GDK_Alt_L, GDK_F8 }, 3, "Ctrl+Alt+F_8"},
+        { { GDK_Control_L, GDK_Alt_L, GDK_F5 }, 3, "Ctrl+Alt+F_9"},
+        { { GDK_Control_L, GDK_Alt_L, GDK_F6 }, 3, "Ctrl+Alt+F1_0"},
+        { { GDK_Control_L, GDK_Alt_L, GDK_F7 }, 3, "Ctrl+Alt+F11"},
+        { { GDK_Control_L, GDK_Alt_L, GDK_F8 }, 3, "Ctrl+Alt+F12"},
+        { {}, 0, "" },
+        { { GDK_Print }, 1, "_PrintScreen"},
 };
 
-enum menuNums {
-	FILE_MENU,
-	VIEW_MENU,
-	SEND_KEY_MENU,
-	HELP_MENU,
-	LAST_MENU // sentinel
-};
 
-struct menuItem {
-	guint menu;
-	GtkWidget *label;
-	const char *ungrabbed_text;
-	const char *grabbed_text;
-};
 
-static struct menuItem menuItems[] = {
-	{ FILE_MENU, NULL, "_File", "File" },
-	{ VIEW_MENU, NULL, "_View", "View" },
-	{ SEND_KEY_MENU, NULL, "_Send Key", "Send Key" },
-	{ HELP_MENU, NULL, "_Help", "Help" }
-};
+typedef struct VirtViewer {
+	char *uri;
+	virConnectPtr conn;
+	char *domkey;
+	char *domtitle;
 
-static void viewer_set_title(VncDisplay *vnc G_GNUC_UNUSED, GtkWidget *window, gboolean grabbed)
+	GladeXML *glade;
+	GtkWidget *window;
+	GtkWidget *vnc;
+	int active;
+
+	gboolean accelEnabled;
+	GValue accelSetting;
+	GSList *accelList;
+	int accelMenuSig[LAST_MENU];
+
+	int waitvm;
+	int reconnect;
+	int direct;
+	int verbose;
+} VirtViewer;
+
+typedef struct VirtViewerSize {
+	gint width, height;
+	gulong sig_id;
+} VirtViewerSize;
+
+
+static GladeXML *
+viewer_load_glade(const char *name, const char *widget)
+{
+	char *path;
+	struct stat sb;
+	GladeXML *xml;
+
+	if (stat(name, &sb) >= 0)
+		return glade_xml_new(name, widget, NULL);
+
+	if (asprintf(&path, "%s/%s", GLADE_DIR, name) < 0)
+		abort();
+
+	xml = glade_xml_new(path, widget, NULL);
+	free(path);
+	return xml;
+}
+
+/* Now that the size is set to our preferred sizing, this
+ * triggers another resize calculation but without our
+ * scrolled window callback active. This is the key that
+ * allows us to set the fixed size, but then allow the user
+ * to later resize it smaller again
+ */
+static gboolean
+viewer_unset_scroll_size (gpointer data)
+{
+	GtkWidget *widget = data;
+
+	gtk_widget_queue_resize_no_redraw (widget);
+
+	return FALSE;
+}
+
+/*
+ * This sets the actual size of the scrolled window, and then
+ * sets an idle callback to resize again, without constraints
+ * activated
+ */
+static void
+viewer_set_preferred_scroll_size (GtkWidget *widget,
+				  GtkRequisition *req,
+				  gpointer data)
+{
+	VirtViewerSize *size = data;
+	DEBUG_LOG("Scroll resize to preferred %d %d\n", size->width, size->height);
+
+	req->width = size->width;
+	req->height = size->height;
+
+	g_signal_handler_disconnect (widget, size->sig_id);
+	g_free (size);
+	g_idle_add (viewer_unset_scroll_size, widget);
+}
+
+
+/*
+ * Called when the scroll widgets actual size has been set.
+ * We now update the VNC widget's size
+ */
+static void viewer_resize_vnc(GtkWidget *scroll G_GNUC_UNUSED,
+			      GtkAllocation *alloc,
+			      VirtViewer *viewer)
+{
+	int vncw = vnc_display_get_width(VNC_DISPLAY(viewer->vnc));
+	int vnch = vnc_display_get_height(VNC_DISPLAY(viewer->vnc));
+	VirtViewerSize *size = g_new (VirtViewerSize, 1);
+
+	if (vnc_display_get_scaling(VNC_DISPLAY(viewer->vnc))) {
+		double vncaspect = (double)vncw / (double)vnch;
+		double scrollaspect = (double)alloc->width / (double)alloc->height;
+
+		/* When scaling, we set VNC widget size to maximum possible
+		 * scaled which fits inside teh scrolled window (no scrollbarS)
+		 * while maintaining the aspect ratio */
+		if (scrollaspect > vncaspect) {
+			size->width = alloc->height * vncaspect;
+			size->height = alloc->height;
+		} else {
+			size->width = alloc->width;
+			size->height = alloc->width / vncaspect;
+		}
+	} else {
+		/* When scrollling, the VNC widget is always at its native size */
+		size->width = vncw;
+		size->height = vnch;
+	}
+
+	DEBUG_LOG("Scroll resize is %d %d, desktop is %d %d, VNC is %d %d\n",
+		  alloc->width, alloc->height,
+		  vncw, vnch, size->width, size->height);
+
+	size->sig_id = g_signal_connect
+		(viewer->vnc, "size-request",
+		 G_CALLBACK (viewer_set_preferred_scroll_size),
+		 size);
+
+	gtk_widget_queue_resize (viewer->vnc);
+}
+
+
+/*
+ * Called when VNC desktop size changes.
+ * We figure out 'best' size for the containing scrolled window
+ */
+static void viewer_resize_desktop(GtkWidget *vnc G_GNUC_UNUSED, gint width, gint height, VirtViewer *viewer)
+{
+	GtkWidget *scroll;
+	VirtViewerSize *size = g_new (VirtViewerSize, 1);
+
+	DEBUG_LOG("Resized VNC event %d %d\n", width, height);
+
+	scroll = glade_xml_get_widget(viewer->glade, "vnc-scroll");
+
+	if (viewer->window)
+		gtk_window_resize(GTK_WINDOW (viewer->window), 1, 1);
+
+	size->width = width;
+	size->height = height;
+	size->sig_id = g_signal_connect
+		(scroll, "size-request",
+		 G_CALLBACK (viewer_set_preferred_scroll_size),
+		 size);
+
+	gtk_widget_queue_resize (scroll);
+}
+
+
+
+static void viewer_set_title(VirtViewer *viewer, gboolean grabbed)
 {
 	char title[1024];
 	const char *subtitle;
+
+	if (!viewer->window)
+		return;
 
 	if (grabbed)
 		subtitle = "(Press Ctrl+Alt to release pointer) ";
@@ -116,95 +275,150 @@ static void viewer_set_title(VncDisplay *vnc G_GNUC_UNUSED, GtkWidget *window, g
 		subtitle = "";
 
 	snprintf(title, sizeof(title), "%s%s - Virt Viewer",
-		 subtitle, domname);
+		 subtitle, viewer->domtitle);
 
-	gtk_window_set_title(GTK_WINDOW(window), title);
+	gtk_window_set_title(GTK_WINDOW(viewer->window), title);
 }
 
-static void viewer_grab(GtkWidget *vnc, GtkWidget *window)
+static void viewer_ignore_accel(GtkWidget *menu G_GNUC_UNUSED,
+				VirtViewer *viewer G_GNUC_UNUSED)
 {
+	/* ignore accelerator */
+}
+
+
+static void viewer_disable_modifiers(VirtViewer *viewer)
+{
+	GtkSettings *settings = gtk_settings_get_default();
+	GValue empty;
+	GSList *accels;
 	int i;
 
-	viewer_set_title(VNC_DISPLAY(vnc), window, TRUE);
+	if (!viewer->window)
+		return;
 
-	for (i = 0 ; i < LAST_MENU; i++) {
-		gtk_label_set_text_with_mnemonic(GTK_LABEL(menuItems[i].label), menuItems[i].grabbed_text);
+	if (!viewer->accelEnabled)
+		return;
+
+	/* This stops F10 activating menu bar */
+	memset(&empty, 0, sizeof empty);
+	g_value_init(&empty, G_TYPE_STRING);
+	g_object_get_property(G_OBJECT(settings), "gtk-menu-bar-accel", &viewer->accelSetting);
+	g_object_set_property(G_OBJECT(settings), "gtk-menu-bar-accel", &empty);
+
+	/* This stops global accelerators like Ctrl+Q == Quit */
+	for (accels = viewer->accelList ; accels ; accels = accels->next) {
+		gtk_window_remove_accel_group(GTK_WINDOW(viewer->window), accels->data);
 	}
+
+	/* This stops menu bar shortcuts like Alt+F == File */
+	for (i = 0 ; i < LAST_MENU ; i++) {
+		GtkWidget *menu = glade_xml_get_widget(viewer->glade, menuNames[i]);
+		viewer->accelMenuSig[i] =
+			g_signal_connect(GTK_OBJECT(menu), "mnemonic-activate",
+					 GTK_SIGNAL_FUNC(viewer_ignore_accel), viewer);
+	}
+
+	viewer->accelEnabled = FALSE;
 }
 
-static void viewer_ungrab(GtkWidget *vnc, GtkWidget *window)
+
+static void viewer_enable_modifiers(VirtViewer *viewer)
 {
+	GtkSettings *settings = gtk_settings_get_default();
+        GSList *accels;
 	int i;
 
-	viewer_set_title(VNC_DISPLAY(vnc), window, FALSE);
+	if (!viewer->window)
+		return;
 
-	for (i = 0 ; i < LAST_MENU; i++) {
-		gtk_label_set_text_with_mnemonic(GTK_LABEL(menuItems[i].label), menuItems[i].ungrabbed_text);
+	if (viewer->accelEnabled)
+		return;
+
+	/* This allows F10 activating menu bar */
+	g_object_set_property(G_OBJECT(settings), "gtk-menu-bar-accel", &viewer->accelSetting);
+
+	/* This allows global accelerators like Ctrl+Q == Quit */
+	for (accels = viewer->accelList ; accels ; accels = accels->next) {
+		gtk_window_add_accel_group(GTK_WINDOW(viewer->window), accels->data);
 	}
+
+	/* This allows menu bar shortcuts like Alt+F == File */
+	for (i = 0 ; i < LAST_MENU ; i++) {
+		GtkWidget *menu = glade_xml_get_widget(viewer->glade, menuNames[i]);
+		g_signal_handler_disconnect(GTK_OBJECT(menu),
+					    viewer->accelMenuSig[i]);
+	}
+
+	viewer->accelEnabled = TRUE;
 }
 
-static void viewer_shutdown(GtkWidget *src G_GNUC_UNUSED, void *dummy G_GNUC_UNUSED, GtkWidget *vnc)
+
+
+static void viewer_grab(GtkWidget *vnc G_GNUC_UNUSED, VirtViewer *viewer)
 {
-	vnc_display_close(VNC_DISPLAY(vnc));
+	viewer_set_title(viewer, TRUE);
+	viewer_disable_modifiers(viewer);
+}
+
+static void viewer_ungrab(GtkWidget *vnc G_GNUC_UNUSED, VirtViewer *viewer)
+{
+	viewer_set_title(viewer, FALSE);
+	viewer_enable_modifiers(viewer);
+}
+
+
+static void viewer_shutdown(GtkWidget *src G_GNUC_UNUSED, void *dummy G_GNUC_UNUSED, VirtViewer *viewer)
+{
+	vnc_display_close(VNC_DISPLAY(viewer->vnc));
 	gtk_main_quit();
 }
 
-static void viewer_quit(GtkWidget *src G_GNUC_UNUSED, GtkWidget *vnc)
+static void viewer_menu_file_quit(GtkWidget *src G_GNUC_UNUSED, VirtViewer *viewer)
 {
-	viewer_shutdown(src, NULL, vnc);
+	viewer_shutdown(src, NULL, viewer);
 }
 
-static void viewer_connected(GtkWidget *vnc G_GNUC_UNUSED)
+static void viewer_menu_view_fullscreen(GtkWidget *menu, VirtViewer *viewer)
 {
-	DEBUG_LOG("Connected to server\n");
-}
+	if (!viewer->window)
+		return;
 
-static void viewer_initialized(GtkWidget *vnc, GtkWidget *window)
-{
-	DEBUG_LOG("Connection initialized\n");
-	gtk_widget_show_all(window);
-	viewer_set_title(VNC_DISPLAY(vnc), window, FALSE);
-}
-
-static void viewer_disconnected(GtkWidget *vnc G_GNUC_UNUSED)
-{
-	DEBUG_LOG("Disconnected from server\n");
-	gtk_main_quit();
-}
-
-static void viewer_fullscreen(GtkWidget *menu, GtkWidget *window)
-{
 	if (gtk_check_menu_item_get_active(GTK_CHECK_MENU_ITEM(menu))) {
-		gtk_window_fullscreen(GTK_WINDOW(window));
+		gtk_window_fullscreen(GTK_WINDOW(viewer->window));
 	} else {
-		gtk_window_unfullscreen(GTK_WINDOW(window));
+		gtk_window_unfullscreen(GTK_WINDOW(viewer->window));
 	}
 }
 
-static void viewer_scalable(GtkWidget *menu, GtkWidget *vnc)
+static void viewer_menu_view_scale(GtkWidget *menu, VirtViewer *viewer)
 {
+	GtkWidget *scroll = glade_xml_get_widget(viewer->glade, "vnc-scroll");
+
 	if (gtk_check_menu_item_get_active(GTK_CHECK_MENU_ITEM(menu))) {
-		vnc_display_set_scaling(VNC_DISPLAY(vnc), TRUE);
+		vnc_display_set_scaling(VNC_DISPLAY(viewer->vnc), TRUE);
 	} else {
-		vnc_display_set_scaling(VNC_DISPLAY(vnc), FALSE);
+		vnc_display_set_scaling(VNC_DISPLAY(viewer->vnc), FALSE);
 	}
+
+	gtk_widget_queue_resize (scroll);
 }
 
-static void viewer_send_key(GtkWidget *menu, GtkWidget *vnc)
+static void viewer_menu_send(GtkWidget *menu G_GNUC_UNUSED, VirtViewer *viewer)
 {
-	int i;
-	GtkWidget *label = gtk_bin_get_child(GTK_BIN(menu));
-	const char *text = gtk_label_get_label(GTK_LABEL(label));
-
-	for (i = 0 ; i < (sizeof(keyCombos)/sizeof(keyCombos[0])) ; i++) {
-		if (!strcmp(text, keyCombos[i].label)) {
-			DEBUG_LOG("Sending key combo %s\n", gtk_label_get_text(GTK_LABEL(label)));
-			vnc_display_send_keys(VNC_DISPLAY(vnc),
-					      keyCombos[i].keys,
-					      keyCombos[i].nkeys);
-			return;
-		}
-	}
+        int i;
+        GtkWidget *label = gtk_bin_get_child(GTK_BIN(menu));
+        const char *text = gtk_label_get_label(GTK_LABEL(label));
+	DEBUG_LOG("Woo\n");
+        for (i = 0 ; i < (sizeof(keyCombos)/sizeof(keyCombos[0])) ; i++) {
+                if (!strcmp(text, keyCombos[i].label)) {
+                        DEBUG_LOG("Sending key combo %s\n", gtk_label_get_text(GTK_LABEL(label)));
+                        vnc_display_send_keys(VNC_DISPLAY(viewer->vnc),
+                                              keyCombos[i].keys,
+                                              keyCombos[i].nkeys);
+                        return;
+                }
+        }
 	DEBUG_LOG("Failed to find key combo %s\n", gtk_label_get_text(GTK_LABEL(label)));
 }
 
@@ -217,7 +431,7 @@ static void viewer_save_screenshot(GtkWidget *vnc, const char *file)
 	gdk_pixbuf_unref(pix);
 }
 
-static void viewer_screenshot(GtkWidget *menu G_GNUC_UNUSED, GtkWidget *vnc)
+static void viewer_menu_file_screenshot(GtkWidget *menu G_GNUC_UNUSED, VirtViewer *viewer)
 {
 	GtkWidget *dialog;
 
@@ -236,20 +450,51 @@ static void viewer_screenshot(GtkWidget *menu G_GNUC_UNUSED, GtkWidget *vnc)
 		char *filename;
 
 		filename = gtk_file_chooser_get_filename (GTK_FILE_CHOOSER (dialog));
-		viewer_save_screenshot(vnc, filename);
+		viewer_save_screenshot(viewer->vnc, filename);
 		g_free (filename);
 	}
 
 	gtk_widget_destroy (dialog);
 }
 
+static void viewer_about_close(GtkWidget *dialog, VirtViewer *viewer G_GNUC_UNUSED)
+{
+	gtk_widget_hide(dialog);
+	gtk_widget_destroy(dialog);
+}
+
+static void viewer_about_delete(GtkWidget *dialog, void *dummy G_GNUC_UNUSED, VirtViewer *viewer G_GNUC_UNUSED)
+{
+	gtk_widget_hide(dialog);
+	gtk_widget_destroy(dialog);
+}
+
+static void viewer_menu_help_about(GtkWidget *menu G_GNUC_UNUSED, VirtViewer *viewer)
+{
+	GladeXML *about;
+	GtkWidget *dialog;
+
+	about = viewer_load_glade("about.glade", "about");
+
+	dialog = glade_xml_get_widget(about, "about");
+	gtk_about_dialog_set_version(GTK_ABOUT_DIALOG(dialog), VERSION);
+	glade_xml_signal_connect_data(about, "about_delete",
+				      G_CALLBACK(viewer_about_delete), viewer);
+	glade_xml_signal_connect_data(about, "about_close",
+				      G_CALLBACK(viewer_about_close), viewer);
+
+	gtk_widget_show_all(dialog);
+
+	g_object_unref(G_OBJECT(about));
+}
+
 
 static void viewer_credential(GtkWidget *vnc, GValueArray *credList)
 {
-        GtkWidget *dialog = NULL;
-        int response;
-        unsigned int i, prompt = 0;
+	GtkWidget *dialog = NULL;
         const char **data;
+	gboolean wantPassword = FALSE, wantUsername = FALSE;
+	int i;
 
         DEBUG_LOG("Got credential request for %d credential(s)\n", credList->n_values);
 
@@ -259,8 +504,10 @@ static void viewer_credential(GtkWidget *vnc, GValueArray *credList)
                 GValue *cred = g_value_array_get_nth(credList, i);
                 switch (g_value_get_enum(cred)) {
                 case VNC_DISPLAY_CREDENTIAL_USERNAME:
+			wantUsername = TRUE;
+			break;
                 case VNC_DISPLAY_CREDENTIAL_PASSWORD:
-                        prompt++;
+			wantPassword = TRUE;
                         break;
                 case VNC_DISPLAY_CREDENTIAL_CLIENTNAME:
                         data[i] = "libvirt";
@@ -269,58 +516,40 @@ static void viewer_credential(GtkWidget *vnc, GValueArray *credList)
                 }
         }
 
-        if (prompt) {
-                GtkWidget **label, **entry, *box, *vbox;
-                int row;
-                dialog = gtk_dialog_new_with_buttons("Authentication required",
-                                                     NULL,
-                                                     0,
-                                                     GTK_STOCK_CANCEL,
-                                                     GTK_RESPONSE_CANCEL,
-                                                     GTK_STOCK_OK,
-                                                     GTK_RESPONSE_OK,
-                                                     NULL);
+        if (wantUsername || wantPassword) {
+		GladeXML *creds = viewer_load_glade("auth.glade", "auth");
+		GtkWidget *credUsername;
+		GtkWidget *credPassword;
+		GtkWidget *promptUsername;
+		GtkWidget *promptPassword;
+		int response;
+
+		dialog = glade_xml_get_widget(creds, "auth");
                 gtk_dialog_set_default_response(GTK_DIALOG(dialog), GTK_RESPONSE_OK);
 
-                box = gtk_table_new(credList->n_values, 2, FALSE);
-                label = g_new(GtkWidget *, prompt);
-                entry = g_new(GtkWidget *, prompt);
+		credUsername = glade_xml_get_widget(creds, "cred-username");
+		promptUsername = glade_xml_get_widget(creds, "prompt-username");
+		credPassword = glade_xml_get_widget(creds, "cred-password");
+		promptPassword = glade_xml_get_widget(creds, "prompt-password");
 
-                for (i = 0, row =0 ; i < credList->n_values ; i++) {
-                        GValue *cred = g_value_array_get_nth(credList, i);
-                        switch (g_value_get_enum(cred)) {
-                        case VNC_DISPLAY_CREDENTIAL_USERNAME:
-                                label[row] = gtk_label_new("Username:");
-                                break;
-                        case VNC_DISPLAY_CREDENTIAL_PASSWORD:
-                                label[row] = gtk_label_new("Password:");
-                                break;
-                        default:
-                                continue;
-                        }
-                        entry[row] = gtk_entry_new();
-                        if (g_value_get_enum(cred) == VNC_DISPLAY_CREDENTIAL_PASSWORD)
-                                gtk_entry_set_visibility(GTK_ENTRY(entry[row]), FALSE);
+		gtk_widget_set_sensitive(credUsername, wantUsername);
+		gtk_widget_set_sensitive(promptUsername, wantUsername);
+		gtk_widget_set_sensitive(credPassword, wantPassword);
+		gtk_widget_set_sensitive(promptPassword, wantPassword);
 
-                        gtk_table_attach(GTK_TABLE(box), label[i], 0, 1, row, row+1, GTK_SHRINK, GTK_SHRINK, 3, 3);
-                        gtk_table_attach(GTK_TABLE(box), entry[i], 1, 2, row, row+1, GTK_SHRINK, GTK_SHRINK, 3, 3);
-                        row++;
-                }
-
-                vbox = gtk_bin_get_child(GTK_BIN(dialog));
-                gtk_container_add(GTK_CONTAINER(vbox), box);
-
-                gtk_widget_show_all(dialog);
-                response = gtk_dialog_run(GTK_DIALOG(dialog));
-                gtk_widget_hide(GTK_WIDGET(dialog));
+		gtk_widget_show_all(dialog);
+		response = gtk_dialog_run(GTK_DIALOG(dialog));
+		gtk_widget_hide(dialog);
 
                 if (response == GTK_RESPONSE_OK) {
-                        for (i = 0, row = 0 ; i < credList->n_values ; i++) {
+                        for (i = 0 ; i < credList->n_values ; i++) {
                                 GValue *cred = g_value_array_get_nth(credList, i);
                                 switch (g_value_get_enum(cred)) {
                                 case VNC_DISPLAY_CREDENTIAL_USERNAME:
+					data[i] = gtk_entry_get_text(GTK_ENTRY(credUsername));
+					break;
                                 case VNC_DISPLAY_CREDENTIAL_PASSWORD:
-                                        data[i] = gtk_entry_get_text(GTK_ENTRY(entry[row]));
+                                        data[i] = gtk_entry_get_text(GTK_ENTRY(credPassword));
                                         break;
                                 }
                         }
@@ -347,229 +576,7 @@ static void viewer_credential(GtkWidget *vnc, GValueArray *credList)
                 gtk_widget_destroy(GTK_WIDGET(dialog));
 }
 
-static void viewer_about(GtkWidget *menu G_GNUC_UNUSED)
-{
-	GtkWidget *about;
-	const char *authors[] = {
-		"Daniel P. Berrange <berrange@redhat.com>",
-		NULL
-	};
 
-	about = gtk_about_dialog_new();
-
-	gtk_about_dialog_set_name(GTK_ABOUT_DIALOG(about), "Virtual Machine Viewer");
-	gtk_about_dialog_set_version(GTK_ABOUT_DIALOG(about), VERSION);
-	gtk_about_dialog_set_website(GTK_ABOUT_DIALOG(about), "http://virt-manager.org/");
-	gtk_about_dialog_set_website_label(GTK_ABOUT_DIALOG(about), "http://virt-manager.org/");
-	gtk_about_dialog_set_authors(GTK_ABOUT_DIALOG(about), authors);
-	gtk_about_dialog_set_license(GTK_ABOUT_DIALOG(about), 
- "This program is free software; you can redistribute it and/or modify\n" \
- "it under the terms of the GNU General Public License as published by\n" \
- "the Free Software Foundation; either version 2 of the License, or\n" \
- "(at your option) any later version.\n" \
- "\n" \
- "This program is distributed in the hope that it will be useful,\n" \
- "but WITHOUT ANY WARRANTY; without even the implied warranty of\n" \
- "MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\n" \
- "GNU General Public License for more details.\n" \
- "\n" \
- "You should have received a copy of the GNU General Public License\n" \
- "along with this program; if not, write to the Free Software\n" \
- "Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA\n");
-
-
-	gtk_dialog_run(GTK_DIALOG(about));
-
-	gtk_widget_destroy(about);
-}
-
-static GtkWidget *menu_item_new(int which_menu)
-{
-	GtkWidget *widget;
-	GtkWidget *label;
-	const char *text;
-
-	text = menuItems[which_menu].ungrabbed_text;
-
-	widget = gtk_menu_item_new();
-	label = g_object_new(GTK_TYPE_ACCEL_LABEL, NULL);
-	gtk_label_set_text_with_mnemonic(GTK_LABEL(label), text);
-	gtk_misc_set_alignment(GTK_MISC(label), 0.0, 0.5);
-
-	gtk_container_add(GTK_CONTAINER(widget), label);
-	gtk_accel_label_set_accel_widget(GTK_ACCEL_LABEL(label), widget);
-	gtk_widget_show(label);
-
-	menuItems[which_menu].label = label;
-
-	return widget;
-}
-
-static GtkWidget *viewer_build_file_menu(VncDisplay *vnc)
-{
-	GtkWidget *file;
-	GtkWidget *filemenu;
-	GtkWidget *quit;
-	GtkWidget *screenshot;
-
-	file = menu_item_new(FILE_MENU);
-
-	filemenu = gtk_menu_new();
-	gtk_menu_item_set_submenu(GTK_MENU_ITEM(file), filemenu);
-
-	screenshot = gtk_menu_item_new_with_mnemonic("_Screenshot");
-	gtk_menu_append(GTK_MENU(filemenu), screenshot);
-	g_signal_connect(screenshot, "activate", GTK_SIGNAL_FUNC(viewer_screenshot), vnc);
-
-	gtk_menu_append(GTK_MENU(filemenu), gtk_separator_menu_item_new());
-
-
-	quit = gtk_image_menu_item_new_from_stock(GTK_STOCK_QUIT, NULL);
-	gtk_menu_append(GTK_MENU(filemenu), quit);
-	g_signal_connect(quit, "activate", GTK_SIGNAL_FUNC(viewer_quit), vnc);
-
-	return file;
-}
-
-static GtkWidget *viewer_build_view_menu(VncDisplay *vnc, GtkWidget *window, gboolean composited)
-{
-	GtkWidget *view;
-	GtkWidget *viewmenu;
-	GtkWidget *fullscreen;
-	GtkWidget *scalable;
-
-	view = menu_item_new(VIEW_MENU);
-
-	viewmenu = gtk_menu_new();
-	gtk_menu_item_set_submenu(GTK_MENU_ITEM(view), viewmenu);
-
-	fullscreen = gtk_check_menu_item_new_with_mnemonic("_Fullscreen");
-	gtk_menu_append(GTK_MENU(viewmenu), fullscreen);
-	g_signal_connect(fullscreen, "toggled", GTK_SIGNAL_FUNC(viewer_fullscreen), window);
-
-	scalable = gtk_check_menu_item_new_with_mnemonic("_Scale display");
-	if (!composited)
-		gtk_check_menu_item_set_active(GTK_CHECK_MENU_ITEM(scalable), TRUE);
-	gtk_menu_append(GTK_MENU(viewmenu), scalable);
-	g_signal_connect(scalable, "toggled", GTK_SIGNAL_FUNC(viewer_scalable), vnc);
-
-	return view;
-}
-
-static GtkWidget *viewer_build_sendkey_menu(VncDisplay *vnc)
-{
-	GtkWidget *sendkey;
-	GtkWidget *sendkeymenu;
-	int i;
-
-	sendkey = menu_item_new(SEND_KEY_MENU);
-
-	sendkeymenu = gtk_menu_new();
-	gtk_menu_item_set_submenu(GTK_MENU_ITEM(sendkey), sendkeymenu);
-
-	for (i = 0 ; i < (sizeof(keyCombos)/sizeof(keyCombos[0])) ; i++) {
-		GtkWidget *key;
-
-		if (keyCombos[i].nkeys) {
-			key = gtk_menu_item_new_with_mnemonic(keyCombos[i].label);
-			gtk_menu_append(GTK_MENU(sendkeymenu), key);
-			g_signal_connect(key, "activate", GTK_SIGNAL_FUNC(viewer_send_key), vnc);
-		} else {
-			gtk_menu_append(GTK_MENU(sendkeymenu), gtk_separator_menu_item_new());
-		}
-	}
-
-	return sendkey;
-}
-
-static GtkWidget *viewer_build_help_menu(void)
-{
-	GtkWidget *help;
-	GtkWidget *helpmenu;
-	GtkWidget *about;
-
-	help = menu_item_new(HELP_MENU);
-
-	helpmenu = gtk_menu_new();
-	gtk_menu_item_set_submenu(GTK_MENU_ITEM(help), helpmenu);
-
-	about = gtk_image_menu_item_new_from_stock(GTK_STOCK_ABOUT, NULL);
-	gtk_menu_append(GTK_MENU(helpmenu), about);
-	g_signal_connect(about, "activate", GTK_SIGNAL_FUNC(viewer_about), NULL);
-
-	return help;
-}
-
-static GtkWidget *viewer_build_menu(VncDisplay *vnc, GtkWidget *window, gboolean composited)
-{
-	GtkWidget *menubar;
-	GtkWidget *file;
-	GtkWidget *view;
-	GtkWidget *sendkey;
-	GtkWidget *help;
-
-	menubar = gtk_menu_bar_new();
-
-	file = viewer_build_file_menu(vnc);
-	view = viewer_build_view_menu(vnc, window, composited);
-	sendkey = viewer_build_sendkey_menu(vnc);
-	help = viewer_build_help_menu();
-
-	gtk_menu_bar_append(GTK_MENU_BAR(menubar), file);
-	gtk_menu_bar_append(GTK_MENU_BAR(menubar), view);
-	gtk_menu_bar_append(GTK_MENU_BAR(menubar), sendkey);
-	gtk_menu_bar_append(GTK_MENU_BAR(menubar), help);
-
-
-	return menubar;
-}
-
-static GtkWidget *viewer_build_window(VncDisplay *vnc,
-				      GtkWidget *(*get_toplevel)(void *),
-				      void *data,
-				      int with_menubar)
-{
-	GtkWidget *window;
-	GtkWidget *menubar;
-	GtkWidget *layout;
-
-	/* In the standalone program, calls viewer_get_toplevel above
-	 * to make a window.  In the browser plugin this calls a function
-	 * in the plugin which returns the GtkPlug that we live inside.
-	 * In both cases they are GTK_CONTAINERs and NOT resizable.
-	 */
-	window = get_toplevel (data);
-	gtk_window_set_resizable(GTK_WINDOW(window), TRUE);
-
-	if (with_menubar) {
-		layout = gtk_vbox_new(FALSE, 3);
-		menubar = viewer_build_menu(vnc, window, gtk_widget_is_composited(window));
-		gtk_container_add(GTK_CONTAINER(window), layout);
-		gtk_container_add_with_properties(GTK_CONTAINER(layout), menubar, "expand", FALSE, NULL);
-		gtk_container_add_with_properties(GTK_CONTAINER(layout), GTK_WIDGET(vnc), "expand", TRUE, NULL);
-	} else
-		gtk_container_add(GTK_CONTAINER(window), GTK_WIDGET(vnc));
-
-	gtk_signal_connect(GTK_OBJECT(vnc), "vnc-pointer-grab",
-			   GTK_SIGNAL_FUNC(viewer_grab), window);
-	gtk_signal_connect(GTK_OBJECT(vnc), "vnc-pointer-ungrab",
-			   GTK_SIGNAL_FUNC(viewer_ungrab), window);
-
-	gtk_signal_connect(GTK_OBJECT(window), "delete-event",
-			   GTK_SIGNAL_FUNC(viewer_shutdown), vnc);
-
-	gtk_signal_connect(GTK_OBJECT(vnc), "vnc-connected",
-			   GTK_SIGNAL_FUNC(viewer_connected), NULL);
-	gtk_signal_connect(GTK_OBJECT(vnc), "vnc-initialized",
-			   GTK_SIGNAL_FUNC(viewer_initialized), window);
-	gtk_signal_connect(GTK_OBJECT(vnc), "vnc-disconnected",
-			   GTK_SIGNAL_FUNC(viewer_disconnected), NULL);
-
-	g_signal_connect(GTK_OBJECT(vnc), "vnc-auth-credential",
-			 GTK_SIGNAL_FUNC(viewer_credential), NULL);
-
-	return window;
-}
 
 static int viewer_parse_uuid(const char *name, unsigned char *uuid)
 {
@@ -612,33 +619,59 @@ static int viewer_parse_uuid(const char *name, unsigned char *uuid)
 }
 
 
-static virDomainPtr viewer_lookup_domain(virConnectPtr conn, const char *name)
+static virDomainPtr viewer_lookup_domain(VirtViewer *viewer)
 {
 	char *end;
-	int id = strtol(name, &end, 10);
+	int id = strtol(viewer->domkey, &end, 10);
 	virDomainPtr dom = NULL;
 	unsigned char uuid[16];
 
 	if (id >= 0 && end && !*end) {
-		dom = virDomainLookupByID(conn, id);
+		dom = virDomainLookupByID(viewer->conn, id);
 	}
-	if (!dom && viewer_parse_uuid(name, uuid) == 0) {
-		dom = virDomainLookupByUUID(conn, uuid);
+	if (!dom && viewer_parse_uuid(viewer->domkey, uuid) == 0) {
+		dom = virDomainLookupByUUID(viewer->conn, uuid);
 	}
 	if (!dom) {
-		dom = virDomainLookupByName(conn, name);
+		dom = virDomainLookupByName(viewer->conn, viewer->domkey);
 	}
 	return dom;
 }
 
-static int viewer_extract_vnc_graphics(virDomainPtr dom, char **port)
+static int viewer_matches_domain(VirtViewer *viewer,
+				 virDomainPtr dom)
+{
+	char *end;
+	const char *name;
+	int id = strtol(viewer->domkey, &end, 10);
+	unsigned char wantuuid[16];
+	unsigned char domuuid[16];
+
+	if (id >= 0 && end && !*end) {
+		if (virDomainGetID(dom) == id)
+			return 1;
+	}
+	if (!dom && viewer_parse_uuid(viewer->domkey, wantuuid) == 0) {
+		virDomainGetUUID(dom, domuuid);
+		if (memcmp(wantuuid, domuuid, VIR_UUID_BUFLEN) == 0)
+			return 1;
+	}
+
+	name = virDomainGetName(dom);
+	if (strcmp(name, viewer->domkey) == 0)
+		return 1;
+
+	return 0;
+}
+
+static char * viewer_extract_vnc_port(virDomainPtr dom)
 {
 	char *xmldesc = virDomainGetXMLDesc(dom, 0);
 	xmlDocPtr xml = NULL;
 	xmlParserCtxtPtr pctxt = NULL;
 	xmlXPathContextPtr ctxt = NULL;
 	xmlXPathObjectPtr obj = NULL;
-	int ret = -1;
+	char *port = NULL;
 
 	pctxt = xmlNewParserCtxt();
 	if (!pctxt || !pctxt->sax)
@@ -659,14 +692,11 @@ static int viewer_extract_vnc_graphics(virDomainPtr dom, char **port)
 	if (!obj || obj->type != XPATH_STRING || !obj->stringval || !obj->stringval[0])
 		goto error;
 	if (!strcmp((const char*)obj->stringval, "-1"))
-		goto missing;
+		goto error;
 
-	*port = strdup((const char*)obj->stringval);
+	port = strdup((const char*)obj->stringval);
 	xmlXPathFreeObject(obj);
 	obj = NULL;
-
- missing:
-	ret = 0;
 
  error:
 	if (obj)
@@ -677,8 +707,9 @@ static int viewer_extract_vnc_graphics(virDomainPtr dom, char **port)
 		xmlFreeDoc(xml);
 	if (pctxt)
 		xmlFreeParserCtxt(pctxt);
-	return ret;
+	return port;
 }
+
 
 static int viewer_extract_host(const char *uristr, char **host, char **transport, char **user, int *port)
 {
@@ -793,115 +824,302 @@ static int viewer_open_tunnel_ssh(const char *sshhost, int sshport, const char *
 
 #endif /* defined(HAVE_SOCKETPAIR) && defined(HAVE_FORK) */
 
-int
-viewer_start (const char *uri, const char *name,
-	      int direct, int waitvnc, int set_verbose,
-	      GtkWidget *(*get_toplevel)(void *), void *data,
-	      int with_menubar)
+static void viewer_set_status(VirtViewer *viewer, const char *text)
 {
-	GtkWidget *window;
-	GtkWidget *vnc;
-	virConnectPtr conn = NULL;
-	virDomainPtr dom = NULL;
-	virDomainInfo domInfo;
-	char *host = NULL;
+	GtkWidget *status, *notebook;
+
+	notebook = glade_xml_get_widget(viewer->glade, "notebook");
+	status = glade_xml_get_widget(viewer->glade, "status");
+
+	gtk_notebook_set_current_page(GTK_NOTEBOOK(notebook), 0);
+	gtk_label_set_text(GTK_LABEL(status), text);
+}
+
+
+static void viewer_set_vnc(VirtViewer *viewer)
+{
+	GtkWidget *notebook;
+
+	notebook = glade_xml_get_widget(viewer->glade, "notebook");
+	gtk_notebook_set_current_page(GTK_NOTEBOOK(notebook), 1);
+
+	gtk_widget_show(viewer->vnc);
+}
+
+
+static int viewer_activate(VirtViewer *viewer,
+			   virDomainPtr dom)
+{
 	char *vncport = NULL;
+	char *host = NULL;
 	char *transport = NULL;
 	char *user = NULL;
-	const char *tmpname = NULL;
-	int port = 0;
-	int fd = -1;
+	int port, fd = -1;
+	int ret = -1;
 
-	verbose = set_verbose;
+	if (viewer->active)
+		goto cleanup;
 
-	conn = virConnectOpenReadOnly(uri);
-	if (!conn) {
-		fprintf(stderr, "unable to connect to libvirt %s\n",
-			uri ? uri : "xen");
-		return 2;
-	}
+	if ((vncport = viewer_extract_vnc_port(dom)) == NULL)
+		goto cleanup;
 
-	do {
-		do {
-			dom = viewer_lookup_domain(conn, name);
-			if (!dom && !waitvnc) {
-				fprintf(stderr, "unable to lookup domain %s\n", name);
-				return 3;
-			}
-			if (!dom)
-				usleep(500*1000);
-		} while (!dom);
+        if (viewer_extract_host(viewer->uri, &host, &transport, &user, &port) < 0)
+		goto cleanup;
 
-		if (virDomainGetInfo(dom, &domInfo) != 0) {
-			fprintf(stderr, "unable to get information for %s\n", name);
-			return 6;
-		}
-
-		if (domInfo.state == VIR_DOMAIN_SHUTOFF && !waitvnc) {
-			fprintf(stderr, "%s is not running\n", name);
-			return 7;
-		}
-
-		if (domInfo.state != VIR_DOMAIN_SHUTOFF) {
-			viewer_extract_vnc_graphics(dom, &vncport);
-			if (!vncport) {
-				fprintf(stderr, "unable to find vnc graphics for %s\n", name);
-				return 4;
-			}
-		}
-
-		if (!vncport) {
-			virDomainFree(dom);
-			usleep(300*1000);
-		}
-	} while (!vncport);
-	tmpname = virDomainGetName(dom);
-	if (tmpname != NULL) {
-		domname = strdup(tmpname);
-	}
-	virDomainFree(dom);
-	virConnectClose(conn);
-
-	if (viewer_extract_host(uri, &host, &transport, &user, &port) < 0) {
-		fprintf(stderr, "unable to determine hostname for URI %s\n", uri);
-		return 5;
-	}
-	DEBUG_LOG("Remote host is %s and transport %s user %s\n", host, transport ? transport : "", user ? user : "");
+        DEBUG_LOG("Remote host is %s and transport %s user %s\n",
+		  host, transport ? transport : "", user ? user : "");
 
 #if defined(HAVE_SOCKETPAIR) && defined(HAVE_FORK)
-	if (transport && strcasecmp(transport, "ssh") == 0 && !direct)
-		fd = viewer_open_tunnel_ssh(host, port, user, vncport);
+        if (transport && strcasecmp(transport, "ssh") == 0 &&
+	    !viewer->direct)
+                if ((fd = viewer_open_tunnel_ssh(host, port, user, vncport)) < 0)
+			return -1;
 #endif
 
-	vnc = vnc_display_new();
-	window = viewer_build_window (VNC_DISPLAY(vnc),
-				      get_toplevel, data, with_menubar);
-	gtk_widget_realize(vnc);
-
-	vnc_display_set_keyboard_grab(VNC_DISPLAY(vnc), TRUE);
-	vnc_display_set_pointer_grab(VNC_DISPLAY(vnc), TRUE);
-	if (!gtk_widget_is_composited(window))
-		vnc_display_set_scaling(VNC_DISPLAY(vnc), TRUE);
-
 	if (fd >= 0)
-		vnc_display_open_fd(VNC_DISPLAY(vnc), fd);
+		vnc_display_open_fd(VNC_DISPLAY(viewer->vnc), fd);
 	else
-		vnc_display_open_host(VNC_DISPLAY(vnc), host, vncport);
+		vnc_display_open_host(VNC_DISPLAY(viewer->vnc), host, vncport);
+
+	viewer_set_status(viewer, "Connecting to VNC server");
+
+	free(viewer->domtitle);
+	viewer->domtitle = strdup(virDomainGetName(dom));
+
+	viewer->active = 1;
+	viewer_set_title(viewer, FALSE);
+
+	ret = 0;
+ cleanup:
+	free(host);
+	free(transport);
+	free(user);
+	free(vncport);
+	return ret;
+
+}
+
+static void viewer_deactivate(VirtViewer *viewer)
+{
+	if (!viewer->active)
+		return;
+
+	vnc_display_close(VNC_DISPLAY(viewer->vnc));
+	free(viewer->domtitle);
+	viewer->domtitle = NULL;
+
+	if (viewer->reconnect) {
+		viewer_set_status(viewer, "Waiting for guest domain to re-start");
+	} else {
+		viewer_set_status(viewer, "Guest domain has shutdown");
+		gtk_main_quit();
+	}
+	viewer->active = 0;
+	viewer_set_title(viewer, FALSE);
+}
+
+static void viewer_connected(GtkWidget *vnc G_GNUC_UNUSED, VirtViewer *viewer)
+{
+	viewer_set_status(viewer, "Connected to VNC server");
+}
+
+static void viewer_initialized(GtkWidget *vnc G_GNUC_UNUSED, VirtViewer *viewer)
+{
+	viewer_set_vnc(viewer);
+        viewer_set_title(viewer, FALSE);
+}
+
+
+static void viewer_disconnected(GtkWidget *vnc G_GNUC_UNUSED, VirtViewer *viewer)
+{
+	viewer_deactivate(viewer);
+}
+
+
+static int viewer_domain_event(virConnectPtr conn G_GNUC_UNUSED,
+			       virDomainPtr dom,
+			       int event,
+			       int detail G_GNUC_UNUSED,
+			       void *opaque)
+{
+	VirtViewer *viewer = opaque;
+
+	if (!viewer_matches_domain(viewer, dom))
+		return 0;
+
+	switch (event) {
+	case VIR_DOMAIN_EVENT_STOPPED:
+		viewer_deactivate(viewer);
+		break;
+
+	case VIR_DOMAIN_EVENT_STARTED:
+		viewer_activate(viewer, dom);
+		break;
+	}
+
+	return 0;
+}
+
+
+static int viewer_initial_connect(VirtViewer *viewer)
+{
+	virDomainPtr dom = NULL;
+	virDomainInfo info;
+	int ret = -1;
+
+	viewer_set_status(viewer, "Finding guest domain");
+	dom = viewer_lookup_domain(viewer);
+	if (!dom)
+		goto cleanup;
+
+	viewer_set_status(viewer, "Checking guest domain");
+	if (virDomainGetInfo(dom, &info) < 0)
+		goto cleanup;
+
+	if (info.state == VIR_DOMAIN_SHUTOFF) {
+		viewer_set_status(viewer, "Waiting for guest domain to start");
+	} else {
+		if (viewer_activate(viewer, dom) < 0) {
+			if (viewer->waitvm) {
+				viewer_set_status(viewer, "Waiting for guest domain to start VNC");
+			} else {
+				goto cleanup;
+			}
+		}
+	}
+
+	ret = 0;
+ cleanup:
+	if (dom)
+		virDomainFree(dom);
+	return ret;
+}
+
+int
+viewer_start (const char *uri,
+	      const char *name,
+	      gboolean direct,
+	      gboolean waitvm,
+	      gboolean reconnect,
+	      gboolean verbose,
+	      GtkWidget *container)
+{
+	VirtViewer *viewer;
+	GtkWidget *notebook;
+	GtkWidget *scroll;
+	GtkWidget *align;
+
+	viewer = g_new0(VirtViewer, 1);
+
+	viewer->active = 0;
+	viewer->direct = direct;
+	viewer->waitvm = waitvm;
+	viewer->reconnect = reconnect;
+	viewer->verbose = verbose;
+	viewer->domkey = g_strdup(name);
+	viewer->uri = g_strdup(uri);
+
+	g_value_init(&viewer->accelSetting, G_TYPE_STRING);
+
+	virEventRegisterGLib();
+
+	viewer->conn = virConnectOpenReadOnly(uri);
+	if (!viewer->conn) {
+		fprintf(stderr, "unable to connect to libvirt %s\n",
+			uri ? uri : "xen");
+		return -1;
+	}
+
+	if (!(viewer->glade = viewer_load_glade("viewer.glade",
+						container ? "notebook" : "viewer")))
+		return -1;
+
+	glade_xml_signal_connect_data(viewer->glade, "viewer_menu_file_quit",
+				      G_CALLBACK(viewer_menu_file_quit), viewer);
+	glade_xml_signal_connect_data(viewer->glade, "viewer_menu_file_screenshot",
+				      G_CALLBACK(viewer_menu_file_screenshot), viewer);
+	glade_xml_signal_connect_data(viewer->glade, "viewer_menu_view_fullscreen",
+				      G_CALLBACK(viewer_menu_view_fullscreen), viewer);
+	glade_xml_signal_connect_data(viewer->glade, "viewer_menu_view_scale",
+				      G_CALLBACK(viewer_menu_view_scale), viewer);
+	glade_xml_signal_connect_data(viewer->glade, "viewer_menu_send",
+				      G_CALLBACK(viewer_menu_send), viewer);
+	glade_xml_signal_connect_data(viewer->glade, "viewer_menu_help_about",
+				      G_CALLBACK(viewer_menu_help_about), viewer);
+
+
+	viewer->vnc = vnc_display_new();
+        vnc_display_set_keyboard_grab(VNC_DISPLAY(viewer->vnc), TRUE);
+        vnc_display_set_pointer_grab(VNC_DISPLAY(viewer->vnc), TRUE);
+	vnc_display_set_force_size(VNC_DISPLAY(viewer->vnc), FALSE);
+	//vnc_display_set_scaling(VNC_DISPLAY(viewer->vnc), TRUE);
+
+        g_signal_connect(GTK_OBJECT(viewer->vnc), "vnc-connected",
+			 GTK_SIGNAL_FUNC(viewer_connected), viewer);
+        g_signal_connect(GTK_OBJECT(viewer->vnc), "vnc-initialized",
+			 GTK_SIGNAL_FUNC(viewer_initialized), viewer);
+        g_signal_connect(GTK_OBJECT(viewer->vnc), "vnc-disconnected",
+			 GTK_SIGNAL_FUNC(viewer_disconnected), viewer);
+	g_signal_connect(GTK_OBJECT(viewer->vnc), "vnc-desktop-resize",
+			 GTK_SIGNAL_FUNC(viewer_resize_desktop), viewer);
+        g_signal_connect(GTK_OBJECT(viewer->vnc), "vnc-pointer-grab",
+			 GTK_SIGNAL_FUNC(viewer_grab), viewer);
+        g_signal_connect(GTK_OBJECT(viewer->vnc), "vnc-pointer-ungrab",
+			 GTK_SIGNAL_FUNC(viewer_ungrab), viewer);
+        g_signal_connect(GTK_OBJECT(viewer->vnc), "vnc-auth-credential",
+                         GTK_SIGNAL_FUNC(viewer_credential), NULL);
+
+	notebook = glade_xml_get_widget(viewer->glade, "notebook");
+
+	if (!notebook)
+		return -1;
+
+	gtk_notebook_set_show_tabs(GTK_NOTEBOOK(notebook), FALSE);
+	//gtk_notebook_append_page(GTK_NOTEBOOK(notebook), viewer->vnc, NULL);
+	scroll = glade_xml_get_widget(viewer->glade, "vnc-scroll");
+	align = glade_xml_get_widget(viewer->glade, "vnc-align");
+	gtk_container_add(GTK_CONTAINER(align), viewer->vnc);
+
+	g_signal_connect(GTK_OBJECT(scroll), "size-allocate",
+			   GTK_SIGNAL_FUNC(viewer_resize_vnc), viewer);
+
+	if (container) {
+		gtk_container_add(GTK_CONTAINER(container), GTK_WIDGET(notebook));
+		if (GTK_IS_WINDOW(container))
+			gtk_window_set_resizable(GTK_WINDOW(container), TRUE);
+		gtk_widget_show_all(container);
+	} else {
+		GtkWidget *window = glade_xml_get_widget(viewer->glade, "viewer");
+		GSList *accels;
+		viewer->window = window;
+		g_signal_connect(GTK_OBJECT(window), "delete-event",
+				 GTK_SIGNAL_FUNC(viewer_shutdown), viewer);
+		gtk_window_set_resizable(GTK_WINDOW(window), TRUE);
+		viewer->accelEnabled = TRUE;
+		accels = gtk_accel_groups_from_object(G_OBJECT(window));
+		for ( ; accels ; accels = accels->next) {
+			viewer->accelList = g_slist_append(viewer->accelList, accels->data);
+			g_object_ref(G_OBJECT(accels->data));
+		}
+		gtk_widget_show_all(window);
+	}
+
+	gtk_widget_realize(viewer->vnc);
+
+
+	if (viewer_initial_connect(viewer) < 0)
+		return -1;
+
+	virConnectDomainEventRegister(viewer->conn,
+				      viewer_domain_event,
+				      viewer,
+				      NULL);
 
 	return 0;
 }
 
 #ifndef PLUGIN
 /* Standalone program. */
-
-static GtkWidget *viewer_get_toplevel (void *data G_GNUC_UNUSED)
-{
-	GtkWidget *window;
-
-	window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
-	gtk_window_set_resizable(GTK_WINDOW(window), FALSE);
-	return window;
-}
 
 static void viewer_version(FILE *out)
 {
@@ -917,21 +1135,24 @@ int main(int argc, char **argv)
 	char *uri = NULL;
 	gchar **args = NULL;
 	gboolean print_version = FALSE;
-	gboolean set_verbose = FALSE;
+	gboolean verbose = FALSE;
 	gboolean direct = FALSE;
-	gboolean waitvnc = FALSE;
+	gboolean waitvm = FALSE;
+	gboolean reconnect = FALSE;
 	const char *help_msg = "Run '" PACKAGE " --help' to see a full list of available command line options";
 	const GOptionEntry options [] = {
 		{ "version", 'V', 0, G_OPTION_ARG_NONE, &print_version,
 		  "display version information", NULL },
-		{ "verbose", 'v', 0, G_OPTION_ARG_NONE, &set_verbose,
+		{ "verbose", 'v', 0, G_OPTION_ARG_NONE, &verbose,
 		  "display verbose information", NULL },
 		{ "direct", 'd', 0, G_OPTION_ARG_NONE, &direct,
 		  "direct connection with no automatic tunnels", NULL },
 		{ "connect", 'c', 0, G_OPTION_ARG_STRING, &uri,
 		  "connect to hypervisor", "URI"},
-		{ "wait", 'w', 0, G_OPTION_ARG_NONE, &waitvnc,
+		{ "wait", 'w', 0, G_OPTION_ARG_NONE, &waitvm,
 		  "wait for domain to start", NULL },
+		{ "reconnect", 'r', 0, G_OPTION_ARG_NONE, &reconnect,
+		  "reconnect to domain upon restart", NULL },
   	     	{ G_OPTION_REMAINING, '\0', 0, G_OPTION_ARG_STRING_ARRAY, &args,
 		  NULL, "DOMAIN-NAME|ID|UUID" },
   		{ NULL, 0, 0, G_OPTION_ARG_NONE, NULL, NULL, NULL }
@@ -960,8 +1181,7 @@ int main(int argc, char **argv)
 		return 1;
 	}
 
-	ret = viewer_start (uri, args[0], direct, waitvnc, set_verbose,
-			    viewer_get_toplevel, NULL, 1);
+	ret = viewer_start (uri, args[0], direct, waitvm, reconnect, verbose, NULL);
 	if (ret != 0)
 		return ret;
 

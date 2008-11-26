@@ -23,6 +23,12 @@
 #ifndef VIEWER_H
 #define VIEWER_H
 
-extern int viewer_start (const char *uri, const char *name, int direct, int waitvnc, int set_verbose, GtkWidget *(*get_toplevel)(void *), void *data, int with_menubar);
+extern int viewer_start (const char *uri,
+			 const char *name,
+			 gboolean direct,
+			 gboolean waitvm,
+			 gboolean reconnect,
+			 gboolean verbose,
+			 GtkWidget *container);
 
 #endif /* VIEWER_H */

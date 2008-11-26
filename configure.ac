@@ -1,5 +1,5 @@
 
-AC_INIT(virt-viewer, 0.0.3)
+AC_INIT(virt-viewer, 0.0.4)
 AC_CONFIG_SRCDIR(src/main.c)
 AM_CONFIG_HEADER(config.h)
 dnl Make automake keep quiet about wildcards & other GNUmake-isms
@@ -17,8 +17,10 @@ AC_DEFINE([_GNU_SOURCE], [], [Enable GNU extensions])
 VIRT_VIEWER_COMPILE_WARNINGS(maximum)
 
 PKG_CHECK_MODULES(LIBXML2, libxml-2.0 >= 2.6.0)
-PKG_CHECK_MODULES(LIBVIRT, libvirt >= 0.2.0)
+PKG_CHECK_MODULES(LIBVIRT, libvirt >= 0.5.0)
+PKG_CHECK_MODULES(LIBVIRT_GLIB, libvirt-glib >= 0.0.1)
 PKG_CHECK_MODULES(GTK2, gtk+-2.0 >= 2.10.0)
+PKG_CHECK_MODULES(LIBGLADE2, libglade-2.0 >= 2.6.0)
 PKG_CHECK_MODULES(GTKVNC, gtk-vnc-1.0 >= 0.3.5)
 
 dnl Decide if this platform can support the SSH tunnel feature.

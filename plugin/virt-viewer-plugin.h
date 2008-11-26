@@ -57,7 +57,7 @@ typedef struct {
   GtkWidget *container;
 
   char *uri, *name;
-  int direct, waitvnc;
+  gboolean direct, waitvm, reconnect;
 } PluginInstance;
 
 extern NPError VirtViewerXSetWindow (NPP instance, NPWindow* window);

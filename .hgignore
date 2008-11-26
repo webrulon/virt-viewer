@@ -25,3 +25,10 @@ Makefile\.in$
 ^config.h.in$
 ^man/Makefile$
 ^man/virt-viewer\.1$
+^plugin/\.libs/
+^plugin/\.deps/
+^plugin/.*\.o
+^plugin/.*\.la
+^plugin/.*\.so
+^plugin/.*\.lo
+^plugin/Makefile$

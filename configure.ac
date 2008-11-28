@@ -27,9 +27,6 @@ dnl Decide if this platform can support the SSH tunnel feature.
 AC_CHECK_HEADERS([sys/socket.h sys/un.h windows.h])
 AC_CHECK_FUNCS([fork socketpair])
 
-dnl Do we need to replace the usleep function (Windows).
-AC_REPLACE_FUNCS([usleep])
-
 dnl --enable-plugin to enable the browser plugin.
 NSPR_REQUIRED=4.0.0
 FIREFOX_PLUGIN_REQUIRED=1.5.0

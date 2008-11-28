@@ -51,10 +51,6 @@
 
 #include "viewer.h"
 
-#ifndef HAVE_USLEEP
-int usleep (unsigned int usecs);
-#endif
-
 // #define DEBUG 1
 #ifdef DEBUG
 #define DEBUG_LOG(s, ...) g_debug((s), ## __VA_ARGS__)

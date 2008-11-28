@@ -18,6 +18,7 @@ Requires: openssh-clients
 BuildRequires: gtk2-devel
 BuildRequires: libvirt-devel
 BuildRequires: libxml2-devel
+BuildRequires: libglade2-devel
 BuildRequires: gtk-vnc-devel >= 0.3.4
 BuildRequires: /usr/bin/pod2man
 %if %{_with_plugin}

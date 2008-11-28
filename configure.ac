@@ -54,4 +54,5 @@ AC_OUTPUT(Makefile
           src/Makefile
           man/Makefile
 	  plugin/Makefile
-          virt-viewer.spec)
+          virt-viewer.spec
+          mingw32-virt-viewer.spec)

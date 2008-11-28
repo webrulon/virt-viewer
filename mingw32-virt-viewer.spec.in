@@ -1,0 +1,66 @@
+%define __strip %{_mingw32_strip}
+%define __objdump %{_mingw32_objdump}
+%define _use_internal_dependency_generator 0
+%define __find_requires %{_mingw32_findrequires}
+%define __find_provides %{_mingw32_findprovides}
+
+Name:           mingw32-virt-viewer
+Version:        @VERSION@
+Release:        1%{?dist}%{?extra_release}
+Summary:        MinGW Windows virt-viewer console application
+
+License:        LGPLv2+
+Group:          Development/Libraries
+URL:            http://virt-manager.org/
+Source0:        ftp://virt-manager.org/downloads/virt-viewer/virt-viewer-%{version}.tar.gz
+BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
+
+BuildRequires:  mingw32-filesystem >= 23
+BuildRequires:  mingw32-gtk2
+BuildRequires:  mingw32-libvirt-glib
+BuildRequires:  mingw32-libvirt >= 0.5.0
+BuildRequires:  mingw32-libxml2
+BuildRequires:  mingw32-libglade2
+BuildRequires:  pkgconfig
+
+BuildArch:      noarch
+
+
+%description
+MinGW Windows virt-viewer console application
+
+
+%prep
+%setup -q -n virt-viewer-%{version}
+
+
+%build
+%{_mingw32_configure}
+make
+
+
+%install
+rm -rf $RPM_BUILD_ROOT
+
+make DESTDIR=$RPM_BUILD_ROOT install
+
+%clean
+rm -rf $RPM_BUILD_ROOT
+
+
+%files
+%defattr(-,root,root)
+%{_mingw32_bindir}/virt-viewer.exe
+
+%dir %{_mingw32_datadir}/virt-viewer/
+%dir %{_mingw32_datadir}/virt-viewer/ui/
+%{_mingw32_datadir}/virt-viewer/ui/about.glade
+%{_mingw32_datadir}/virt-viewer/ui/auth.glade
+%{_mingw32_datadir}/virt-viewer/ui/viewer.glade
+
+%{_mingw32_mandir}/man1/virt-viewer.1*
+
+%changelog
+* Fri Nov 28 2008 Daniel P. Berrange <berrange@redhat.com> - 0.0.4-1
+- Initial release
+

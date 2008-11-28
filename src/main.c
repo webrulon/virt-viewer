@@ -138,8 +138,7 @@ viewer_load_glade(const char *name, const char *widget)
 	if (stat(name, &sb) >= 0)
 		return glade_xml_new(name, widget, NULL);
 
-	if (asprintf(&path, "%s/%s", GLADE_DIR, name) < 0)
-		abort();
+	path = g_strdup_printf("%s/%s", GLADE_DIR, name);
 
 	xml = glade_xml_new(path, widget, NULL);
 	free(path);
@@ -690,7 +689,7 @@ static char * viewer_extract_vnc_port(virDomainPtr dom)
 	if (!strcmp((const char*)obj->stringval, "-1"))
 		goto error;
 
-	port = strdup((const char*)obj->stringval);
+	port = g_strdup((const char*)obj->stringval);
 	xmlXPathFreeObject(obj);
 	obj = NULL;
 
@@ -717,42 +716,24 @@ static int viewer_extract_host(const char *uristr, char **host, char **transport
 	*user = NULL;
 
 	if (uristr == NULL ||
-	    !strcasecmp(uristr, "xen"))
+	    !g_strcasecmp(uristr, "xen"))
 		uristr = "xen:///";
 
 	uri = xmlParseURI(uristr);
 	if (!uri || !uri->server) {
-		*host = strdup("localhost");
+		*host = g_strdup("localhost");
 	} else {
-		*host = strdup(uri->server);
+		*host = g_strdup(uri->server);
 	}
-	if (!*host) {
-		xmlFreeURI(uri);
-		return -1;
-	}
-	if (uri->user) {
-		*user = strdup(uri->user);
-		if (!*user) {
-			xmlFreeURI(uri);
-			free(*host);
-			*host =NULL;
-			return -1;
-		}
-	}
+
+	if (uri->user)
+		*user = g_strdup(uri->user);
 	*port = uri->port;
 
 	offset = strchr(uri->scheme, '+');
-	if (offset) {
-		*transport = strdup(offset+1);
-		if (!*transport) {
-			free(*host);
-			*host = NULL;
-			free(*user);
-			*user = NULL;
-			xmlFreeURI(uri);
-			return -1;
-		}
-	}
+	if (offset)
+		*transport = g_strdup(offset+1);
+
 	xmlFreeURI(uri);
 	return 0;
 }
@@ -866,7 +847,7 @@ static int viewer_activate(VirtViewer *viewer,
 		  host, transport ? transport : "", user ? user : "");
 
 #if defined(HAVE_SOCKETPAIR) && defined(HAVE_FORK)
-        if (transport && strcasecmp(transport, "ssh") == 0 &&
+        if (transport && g_strcasecmp(transport, "ssh") == 0 &&
 	    !viewer->direct)
                 if ((fd = viewer_open_tunnel_ssh(host, port, user, vncport)) < 0)
 			return -1;
@@ -880,7 +861,7 @@ static int viewer_activate(VirtViewer *viewer,
 	viewer_set_status(viewer, "Connecting to VNC server");
 
 	free(viewer->domtitle);
-	viewer->domtitle = strdup(virDomainGetName(dom));
+	viewer->domtitle = g_strdup(virDomainGetName(dom));
 
 	viewer->active = 1;
 	viewer_set_title(viewer, FALSE);

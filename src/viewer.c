@@ -945,10 +945,16 @@ static int viewer_initial_connect(VirtViewer *viewer)
 
 	viewer_set_status(viewer, "Finding guest domain");
 	dom = viewer_lookup_domain(viewer);
-	if (!dom)
-		goto cleanup;
+	if (!dom) {
+		if (viewer->waitvm) {
+			viewer_set_status(viewer, "Waiting for guest domain to be created");
+			goto done;
+		} else {
+			goto cleanup;
+		}
+	}
 
-	viewer_set_status(viewer, "Checking guest domain");
+	viewer_set_status(viewer, "Checking guest domain status");
 	if (virDomainGetInfo(dom, &info) < 0)
 		goto cleanup;
 
@@ -964,6 +970,7 @@ static int viewer_initial_connect(VirtViewer *viewer)
 		}
 	}
 
+ done:
 	ret = 0;
  cleanup:
 	if (dom)

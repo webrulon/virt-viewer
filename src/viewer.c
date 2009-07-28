@@ -1062,13 +1062,16 @@ static int viewer_initial_connect(VirtViewer *viewer)
 			viewer_set_status(viewer, "Waiting for guest domain to be created");
 			goto done;
 		} else {
+			DEBUG_LOG("Cannot find guest");
 			goto cleanup;
 		}
 	}
 
 	viewer_set_status(viewer, "Checking guest domain status");
-	if (virDomainGetInfo(dom, &info) < 0)
+	if (virDomainGetInfo(dom, &info) < 0) {
+		DEBUG_LOG("Cannot get guest state");
 		goto cleanup;
+	}
 
 	if (info.state == VIR_DOMAIN_SHUTOFF) {
 		viewer_set_status(viewer, "Waiting for guest domain to start");
@@ -1077,6 +1080,7 @@ static int viewer_initial_connect(VirtViewer *viewer)
 			if (viewer->waitvm) {
 				viewer_set_status(viewer, "Waiting for guest domain to start VNC");
 			} else {
+				DEBUG_LOG("Failed to activate viewer");
 				goto cleanup;
 			}
 		}
@@ -1159,7 +1163,8 @@ viewer_start (const char *uri,
 		return -1;
 
 	menu = glade_xml_get_widget(viewer->glade, "menu-view-resize");
-	gtk_check_menu_item_set_active(GTK_CHECK_MENU_ITEM(menu), TRUE);
+	if (!container)
+		gtk_check_menu_item_set_active(GTK_CHECK_MENU_ITEM(menu), TRUE);
 
 	glade_xml_signal_connect_data(viewer->glade, "viewer_menu_file_quit",
 				      G_CALLBACK(viewer_menu_file_quit), viewer);

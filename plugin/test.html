@@ -9,8 +9,11 @@
   <embed type="application/x-virt-viewer"
     width="800"
     height="600"
-    uri="qemu:///system"
-    name="1">
+    uri="qemu:///system?socket=/var/run/libvirt/libvirt-sock-ro"
+    debug="1"
+    wait="1"
+    reconnect="1"
+    name="VirtTest1">
   </embed>
 
   <p>End of page</p>

@@ -84,7 +84,7 @@ VirtViewerXSetWindow (NPP instance, NPWindow *window)
   if (This->uri && This->name) {
     debug ("calling viewer_start uri=%s name=%s direct=%d waitvm=%d reconnect=%d container=%p",
 	   This->uri, This->name, This->direct, This->waitvm, This->reconnect, This->container);
-    r = viewer_start (This->uri, This->name, This->direct, This->waitvm, This->reconnect, 1, 0, This->container);
+    r = viewer_start (This->uri, This->name, This->direct, This->waitvm, This->reconnect, 1, This->debug, This->container);
     if (r != 0)
       fprintf (stderr, "viewer_start returned %d != 0\n", r);
   }

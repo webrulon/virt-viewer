@@ -76,7 +76,7 @@ Portions created by Adobe Systems Incorporated are Copyright (C) 2007. All Right
 Contributor(s): Adobe Systems Incorporated.
 */
 
-#include <config.h>
+//#include <config.h>
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -84,6 +84,7 @@ Contributor(s): Adobe Systems Incorporated.
 #include <strings.h>
 
 #include <npapi.h>
+#include <npupp.h>
 
 #include "virt-viewer-plugin.h"
 
@@ -197,7 +198,7 @@ NPP_New(NPMIMEType pluginType G_GNUC_UNUSED,
   This->mode = mode;
   This->instance = instance;
   This->uri = This->name = NULL;
-  This->direct = This->waitvm = This->reconnect = 0;
+  This->direct = This->waitvm = This->debug = This->reconnect = 0;
 
   /* Read the parameters passed to the plugin. */
   for (i = 0; i < argc; i++)
@@ -210,6 +211,8 @@ NPP_New(NPMIMEType pluginType G_GNUC_UNUSED,
         This->direct = strcmp (argv[i], "1") == 0;
       else if (strcasecmp (argn[i], "wait") == 0)
         This->waitvm = strcmp (argv[i], "1") == 0;
+      else if (strcasecmp (argn[i], "debug") == 0)
+        This->debug = strcmp (argv[i], "1") == 0;
       else if (strcasecmp (argn[i], "reconnect") == 0)
         This->reconnect = strcmp (argv[i], "1") == 0;
     }

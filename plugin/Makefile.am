@@ -5,6 +5,7 @@ plugin_LTLIBRARIES = virt-viewer-plugin.la
 
 virt_viewer_plugin_la_SOURCES = \
 	../src/viewer.c ../src/viewer.h \
+	../src/events.c ../src/events.h \
 	virt-viewer-plugin.c virt-viewer-plugin.h \
 	npshell.c npunix.c
 virt_viewer_plugin_la_LIBADD = \
@@ -17,7 +18,7 @@ virt_viewer_plugin_la_LIBADD = \
 virt_viewer_plugin_la_LDFLAGS = \
 	-module -avoid-version
 virt_viewer_plugin_la_CFLAGS = \
-	-DPLUGIN=1 -DENABLE_DEBUG=1 -DDEBUG=1 \
+	-DPLUGIN=1 -DENABLE_DEBUG=1 \
 	@FIREFOX_PLUGIN_CFLAGS@ \
 	@GTKVNC_CFLAGS@ \
 	@GTK2_CFLAGS@ \

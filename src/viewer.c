@@ -54,6 +54,8 @@
 static gboolean doDebug = FALSE;
 #define DEBUG_LOG(s, ...) do { if (doDebug) g_debug((s), ## __VA_ARGS__); } while (0)
 
+static gboolean viewer_connect_timer(void *opaque);
+
 enum menuNums {
         FILE_MENU,
         VIEW_MENU,
@@ -111,6 +113,7 @@ typedef struct VirtViewer {
 	int desktopHeight;
 	gboolean autoResize;
 	gboolean fullscreen;
+	gboolean withEvents;
 
 	int active;
 
@@ -985,6 +988,13 @@ static void viewer_deactivate(VirtViewer *viewer)
 	viewer->domtitle = NULL;
 
 	if (viewer->reconnect) {
+		if (!viewer->withEvents) {
+			DEBUG_LOG("No domain events, falling back to polling");
+			g_timeout_add(500,
+				      viewer_connect_timer,
+				      viewer);
+		}
+
 		viewer_set_status(viewer, "Waiting for guest domain to re-start");
 	} else {
 		viewer_set_status(viewer, "Guest domain has shutdown");
@@ -1019,6 +1029,8 @@ static int viewer_domain_event(virConnectPtr conn G_GNUC_UNUSED,
 			       void *opaque)
 {
 	VirtViewer *viewer = opaque;
+
+	DEBUG_LOG("Got domain event %d %d", event, detail);
 
 	if (!viewer_matches_domain(viewer, dom))
 		return 0;
@@ -1078,6 +1090,21 @@ static int viewer_initial_connect(VirtViewer *viewer)
 	return ret;
 }
 
+static gboolean viewer_connect_timer(void *opaque)
+{
+	VirtViewer *viewer = opaque;
+
+	DEBUG_LOG("Connect timer fired");
+
+	if (!viewer->active &&
+	    viewer_initial_connect(viewer) < 0)
+		gtk_main_quit();
+
+	if (viewer->active)
+		return FALSE;
+
+	return TRUE;
+}
 
 static void viewer_error_func (void *data G_GNUC_UNUSED, virErrorPtr error G_GNUC_UNUSED)
 {
@@ -1221,10 +1248,21 @@ viewer_start (const char *uri,
 	if (viewer_initial_connect(viewer) < 0)
 		return -1;
 
-	virConnectDomainEventRegister(viewer->conn,
-				      viewer_domain_event,
-				      viewer,
-				      NULL);
+	if (virConnectDomainEventRegister(viewer->conn,
+					  viewer_domain_event,
+					  viewer,
+					  NULL) < 0)
+		viewer->withEvents = FALSE;
+	else
+		viewer->withEvents = TRUE;
+
+	if (!viewer->withEvents &&
+	    !viewer->active) {
+		DEBUG_LOG("No domain events, falling back to polling");
+		g_timeout_add(500,
+			      viewer_connect_timer,
+			      viewer);
+	}
 
 	return 0;
 }

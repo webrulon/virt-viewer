@@ -42,6 +42,7 @@ int main(int argc, char **argv)
 	gchar **args = NULL;
 	gboolean print_version = FALSE;
 	gboolean verbose = FALSE;
+	gboolean debug = FALSE;
 	gboolean direct = FALSE;
 	gboolean waitvm = FALSE;
 	gboolean reconnect = FALSE;
@@ -59,6 +60,8 @@ int main(int argc, char **argv)
 		  "wait for domain to start", NULL },
 		{ "reconnect", 'r', 0, G_OPTION_ARG_NONE, &reconnect,
 		  "reconnect to domain upon restart", NULL },
+		{ "debug", '\0', 0, G_OPTION_ARG_NONE, &debug,
+		  "display debugging information", NULL },
   	     	{ G_OPTION_REMAINING, '\0', 0, G_OPTION_ARG_STRING_ARRAY, &args,
 		  NULL, "DOMAIN-NAME|ID|UUID" },
   		{ NULL, 0, 0, G_OPTION_ARG_NONE, NULL, NULL, NULL }
@@ -87,7 +90,7 @@ int main(int argc, char **argv)
 		return 1;
 	}
 
-	ret = viewer_start (uri, args[0], direct, waitvm, reconnect, verbose, NULL);
+	ret = viewer_start (uri, args[0], direct, waitvm, reconnect, verbose, debug, NULL);
 	if (ret != 0)
 		return ret;
 

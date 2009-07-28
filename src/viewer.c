@@ -32,6 +32,7 @@
 #include <unistd.h>
 #include <glade/glade.h>
 #include <libvirt/libvirt.h>
+#include <libvirt/virterror.h>
 #include <libvirt-glib/libvirt-glib.h>
 #include <libxml/xpath.h>
 #include <libxml/uri.h>
@@ -50,12 +51,8 @@
 
 #include "viewer.h"
 
-// #define DEBUG 1
-#ifdef DEBUG
-#define DEBUG_LOG(s, ...) g_debug((s), ## __VA_ARGS__)
-#else
-#define DEBUG_LOG(s, ...) do {} while (0)
-#endif
+static gboolean doDebug = FALSE;
+#define DEBUG_LOG(s, ...) do { if (doDebug) g_debug((s), ## __VA_ARGS__); } while (0)
 
 enum menuNums {
         FILE_MENU,
@@ -171,7 +168,7 @@ viewer_set_preferred_scroll_size (GtkWidget *widget,
 				  gpointer data)
 {
 	VirtViewerSize *size = data;
-	DEBUG_LOG("Scroll resize to preferred %d %d\n", size->width, size->height);
+	DEBUG_LOG("Scroll resize to preferred %d %d", size->width, size->height);
 
 	req->width = size->width;
 	req->height = size->height;
@@ -214,7 +211,7 @@ static void viewer_resize_vnc(GtkWidget *scroll G_GNUC_UNUSED,
 		size->height = vnch;
 	}
 
-	DEBUG_LOG("Scroll resize is %d %d, desktop is %d %d, VNC is %d %d\n",
+	DEBUG_LOG("Scroll resize is %d %d, desktop is %d %d, VNC is %d %d",
 		  alloc->width, alloc->height,
 		  vncw, vnch, size->width, size->height);
 
@@ -236,7 +233,7 @@ static void viewer_resize_desktop(GtkWidget *vnc G_GNUC_UNUSED, gint width, gint
 	GtkWidget *scroll;
 	VirtViewerSize *size = g_new (VirtViewerSize, 1);
 
-	DEBUG_LOG("Resized VNC event %d %d\n", width, height);
+	DEBUG_LOG("Resized VNC event %d %d", width, height);
 
 	scroll = glade_xml_get_widget(viewer->glade, "vnc-scroll");
 
@@ -403,17 +400,17 @@ static void viewer_menu_send(GtkWidget *menu G_GNUC_UNUSED, VirtViewer *viewer)
         int i;
         GtkWidget *label = gtk_bin_get_child(GTK_BIN(menu));
         const char *text = gtk_label_get_label(GTK_LABEL(label));
-	DEBUG_LOG("Woo\n");
+
         for (i = 0 ; i < (sizeof(keyCombos)/sizeof(keyCombos[0])) ; i++) {
                 if (!strcmp(text, keyCombos[i].label)) {
-                        DEBUG_LOG("Sending key combo %s\n", gtk_label_get_text(GTK_LABEL(label)));
+                        DEBUG_LOG("Sending key combo %s", gtk_label_get_text(GTK_LABEL(label)));
                         vnc_display_send_keys(VNC_DISPLAY(viewer->vnc),
                                               keyCombos[i].keys,
                                               keyCombos[i].nkeys);
                         return;
                 }
         }
-	DEBUG_LOG("Failed to find key combo %s\n", gtk_label_get_text(GTK_LABEL(label)));
+	DEBUG_LOG("Failed to find key combo %s", gtk_label_get_text(GTK_LABEL(label)));
 }
 
 
@@ -490,7 +487,7 @@ static void viewer_credential(GtkWidget *vnc, GValueArray *credList)
 	gboolean wantPassword = FALSE, wantUsername = FALSE;
 	int i;
 
-        DEBUG_LOG("Got credential request for %d credential(s)\n", credList->n_values);
+        DEBUG_LOG("Got credential request for %d credential(s)", credList->n_values);
 
         data = g_new0(const char *, credList->n_values);
 
@@ -556,11 +553,11 @@ static void viewer_credential(GtkWidget *vnc, GValueArray *credList)
                         if (vnc_display_set_credential(VNC_DISPLAY(vnc),
                                                        g_value_get_enum(cred),
                                                        data[i])) {
-                                DEBUG_LOG("Failed to set credential type %d\n", g_value_get_enum(cred));
+                                DEBUG_LOG("Failed to set credential type %d", g_value_get_enum(cred));
                                 vnc_display_close(VNC_DISPLAY(vnc));
                         }
                 } else {
-                        DEBUG_LOG("Unsupported credential type %d\n", g_value_get_enum(cred));
+                        DEBUG_LOG("Unsupported credential type %d", g_value_get_enum(cred));
                         vnc_display_close(VNC_DISPLAY(vnc));
                 }
         }
@@ -842,7 +839,7 @@ static int viewer_activate(VirtViewer *viewer,
         if (viewer_extract_host(viewer->uri, &host, &transport, &user, &port) < 0)
 		goto cleanup;
 
-        DEBUG_LOG("Remote host is %s and transport %s user %s\n",
+        DEBUG_LOG("Remote host is %s and transport %s user %s",
 		  host, transport ? transport : "", user ? user : "");
 
 #if defined(HAVE_SOCKETPAIR) && defined(HAVE_FORK)
@@ -978,6 +975,12 @@ static int viewer_initial_connect(VirtViewer *viewer)
 	return ret;
 }
 
+
+static void viewer_error_func (void *data G_GNUC_UNUSED, virErrorPtr error G_GNUC_UNUSED)
+{
+	/* nada */
+}
+
 int
 viewer_start (const char *uri,
 	      const char *name,
@@ -985,12 +988,15 @@ viewer_start (const char *uri,
 	      gboolean waitvm,
 	      gboolean reconnect,
 	      gboolean verbose,
+	      gboolean debug,
 	      GtkWidget *container)
 {
 	VirtViewer *viewer;
 	GtkWidget *notebook;
 	GtkWidget *scroll;
 	GtkWidget *align;
+
+	doDebug = debug;
 
 	viewer = g_new0(VirtViewer, 1);
 
@@ -1006,6 +1012,7 @@ viewer_start (const char *uri,
 
 	virEventRegisterGLib();
 
+	virSetErrorFunc(NULL, viewer_error_func);
 	viewer->conn = virConnectOpenReadOnly(uri);
 	if (!viewer->conn) {
 		fprintf(stderr, "unable to connect to libvirt %s\n",

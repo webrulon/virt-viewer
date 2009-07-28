@@ -29,6 +29,7 @@ extern int viewer_start (const char *uri,
 			 gboolean waitvm,
 			 gboolean reconnect,
 			 gboolean verbose,
+			 gboolean debug,
 			 GtkWidget *container);
 
 #endif /* VIEWER_H */

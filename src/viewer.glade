@@ -62,11 +62,11 @@
                       </widget>
                     </child>
                     <child>
-                      <widget class="GtkCheckMenuItem" id="menu-view-scale">
+                      <widget class="GtkCheckMenuItem" id="menu-view-resize">
                         <property name="visible">True</property>
-                        <property name="label" translatable="yes">Scale display</property>
+                        <property name="label" translatable="yes">Automatically resize</property>
                         <property name="use_underline">True</property>
-                        <signal name="toggled" handler="viewer_menu_view_scale"/>
+                        <signal name="toggled" handler="viewer_menu_view_resize"/>
                       </widget>
                     </child>
                   </widget>
@@ -262,27 +262,12 @@
               </packing>
             </child>
             <child>
-              <widget class="GtkScrolledWindow" id="vnc-scroll">
+              <widget class="GtkAlignment" id="vnc-align">
                 <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="hscrollbar_policy">GTK_POLICY_AUTOMATIC</property>
-                <property name="vscrollbar_policy">GTK_POLICY_AUTOMATIC</property>
+                <property name="xscale">0</property>
+                <property name="yscale">0</property>
                 <child>
-                  <widget class="GtkViewport" id="vnc-port">
-                    <property name="visible">True</property>
-                    <property name="resize_mode">GTK_RESIZE_QUEUE</property>
-                    <property name="shadow_type">GTK_SHADOW_NONE</property>
-                    <child>
-                      <widget class="GtkAlignment" id="vnc-align">
-                        <property name="visible">True</property>
-                        <property name="xscale">0</property>
-                        <property name="yscale">0</property>
-                        <child>
-                          <placeholder/>
-                        </child>
-                      </widget>
-                    </child>
-                  </widget>
+                  <placeholder/>
                 </child>
               </widget>
               <packing>

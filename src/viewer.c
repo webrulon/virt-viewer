@@ -104,7 +104,14 @@ typedef struct VirtViewer {
 
 	GladeXML *glade;
 	GtkWidget *window;
+	GtkWidget *container;
 	GtkWidget *vnc;
+
+	int desktopWidth;
+	int desktopHeight;
+	gboolean autoResize;
+	gboolean fullscreen;
+
 	int active;
 
 	gboolean accelEnabled;
@@ -119,6 +126,7 @@ typedef struct VirtViewer {
 } VirtViewer;
 
 typedef struct VirtViewerSize {
+	VirtViewer *viewer;
 	gint width, height;
 	gulong sig_id;
 } VirtViewerSize;
@@ -148,9 +156,10 @@ viewer_load_glade(const char *name, const char *widget)
  * to later resize it smaller again
  */
 static gboolean
-viewer_unset_scroll_size (gpointer data)
+viewer_unset_widget_size_cb(gpointer data)
 {
 	GtkWidget *widget = data;
+	DEBUG_LOG("Unset requisition on widget=%p", widget);
 
 	gtk_widget_queue_resize_no_redraw (widget);
 
@@ -158,98 +167,181 @@ viewer_unset_scroll_size (gpointer data)
 }
 
 /*
- * This sets the actual size of the scrolled window, and then
+ * This sets the actual size of the widget, and then
  * sets an idle callback to resize again, without constraints
  * activated
  */
-static void
-viewer_set_preferred_scroll_size (GtkWidget *widget,
-				  GtkRequisition *req,
-				  gpointer data)
+static gboolean
+viewer_set_widget_size_cb(GtkWidget *widget,
+			  GtkRequisition *req,
+			  gpointer data)
 {
 	VirtViewerSize *size = data;
-	DEBUG_LOG("Scroll resize to preferred %d %d", size->width, size->height);
+	DEBUG_LOG("Set requisition on widget=%p to %dx%d", widget, size->width, size->height);
 
 	req->width = size->width;
 	req->height = size->height;
 
 	g_signal_handler_disconnect (widget, size->sig_id);
 	g_free (size);
-	g_idle_add (viewer_unset_scroll_size, widget);
+	g_idle_add (viewer_unset_widget_size_cb, widget);
+
+	return FALSE;
 }
 
 
 /*
- * Called when the scroll widgets actual size has been set.
- * We now update the VNC widget's size
+ * Registers a callback used to set the widget size once
  */
-static void viewer_resize_vnc(GtkWidget *scroll G_GNUC_UNUSED,
-			      GtkAllocation *alloc,
-			      VirtViewer *viewer)
+static void
+viewer_set_widget_size(VirtViewer *viewer,
+		       GtkWidget *widget,
+		       int width,
+		       int height)
 {
-	int vncw = vnc_display_get_width(VNC_DISPLAY(viewer->vnc));
-	int vnch = vnc_display_get_height(VNC_DISPLAY(viewer->vnc));
 	VirtViewerSize *size = g_new (VirtViewerSize, 1);
-
-	if (vnc_display_get_scaling(VNC_DISPLAY(viewer->vnc))) {
-		double vncaspect = (double)vncw / (double)vnch;
-		double scrollaspect = (double)alloc->width / (double)alloc->height;
-
-		/* When scaling, we set VNC widget size to maximum possible
-		 * scaled which fits inside teh scrolled window (no scrollbarS)
-		 * while maintaining the aspect ratio */
-		if (scrollaspect > vncaspect) {
-			size->width = alloc->height * vncaspect;
-			size->height = alloc->height;
-		} else {
-			size->width = alloc->width;
-			size->height = alloc->width / vncaspect;
-		}
-	} else {
-		/* When scrollling, the VNC widget is always at its native size */
-		size->width = vncw;
-		size->height = vnch;
-	}
-
-	DEBUG_LOG("Scroll resize is %d %d, desktop is %d %d, VNC is %d %d",
-		  alloc->width, alloc->height,
-		  vncw, vnch, size->width, size->height);
-
+	DEBUG_LOG("Queue resize widget=%p width=%d height=%d", widget, width, height);
+	size->viewer = viewer;
+	size->width = width;
+	size->height = height;
 	size->sig_id = g_signal_connect
-		(viewer->vnc, "size-request",
-		 G_CALLBACK (viewer_set_preferred_scroll_size),
+		(widget, "size-request",
+		 G_CALLBACK (viewer_set_widget_size_cb),
 		 size);
 
-	gtk_widget_queue_resize (viewer->vnc);
+	gtk_widget_queue_resize (widget);
+}
+
+
+/*
+ * Called when the main container widget's size has been set.
+ * It attempts to fit the VNC widget into this space while
+ * maintaining aspect ratio
+ */
+static gboolean viewer_resize_align(GtkWidget *widget,
+				    GtkAllocation *alloc,
+				    VirtViewer *viewer)
+{
+	double desktopAspect = (double)viewer->desktopWidth / (double)viewer->desktopHeight;
+	double scrollAspect = (double)alloc->width / (double)alloc->height;
+	int height, width;
+	GtkAllocation child;
+
+	if (!viewer->active) {
+		DEBUG_LOG("Skipping inactive resize");
+		return TRUE;
+	}
+
+	if (scrollAspect > desktopAspect) {
+		width = alloc->height * desktopAspect;
+		height = alloc->height;
+	} else {
+		width = alloc->width;
+		height = alloc->width / desktopAspect;
+	}
+
+	DEBUG_LOG("Align widget=%p is %dx%d, desktop is %dx%d, setting VNC to %dx%d",
+		  widget,
+		  alloc->width, alloc->height,
+		  viewer->desktopWidth, viewer->desktopHeight,
+		  width, height);
+
+	child.x = alloc->x;
+	child.y = alloc->y;
+	child.width = width;
+	child.height = height;
+	gtk_widget_size_allocate(viewer->vnc, &child);
+
+	return FALSE;
+}
+
+
+/*
+ * Triggers a resize of the main container to indirectly cause
+ * the VNC widget to be resized to fit the available space
+ */
+static void
+viewer_resize_vnc_widget(VirtViewer *viewer)
+{
+	GtkWidget *align;
+	align = glade_xml_get_widget(viewer->glade, "vnc-align");
+	gtk_widget_queue_resize(align);
+}
+
+
+/*
+ * This code attempts to resize the top level window to be large enough
+ * to contain the entire VNC desktop at 1:1 ratio. If the local desktop
+ * isn't large enough that it goes as large as possible and lets VNC
+ * scale down to fit, maintaining aspect ratio
+ */
+static void
+viewer_resize_main_window(VirtViewer *viewer)
+{
+	GdkRectangle fullscreen;
+	GdkScreen *screen;
+	int width, height;
+	double desktopAspect;
+	double screenAspect;
+
+	DEBUG_LOG("Preparing main window resize");
+	if (!viewer->active) {
+		DEBUG_LOG("Skipping inactive resize");
+		return;
+	}
+
+	gtk_window_resize(GTK_WINDOW (viewer->window), 1, 1);
+
+	screen = gdk_drawable_get_screen(gtk_widget_get_window(viewer->window));
+	gdk_screen_get_monitor_geometry(screen,
+					gdk_screen_get_monitor_at_window
+					(screen, gtk_widget_get_window(viewer->window)),
+					&fullscreen);
+
+	desktopAspect = (double)viewer->desktopWidth / (double)viewer->desktopHeight;
+	screenAspect = (double)(fullscreen.width - 128) / (double)(fullscreen.height - 128);
+
+	if ((viewer->desktopWidth > (fullscreen.width - 128)) ||
+	    (viewer->desktopHeight > (fullscreen.height - 128))) {
+		/* Doesn't fit native res, so go as large as possible
+		   maintaining aspect ratio */
+		if (screenAspect > desktopAspect) {
+			width = viewer->desktopHeight * desktopAspect;
+			height = viewer->desktopHeight;
+		} else {
+			width = viewer->desktopWidth;
+			height = viewer->desktopWidth / desktopAspect;
+		}
+	} else {
+		width = viewer->desktopWidth;
+		height = viewer->desktopHeight;
+	}
+
+	viewer_set_widget_size(viewer,
+			       glade_xml_get_widget(viewer->glade, "vnc-align"),
+			       width,
+			       height);
 }
 
 
 /*
  * Called when VNC desktop size changes.
- * We figure out 'best' size for the containing scrolled window
+ *
+ * It either tries to resize the main window, or it triggers
+ * recalculation of VNC within existing window size
  */
 static void viewer_resize_desktop(GtkWidget *vnc G_GNUC_UNUSED, gint width, gint height, VirtViewer *viewer)
 {
-	GtkWidget *scroll;
-	VirtViewerSize *size = g_new (VirtViewerSize, 1);
+	DEBUG_LOG("VNC desktop resize %dx%d", width, height);
+	viewer->desktopWidth = width;
+	viewer->desktopHeight = height;
 
-	DEBUG_LOG("Resized VNC event %d %d", width, height);
-
-	scroll = glade_xml_get_widget(viewer->glade, "vnc-scroll");
-
-	if (viewer->window)
-		gtk_window_resize(GTK_WINDOW (viewer->window), 1, 1);
-
-	size->width = width;
-	size->height = height;
-	size->sig_id = g_signal_connect
-		(scroll, "size-request",
-		 G_CALLBACK (viewer_set_preferred_scroll_size),
-		 size);
-
-	gtk_widget_queue_resize (scroll);
+	if (viewer->autoResize && viewer->window && !viewer->fullscreen) {
+		viewer_resize_main_window(viewer);
+	} else {
+		viewer_resize_vnc_widget(viewer);
+	}
 }
-
 
 
 static void viewer_set_title(VirtViewer *viewer, gboolean grabbed)
@@ -376,23 +468,25 @@ static void viewer_menu_view_fullscreen(GtkWidget *menu, VirtViewer *viewer)
 		return;
 
 	if (gtk_check_menu_item_get_active(GTK_CHECK_MENU_ITEM(menu))) {
+		viewer->fullscreen = TRUE;
 		gtk_window_fullscreen(GTK_WINDOW(viewer->window));
 	} else {
+		viewer->fullscreen = FALSE;
 		gtk_window_unfullscreen(GTK_WINDOW(viewer->window));
+		if (viewer->autoResize)
+			viewer_resize_main_window(viewer);
 	}
 }
 
-static void viewer_menu_view_scale(GtkWidget *menu, VirtViewer *viewer)
+static void viewer_menu_view_resize(GtkWidget *menu, VirtViewer *viewer)
 {
-	GtkWidget *scroll = glade_xml_get_widget(viewer->glade, "vnc-scroll");
-
 	if (gtk_check_menu_item_get_active(GTK_CHECK_MENU_ITEM(menu))) {
-		vnc_display_set_scaling(VNC_DISPLAY(viewer->vnc), TRUE);
+		viewer->autoResize = TRUE;
+		if (!viewer->fullscreen)
+			viewer_resize_main_window(viewer);
 	} else {
-		vnc_display_set_scaling(VNC_DISPLAY(viewer->vnc), FALSE);
+		viewer->autoResize = FALSE;
 	}
-
-	gtk_widget_queue_resize (scroll);
 }
 
 static void viewer_menu_send(GtkWidget *menu G_GNUC_UNUSED, VirtViewer *viewer)
@@ -993,14 +1087,15 @@ viewer_start (const char *uri,
 {
 	VirtViewer *viewer;
 	GtkWidget *notebook;
-	GtkWidget *scroll;
 	GtkWidget *align;
+	GtkWidget *menu;
 
 	doDebug = debug;
 
 	viewer = g_new0(VirtViewer, 1);
 
 	viewer->active = 0;
+	viewer->autoResize = TRUE;
 	viewer->direct = direct;
 	viewer->waitvm = waitvm;
 	viewer->reconnect = reconnect;
@@ -1024,14 +1119,17 @@ viewer_start (const char *uri,
 						container ? "notebook" : "viewer")))
 		return -1;
 
+	menu = glade_xml_get_widget(viewer->glade, "menu-view-resize");
+	gtk_check_menu_item_set_active(GTK_CHECK_MENU_ITEM(menu), TRUE);
+
 	glade_xml_signal_connect_data(viewer->glade, "viewer_menu_file_quit",
 				      G_CALLBACK(viewer_menu_file_quit), viewer);
 	glade_xml_signal_connect_data(viewer->glade, "viewer_menu_file_screenshot",
 				      G_CALLBACK(viewer_menu_file_screenshot), viewer);
 	glade_xml_signal_connect_data(viewer->glade, "viewer_menu_view_fullscreen",
 				      G_CALLBACK(viewer_menu_view_fullscreen), viewer);
-	glade_xml_signal_connect_data(viewer->glade, "viewer_menu_view_scale",
-				      G_CALLBACK(viewer_menu_view_scale), viewer);
+	glade_xml_signal_connect_data(viewer->glade, "viewer_menu_view_resize",
+				      G_CALLBACK(viewer_menu_view_resize), viewer);
 	glade_xml_signal_connect_data(viewer->glade, "viewer_menu_send",
 				      G_CALLBACK(viewer_menu_send), viewer);
 	glade_xml_signal_connect_data(viewer->glade, "viewer_menu_help_about",
@@ -1041,8 +1139,18 @@ viewer_start (const char *uri,
 	viewer->vnc = vnc_display_new();
         vnc_display_set_keyboard_grab(VNC_DISPLAY(viewer->vnc), TRUE);
         vnc_display_set_pointer_grab(VNC_DISPLAY(viewer->vnc), TRUE);
+
+	/*
+	 * In auto-resize mode we have things setup so that we always
+	 * automatically resize the top level window to be exactly the
+	 * same size as the VNC desktop, except when it won't fit on
+	 * the local screen, at which point we let it scale down.
+	 * The upshot is, we always want scaling enabled.
+	 * We disable force_size because we want to allow user to
+	 * manually size the widget smaller too
+	 */
 	vnc_display_set_force_size(VNC_DISPLAY(viewer->vnc), FALSE);
-	//vnc_display_set_scaling(VNC_DISPLAY(viewer->vnc), TRUE);
+	vnc_display_set_scaling(VNC_DISPLAY(viewer->vnc), TRUE);
 
         g_signal_connect(GTK_OBJECT(viewer->vnc), "vnc-connected",
 			 GTK_SIGNAL_FUNC(viewer_connected), viewer);
@@ -1050,6 +1158,8 @@ viewer_start (const char *uri,
 			 GTK_SIGNAL_FUNC(viewer_initialized), viewer);
         g_signal_connect(GTK_OBJECT(viewer->vnc), "vnc-disconnected",
 			 GTK_SIGNAL_FUNC(viewer_disconnected), viewer);
+
+	/* When VNC desktop resizes, we have to resize the containing widget */
 	g_signal_connect(GTK_OBJECT(viewer->vnc), "vnc-desktop-resize",
 			 GTK_SIGNAL_FUNC(viewer_resize_desktop), viewer);
         g_signal_connect(GTK_OBJECT(viewer->vnc), "vnc-pointer-grab",
@@ -1061,26 +1171,21 @@ viewer_start (const char *uri,
 
 	notebook = glade_xml_get_widget(viewer->glade, "notebook");
 
-	if (!notebook)
-		return -1;
-
 	gtk_notebook_set_show_tabs(GTK_NOTEBOOK(notebook), FALSE);
-	//gtk_notebook_append_page(GTK_NOTEBOOK(notebook), viewer->vnc, NULL);
-	scroll = glade_xml_get_widget(viewer->glade, "vnc-scroll");
 	align = glade_xml_get_widget(viewer->glade, "vnc-align");
 	gtk_container_add(GTK_CONTAINER(align), viewer->vnc);
 
-	g_signal_connect(GTK_OBJECT(scroll), "size-allocate",
-			   GTK_SIGNAL_FUNC(viewer_resize_vnc), viewer);
+	g_signal_connect(GTK_OBJECT(align), "size-allocate",
+			 GTK_SIGNAL_FUNC(viewer_resize_align), viewer);
 
 	if (container) {
+		viewer->container = container;
 		gtk_container_add(GTK_CONTAINER(container), GTK_WIDGET(notebook));
-		if (GTK_IS_WINDOW(container))
-			gtk_window_set_resizable(GTK_WINDOW(container), TRUE);
 		gtk_widget_show_all(container);
 	} else {
 		GtkWidget *window = glade_xml_get_widget(viewer->glade, "viewer");
 		GSList *accels;
+		viewer->container = window;
 		viewer->window = window;
 		g_signal_connect(GTK_OBJECT(window), "delete-event",
 				 GTK_SIGNAL_FUNC(viewer_shutdown), viewer);
@@ -1095,7 +1200,6 @@ viewer_start (const char *uri,
 	}
 
 	gtk_widget_realize(viewer->vnc);
-
 
 	if (viewer_initial_connect(viewer) < 0)
 		return -1;

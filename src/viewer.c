@@ -363,10 +363,11 @@ static void viewer_set_title(VirtViewer *viewer, gboolean grabbed)
 	gtk_window_set_title(GTK_WINDOW(viewer->window), title);
 }
 
-static void viewer_ignore_accel(GtkWidget *menu G_GNUC_UNUSED,
-				VirtViewer *viewer G_GNUC_UNUSED)
+static gboolean viewer_ignore_accel(GtkWidget *menu G_GNUC_UNUSED,
+				    VirtViewer *viewer G_GNUC_UNUSED)
 {
 	/* ignore accelerator */
+	return TRUE;
 }
 
 
@@ -409,7 +410,7 @@ static void viewer_disable_modifiers(VirtViewer *viewer)
 static void viewer_enable_modifiers(VirtViewer *viewer)
 {
 	GtkSettings *settings = gtk_settings_get_default();
-        GSList *accels;
+	GSList *accels;
 	int i;
 
 	if (!viewer->window)
@@ -438,15 +439,23 @@ static void viewer_enable_modifiers(VirtViewer *viewer)
 
 
 
-static void viewer_grab(GtkWidget *vnc G_GNUC_UNUSED, VirtViewer *viewer)
+static void viewer_mouse_grab(GtkWidget *vnc G_GNUC_UNUSED, VirtViewer *viewer)
 {
 	viewer_set_title(viewer, TRUE);
+}
+
+static void viewer_mouse_ungrab(GtkWidget *vnc G_GNUC_UNUSED, VirtViewer *viewer)
+{
+	viewer_set_title(viewer, FALSE);
+}
+
+static void viewer_key_grab(GtkWidget *vnc G_GNUC_UNUSED, VirtViewer *viewer)
+{
 	viewer_disable_modifiers(viewer);
 }
 
-static void viewer_ungrab(GtkWidget *vnc G_GNUC_UNUSED, VirtViewer *viewer)
+static void viewer_key_ungrab(GtkWidget *vnc G_GNUC_UNUSED, VirtViewer *viewer)
 {
-	viewer_set_title(viewer, FALSE);
 	viewer_enable_modifiers(viewer);
 }
 
@@ -1108,7 +1117,10 @@ viewer_start (const char *uri,
 	viewer_event_register();
 
 	virSetErrorFunc(NULL, viewer_error_func);
-	viewer->conn = virConnectOpenReadOnly(uri);
+	/* XXX write a graphical auth function */
+	viewer->conn = virConnectOpenAuth(uri,
+					  virConnectAuthPtrDefault,
+					  VIR_CONNECT_RO);
 	if (!viewer->conn) {
 		fprintf(stderr, "unable to connect to libvirt %s\n",
 			uri ? uri : "xen");
@@ -1163,9 +1175,14 @@ viewer_start (const char *uri,
 	g_signal_connect(GTK_OBJECT(viewer->vnc), "vnc-desktop-resize",
 			 GTK_SIGNAL_FUNC(viewer_resize_desktop), viewer);
         g_signal_connect(GTK_OBJECT(viewer->vnc), "vnc-pointer-grab",
-			 GTK_SIGNAL_FUNC(viewer_grab), viewer);
+			 GTK_SIGNAL_FUNC(viewer_mouse_grab), viewer);
         g_signal_connect(GTK_OBJECT(viewer->vnc), "vnc-pointer-ungrab",
-			 GTK_SIGNAL_FUNC(viewer_ungrab), viewer);
+			 GTK_SIGNAL_FUNC(viewer_mouse_ungrab), viewer);
+	g_signal_connect(GTK_OBJECT(viewer->vnc), "vnc-keyboard-grab",
+			 GTK_SIGNAL_FUNC(viewer_key_grab), viewer);
+	g_signal_connect(GTK_OBJECT(viewer->vnc), "vnc-keyboard-ungrab",
+			 GTK_SIGNAL_FUNC(viewer_key_ungrab), viewer);
+
         g_signal_connect(GTK_OBJECT(viewer->vnc), "vnc-auth-credential",
                          GTK_SIGNAL_FUNC(viewer_credential), NULL);
 

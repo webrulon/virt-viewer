@@ -6,7 +6,10 @@ glade_DATA = viewer.glade about.glade auth.glade
 
 EXTRA_DIST = $(glade_DATA)
 
-virt_viewer_SOURCES = main.c viewer.h
+virt_viewer_SOURCES = \
+	main.c \
+	viewer.h viewer.c
+
 virt_viewer_LDADD = \
 	@GTKVNC_LIBS@ \
 	@GTK2_LIBS@ \

@@ -84,7 +84,6 @@ Contributor(s): Adobe Systems Incorporated.
 #include <strings.h>
 
 #include <npapi.h>
-#include <npupp.h>
 
 #include "virt-viewer-plugin.h"
 

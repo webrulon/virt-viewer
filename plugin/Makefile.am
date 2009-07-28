@@ -4,7 +4,7 @@ plugindir       = $(libdir)/mozilla/plugins
 plugin_LTLIBRARIES = virt-viewer-plugin.la
 
 virt_viewer_plugin_la_SOURCES = \
-	../src/main.c ../src/viewer.h \
+	../src/viewer.c ../src/viewer.h \
 	virt-viewer-plugin.c virt-viewer-plugin.h \
 	npshell.c npunix.c
 virt_viewer_plugin_la_LIBADD = \

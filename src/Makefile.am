@@ -8,6 +8,7 @@ EXTRA_DIST = $(glade_DATA)
 
 virt_viewer_SOURCES = \
 	main.c \
+	events.h events.c \
 	viewer.h viewer.c
 
 virt_viewer_LDADD = \
@@ -15,8 +16,7 @@ virt_viewer_LDADD = \
 	@GTK2_LIBS@ \
 	@LIBXML2_LIBS@ \
 	@LIBGLADE2_LIBS@ \
-	@LIBVIRT_LIBS@ \
-	@LIBVIRT_GLIB_LIBS@
+	@LIBVIRT_LIBS@
 
 virt_viewer_CFLAGS = \
 	@GTKVNC_CFLAGS@ \
@@ -24,6 +24,5 @@ virt_viewer_CFLAGS = \
 	@LIBXML2_CFLAGS@ \
 	@LIBGLADE2_CFLAGS@ \
 	@LIBVIRT_CFLAGS@ \
-	@LIBVIRT_GLIB_CFLAGS@ \
 	@WARN_CFLAGS@ \
 	-DGLADE_DIR="\"$(gladedir)\""

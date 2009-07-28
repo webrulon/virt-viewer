@@ -13,8 +13,7 @@ virt_viewer_plugin_la_LIBADD = \
 	@GTK2_LIBS@ \
 	@LIBXML2_LIBS@ \
 	@LIBGLADE2_LIBS@ \
-	@LIBVIRT_LIBS@ \
-	@LIBVIRT_GLIB_LIBS@
+	@LIBVIRT_LIBS@
 virt_viewer_plugin_la_LDFLAGS = \
 	-module -avoid-version
 virt_viewer_plugin_la_CFLAGS = \
@@ -25,7 +24,6 @@ virt_viewer_plugin_la_CFLAGS = \
 	@LIBXML2_CFLAGS@ \
 	@LIBGLADE2_CFLAGS@ \
 	@LIBVIRT_CFLAGS@ \
-	@LIBVIRT_GLIB_CFLAGS@ \
 	-DGLADE_DIR="\"$(pkgdatadir)/ui\"" \
 	@WARN_CFLAGS@ \
 	-I$(top_srcdir)/src

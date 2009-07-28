@@ -33,7 +33,6 @@
 #include <glade/glade.h>
 #include <libvirt/libvirt.h>
 #include <libvirt/virterror.h>
-#include <libvirt-glib/libvirt-glib.h>
 #include <libxml/xpath.h>
 #include <libxml/uri.h>
 
@@ -50,6 +49,7 @@
 #endif
 
 #include "viewer.h"
+#include "events.h"
 
 static gboolean doDebug = FALSE;
 #define DEBUG_LOG(s, ...) do { if (doDebug) g_debug((s), ## __VA_ARGS__); } while (0)
@@ -1105,7 +1105,7 @@ viewer_start (const char *uri,
 
 	g_value_init(&viewer->accelSetting, G_TYPE_STRING);
 
-	virEventRegisterGLib();
+	viewer_event_register();
 
 	virSetErrorFunc(NULL, viewer_error_func);
 	viewer->conn = virConnectOpenReadOnly(uri);

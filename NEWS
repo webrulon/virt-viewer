@@ -1,8 +1,23 @@
   Virt Viewer News
   ================
 
-March 10, 2008
---------------
+0.2.0: July 20, 2009
+--------------------
+
+  - Switch UI over to use Glade
+  - Support graphical dialog for VNC and libvirt authentication
+  - Resize window to match VNC desktop size where possible
+  - Scale down VNC desktop if it cannot fit in host desktop space
+  - Allow user to resize window to arbitrary size, scaling VNC
+  - Fix blocking of accelerators
+  - Allow automatic reconnect to a VM via --reconnect
+  - Use libvirt events to detect when VM changes state
+  - Wait for VM to appear if it does not exist
+  - Fix plugin build with newer xulrunner
+  - Port & build for Mingw32 target
+
+0.0.3: March 10, 2008
+---------------------
 
   - Block accelerators when grab is active
   - Enable smooth scaling of desktop to fill screen
@@ -10,15 +25,15 @@ March 10, 2008
   - Hide characters in password entry field
   - Use domain name in title bar instead of VNC desktop name
 
-August 28, 2007
----------------
+0.0.2: August 28, 2007
+----------------------
 
   - Support connecting to remote libvirt servers
   - Support connecting to remote VNC consoles
   - Support tunneling VNC over SSH
   - Support TLS x509 certificate credentials
 
-August 15, 2007
----------------
+0.0.1: August 15, 2007
+----------------------
 
   - Initial release

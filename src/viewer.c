@@ -115,6 +115,7 @@ typedef struct VirtViewer {
 	gboolean withEvents;
 
 	int active;
+	char *vncAddress;
 
 	gboolean accelEnabled;
 	GValue accelSetting;
@@ -843,6 +844,8 @@ static int viewer_activate(VirtViewer *viewer,
         DEBUG_LOG("Remote host is %s and transport %s user %s",
 		  host, transport ? transport : "", user ? user : "");
 
+	viewer->vncAddress = g_strdup_printf("%s:%s", host, vncport);
+
 #if defined(HAVE_SOCKETPAIR) && defined(HAVE_FORK)
         if (transport && g_strcasecmp(transport, "ssh") == 0 &&
 	    !viewer->direct)
@@ -850,10 +853,11 @@ static int viewer_activate(VirtViewer *viewer,
 			return -1;
 #endif
 
-	if (fd >= 0)
+	if (fd >= 0) {
 		vnc_display_open_fd(VNC_DISPLAY(viewer->vnc), fd);
-	else
+	} else {
 		vnc_display_open_host(VNC_DISPLAY(viewer->vnc), host, vncport);
+	}
 
 	viewer_set_status(viewer, "Connecting to VNC server");
 
@@ -896,6 +900,8 @@ static void viewer_deactivate(VirtViewer *viewer)
 		gtk_main_quit();
 	}
 	viewer->active = 0;
+	g_free(viewer->vncAddress);
+	viewer->vncAddress = NULL;
 	viewer_set_title(viewer, FALSE);
 }
 
@@ -1024,6 +1030,14 @@ viewer_start (const char *uri,
 	GtkWidget *notebook;
 	GtkWidget *align;
 	GtkWidget *menu;
+	int cred_types[] =
+		{ VIR_CRED_AUTHNAME, VIR_CRED_PASSPHRASE };
+	virConnectAuth auth_libvirt = {
+		.credtype = cred_types,
+		.ncredtype = ARRAY_CARDINALITY(cred_types),
+		.cb = viewer_auth_libvirt_credentials,
+		.cbdata = (void *)uri,
+	};
 
 	doDebug = debug;
 
@@ -1043,9 +1057,10 @@ viewer_start (const char *uri,
 	viewer_event_register();
 
 	virSetErrorFunc(NULL, viewer_error_func);
-	/* XXX write a graphical auth function */
+
 	viewer->conn = virConnectOpenAuth(uri,
-					  virConnectAuthPtrDefault,
+					  //virConnectAuthPtrDefault,
+					  &auth_libvirt,
 					  VIR_CONNECT_RO);
 	if (!viewer->conn) {
 		fprintf(stderr, "unable to connect to libvirt %s\n",
@@ -1111,7 +1126,7 @@ viewer_start (const char *uri,
 			 GTK_SIGNAL_FUNC(viewer_key_ungrab), viewer);
 
         g_signal_connect(GTK_OBJECT(viewer->vnc), "vnc-auth-credential",
-                         GTK_SIGNAL_FUNC(viewer_auth_vnc_credentials), NULL);
+                         GTK_SIGNAL_FUNC(viewer_auth_vnc_credentials), &viewer->vncAddress);
 
 	notebook = glade_xml_get_widget(viewer->glade, "notebook");
 

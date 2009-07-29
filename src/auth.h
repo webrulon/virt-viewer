@@ -23,8 +23,14 @@
 #ifndef VIRT_VIEWER_AUTH_H
 #define VIRT_VIEWER_AUTH_H
 
+#include <libvirt/libvirt.h>
+
 #include "util.h"
 
-void viewer_auth_vnc_credentials(GtkWidget *vnc, GValueArray *credList);
+void viewer_auth_vnc_credentials(GtkWidget *vnc, GValueArray *credList, char **message);
+
+int viewer_auth_libvirt_credentials(virConnectCredentialPtr cred,
+				    unsigned int ncred,
+				    void *cbdata);
 
 #endif

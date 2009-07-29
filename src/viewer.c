@@ -213,6 +213,7 @@ static gboolean viewer_resize_align(GtkWidget *widget,
 	double scrollAspect = (double)alloc->width / (double)alloc->height;
 	int height, width;
 	GtkAllocation child;
+	int dx = 0, dy = 0;
 
 	if (!viewer->active) {
 		DEBUG_LOG("Skipping inactive resize");
@@ -221,10 +222,12 @@ static gboolean viewer_resize_align(GtkWidget *widget,
 
 	if (scrollAspect > desktopAspect) {
 		width = alloc->height * desktopAspect;
+		dx = (alloc->width - width) / 2;
 		height = alloc->height;
 	} else {
 		width = alloc->width;
 		height = alloc->width / desktopAspect;
+		dy = (alloc->height - height) / 2;
 	}
 
 	DEBUG_LOG("Align widget=%p is %dx%d, desktop is %dx%d, setting VNC to %dx%d",
@@ -233,8 +236,8 @@ static gboolean viewer_resize_align(GtkWidget *widget,
 		  viewer->desktopWidth, viewer->desktopHeight,
 		  width, height);
 
-	child.x = alloc->x;
-	child.y = alloc->y;
+	child.x = alloc->x + dx;
+	child.y = alloc->y + dy;
 	child.width = width;
 	child.height = height;
 	gtk_widget_size_allocate(viewer->vnc, &child);

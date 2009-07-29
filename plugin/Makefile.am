@@ -4,6 +4,8 @@ plugindir       = $(libdir)/mozilla/plugins
 plugin_LTLIBRARIES = virt-viewer-plugin.la
 
 virt_viewer_plugin_la_SOURCES = \
+	../src/util.c ../src/util.h \
+	../src/auth.c ../src/auth.h \
 	../src/viewer.c ../src/viewer.h \
 	../src/events.c ../src/events.h \
 	virt-viewer-plugin.c virt-viewer-plugin.h \
@@ -25,7 +27,7 @@ virt_viewer_plugin_la_CFLAGS = \
 	@LIBXML2_CFLAGS@ \
 	@LIBGLADE2_CFLAGS@ \
 	@LIBVIRT_CFLAGS@ \
-	-DGLADE_DIR="\"$(pkgdatadir)/ui\"" \
+	-DGLADE_DIR="\"$(gladedir)\"" \
 	@WARN_CFLAGS@ \
 	-I$(top_srcdir)/src
 

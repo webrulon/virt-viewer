@@ -1,7 +1,8 @@
 /*
  * Virt Viewer: A virtual machine console viewer
  *
- * Copyright (C) 2007 Red Hat,
+ * Copyright (C) 2007-2009 Red Hat,
+ * Copyright (C) 2009 Daniel P. Berrange
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,18 +21,26 @@
  * Author: Daniel P. Berrange <berrange@redhat.com>
  */
 
-#ifndef VIRT_VIEWER_H
-#define VIRT_VIEWER_H
+#include <config.h>
+
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <unistd.h>
 
 #include "util.h"
 
-extern int viewer_start (const char *uri,
-			 const char *name,
-			 gboolean direct,
-			 gboolean waitvm,
-			 gboolean reconnect,
-			 gboolean verbose,
-			 gboolean debug,
-			 GtkWidget *container);
+GladeXML *viewer_load_glade(const char *name, const char *widget)
+{
+	char *path;
+	struct stat sb;
+	GladeXML *xml;
 
-#endif /* VIRT_VIEWER_H */
+	if (stat(name, &sb) >= 0)
+		return glade_xml_new(name, widget, NULL);
+
+	path = g_strdup_printf("%s/%s", GLADE_DIR, name);
+
+	xml = glade_xml_new(path, widget, NULL);
+	g_free(path);
+	return xml;
+}

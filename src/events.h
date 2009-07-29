@@ -20,10 +20,10 @@
  * Author: Daniel P. Berrange <berrange@redhat.com>
  */
 
-
-
 #ifndef VIRT_VIEWER_EVENT_H
 #define VIRT_VIEWER_EVENT_H
+
+#include "util.h"
 
 void viewer_event_register(void);
 

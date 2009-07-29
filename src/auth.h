@@ -1,7 +1,7 @@
 /*
  * Virt Viewer: A virtual machine console viewer
  *
- * Copyright (C) 2007 Red Hat,
+ * Copyright (C) 2007-2009 Red Hat,
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,18 +20,11 @@
  * Author: Daniel P. Berrange <berrange@redhat.com>
  */
 
-#ifndef VIRT_VIEWER_H
-#define VIRT_VIEWER_H
+#ifndef VIRT_VIEWER_AUTH_H
+#define VIRT_VIEWER_AUTH_H
 
 #include "util.h"
 
-extern int viewer_start (const char *uri,
-			 const char *name,
-			 gboolean direct,
-			 gboolean waitvm,
-			 gboolean reconnect,
-			 gboolean verbose,
-			 gboolean debug,
-			 GtkWidget *container);
+void viewer_auth_vnc_credentials(GtkWidget *vnc, GValueArray *credList);
 
-#endif /* VIRT_VIEWER_H */
+#endif

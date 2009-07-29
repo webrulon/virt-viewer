@@ -8,6 +8,8 @@ EXTRA_DIST = $(glade_DATA)
 
 virt_viewer_SOURCES = \
 	main.c \
+	util.h util.c \
+	auth.h auth.c \
 	events.h events.c \
 	viewer.h viewer.c
 

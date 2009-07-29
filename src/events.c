@@ -29,10 +29,6 @@
 
 #include "events.h"
 
-static gboolean debugFlag = FALSE;
-
-#define DEBUG(fmt, ...) do { if (G_UNLIKELY(debugFlag)) g_debug(fmt, ## __VA_ARGS__); } while (0)
-
 struct viewer_event_handle
 {
     int watch;
@@ -67,7 +63,7 @@ viewer_event_dispatch_handle(GIOChannel *source G_GNUC_UNUSED,
     if (condition & G_IO_ERR)
         events |= VIR_EVENT_HANDLE_ERROR;
 
-    DEBUG("Dispatch handler %d %d %p\n", data->fd, events, data->opaque);
+    DEBUG_LOG("Dispatch handler %d %d %p\n", data->fd, events, data->opaque);
 
     (data->cb)(data->watch, data->fd, events, data->opaque);
 
@@ -102,7 +98,7 @@ int viewer_event_add_handle(int fd,
     data->channel = g_io_channel_unix_new(fd);
     data->ff = ff;
 
-    DEBUG("Add handle %d %d %p\n", data->fd, events, data->opaque);
+    DEBUG_LOG("Add handle %d %d %p\n", data->fd, events, data->opaque);
 
     data->source = g_io_add_watch(data->channel,
                                   cond,
@@ -132,7 +128,7 @@ viewer_event_update_handle(int watch,
     struct viewer_event_handle *data = viewer_event_find_handle(watch);
 
     if (!data) {
-        DEBUG("Update for missing handle watch %d", watch);
+        DEBUG_LOG("Update for missing handle watch %d", watch);
         return;
     }
 
@@ -170,11 +166,11 @@ viewer_event_remove_handle(int watch)
     struct viewer_event_handle *data = viewer_event_find_handle(watch);
 
     if (!data) {
-        DEBUG("Remove of missing watch %d", watch);
+        DEBUG_LOG("Remove of missing watch %d", watch);
         return -1;
     }
 
-    DEBUG("Remove handle %d %d\n", watch, data->fd);
+    DEBUG_LOG("Remove handle %d %d\n", watch, data->fd);
 
     g_source_remove(data->source);
     data->source = 0;
@@ -205,7 +201,7 @@ static gboolean
 viewer_event_dispatch_timeout(void *opaque)
 {
     struct viewer_event_timeout *data = opaque;
-    DEBUG("Dispatch timeout %p %p %d %p\n", data, data->cb, data->timer, data->opaque);
+    DEBUG_LOG("Dispatch timeout %p %p %d %p\n", data, data->cb, data->timer, data->opaque);
     (data->cb)(data->timer, data->opaque);
 
     return TRUE;
@@ -235,7 +231,7 @@ viewer_event_add_timeout(int interval,
 
     timeouts[ntimeouts++] = data;
 
-    DEBUG("Add timeout %p %d %p %p %d\n", data, interval, cb, opaque, data->timer);
+    DEBUG_LOG("Add timeout %p %d %p %p %d\n", data, interval, cb, opaque, data->timer);
 
     return data->timer;
 }
@@ -260,11 +256,11 @@ viewer_event_update_timeout(int timer,
     struct viewer_event_timeout *data = viewer_event_find_timeout(timer);
 
     if (!data) {
-        DEBUG("Update of missing timer %d", timer);
+        DEBUG_LOG("Update of missing timer %d", timer);
         return;
     }
 
-    DEBUG("Update timeout %p %d %d\n", data, timer, interval);
+    DEBUG_LOG("Update timeout %p %d %d\n", data, timer, interval);
 
     if (interval >= 0) {
         if (data->source)
@@ -289,11 +285,11 @@ viewer_event_remove_timeout(int timer)
     struct viewer_event_timeout *data = viewer_event_find_timeout(timer);
 
     if (!data) {
-        DEBUG("Remove of missing timer %d", timer);
+        DEBUG_LOG("Remove of missing timer %d", timer);
         return -1;
     }
 
-    DEBUG("Remove timeout %p %d\n", data, timer);
+    DEBUG_LOG("Remove timeout %p %d\n", data, timer);
 
     if (!data->source)
         return -1;

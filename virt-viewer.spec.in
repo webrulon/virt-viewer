@@ -16,10 +16,10 @@ BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 Requires: openssh-clients
 
 BuildRequires: gtk2-devel
-BuildRequires: libvirt-devel
+BuildRequires: libvirt-devel >= 0.6.1
 BuildRequires: libxml2-devel
 BuildRequires: libglade2-devel
-BuildRequires: gtk-vnc-devel >= 0.3.4
+BuildRequires: gtk-vnc-devel >= 0.3.8
 BuildRequires: /usr/bin/pod2man
 %if %{_with_plugin}
 %if "%{fedora}" > "8"

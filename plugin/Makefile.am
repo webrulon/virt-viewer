@@ -28,7 +28,6 @@ virt_viewer_plugin_la_CFLAGS = \
 	@LIBGLADE2_CFLAGS@ \
 	@LIBVIRT_CFLAGS@ \
 	-DGLADE_DIR="\"$(gladedir)\"" \
-	@WARN_CFLAGS@ \
 	-I$(top_srcdir)/src
 
 all-local: virt-viewer-plugin.so

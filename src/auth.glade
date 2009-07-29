@@ -63,6 +63,7 @@
               <widget class="GtkEntry" id="cred-password">
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
+                <property name="visibility">False</property>
               </widget>
               <packing>
                 <property name="left_attach">1</property>

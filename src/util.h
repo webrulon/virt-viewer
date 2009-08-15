@@ -27,6 +27,9 @@
 #include <gtk/gtk.h>
 #include <glade/glade.h>
 
+#if (GTK_MAJOR_VERSION == 2 && GTK_MINOR_VERSION <= 12)
+#define gtk_widget_get_window(widget) ((widget)->window)
+#endif
 
 extern gboolean doDebug;
 

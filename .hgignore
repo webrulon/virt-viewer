@@ -22,6 +22,7 @@ Makefile\.in$
 ^src/Makefile$
 ^stamp-h1$
 ^virt-viewer\.spec$
+^mingw32-virt-viewer\.spec$
 ^config.h.in$
 ^man/Makefile$
 ^man/virt-viewer\.1$
@@ -32,3 +33,15 @@ Makefile\.in$
 ^plugin/.*\.so
 ^plugin/.*\.lo
 ^plugin/Makefile$
+^m4/libtool\.m4$
+^m4/ltoptions\.m4$
+^m4/ltsugar\.m4$
+^m4/ltversion\.m4$
+^m4/lt~obsolete\.m4$
+^po/POTFILES$
+.*\.orig$
+.*\.rej$
+^po/Makefile\.in\.in$
+^po/Makefile\.in$
+^po/Makefile$
+^po/stamp-it$

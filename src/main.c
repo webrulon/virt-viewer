@@ -21,15 +21,16 @@
  */
 
 #include <config.h>
-
+#include <locale.h>
 #include <vncdisplay.h>
 #include <gtk/gtk.h>
+#include <glib/gi18n.h>
 
 #include "viewer.h"
 
 static void viewer_version(FILE *out)
 {
-	fprintf(out, "%s version %s\n", PACKAGE, VERSION);
+	fprintf(out, _("%s version %s\n"), PACKAGE, VERSION);
 }
 
 
@@ -46,29 +47,34 @@ int main(int argc, char **argv)
 	gboolean direct = FALSE;
 	gboolean waitvm = FALSE;
 	gboolean reconnect = FALSE;
-	const char *help_msg = "Run '" PACKAGE " --help' to see a full list of available command line options";
+	const char *help_msg = N_("Run '" PACKAGE " --help' to see a full list of available command line options");
 	const GOptionEntry options [] = {
 		{ "version", 'V', 0, G_OPTION_ARG_NONE, &print_version,
-		  "display version information", NULL },
+		  N_("display version information"), NULL },
 		{ "verbose", 'v', 0, G_OPTION_ARG_NONE, &verbose,
-		  "display verbose information", NULL },
+		  N_("display verbose information"), NULL },
 		{ "direct", 'd', 0, G_OPTION_ARG_NONE, &direct,
-		  "direct connection with no automatic tunnels", NULL },
+		  N_("direct connection with no automatic tunnels"), NULL },
 		{ "connect", 'c', 0, G_OPTION_ARG_STRING, &uri,
-		  "connect to hypervisor", "URI"},
+		  N_("connect to hypervisor"), "URI"},
 		{ "wait", 'w', 0, G_OPTION_ARG_NONE, &waitvm,
-		  "wait for domain to start", NULL },
+		  N_("wait for domain to start"), NULL },
 		{ "reconnect", 'r', 0, G_OPTION_ARG_NONE, &reconnect,
-		  "reconnect to domain upon restart", NULL },
+		  N_("reconnect to domain upon restart"), NULL },
 		{ "debug", '\0', 0, G_OPTION_ARG_NONE, &debug,
-		  "display debugging information", NULL },
+		  N_("display debugging information"), NULL },
   	     	{ G_OPTION_REMAINING, '\0', 0, G_OPTION_ARG_STRING_ARRAY, &args,
 		  NULL, "DOMAIN-NAME|ID|UUID" },
   		{ NULL, 0, 0, G_OPTION_ARG_NONE, NULL, NULL, NULL }
 	};
 
+	setlocale(LC_ALL, "");
+	bindtextdomain(GETTEXT_PACKAGE, LOCALE_DIR);
+	bind_textdomain_codeset(GETTEXT_PACKAGE, "UTF-8");
+	textdomain(GETTEXT_PACKAGE);
+
 	/* Setup command line options */
-	context = g_option_context_new ("- Virtual machine graphical console");
+	context = g_option_context_new (_("- Virtual machine graphical console"));
 	g_option_context_add_main_entries (context, options, NULL);
 	g_option_context_add_group (context, gtk_get_option_group (TRUE));
 	g_option_context_add_group (context, vnc_display_get_option_group ());
@@ -76,7 +82,7 @@ int main(int argc, char **argv)
 	if (error) {
 		g_print ("%s\n%s\n",
 			 error->message,
-			 help_msg);
+			 gettext(help_msg));
 		g_error_free (error);
 		return 1;
 	}
@@ -86,7 +92,7 @@ int main(int argc, char **argv)
 	}
 
 	if (!args || (g_strv_length(args) != 1)) {
-		fprintf(stderr, "\nUsage: %s [OPTIONS] DOMAIN-NAME|ID|UUID\n\n%s\n\n", argv[0], help_msg);
+		fprintf(stderr, _("\nUsage: %s [OPTIONS] DOMAIN-NAME|ID|UUID\n\n%s\n\n"), argv[0], help_msg);
 		return 1;
 	}
 

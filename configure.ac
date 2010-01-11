@@ -16,6 +16,14 @@ AC_DEFINE([_GNU_SOURCE], [], [Enable GNU extensions])
 
 VIRT_VIEWER_COMPILE_WARNINGS(maximum)
 
+GETTEXT_PACKAGE=virt-viewer
+AC_SUBST(GETTEXT_PACKAGE)
+AC_DEFINE_UNQUOTED(GETTEXT_PACKAGE,"$GETTEXT_PACKAGE", [GETTEXT package name])
+
+IT_PROG_INTLTOOL([0.35.0])
+AM_GLIB_GNU_GETTEXT
+
+
 PKG_CHECK_MODULES(LIBXML2, libxml-2.0 >= 2.6.0)
 PKG_CHECK_MODULES(LIBVIRT, libvirt >= 0.6.0)
 PKG_CHECK_MODULES(GTK2, gtk+-2.0 >= 2.10.0)
@@ -52,6 +60,7 @@ AM_CONDITIONAL(ENABLE_PLUGIN, [test "x$enable_plugin" = "xyes"])
 AC_OUTPUT(Makefile
           src/Makefile
           man/Makefile
+	  po/Makefile.in
 	  plugin/Makefile
           virt-viewer.spec
           mingw32-virt-viewer.spec)

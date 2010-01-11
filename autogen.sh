@@ -37,9 +37,10 @@ if test -z "$*"; then
 fi
 
 libtoolize --copy --force
-aclocal
+intltoolize --force
+aclocal -I m4
 autoheader
-automake --add-missing
+automake --add-missing --copy
 autoconf
 
 cd $THEDIR

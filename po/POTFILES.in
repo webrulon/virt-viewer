@@ -1,0 +1,8 @@
+src/auth.c
+src/events.c
+src/main.c
+src/util.c
+src/viewer.c
+src/about.glade
+src/auth.glade
+src/viewer.glade

@@ -27,4 +27,5 @@ virt_viewer_CFLAGS = \
 	@LIBGLADE2_CFLAGS@ \
 	@LIBVIRT_CFLAGS@ \
 	@WARN_CFLAGS@ \
-	-DGLADE_DIR="\"$(gladedir)\""
+	-DGLADE_DIR="\"$(gladedir)\"" \
+	-DLOCALE_DIR=\""$(datadir)/locale"\"

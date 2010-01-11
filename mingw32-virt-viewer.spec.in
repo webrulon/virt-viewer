@@ -44,11 +44,13 @@ rm -rf $RPM_BUILD_ROOT
 
 make DESTDIR=$RPM_BUILD_ROOT install
 
+%find_lang virt-viewer
+
 %clean
 rm -rf $RPM_BUILD_ROOT
 
 
-%files
+%files -f virt-viewer.lang
 %defattr(-,root,root)
 %{_mingw32_bindir}/virt-viewer.exe
 

@@ -45,3 +45,5 @@ Makefile\.in$
 ^po/Makefile\.in$
 ^po/Makefile$
 ^po/stamp-it$
+^po/virt-viewer\.pot$
+

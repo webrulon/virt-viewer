@@ -5,8 +5,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: pl\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-01-11 16:30+0000\n"
-"PO-Revision-Date: 2010-01-11 17:42+0100\n"
+"POT-Creation-Date: 2010-01-11 20:52+0000\n"
+"PO-Revision-Date: 2010-01-11 22:42+0100\n"
 "Last-Translator: Piotr Drąg <piotrdrag@gmail.com>\n"
 "Language-Team: Polish <trans-pl@lists.fedoraproject.org>\n"
 "MIME-Version: 1.0\n"
@@ -20,11 +20,11 @@ msgstr "%s wersja %s\n"
 
 #: ../src/main.c:50
 msgid "Run '"
-msgstr "Proszę wykonać \""
+msgstr "Należy wykonać \""
 
 #: ../src/main.c:53
 msgid "display version information"
-msgstr "wyświetla informacje o wersji"
+msgstr "wyświetla informację o wersji"
 
 #: ../src/main.c:55
 msgid "display verbose information"
@@ -36,19 +36,19 @@ msgstr "bezpośrednie połączenie bez automatycznych tuneli"
 
 #: ../src/main.c:59
 msgid "connect to hypervisor"
-msgstr "połączenie z nadzorcą"
+msgstr "łączy z nadzorcą"
 
 #: ../src/main.c:61
 msgid "wait for domain to start"
-msgstr "oczekiwanie na uruchomienie domeny"
+msgstr "oczekuje na uruchomienie domeny"
 
 #: ../src/main.c:63
 msgid "reconnect to domain upon restart"
-msgstr "ponowne połączenie do domeny po ponownym uruchomieniu"
+msgstr "ponownie łączy z domeną po ponownym uruchomieniu"
 
 #: ../src/main.c:65
 msgid "display debugging information"
-msgstr "wyświetlanie informacji o debugowaniu"
+msgstr "wyświetla informacje o debugowaniu"
 
 #. Setup command line options
 #: ../src/main.c:77
@@ -79,8 +79,7 @@ msgstr ""
 #.
 #: ../src/about.glade.h:1
 msgid "A remote desktop client built with GTK-VNC and libvirt"
-msgstr ""
-"Zdalny klient na pulpit zbudowany za pomocą bibliotek GTK-VNC i libvirt"
+msgstr "Zdalny klient zbudowany za pomocą bibliotek GTK-VNC i libvirt"
 
 #: ../src/about.glade.h:2
 msgid "About Glade"
@@ -132,7 +131,7 @@ msgstr ""
 "Franklin Street, Fifth Floor, Boston, MA 02110-130159 USA.\n"
 
 #: ../src/about.glade.h:20
-msgid "virt-vmanager.org"
+msgid "virt-manager.org"
 msgstr "virt-manager.org"
 
 #: ../src/auth.glade.h:1

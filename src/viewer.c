@@ -30,6 +30,8 @@
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
+#include <locale.h>
+#include <glib/gi18n.h>
 #include <libvirt/libvirt.h>
 #include <libvirt/virterror.h>
 #include <libxml/xpath.h>
@@ -52,8 +54,6 @@
 #include "auth.h"
 
 gboolean doDebug = FALSE;
-
-static gboolean viewer_connect_timer(void *opaque);
 
 enum menuNums {
         FILE_MENU,
@@ -126,6 +126,9 @@ typedef struct VirtViewer {
 	int reconnect;
 	int direct;
 	int verbose;
+	int authretry;
+
+	gchar *clipboard;
 } VirtViewer;
 
 typedef struct VirtViewerSize {
@@ -134,6 +137,9 @@ typedef struct VirtViewerSize {
 	gulong sig_id;
 } VirtViewerSize;
 
+
+static gboolean viewer_connect_timer(void *opaque);
+static int viewer_initial_connect(VirtViewer *viewer);
 
 
 /* Now that the size is set to our preferred sizing, this
@@ -881,6 +887,15 @@ static int viewer_activate(VirtViewer *viewer,
 
 }
 
+
+static gboolean viewer_retryauth(gpointer opaque)
+{
+	VirtViewer *viewer = opaque;
+	viewer_initial_connect(viewer);
+
+	return FALSE;
+}
+
 static void viewer_deactivate(VirtViewer *viewer)
 {
 	if (!viewer->active)
@@ -890,7 +905,15 @@ static void viewer_deactivate(VirtViewer *viewer)
 	free(viewer->domtitle);
 	viewer->domtitle = NULL;
 
-	if (viewer->reconnect) {
+	viewer->active = 0;
+	g_free(viewer->vncAddress);
+	viewer->vncAddress = NULL;
+	viewer_set_title(viewer, FALSE);
+
+	if (viewer->authretry) {
+		viewer->authretry = FALSE;
+		g_idle_add(viewer_retryauth, viewer);
+	} else if (viewer->reconnect) {
 		if (!viewer->withEvents) {
 			DEBUG_LOG("No domain events, falling back to polling");
 			g_timeout_add(500,
@@ -903,10 +926,6 @@ static void viewer_deactivate(VirtViewer *viewer)
 		viewer_set_status(viewer, "Guest domain has shutdown");
 		gtk_main_quit();
 	}
-	viewer->active = 0;
-	g_free(viewer->vncAddress);
-	viewer->vncAddress = NULL;
-	viewer_set_title(viewer, FALSE);
 }
 
 static void viewer_connected(GtkWidget *vnc G_GNUC_UNUSED, VirtViewer *viewer)
@@ -924,6 +943,98 @@ static void viewer_initialized(GtkWidget *vnc G_GNUC_UNUSED, VirtViewer *viewer)
 static void viewer_disconnected(GtkWidget *vnc G_GNUC_UNUSED, VirtViewer *viewer)
 {
 	viewer_deactivate(viewer);
+}
+
+
+static void viewer_vnc_auth_failure(GtkWidget *vnc G_GNUC_UNUSED, const char *reason, VirtViewer *viewer)
+{
+	GtkWidget *dialog;
+	int ret;
+
+	fprintf(stderr, "Now %s\n", reason);
+
+	dialog = gtk_message_dialog_new(GTK_WINDOW(viewer->window),
+					GTK_DIALOG_MODAL |
+					GTK_DIALOG_DESTROY_WITH_PARENT,
+					GTK_MESSAGE_ERROR,
+					GTK_BUTTONS_YES_NO,
+					_("Unable to authenticate with VNC server at %s: %s\n"
+					  "Retry connection again?"),
+					viewer->vncAddress, reason);
+
+	ret = gtk_dialog_run(GTK_DIALOG(dialog));
+
+	gtk_widget_destroy(dialog);
+
+	if (ret == GTK_RESPONSE_YES)
+		viewer->authretry = TRUE;
+	else
+		viewer->authretry = FALSE;
+}
+
+
+static void viewer_vnc_auth_unsupported(GtkWidget *vnc G_GNUC_UNUSED, unsigned int authType, VirtViewer *viewer)
+{
+	GtkWidget *dialog;
+
+	dialog = gtk_message_dialog_new(GTK_WINDOW(viewer->window),
+					GTK_DIALOG_MODAL |
+					GTK_DIALOG_DESTROY_WITH_PARENT,
+					GTK_MESSAGE_ERROR,
+					GTK_BUTTONS_OK,
+					_("Unable to authenticate with VNC server at %s\n"
+					  "Unsupported authentication type %d"),
+					viewer->vncAddress, authType);
+
+	gtk_dialog_run(GTK_DIALOG(dialog));
+
+	gtk_widget_destroy(dialog);
+}
+
+
+static void viewer_vnc_bell(GtkWidget *vnc G_GNUC_UNUSED, VirtViewer *viewer)
+{
+	gdk_window_beep(GTK_WIDGET(viewer->window)->window);
+}
+
+
+/* text was actually requested */
+static void viewer_vnc_clipboard_copy(GtkClipboard *clipboard G_GNUC_UNUSED,
+				      GtkSelectionData *data,
+				      guint info G_GNUC_UNUSED,
+				      VirtViewer *viewer)
+{
+	gtk_selection_data_set_text(data, viewer->clipboard, -1);
+}
+
+static void viewer_vnc_server_cut_text(VncDisplay *vnc G_GNUC_UNUSED,
+				       const gchar *text, VirtViewer *viewer)
+{
+	GtkClipboard *cb;
+	gsize a, b;
+        GtkTargetEntry targets[] = {
+		{g_strdup("UTF8_STRING"), 0, 0},
+		{g_strdup("COMPOUND_TEXT"), 0, 0},
+		{g_strdup("TEXT"), 0, 0},
+		{g_strdup("STRING"), 0, 0},
+	};
+
+	if (!text)
+		return;
+
+	g_free (viewer->clipboard);
+	viewer->clipboard = g_convert (text, -1, "utf-8", "iso8859-1", &a, &b, NULL);
+
+	if (viewer->clipboard) {
+		cb = gtk_clipboard_get (GDK_SELECTION_CLIPBOARD);
+
+		gtk_clipboard_set_with_owner (cb,
+					      targets,
+					      G_N_ELEMENTS(targets),
+					      (GtkClipboardGetFunc)viewer_vnc_clipboard_copy,
+					      NULL,
+					      G_OBJECT (viewer));
+	}
 }
 
 
@@ -1131,6 +1242,15 @@ viewer_start (const char *uri,
 
         g_signal_connect(viewer->vnc, "vnc-auth-credential",
                          G_CALLBACK(viewer_auth_vnc_credentials), &viewer->vncAddress);
+        g_signal_connect(viewer->vnc, "vnc-auth-failure",
+                         G_CALLBACK(viewer_vnc_auth_failure), viewer);
+        g_signal_connect(viewer->vnc, "vnc-auth-unsupported",
+                         G_CALLBACK(viewer_vnc_auth_unsupported), viewer);
+
+	g_signal_connect(viewer->vnc, "vnc-bell",
+			 G_CALLBACK(viewer_vnc_bell), viewer);
+	g_signal_connect(viewer->vnc, "vnc-server-cut-text",
+			 G_CALLBACK(viewer_vnc_server_cut_text), viewer);
 
 	notebook = glade_xml_get_widget(viewer->glade, "notebook");
 

@@ -114,7 +114,7 @@ typedef struct VirtViewer {
 	gboolean fullscreen;
 	gboolean withEvents;
 
-	int active;
+	gboolean active;
 	char *vncAddress;
 
 	gboolean accelEnabled;
@@ -122,11 +122,12 @@ typedef struct VirtViewer {
 	GSList *accelList;
 	int accelMenuSig[LAST_MENU];
 
-	int waitvm;
-	int reconnect;
-	int direct;
-	int verbose;
-	int authretry;
+	gboolean waitvm;
+	gboolean reconnect;
+	gboolean direct;
+	gboolean verbose;
+	gboolean authretry;
+	gboolean connected;
 
 	gchar *clipboard;
 } VirtViewer;
@@ -140,6 +141,34 @@ typedef struct VirtViewerSize {
 
 static gboolean viewer_connect_timer(void *opaque);
 static int viewer_initial_connect(VirtViewer *viewer);
+
+
+static void viewer_simple_message_dialog(GtkWidget *window, const char *fmt, ...)
+{
+	GtkWidget *dialog;
+	char *msg;
+	va_list vargs;
+
+	va_start(vargs, fmt);
+
+	msg = g_strdup_vprintf(fmt, vargs);
+
+	va_end(vargs);
+
+	dialog = gtk_message_dialog_new(GTK_WINDOW(window),
+					GTK_DIALOG_MODAL |
+					GTK_DIALOG_DESTROY_WITH_PARENT,
+					GTK_MESSAGE_ERROR,
+					GTK_BUTTONS_OK,
+					"%s",
+					msg);
+
+	gtk_dialog_run(GTK_DIALOG(dialog));
+
+	gtk_widget_destroy(dialog);
+
+	g_free(msg);
+}
 
 
 /* Now that the size is set to our preferred sizing, this
@@ -845,11 +874,17 @@ static int viewer_activate(VirtViewer *viewer,
 	if (viewer->active)
 		goto cleanup;
 
-	if ((vncport = viewer_extract_vnc_port(dom)) == NULL)
+	if ((vncport = viewer_extract_vnc_port(dom)) == NULL) {
+		viewer_simple_message_dialog(viewer->window, _("Cannot determine the VNC port for the guest %s"),
+					     viewer->domkey);
 		goto cleanup;
+	}
 
-        if (viewer_extract_host(viewer->uri, &host, &transport, &user, &port) < 0)
+        if (viewer_extract_host(viewer->uri, &host, &transport, &user, &port) < 0) {
+		viewer_simple_message_dialog(viewer->window, _("Cannot determine the VNC host for the guest %s"),
+					     viewer->domkey);
 		goto cleanup;
+	}
 
         DEBUG_LOG("Remote host is %s and transport %s user %s",
 		  host, transport ? transport : "", user ? user : "");
@@ -874,7 +909,8 @@ static int viewer_activate(VirtViewer *viewer,
 	free(viewer->domtitle);
 	viewer->domtitle = g_strdup(virDomainGetName(dom));
 
-	viewer->active = 1;
+	viewer->connected = FALSE;
+	viewer->active = TRUE;
 	viewer_set_title(viewer, FALSE);
 
 	ret = 0;
@@ -905,7 +941,8 @@ static void viewer_deactivate(VirtViewer *viewer)
 	free(viewer->domtitle);
 	viewer->domtitle = NULL;
 
-	viewer->active = 0;
+	viewer->connected = FALSE;
+	viewer->active = FALSE;
 	g_free(viewer->vncAddress);
 	viewer->vncAddress = NULL;
 	viewer_set_title(viewer, FALSE);
@@ -930,6 +967,7 @@ static void viewer_deactivate(VirtViewer *viewer)
 
 static void viewer_connected(GtkWidget *vnc G_GNUC_UNUSED, VirtViewer *viewer)
 {
+	viewer->connected = TRUE;
 	viewer_set_status(viewer, "Connected to VNC server");
 }
 
@@ -942,6 +980,10 @@ static void viewer_initialized(GtkWidget *vnc G_GNUC_UNUSED, VirtViewer *viewer)
 
 static void viewer_disconnected(GtkWidget *vnc G_GNUC_UNUSED, VirtViewer *viewer)
 {
+	if (!viewer->connected) {
+		viewer_simple_message_dialog(viewer->window, _("Unable to connect to the VNC server %s"),
+					     viewer->vncAddress);
+	}
 	viewer_deactivate(viewer);
 }
 
@@ -950,8 +992,6 @@ static void viewer_vnc_auth_failure(GtkWidget *vnc G_GNUC_UNUSED, const char *re
 {
 	GtkWidget *dialog;
 	int ret;
-
-	fprintf(stderr, "Now %s\n", reason);
 
 	dialog = gtk_message_dialog_new(GTK_WINDOW(viewer->window),
 					GTK_DIALOG_MODAL |
@@ -975,20 +1015,10 @@ static void viewer_vnc_auth_failure(GtkWidget *vnc G_GNUC_UNUSED, const char *re
 
 static void viewer_vnc_auth_unsupported(GtkWidget *vnc G_GNUC_UNUSED, unsigned int authType, VirtViewer *viewer)
 {
-	GtkWidget *dialog;
-
-	dialog = gtk_message_dialog_new(GTK_WINDOW(viewer->window),
-					GTK_DIALOG_MODAL |
-					GTK_DIALOG_DESTROY_WITH_PARENT,
-					GTK_MESSAGE_ERROR,
-					GTK_BUTTONS_OK,
-					_("Unable to authenticate with VNC server at %s\n"
-					  "Unsupported authentication type %d"),
-					viewer->vncAddress, authType);
-
-	gtk_dialog_run(GTK_DIALOG(dialog));
-
-	gtk_widget_destroy(dialog);
+	viewer_simple_message_dialog(viewer->window,
+				     _("Unable to authenticate with VNC server at %s\n"
+				       "Unsupported authentication type %d"),
+				     viewer->vncAddress, authType);
 }
 
 
@@ -1078,7 +1108,9 @@ static int viewer_initial_connect(VirtViewer *viewer)
 			viewer_set_status(viewer, "Waiting for guest domain to be created");
 			goto done;
 		} else {
-			DEBUG_LOG("Cannot find guest");
+			viewer_simple_message_dialog(viewer->window, _("Cannot find guest domain %s"),
+						     viewer->domkey);
+			DEBUG_LOG("Cannot find guest %s", viewer->domkey);
 			goto cleanup;
 		}
 	}
@@ -1178,8 +1210,8 @@ viewer_start (const char *uri,
 					  &auth_libvirt,
 					  VIR_CONNECT_RO);
 	if (!viewer->conn) {
-		fprintf(stderr, "unable to connect to libvirt %s\n",
-			uri ? uri : "xen");
+		viewer_simple_message_dialog(NULL, _("Unable to connect to libvirt with URI %s"),
+					     uri ? uri : _("[none]"));
 		return -1;
 	}
 

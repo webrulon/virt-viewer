@@ -25,12 +25,15 @@
 #include <vncdisplay.h>
 #include <gtk/gtk.h>
 #include <glib/gi18n.h>
+#include <stdlib.h>
 
 #include "viewer.h"
 
-static void viewer_version(FILE *out)
+static void viewer_version(void)
 {
-	fprintf(out, _("%s version %s\n"), PACKAGE, VERSION);
+	g_print(_("%s version %s\n"), PACKAGE, VERSION);
+
+	exit(0);
 }
 
 
@@ -41,7 +44,6 @@ int main(int argc, char **argv)
 	int ret;
 	char *uri = NULL;
 	gchar **args = NULL;
-	gboolean print_version = FALSE;
 	gboolean verbose = FALSE;
 	gboolean debug = FALSE;
 	gboolean direct = FALSE;
@@ -49,8 +51,8 @@ int main(int argc, char **argv)
 	gboolean reconnect = FALSE;
 	const char *help_msg = N_("Run '" PACKAGE " --help' to see a full list of available command line options");
 	const GOptionEntry options [] = {
-		{ "version", 'V', 0, G_OPTION_ARG_NONE, &print_version,
-		  N_("display version information"), NULL },
+		{ "version", 'V', G_OPTION_FLAG_NO_ARG, G_OPTION_ARG_CALLBACK,
+		  viewer_version, N_("display version information"), NULL },
 		{ "verbose", 'v', 0, G_OPTION_ARG_NONE, &verbose,
 		  N_("display verbose information"), NULL },
 		{ "direct", 'd', 0, G_OPTION_ARG_NONE, &direct,
@@ -80,16 +82,14 @@ int main(int argc, char **argv)
 	g_option_context_add_group (context, vnc_display_get_option_group ());
 	g_option_context_parse (context, &argc, &argv, &error);
 	if (error) {
-		g_print ("%s\n%s\n",
-			 error->message,
-			 gettext(help_msg));
-		g_error_free (error);
+		g_printerr("%s\n%s\n",
+			   error->message,
+			   gettext(help_msg));
+		g_error_free(error);
 		return 1;
 	}
-	if (print_version) {
-		viewer_version(stdout);
-		return 0;
-	}
+
+	g_option_context_free(context);
 
 	if (!args || (g_strv_length(args) != 1)) {
 		fprintf(stderr, _("\nUsage: %s [OPTIONS] DOMAIN-NAME|ID|UUID\n\n%s\n\n"), argv[0], help_msg);

@@ -336,7 +336,7 @@ static void viewer_resize_desktop(GtkWidget *vnc G_GNUC_UNUSED, gint width, gint
 
 static void viewer_set_title(VirtViewer *viewer, gboolean grabbed)
 {
-	char title[1024];
+	char *title;
 	const char *subtitle;
 
 	if (!viewer->window)
@@ -347,10 +347,12 @@ static void viewer_set_title(VirtViewer *viewer, gboolean grabbed)
 	else
 		subtitle = "";
 
-	snprintf(title, sizeof(title), "%s%s - Virt Viewer",
-		 subtitle, viewer->domtitle);
+	title = g_strdup_printf("%s%s - Virt Viewer",
+				subtitle, viewer->domtitle);
 
 	gtk_window_set_title(GTK_WINDOW(viewer->window), title);
+
+	g_free(title);
 }
 
 static gboolean viewer_ignore_accel(GtkWidget *menu G_GNUC_UNUSED,
@@ -389,8 +391,8 @@ static void viewer_disable_modifiers(VirtViewer *viewer)
 	for (i = 0 ; i < LAST_MENU ; i++) {
 		GtkWidget *menu = glade_xml_get_widget(viewer->glade, menuNames[i]);
 		viewer->accelMenuSig[i] =
-			g_signal_connect(GTK_OBJECT(menu), "mnemonic-activate",
-					 GTK_SIGNAL_FUNC(viewer_ignore_accel), viewer);
+			g_signal_connect(menu, "mnemonic-activate",
+					 G_CALLBACK(viewer_ignore_accel), viewer);
 	}
 
 	viewer->accelEnabled = FALSE;
@@ -420,8 +422,7 @@ static void viewer_enable_modifiers(VirtViewer *viewer)
 	/* This allows menu bar shortcuts like Alt+F == File */
 	for (i = 0 ; i < LAST_MENU ; i++) {
 		GtkWidget *menu = glade_xml_get_widget(viewer->glade, menuNames[i]);
-		g_signal_handler_disconnect(GTK_OBJECT(menu),
-					    viewer->accelMenuSig[i]);
+		g_signal_handler_disconnect(menu, viewer->accelMenuSig[i]);
 	}
 
 	viewer->accelEnabled = TRUE;
@@ -494,7 +495,7 @@ static void viewer_menu_send(GtkWidget *menu G_GNUC_UNUSED, VirtViewer *viewer)
         GtkWidget *label = gtk_bin_get_child(GTK_BIN(menu));
         const char *text = gtk_label_get_label(GTK_LABEL(label));
 
-        for (i = 0 ; i < (sizeof(keyCombos)/sizeof(keyCombos[0])) ; i++) {
+        for (i = 0 ; i < G_N_ELEMENTS(keyCombos) ; i++) {
                 if (!strcmp(text, keyCombos[i].label)) {
                         DEBUG_LOG("Sending key combo %s", gtk_label_get_text(GTK_LABEL(label)));
                         vnc_display_send_keys(VNC_DISPLAY(viewer->vnc),
@@ -1109,27 +1110,27 @@ viewer_start (const char *uri,
 	vnc_display_set_force_size(VNC_DISPLAY(viewer->vnc), FALSE);
 	vnc_display_set_scaling(VNC_DISPLAY(viewer->vnc), TRUE);
 
-        g_signal_connect(GTK_OBJECT(viewer->vnc), "vnc-connected",
-			 GTK_SIGNAL_FUNC(viewer_connected), viewer);
-        g_signal_connect(GTK_OBJECT(viewer->vnc), "vnc-initialized",
-			 GTK_SIGNAL_FUNC(viewer_initialized), viewer);
-        g_signal_connect(GTK_OBJECT(viewer->vnc), "vnc-disconnected",
-			 GTK_SIGNAL_FUNC(viewer_disconnected), viewer);
+        g_signal_connect(viewer->vnc, "vnc-connected",
+			 G_CALLBACK(viewer_connected), viewer);
+        g_signal_connect(viewer->vnc, "vnc-initialized",
+			 G_CALLBACK(viewer_initialized), viewer);
+        g_signal_connect(viewer->vnc, "vnc-disconnected",
+			 G_CALLBACK(viewer_disconnected), viewer);
 
 	/* When VNC desktop resizes, we have to resize the containing widget */
-	g_signal_connect(GTK_OBJECT(viewer->vnc), "vnc-desktop-resize",
-			 GTK_SIGNAL_FUNC(viewer_resize_desktop), viewer);
-        g_signal_connect(GTK_OBJECT(viewer->vnc), "vnc-pointer-grab",
-			 GTK_SIGNAL_FUNC(viewer_mouse_grab), viewer);
-        g_signal_connect(GTK_OBJECT(viewer->vnc), "vnc-pointer-ungrab",
-			 GTK_SIGNAL_FUNC(viewer_mouse_ungrab), viewer);
-	g_signal_connect(GTK_OBJECT(viewer->vnc), "vnc-keyboard-grab",
-			 GTK_SIGNAL_FUNC(viewer_key_grab), viewer);
-	g_signal_connect(GTK_OBJECT(viewer->vnc), "vnc-keyboard-ungrab",
-			 GTK_SIGNAL_FUNC(viewer_key_ungrab), viewer);
+	g_signal_connect(viewer->vnc, "vnc-desktop-resize",
+			 G_CALLBACK(viewer_resize_desktop), viewer);
+        g_signal_connect(viewer->vnc, "vnc-pointer-grab",
+			 G_CALLBACK(viewer_mouse_grab), viewer);
+        g_signal_connect(viewer->vnc, "vnc-pointer-ungrab",
+			 G_CALLBACK(viewer_mouse_ungrab), viewer);
+	g_signal_connect(viewer->vnc, "vnc-keyboard-grab",
+			 G_CALLBACK(viewer_key_grab), viewer);
+	g_signal_connect(viewer->vnc, "vnc-keyboard-ungrab",
+			 G_CALLBACK(viewer_key_ungrab), viewer);
 
-        g_signal_connect(GTK_OBJECT(viewer->vnc), "vnc-auth-credential",
-                         GTK_SIGNAL_FUNC(viewer_auth_vnc_credentials), &viewer->vncAddress);
+        g_signal_connect(viewer->vnc, "vnc-auth-credential",
+                         G_CALLBACK(viewer_auth_vnc_credentials), &viewer->vncAddress);
 
 	notebook = glade_xml_get_widget(viewer->glade, "notebook");
 
@@ -1137,8 +1138,8 @@ viewer_start (const char *uri,
 	align = glade_xml_get_widget(viewer->glade, "vnc-align");
 	gtk_container_add(GTK_CONTAINER(align), viewer->vnc);
 
-	g_signal_connect(GTK_OBJECT(align), "size-allocate",
-			 GTK_SIGNAL_FUNC(viewer_resize_align), viewer);
+	g_signal_connect(align, "size-allocate",
+			 G_CALLBACK(viewer_resize_align), viewer);
 
 	if (container) {
 		viewer->container = container;
@@ -1149,8 +1150,8 @@ viewer_start (const char *uri,
 		GSList *accels;
 		viewer->container = window;
 		viewer->window = window;
-		g_signal_connect(GTK_OBJECT(window), "delete-event",
-				 GTK_SIGNAL_FUNC(viewer_shutdown), viewer);
+		g_signal_connect(window, "delete-event",
+				 G_CALLBACK(viewer_shutdown), viewer);
 		gtk_window_set_resizable(GTK_WINDOW(window), TRUE);
 		viewer->accelEnabled = TRUE;
 		accels = gtk_accel_groups_from_object(G_OBJECT(window));

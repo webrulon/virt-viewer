@@ -5,53 +5,53 @@ msgid ""
 msgstr ""
 "Project-Id-Version: pl\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-01-11 20:52+0000\n"
-"PO-Revision-Date: 2010-01-11 22:42+0100\n"
+"POT-Creation-Date: 2010-01-13 15:48+0000\n"
+"PO-Revision-Date: 2010-01-13 19:15+0100\n"
 "Last-Translator: Piotr Drąg <piotrdrag@gmail.com>\n"
 "Language-Team: Polish <trans-pl@lists.fedoraproject.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: ../src/main.c:33
+#: ../src/main.c:34
 #, c-format
 msgid "%s version %s\n"
 msgstr "%s wersja %s\n"
 
-#: ../src/main.c:50
+#: ../src/main.c:52
 msgid "Run '"
 msgstr "Należy wykonać \""
 
-#: ../src/main.c:53
+#: ../src/main.c:55
 msgid "display version information"
 msgstr "wyświetla informację o wersji"
 
-#: ../src/main.c:55
+#: ../src/main.c:57
 msgid "display verbose information"
 msgstr "wyświetla więcej informacji"
 
-#: ../src/main.c:57
+#: ../src/main.c:59
 msgid "direct connection with no automatic tunnels"
 msgstr "bezpośrednie połączenie bez automatycznych tuneli"
 
-#: ../src/main.c:59
+#: ../src/main.c:61
 msgid "connect to hypervisor"
 msgstr "łączy z nadzorcą"
 
-#: ../src/main.c:61
+#: ../src/main.c:63
 msgid "wait for domain to start"
 msgstr "oczekuje na uruchomienie domeny"
 
-#: ../src/main.c:63
+#: ../src/main.c:65
 msgid "reconnect to domain upon restart"
 msgstr "ponownie łączy z domeną po ponownym uruchomieniu"
 
-#: ../src/main.c:65
+#: ../src/main.c:67
 msgid "display debugging information"
 msgstr "wyświetla informacje o debugowaniu"
 
 #. Setup command line options
-#: ../src/main.c:77
+#: ../src/main.c:79
 msgid "- Virtual machine graphical console"
 msgstr "- graficzna konsola maszyny wirtualnej"
 
@@ -69,6 +69,53 @@ msgstr ""
 "\n"
 "%s\n"
 "\n"
+
+#: ../src/viewer.c:878
+#, c-format
+msgid "Cannot determine the VNC port for the guest %s"
+msgstr "Nie można określić portu VNC dla gościa %s"
+
+#: ../src/viewer.c:884
+#, c-format
+msgid "Cannot determine the VNC host for the guest %s"
+msgstr "Nie można określić gospodarza VNC dla gościa %s"
+
+#: ../src/viewer.c:984
+#, c-format
+msgid "Unable to connect to the VNC server %s"
+msgstr "Nie można połączyć się z serwerem VNC %s"
+
+#: ../src/viewer.c:1001
+#, c-format
+msgid ""
+"Unable to authenticate with VNC server at %s: %s\n"
+"Retry connection again?"
+msgstr ""
+"Nie można uwierzytelnić z serwerem VNC na %s: %s\n"
+"Ponownie ponowić połączenie?"
+
+#: ../src/viewer.c:1019
+#, c-format
+msgid ""
+"Unable to authenticate with VNC server at %s\n"
+"Unsupported authentication type %d"
+msgstr ""
+"Nie można uwierzytelnić z serwerem VNC na %s\n"
+"Nieobsługiwany typ uwierzytelniania %d"
+
+#: ../src/viewer.c:1111
+#, c-format
+msgid "Cannot find guest domain %s"
+msgstr "Nie można odnaleźć domeny gościa %s"
+
+#: ../src/viewer.c:1213
+#, c-format
+msgid "Unable to connect to libvirt with URI %s"
+msgstr "Nie można połączyć się z biblioteką libvirt za pomocą adresu URL %s"
+
+#: ../src/viewer.c:1214
+msgid "[none]"
+msgstr "[brak]"
 
 #.
 #. * Local variables:

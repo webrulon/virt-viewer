@@ -1,16 +1,257 @@
-2008-03-10  "Richard W.M. Jones" <rjones@redhat.com>
+2010-01-13  raven  <raven@fedoraproject.org>
 
+	* po/pl.po:
+	Sending translation for Polish
+	[d114aac4cfb8] [tip]
+
+2010-01-12  "Daniel P. Berrange  <berrange@redhat.com>
+
+	* src/viewer.c:
+	Add message dialog displays for important error scenarios
+	[6d1f30e5fb71]
+
+	* src/auth.glade:
+	Fix warning with default widget focus in auth dialog
+	[e0e91e221add]
+
+	* src/viewer.c:
+	Add dialog to alert user to unsuccessful authentication & retry
+	Alert user if VNC server has no compatible auth methods Support VNC
+	bell & cut text events
+	[f098a86755a7]
+
+	* configure.ac:
+	Turn on automake's silent build rules if available
+	[d388340febbc]
+
+	* src/main.c, src/viewer.c:
+	Various cleanups for Glib/GTK and BZ 474213
+	[c13f1d31eab7]
+
+2010-01-11  raven  <raven@fedoraproject.org>
+
+	* po/pl.po:
+	Sending translation for Polish
+	[31af732a9a55]
+
+2010-01-11  "Daniel P. Berrange  <berrange@redhat.com>
+
+	* .hgignore, mingw32-virt-viewer.spec.in, po/LINGUAS, po/virt-
+	viewer.pot, src/about.glade, virt-viewer.spec.in:
+	Add 'pl' to LINGUAS. Remove accidentally committed .pot file and add
+	it to .hgignore. Add RPM specfile magic for translations. Fix typo
+	in about.glade URL
+	[09c9db915104]
+
+2010-01-11  raven  <raven@fedoraproject.org>
+
+	* po/pl.po, po/virt-viewer.pot:
+	Sending translation for po/pl.po
+	[affb21844c39]
+
+2010-01-11  "Daniel P. Berrange  <berrange@redhat.com>
+
+	* .hgignore, Makefile.am, autogen.sh, configure.ac, intltool-
+	extract.in, intltool-merge.in, intltool-update.in, po/LINGUAS,
+	po/POTFILES.in, src/Makefile.am, src/main.c:
+	Add support for i18n of the UI
+
+	Add all the boilerplate code required for doing i18n of the UI. No
+	translations available yet though
+	[07db22b2f766]
+
+2009-08-15  "Yann E. MORIN"  <yann.morin.1998@anciens.enib.fr>
+
+	* src/util.h:
+	viewer: fix build on 'old' GTK2
+
+	Debian lenny has gtk2 2.12.12, which is missing
+	gtk_widget_get_window. Provide our own function if GTK2 <= 2.12 .
+
+	Highly inspired from: http://osdir.com/ml/svn-commits-
+	list/2009-08/msg00725.html
+	[e05cd5be9c36]
+
+2009-07-29  "Daniel P. Berrange  <berrange@redhat.com>
+
+	* .hgtags:
+	Added tag release-0.2.0 for changeset b38a2c67ebfd
+	[99ba88ee7820]
+
+	* NEWS, configure.ac, virt-viewer.spec.in:
+	Update for 0.2.0 release
+	[b38a2c67ebfd] [release-0.2.0]
+
+	* plugin/Makefile.am:
+	Disable compile errors in plugin till we figure out what's up with
+	the header files
+	[f2fabc428441]
+
+	* mingw32-virt-viewer.spec.in, virt-viewer.spec.in:
+	Update deps in rpm
+	[d5ef17c7856e]
+
+	* src/viewer.c:
+	Ensure VNC display is centered if being scaled
+	[f5e758b7a271]
+
+	* src/auth.glade:
+	Ensure password is not echoed
+	[e826ca02a7d4]
+
+	* src/auth.c, src/auth.glade, src/auth.h, src/util.h, src/viewer.c:
+	Add support for libvirt graphical auth
+	[a8e92767179f]
+
+	* plugin/Makefile.am, src/Makefile.am, src/auth.c, src/auth.h,
+	src/events.c, src/events.h, src/util.c, src/util.h, src/viewer.c,
+	src/viewer.h:
+	Pull auth code out into separate file
+	[1471c65b8280]
+
+2009-07-28  "Daniel P. Berrange  <berrange@redhat.com>
+
+	* plugin/Makefile.am, plugin/npshell.c, plugin/npupp.h,
+	plugin/test.html, plugin/virt-viewer-plugin.c, plugin/virt-viewer-
+	plugin.h, src/viewer.c:
+	Make plugin work again
+	[68646d3db76d]
+
+	* src/viewer.c:
+	Add compatability logic for drivers without domain event support
+	[c29276a0f2ec]
+
+	* src/viewer.c:
+	Fix mouse / key grab vs modifier disabling mixup
+	[6cdf7dfa223d]
+
+	* configure.ac, mingw32-virt-viewer.spec.in, plugin/Makefile.am,
+	src/Makefile.am, src/events.c, src/events.h, src/viewer.c, virt-
+	viewer.spec.in:
+	Pull glib event loop integration into tree until libvirt-glib is
+	more mature
+	[dd92609022ac]
+
+	* src/viewer.c, src/viewer.glade:
+	Re-write the way scaling/resizing works
+
+	* Default to auto-resize mode where we try to fit the VNC widget 1:1
+	in the main window
+	* If local desktop is not large enough for VNC widget, scale down,
+	maintaining aspect ratio
+	* Allow the user to turn off auto-resize and have total manual control
+	over window size
+	* Always scale the display in fullscreen mode
+	[3521ee2a63e6]
+
+	* plugin/virt-viewer-plugin.c, src/main.c, src/viewer.c, src/viewer.h:
+	Add a --debug command line flag
+	[1a3b36e0b6f2]
+
+	* src/viewer.c:
+	Fix waiting for a VM that does not initially exist
+	[da53b8f99cdf]
+
+	* plugin/Makefile.am, plugin/npshell.c, src/Makefile.am, src/main.c,
+	src/viewer.c:
+	Move most of viewer code out into viewer.c
+	[8f237adf2792]
+
+2008-11-28  "Daniel P. Berrange  <berrange@redhat.com>
+
+	* autobuild.sh, configure.ac, mingw32-virt-viewer.spec.in, virt-
+	viewer.spec.in:
+	Initial mingw32 build support
+	[92da1556bbf9]
+
+	* src/main.c:
+	Use g_strdup & friends
+	[029b506ca4cf]
+
+	* configure.ac, src/main.c, src/usleep.c:
+	Remove unused usleep code
+	[ac45bee371c8]
+
+2008-11-26  "Daniel P. Berrange  <berrange@redhat.com>
+
+	* .hgignore, autogen.sh, configure.ac, man/virt-viewer.pod,
+	plugin/Makefile.am, plugin/npshell.c, plugin/virt-viewer-plugin.c,
+	plugin/virt-viewer-plugin.h, src/Makefile.am, src/about.glade,
+	src/auth.glade, src/main.c, src/viewer.glade, src/viewer.h, virt-
+	viewer.spec.in:
+	Re-write completely to use Glade, libvirt events, and libvirt-glib
+	integration
+	[8e98b3d44c8d]
+
+2008-11-03  "Daniel P. Berrange  <berrange@redhat.com>
+
+	* plugin/Makefile.am:
+	Fix rule to use DESTDIR on plugin install
+	[e70af57502f9]
+
+2008-10-10  "Richard W.M. Jones  <rjones@redhat.com>
+
+	* .hgignore, ChangeLog, configure.ac, src/Makefile.am, src/main.c,
+	src/usleep.c:
 	* configure.ac, src/Makefile.am, src/main.c, src/usleep.c: Support
 	for building on Windows using MinGW compiler toolchain (or
 	for cross-compiling using the same).
 
-	* .hgignore: Ignore some generated files.
+	 * .hgignore: Ignore some generated files.
+	[2cce513346ae]
+
+2008-06-17  "Daniel P. Berrange  <berrange@redhat.com>
+
+	* src/main.c:
+	Add error message when conecting to inactive VM (Hiroyuki Kaguchi)
+	[57d1fb020d57]
+
+2008-04-27  "Daniel P. Berrange  <berrange@redhat.com>
+
+	* configure.ac, src/main.c:
+	Use GTK apis for option parsing (Guido G\374nther)
+	[5299a3aaebb5]
+
+2008-04-23  "Daniel P. Berrange  <berrange@redhat.com>
+
+	* AUTHORS, src/main.c:
+	Avoid caching inactive domain to workaround issues with older XenD
+	(Hiroyuki Kaguchi)
+	[7f20b8bb6abd]
+
+2008-04-22  "Daniel P. Berrange  <berrange@redhat.com>
+
+	* AUTHORS, src/main.c:
+	Call gtk_init early to ensure it grabs args like --sync
+	[5f14440985f8]
+
+2008-04-08  "Daniel P. Berrange  <berrange@redhat.com>
+
+	* man/virt-viewer.pod:
+	Fix manpage typo
+	[e2ee322e3d1a]
+
+2008-03-21  "Daniel P. Berrange  <berrange@redhat.com>
+
+	* configure.ac:
+	Bump GTK dep to 2.10.0
+	[d8cf9d390762]
+
+2008-03-10  "Daniel P. Berrange  <berrange@redhat.com>
+
+	* .hgtags:
+	Added tag release-0.0.3 for changeset 05f9c167354b
+	[5d426425c850]
+
+	* ChangeLog, NEWS:
+	Refresh news / changelog for release
+	[05f9c167354b] [release-0.0.3]
 
 2008-03-09  "Daniel P. Berrange  <berrange@redhat.com>
 
 	* autobuild.sh, configure.ac, virt-viewer.spec.in:
 	Added -plugin sub RPM, disabled by default, except for autobuild
-	[efcac0fc56b5] [tip]
+	[efcac0fc56b5]
 
 2008-03-08  "Daniel P. Berrange  <berrange@redhat.com>
 
@@ -115,6 +356,14 @@
 	* Merge
 	[c40130b3a7ec]
 
+2007-08-15  "Daniel P. Berrange  <berrange@redhat.com>
+
+	* COPYING, INSTALL:
+	Added COPYING/INSTALL files
+	[1f83ef35bb59]
+
+2007-08-27  "Daniel P. Berrange  <berrange@redhat.com>
+
 	* src/main.c:
 	Added initial ability to connect remote hosts
 	[ac9cae161efb]
@@ -128,10 +377,6 @@
 	[21f7b4c5c93c]
 
 2007-08-15  "Daniel P. Berrange  <berrange@redhat.com>
-
-	* COPYING, INSTALL:
-	Added COPYING/INSTALL files
-	[1f83ef35bb59]
 
 	* .hgtags:
 	Added tag release-0.0.1 for changeset 2b78ab2d18ce

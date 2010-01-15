@@ -1,6 +1,15 @@
   Virt Viewer News
   ================
 
+0.2.1: Jan 15, 2010
+-------------------
+
+  - Add infrastructure for translation
+  - Display dialog to user if authentication fails
+  - Display dialog to user if domain cannot be found
+  - GTK/GLib best practice cleanups
+  - Add Polish translation
+
 0.2.0: July 20, 2009
 --------------------
 

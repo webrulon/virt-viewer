@@ -11,7 +11,7 @@ msgstr ""
 "Project-Id-Version: zh_CN\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-01-21 23:15+0000\n"
-"PO-Revision-Date: 2010-01-22 09:48+1000\n"
+"PO-Revision-Date: 2010-01-22 10:24+1000\n"
 "Last-Translator: Leah Liu <lliu@redhat.com>\n"
 "Language-Team: Simplified Chinese\n"
 "MIME-Version: 1.0\n"
@@ -26,7 +26,7 @@ msgstr "%s 版本 %s\n"
 
 #: ../src/main.c:52
 msgid "Run '"
-msgstr ""
+msgstr "运行 '"
 
 #: ../src/main.c:55
 msgid "display version information"
@@ -97,6 +97,8 @@ msgid ""
 "Unable to authenticate with VNC server at %s: %s\n"
 "Retry connection again?"
 msgstr ""
+"无法在 %s: %s 使用 VNC 服务器验证\n"
+"重新尝试连接？"
 
 #: ../src/viewer.c:1019
 #, c-format
@@ -146,7 +148,7 @@ msgstr ""
 
 #: ../src/about.glade.h:5
 msgid "The Fedora Translation Team"
-msgstr ""
+msgstr "Fedora 翻译团队"
 
 #: ../src/about.glade.h:6
 msgid ""
@@ -164,136 +166,149 @@ msgid ""
 "along with this program; if not, write to the Free Software\n"
 "Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA\n"
 msgstr ""
+"这个程序是免费软件。您可以根据自由软件基金\n"
+"发布的 GNU 通用公共许可证版本 2 或者之后的版本\n"
+"中的条款重新发布和/或者修改\n"
+"这个软件。 \n"
+"\n"
+"这个程序的发布是希望它能对您\n"
+"有所帮助，但并不保证对您有用，\n"
+"甚至不包含用于特殊目的的适销性或者适用性保证。\n"
+"详情请查看 GNU 通用公共许可证。\n"
+"\n"
+"这个程序应该附带有一份 GNU 通用公共许可证副本。\n"
+"如果没有，请致函自由软件基金有限公司，\n"
+"地址 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA\n"
 
 #: ../src/about.glade.h:20
 msgid "virt-manager.org"
-msgstr ""
+msgstr "virt-manager.org"
 
 #: ../src/auth.glade.h:1
 msgid "Authentication required"
-msgstr ""
+msgstr "需要验证"
 
 #: ../src/auth.glade.h:2
 msgid "Password:"
-msgstr ""
+msgstr "密码："
 
 #: ../src/auth.glade.h:3
 msgid "Username:"
-msgstr ""
+msgstr "用户名："
 
 #: ../src/auth.glade.h:4
 msgid "gtk-cancel"
-msgstr ""
+msgstr "gtk-cancel"
 
 #: ../src/auth.glade.h:5
 msgid "gtk-ok"
-msgstr ""
+msgstr "gtk-ok"
 
 #: ../src/auth.glade.h:6
 msgid "label"
-msgstr ""
+msgstr "标签"
 
 #: ../src/viewer.glade.h:1
 msgid "Automatically resize"
-msgstr ""
+msgstr "自动重新定义大小"
 
 #: ../src/viewer.glade.h:2
 msgid "Ctrl+Alt+F11"
-msgstr ""
+msgstr "Ctrl+Alt+F11"
 
 #: ../src/viewer.glade.h:3
 msgid "Ctrl+Alt+F12"
-msgstr ""
+msgstr "Ctrl+Alt+F12"
 
 #: ../src/viewer.glade.h:4
 msgid "Ctrl+Alt+F1_0"
-msgstr ""
+msgstr "Ctrl+Alt+F1_0"
 
 #: ../src/viewer.glade.h:5
 msgid "Ctrl+Alt+F_1"
-msgstr ""
+msgstr "Ctrl+Alt+F_1"
 
 #: ../src/viewer.glade.h:6
 msgid "Ctrl+Alt+F_2"
-msgstr ""
+msgstr "Ctrl+Alt+F_2"
 
 #: ../src/viewer.glade.h:7
 msgid "Ctrl+Alt+F_3"
-msgstr ""
+msgstr "Ctrl+Alt+F_3"
 
 #: ../src/viewer.glade.h:8
 msgid "Ctrl+Alt+F_4"
-msgstr ""
+msgstr "Ctrl+Alt+F_4"
 
 #: ../src/viewer.glade.h:9
 msgid "Ctrl+Alt+F_5"
-msgstr ""
+msgstr "Ctrl+Alt+F_5"
 
 #: ../src/viewer.glade.h:10
 msgid "Ctrl+Alt+F_6"
-msgstr ""
+msgstr "Ctrl+Alt+F_6"
 
 #: ../src/viewer.glade.h:11
 msgid "Ctrl+Alt+F_7"
-msgstr ""
+msgstr "Ctrl+Alt+F_7"
 
 #: ../src/viewer.glade.h:12
 msgid "Ctrl+Alt+F_8"
-msgstr ""
+msgstr "Ctrl+Alt+F_8"
 
 #: ../src/viewer.glade.h:13
 msgid "Ctrl+Alt+F_9"
-msgstr ""
+msgstr "Ctrl+Alt+F_9"
 
 #: ../src/viewer.glade.h:14
 msgid "Ctrl+Alt+_Backspace"
-msgstr ""
+msgstr "Ctrl+Alt+_Backspace"
 
 #: ../src/viewer.glade.h:15
 msgid "Ctrl+Alt+_Del"
-msgstr ""
+msgstr "Ctrl+Alt+_Del"
 
 #: ../src/viewer.glade.h:16
 msgid "Full screen"
-msgstr ""
+msgstr "全屏"
 
 #: ../src/viewer.glade.h:17
 msgid "Screenshot"
-msgstr ""
+msgstr "截屏"
 
 #: ../src/viewer.glade.h:18
 msgid "_File"
-msgstr ""
+msgstr "文件（_F）"
 
 #: ../src/viewer.glade.h:19
 msgid "_Help"
-msgstr ""
+msgstr "帮助（_H）"
 
 #: ../src/viewer.glade.h:20
 msgid "_PrintScreen"
-msgstr ""
+msgstr "打印屏幕内容（_P）"
 
 #: ../src/viewer.glade.h:21
 msgid "_Send key"
-msgstr ""
+msgstr "发送密钥（_S）"
 
 #: ../src/viewer.glade.h:22
 msgid "_View"
-msgstr ""
+msgstr "查看（_V）"
 
 #: ../src/viewer.glade.h:23
 msgid "gtk-about"
-msgstr ""
+msgstr "gtk-about"
 
 #: ../src/viewer.glade.h:24
 msgid "gtk-quit"
-msgstr ""
+msgstr "gtk-quit"
 
 #: ../src/viewer.glade.h:25
 msgid "page 1"
-msgstr ""
+msgstr "第一页"
 
 #: ../src/viewer.glade.h:26
 msgid "page 2"
-msgstr ""
+msgstr "第二页"
 

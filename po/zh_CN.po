@@ -11,7 +11,7 @@ msgstr ""
 "Project-Id-Version: zh_CN\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-01-21 23:15+0000\n"
-"PO-Revision-Date: 2010-01-22 10:24+1000\n"
+"PO-Revision-Date: 2010-01-22 13:10+1000\n"
 "Last-Translator: Leah Liu <lliu@redhat.com>\n"
 "Language-Team: Simplified Chinese\n"
 "MIME-Version: 1.0\n"
@@ -290,7 +290,7 @@ msgstr "打印屏幕内容（_P）"
 
 #: ../src/viewer.glade.h:21
 msgid "_Send key"
-msgstr "发送密钥（_S）"
+msgstr "发送组合键（_S）"
 
 #: ../src/viewer.glade.h:22
 msgid "_View"

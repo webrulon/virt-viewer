@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: de\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-01-21 23:15+0000\n"
-"PO-Revision-Date: 2010-01-22 11:07+1000\n"
+"PO-Revision-Date: 2010-01-22 13:13+1000\n"
 "Last-Translator: Hedda Peters <hpeters@redhat.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -290,7 +290,7 @@ msgstr "S_creenshot"
 
 #: ../src/viewer.glade.h:21
 msgid "_Send key"
-msgstr "_Schlüssel senden"
+msgstr "_Taste senden"
 
 #: ../src/viewer.glade.h:22
 msgid "_View"

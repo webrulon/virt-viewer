@@ -1,63 +1,65 @@
+# translation of ru.po to Russian
 # Russian translations for fedora package.
 # Copyright (C) 2010 THE fedora'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the fedora package.
-# Automatically generated, 2010.
 #
+# Automatically generated, 2010.
+# Yulia <ypoyarko@redhat.com>, 2010.
 msgid ""
 msgstr ""
-"Project-Id-Version: fedora 13\n"
+"Project-Id-Version: ru\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-01-21 23:15+0000\n"
-"PO-Revision-Date: 2010-01-21 23:15+0000\n"
-"Last-Translator: Automatically generated\n"
-"Language-Team: none\n"
+"PO-Revision-Date: 2010-01-22 12:25+1100\n"
+"Last-Translator: Yulia <ypoyarko@redhat.com>\n"
+"Language-Team: Russian <fedora-trans-ru@redhat.com>\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=ASCII\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%"
-"10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+"Plural-Forms:  nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+"X-Generator: KBabel 1.11.4\n"
 
 #: ../src/main.c:34
 #, c-format
 msgid "%s version %s\n"
-msgstr ""
+msgstr "%s версия %s\n"
 
 #: ../src/main.c:52
 msgid "Run '"
-msgstr ""
+msgstr "Выполнить '"
 
 #: ../src/main.c:55
 msgid "display version information"
-msgstr ""
+msgstr "показать версию"
 
 #: ../src/main.c:57
 msgid "display verbose information"
-msgstr ""
+msgstr "показать подробную информацию"
 
 #: ../src/main.c:59
 msgid "direct connection with no automatic tunnels"
-msgstr ""
+msgstr "прямое подключение без туннелей"
 
 #: ../src/main.c:61
 msgid "connect to hypervisor"
-msgstr ""
+msgstr "подключиться к гипервизору"
 
 #: ../src/main.c:63
 msgid "wait for domain to start"
-msgstr ""
+msgstr "ждать запуска домена"
 
 #: ../src/main.c:65
 msgid "reconnect to domain upon restart"
-msgstr ""
+msgstr "заново подключиться к домену после перезапуска"
 
 #: ../src/main.c:67
 msgid "display debugging information"
-msgstr ""
+msgstr "показать информацию отладки"
 
 #. Setup command line options
 #: ../src/main.c:79
 msgid "- Virtual machine graphical console"
-msgstr ""
+msgstr "— графическая консоль виртуальной машины"
 
 #: ../src/main.c:95
 #, c-format
@@ -68,21 +70,26 @@ msgid ""
 "%s\n"
 "\n"
 msgstr ""
+"\n"
+"Формат: %s [ПАРАМЕТРЫ] ИМЯ_ДОМЕНА|ID|UUID\n"
+"\n"
+"%s\n"
+"\n"
 
 #: ../src/viewer.c:878
 #, c-format
 msgid "Cannot determine the VNC port for the guest %s"
-msgstr ""
+msgstr "Не удалось определить порт VNC для гостевой системы %s"
 
 #: ../src/viewer.c:884
 #, c-format
 msgid "Cannot determine the VNC host for the guest %s"
-msgstr ""
+msgstr "Не удалось определить узел VNC для гостевой системы %s"
 
 #: ../src/viewer.c:984
 #, c-format
 msgid "Unable to connect to the VNC server %s"
-msgstr ""
+msgstr "Не удалось подключиться к VNC-серверу %s"
 
 #: ../src/viewer.c:1001
 #, c-format
@@ -90,6 +97,8 @@ msgid ""
 "Unable to authenticate with VNC server at %s: %s\n"
 "Retry connection again?"
 msgstr ""
+"Не удалось авторизоваться на VNC-сервере %s: %s\n"
+"Повторить попытку подключения?"
 
 #: ../src/viewer.c:1019
 #, c-format
@@ -97,20 +106,22 @@ msgid ""
 "Unable to authenticate with VNC server at %s\n"
 "Unsupported authentication type %d"
 msgstr ""
+"Не удалось авторизоваться на VNC-сервере %s\n"
+"Тип аутентификации %d"
 
 #: ../src/viewer.c:1111
 #, c-format
 msgid "Cannot find guest domain %s"
-msgstr ""
+msgstr "Не удалось найти гостевой домен %s"
 
 #: ../src/viewer.c:1213
 #, c-format
 msgid "Unable to connect to libvirt with URI %s"
-msgstr ""
+msgstr "Не удалось подключиться к libvirt через URI %s"
 
 #: ../src/viewer.c:1214
 msgid "[none]"
-msgstr ""
+msgstr "[нет]"
 
 #.
 #. * Local variables:
@@ -121,21 +132,23 @@ msgstr ""
 #.
 #: ../src/about.glade.h:1
 msgid "A remote desktop client built with GTK-VNC and libvirt"
-msgstr ""
+msgstr "Клиент удалённого рабочего стола включает GTK-VNC и libvirt"
 
 #: ../src/about.glade.h:2
 msgid "About Glade"
-msgstr ""
+msgstr "О Glade"
 
 #: ../src/about.glade.h:3
 msgid ""
 "Copyright 2007-2008 Daniel P. Berrange\n"
 "Copyright 2007-2008 Red Hat, Inc."
 msgstr ""
+"© 2007-2008 Daniel P. Berrange\n"
+"© 2007-2008 Red Hat, Inc."
 
 #: ../src/about.glade.h:5
 msgid "The Fedora Translation Team"
-msgstr ""
+msgstr "Команда локализации Fedora"
 
 #: ../src/about.glade.h:6
 msgid ""
@@ -153,135 +166,151 @@ msgid ""
 "along with this program; if not, write to the Free Software\n"
 "Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA\n"
 msgstr ""
+"Эта программа является свободным программным обеспечением. \n"
+"Разрешается её распространять и изменять в соответствии с условиями\n"
+"лицензии GNU General Public License версии 2 или любой более поздней версии,\n"
+"опубликованной Фондом свободного программного обеспечения. \n"
+"\n"
+"Эта программа распространяется в надежде, что она может быть полезной, \n"
+"но БЕЗ КАКИХ-ЛИБО ГАРАНТИЙ, ПОДРАЗУМЕВАЕМЫХ ИЛИ ВЫРАЖЕННЫХ ЯВНО,\n"
+"ВКЛЮЧАЯ ГАРАНТИИ КОММЕРЧЕСКОЙ ЦЕННОСТИ И ПРИГОДНОСТИ \n"
+"ДЛЯ КОНКРЕТНОЙ ЦЕЛИ. Для получения дополнительных сведений\n"
+"обратитесь к лицензии GNU General Public License.\n"
+"\n"
+"Копия лицензии GNU GPL предоставляется вместе с этой программой. \n"
+"Если лицензия отсутствует, отправьте письменный запрос по адресу:\n"
+"Free Software Foundation, Inc., \n"
+"59 Temple Place, Suite 330, Boston, MA  02111-1307  USA\n"
 
 #: ../src/about.glade.h:20
 msgid "virt-manager.org"
-msgstr ""
+msgstr "virt-manager.org"
 
 #: ../src/auth.glade.h:1
 msgid "Authentication required"
-msgstr ""
+msgstr "Требуется авторизация"
 
 #: ../src/auth.glade.h:2
 msgid "Password:"
-msgstr ""
+msgstr "Пароль:"
 
 #: ../src/auth.glade.h:3
 msgid "Username:"
-msgstr ""
+msgstr "Имя пользователя:"
 
 #: ../src/auth.glade.h:4
 msgid "gtk-cancel"
-msgstr ""
+msgstr "gtk-cancel"
 
 #: ../src/auth.glade.h:5
 msgid "gtk-ok"
-msgstr ""
+msgstr "gtk-ok"
 
 #: ../src/auth.glade.h:6
 msgid "label"
-msgstr ""
+msgstr "метка"
 
 #: ../src/viewer.glade.h:1
 msgid "Automatically resize"
-msgstr ""
+msgstr "Изменить размер автоматически"
 
 #: ../src/viewer.glade.h:2
 msgid "Ctrl+Alt+F11"
-msgstr ""
+msgstr "Ctrl+Alt+F11"
 
 #: ../src/viewer.glade.h:3
 msgid "Ctrl+Alt+F12"
-msgstr ""
+msgstr "Ctrl+Alt+F12"
 
 #: ../src/viewer.glade.h:4
 msgid "Ctrl+Alt+F1_0"
-msgstr ""
+msgstr "Ctrl+Alt+F1_0"
 
 #: ../src/viewer.glade.h:5
 msgid "Ctrl+Alt+F_1"
-msgstr ""
+msgstr "Ctrl+Alt+F_1"
 
 #: ../src/viewer.glade.h:6
 msgid "Ctrl+Alt+F_2"
-msgstr ""
+msgstr "Ctrl+Alt+F_2"
 
 #: ../src/viewer.glade.h:7
 msgid "Ctrl+Alt+F_3"
-msgstr ""
+msgstr "Ctrl+Alt+F_3"
 
 #: ../src/viewer.glade.h:8
 msgid "Ctrl+Alt+F_4"
-msgstr ""
+msgstr "Ctrl+Alt+F_4"
 
 #: ../src/viewer.glade.h:9
 msgid "Ctrl+Alt+F_5"
-msgstr ""
+msgstr "Ctrl+Alt+F_5"
 
 #: ../src/viewer.glade.h:10
 msgid "Ctrl+Alt+F_6"
-msgstr ""
+msgstr "Ctrl+Alt+F_6"
 
 #: ../src/viewer.glade.h:11
 msgid "Ctrl+Alt+F_7"
-msgstr ""
+msgstr "Ctrl+Alt+F_7"
 
 #: ../src/viewer.glade.h:12
 msgid "Ctrl+Alt+F_8"
-msgstr ""
+msgstr "Ctrl+Alt+F_8"
 
 #: ../src/viewer.glade.h:13
 msgid "Ctrl+Alt+F_9"
-msgstr ""
+msgstr "Ctrl+Alt+F_9"
 
 #: ../src/viewer.glade.h:14
 msgid "Ctrl+Alt+_Backspace"
-msgstr ""
+msgstr "Ctrl+Alt+_Backspace"
 
 #: ../src/viewer.glade.h:15
 msgid "Ctrl+Alt+_Del"
-msgstr ""
+msgstr "Ctrl+Alt+_Del"
 
 #: ../src/viewer.glade.h:16
 msgid "Full screen"
-msgstr ""
+msgstr "На весь экран"
 
 #: ../src/viewer.glade.h:17
 msgid "Screenshot"
-msgstr ""
+msgstr "Снимок экрана"
 
 #: ../src/viewer.glade.h:18
 msgid "_File"
-msgstr ""
+msgstr "_Файл"
 
 #: ../src/viewer.glade.h:19
 msgid "_Help"
-msgstr ""
+msgstr "_Справка"
 
 #: ../src/viewer.glade.h:20
 msgid "_PrintScreen"
-msgstr ""
+msgstr "_PrintScreen"
 
 #: ../src/viewer.glade.h:21
 msgid "_Send key"
-msgstr ""
+msgstr "Отправить _ключ"
 
 #: ../src/viewer.glade.h:22
 msgid "_View"
-msgstr ""
+msgstr "_Вид"
 
 #: ../src/viewer.glade.h:23
 msgid "gtk-about"
-msgstr ""
+msgstr "gtk-about"
 
 #: ../src/viewer.glade.h:24
 msgid "gtk-quit"
-msgstr ""
+msgstr "gtk-quit"
 
 #: ../src/viewer.glade.h:25
 msgid "page 1"
-msgstr ""
+msgstr "страница 1"
 
 #: ../src/viewer.glade.h:26
 msgid "page 2"
-msgstr ""
+msgstr "страница 2"
+

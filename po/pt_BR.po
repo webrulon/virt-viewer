@@ -1,0 +1,314 @@
+# translation of pt_BR.po to Portuguese
+# Portuguese translations for PACKAGE package.
+# Copyright (C) 2010 THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+#
+# Automatically generated, 2010.
+# Glaucia Cintra <gcintra@redhat.com>, 2010.
+msgid ""
+msgstr ""
+"Project-Id-Version: pt_BR\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2010-01-22 00:33+0000\n"
+"PO-Revision-Date: 2010-01-22 11:25+1000\n"
+"Last-Translator: Glaucia Cintra <gcintra@redhat.com>\n"
+"Language-Team: Portuguese <en@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=ISO-8859-1\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"X-Generator: KBabel 1.11.4\n"
+
+#: ../src/main.c:34
+#, c-format
+msgid "%s version %s\n"
+msgstr "%s versão %s\n"
+
+#: ../src/main.c:52
+msgid "Run '"
+msgstr "Executar '"
+
+#: ../src/main.c:55
+msgid "display version information"
+msgstr "exibir informações sobre versão"
+
+#: ../src/main.c:57
+msgid "display verbose information"
+msgstr "exibir informações sobre verbose"
+
+#: ../src/main.c:59
+msgid "direct connection with no automatic tunnels"
+msgstr "conexão direta sem túneis automáticos"
+
+#: ../src/main.c:61
+msgid "connect to hypervisor"
+msgstr "conectar ao hipervisor"
+
+#: ../src/main.c:63
+msgid "wait for domain to start"
+msgstr "esperar o domínio iniciar"
+
+#: ../src/main.c:65
+msgid "reconnect to domain upon restart"
+msgstr "reconectar ao domínio ao reiniciar"
+
+#: ../src/main.c:67
+msgid "display debugging information"
+msgstr "exibir informações sobre depuração"
+
+#. Setup command line options
+#: ../src/main.c:79
+msgid "- Virtual machine graphical console"
+msgstr "- Console gráfico de máquina virtual"
+
+#: ../src/main.c:95
+#, c-format
+msgid ""
+"\n"
+"Usage: %s [OPTIONS] DOMAIN-NAME|ID|UUID\n"
+"\n"
+"%s\n"
+"\n"
+msgstr ""
+"\n"
+"Uso: %s [OPÇÕES] DOMAIN-NAME|ID|UUID\n"
+"\n"
+"%s\n"
+"\n"
+
+#: ../src/viewer.c:878
+#, c-format
+msgid "Cannot determine the VNC port for the guest %s"
+msgstr "Não é possível determinar a porta VNC para o convidado %s"
+
+#: ../src/viewer.c:884
+#, c-format
+msgid "Cannot determine the VNC host for the guest %s"
+msgstr "Não é possível determinar o host do VNC para o convidado %s"
+
+#: ../src/viewer.c:984
+#, c-format
+msgid "Unable to connect to the VNC server %s"
+msgstr "Não é possível conectar ao servidor do VNC  %s"
+
+#: ../src/viewer.c:1001
+#, c-format
+msgid ""
+"Unable to authenticate with VNC server at %s: %s\n"
+"Retry connection again?"
+msgstr ""
+"Não é possível autenticar com o servidor VNC em  %s: %s\n "
+"Tentar conexão novamente?"
+
+#: ../src/viewer.c:1019
+#, c-format
+msgid ""
+"Unable to authenticate with VNC server at %s\n"
+"Unsupported authentication type %d"
+msgstr ""
+"Não é possível autenticar com o servidor do VNC em %s\n "
+"Tipo de autenticação não suportada %d"
+
+#: ../src/viewer.c:1111
+#, c-format
+msgid "Cannot find guest domain %s"
+msgstr "Não é possível encontrar domínio do convidado %s"
+
+#: ../src/viewer.c:1213
+#, c-format
+msgid "Unable to connect to libvirt with URI %s"
+msgstr "Não é possível conectar ao libvirt com o URI %s"
+
+#: ../src/viewer.c:1214
+msgid "[none]"
+msgstr "[nenhum]"
+
+#.
+#. * Local variables:
+#. *  c-indent-level: 8
+#. *  c-basic-offset: 8
+#. *  tab-width: 8
+#. * End:
+#.
+#: ../src/about.glade.h:1
+msgid "A remote desktop client built with GTK-VNC and libvirt"
+msgstr "Um cliente de desktop remoto construído com o GTK-VNC e libvirt"
+
+#: ../src/about.glade.h:2
+msgid "About Glade"
+msgstr "Sobre o Glade"
+
+#: ../src/about.glade.h:3
+msgid ""
+"Copyright 2007-2008 Daniel P. Berrange\n"
+"Copyright 2007-2008 Red Hat, Inc."
+msgstr ""
+"Copyright 2007-2008 Daniel P. Berrange\n"
+"Copyright 2007-2008 Red Hat, Inc."
+
+#: ../src/about.glade.h:5
+msgid "The Fedora Translation Team"
+msgstr "A equipe de Traduções do Fedora"
+
+#: ../src/about.glade.h:6
+msgid ""
+"This program is free software; you can redistribute it and/or modify\n"
+"it under the terms of the GNU General Public License as published by\n"
+"the Free Software Foundation; either version 2 of the License, or\n"
+"(at your option) any later version.\n"
+"\n"
+"This program is distributed in the hope that it will be useful,\n"
+"but WITHOUT ANY WARRANTY; without even the implied warranty of\n"
+"MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\n"
+"GNU General Public License for more details.\n"
+"\n"
+"You should have received a copy of the GNU General Public License\n"
+"along with this program; if not, write to the Free Software\n"
+"Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA\n"
+msgstr ""
+"Este programa é um software livre. Você pode redistribuí-lo e/ou modificá-lo \n"
+"sob os termos da Licensa Pública Geral GNU, de acordo com o publicado pela \n"
+"Fundação de Software Livre, sendo a versão 2 da Licensa, ou  \n"
+"(como queira) qualquer outra versão posterior.\n"
+"\n"
+"Espera-se que este programa seja útil, \n"
+"porém SEM NENHUMA GARANTIA, até mesmo sem a garantia implicada de \n"
+"MERCANTIBILIDADE ou PARA UM PRÒPÓSITO ESPECÍFICO. Veja a \n"
+"Licensa Pública Geral GNU para maiores detalhes. \n"
+"\n"
+"Uma cópia da Licensa Pública Geral do GNU deve ter sido anexada n "
+"à este programam. Caso não tenha recebido, escreva para Free Software \n"
+"Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA \n"
+
+#: ../src/about.glade.h:20
+msgid "virt-manager.org"
+msgstr "virt-manager.org"
+
+#: ../src/auth.glade.h:1
+msgid "Authentication required"
+msgstr "Autenticação requerida"
+
+#: ../src/auth.glade.h:2
+msgid "Password:"
+msgstr "Senha:"
+
+#: ../src/auth.glade.h:3
+msgid "Username:"
+msgstr "Nome do Usuário:"
+
+#: ../src/auth.glade.h:4
+msgid "gtk-cancel"
+msgstr "gtk-cancel"
+
+#: ../src/auth.glade.h:5
+msgid "gtk-ok"
+msgstr "gtk-ok"
+
+#: ../src/auth.glade.h:6
+msgid "label"
+msgstr "rótulo"
+
+#: ../src/viewer.glade.h:1
+msgid "Automatically resize"
+msgstr "redefinição automática do tamanho"
+
+#: ../src/viewer.glade.h:2
+msgid "Ctrl+Alt+F11"
+msgstr "Ctrl+Alt+F11"
+
+#: ../src/viewer.glade.h:3
+msgid "Ctrl+Alt+F12"
+msgstr "Ctrl+Alt+F12"
+
+#: ../src/viewer.glade.h:4
+msgid "Ctrl+Alt+F1_0"
+msgstr "Ctrl+Alt+F1_0"
+
+#: ../src/viewer.glade.h:5
+msgid "Ctrl+Alt+F_1"
+msgstr "Ctrl+Alt+F_1"
+
+#: ../src/viewer.glade.h:6
+msgid "Ctrl+Alt+F_2"
+msgstr "Ctrl+Alt+F_2"
+
+#: ../src/viewer.glade.h:7
+msgid "Ctrl+Alt+F_3"
+msgstr "Ctrl+Alt+F_3"
+
+#: ../src/viewer.glade.h:8
+msgid "Ctrl+Alt+F_4"
+msgstr "Ctrl+Alt+F_4"
+
+#: ../src/viewer.glade.h:9
+msgid "Ctrl+Alt+F_5"
+msgstr "Ctrl+Alt+F_5"
+
+#: ../src/viewer.glade.h:10
+msgid "Ctrl+Alt+F_6"
+msgstr "Ctrl+Alt+F_6"
+
+#: ../src/viewer.glade.h:11
+msgid "Ctrl+Alt+F_7"
+msgstr "Ctrl+Alt+F_7"
+
+#: ../src/viewer.glade.h:12
+msgid "Ctrl+Alt+F_8"
+msgstr "Ctrl+Alt+F_8"
+
+#: ../src/viewer.glade.h:13
+msgid "Ctrl+Alt+F_9"
+msgstr "Ctrl+Alt+F_9"
+
+#: ../src/viewer.glade.h:14
+msgid "Ctrl+Alt+_Backspace"
+msgstr "Ctrl+Alt+_Backspace"
+
+#: ../src/viewer.glade.h:15
+msgid "Ctrl+Alt+_Del"
+msgstr "Ctrl+Alt+_Del"
+
+#: ../src/viewer.glade.h:16
+msgid "Full screen"
+msgstr "Tela cheia"
+
+#: ../src/viewer.glade.h:17
+msgid "Screenshot"
+msgstr "Screenshot"
+
+#: ../src/viewer.glade.h:18
+msgid "_File"
+msgstr "_File"
+
+#: ../src/viewer.glade.h:19
+msgid "_Help"
+msgstr "_Help"
+
+#: ../src/viewer.glade.h:20
+msgid "_PrintScreen"
+msgstr "_PrintScreen"
+
+#: ../src/viewer.glade.h:21
+msgid "_Send key"
+msgstr "_Send key"
+
+#: ../src/viewer.glade.h:22
+msgid "_View"
+msgstr "_View"
+
+#: ../src/viewer.glade.h:23
+msgid "gtk-about"
+msgstr "gtk-about"
+
+#: ../src/viewer.glade.h:24
+msgid "gtk-quit"
+msgstr "gtk-quit"
+
+#: ../src/viewer.glade.h:25
+msgid "page 1"
+msgstr "página 1"
+
+#: ../src/viewer.glade.h:26
+msgid "page 2"
+msgstr "página 2"
+

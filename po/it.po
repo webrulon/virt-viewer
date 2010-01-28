@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: it\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-01-19 21:38+0000\n"
+"POT-Creation-Date: 2010-01-28 10:17+0000\n"
 "PO-Revision-Date: 2010-01-24 00:30+0100\n"
 "Last-Translator: Gianluca Sforna <giallu@fedoraproject.org>\n"
 "Language-Team: Italiano <trans-it@lists.fedoraproject.org>\n"
@@ -75,7 +75,7 @@ msgstr ""
 #: ../src/viewer.c:878
 #, c-format
 msgid "Cannot determine the VNC port for the guest %s"
-msgstr "Impossibile determinare la port VNC per il guest %s"
+msgstr "Impossibile determinare la porta VNC per il guest %s"
 
 #: ../src/viewer.c:884
 #, c-format
@@ -113,7 +113,7 @@ msgstr "Impossibile trovare il dominio guest %s"
 #: ../src/viewer.c:1213
 #, c-format
 msgid "Unable to connect to libvirt with URI %s"
-msgstr "Impossibile connetersi a libvirt con la URI %s"
+msgstr "Impossibile connettersi a libvirt con la URI %s"
 
 #: ../src/viewer.c:1214
 msgid "[none]"
@@ -282,7 +282,7 @@ msgstr "_Aiuto"
 
 #: ../src/viewer.glade.h:20
 msgid "_PrintScreen"
-msgstr "_PrintScreen"
+msgstr "_Stamp"
 
 #: ../src/viewer.glade.h:21
 msgid "_Send key"

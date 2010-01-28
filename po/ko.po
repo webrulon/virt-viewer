@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ko\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-01-21 23:15+0000\n"
-"PO-Revision-Date: 2010-01-22 11:31+1000\n"
+"POT-Creation-Date: 2010-01-27 21:49+0000\n"
+"PO-Revision-Date: 2010-01-28 12:07+1000\n"
 "Last-Translator: Hyunsok Oh <hoh@redhat.com>\n"
 "Language-Team: Korean <ko@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -166,6 +166,19 @@ msgid ""
 "along with this program; if not, write to the Free Software\n"
 "Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA\n"
 msgstr ""
+"This program is free software; you can redistribute it and/or modify\n"
+"it under the terms of the GNU General Public License as published by\n"
+"the Free Software Foundation; either version 2 of the License, or\n"
+"(at your option) any later version.\n"
+"\n"
+"This program is distributed in the hope that it will be useful,\n"
+"but WITHOUT ANY WARRANTY; without even the implied warranty of\n"
+"MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\n"
+"GNU General Public License for more details.\n"
+"\n"
+"You should have received a copy of the GNU General Public License\n"
+"along with this program; if not, write to the Free Software\n"
+"Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA\n"
 
 #: ../src/about.glade.h:20
 msgid "virt-manager.org"
@@ -185,75 +198,75 @@ msgstr "사용자명:"
 
 #: ../src/auth.glade.h:4
 msgid "gtk-cancel"
-msgstr ""
+msgstr "gtk-cancel"
 
 #: ../src/auth.glade.h:5
 msgid "gtk-ok"
-msgstr ""
+msgstr "gtk-ok"
 
 #: ../src/auth.glade.h:6
 msgid "label"
-msgstr ""
+msgstr "라벨"
 
 #: ../src/viewer.glade.h:1
 msgid "Automatically resize"
-msgstr "자동 크기 재조정"
+msgstr "자동으로 크기 변경"
 
 #: ../src/viewer.glade.h:2
 msgid "Ctrl+Alt+F11"
-msgstr ""
+msgstr "Ctrl+Alt+F11"
 
 #: ../src/viewer.glade.h:3
 msgid "Ctrl+Alt+F12"
-msgstr ""
+msgstr "Ctrl+Alt+F12"
 
 #: ../src/viewer.glade.h:4
 msgid "Ctrl+Alt+F1_0"
-msgstr ""
+msgstr "Ctrl+Alt+F1_0"
 
 #: ../src/viewer.glade.h:5
 msgid "Ctrl+Alt+F_1"
-msgstr ""
+msgstr "Ctrl+Alt+F_1"
 
 #: ../src/viewer.glade.h:6
 msgid "Ctrl+Alt+F_2"
-msgstr ""
+msgstr "Ctrl+Alt+F_2"
 
 #: ../src/viewer.glade.h:7
 msgid "Ctrl+Alt+F_3"
-msgstr ""
+msgstr "Ctrl+Alt+F_3"
 
 #: ../src/viewer.glade.h:8
 msgid "Ctrl+Alt+F_4"
-msgstr ""
+msgstr "Ctrl+Alt+F_4"
 
 #: ../src/viewer.glade.h:9
 msgid "Ctrl+Alt+F_5"
-msgstr ""
+msgstr "Ctrl+Alt+F_5"
 
 #: ../src/viewer.glade.h:10
 msgid "Ctrl+Alt+F_6"
-msgstr ""
+msgstr "Ctrl+Alt+F_6"
 
 #: ../src/viewer.glade.h:11
 msgid "Ctrl+Alt+F_7"
-msgstr ""
+msgstr "Ctrl+Alt+F_7"
 
 #: ../src/viewer.glade.h:12
 msgid "Ctrl+Alt+F_8"
-msgstr ""
+msgstr "Ctrl+Alt+F_8"
 
 #: ../src/viewer.glade.h:13
 msgid "Ctrl+Alt+F_9"
-msgstr ""
+msgstr "Ctrl+Alt+F_9"
 
 #: ../src/viewer.glade.h:14
 msgid "Ctrl+Alt+_Backspace"
-msgstr ""
+msgstr "Ctrl+Alt+_Backspace"
 
 #: ../src/viewer.glade.h:15
 msgid "Ctrl+Alt+_Del"
-msgstr ""
+msgstr "Ctrl+Alt+_Del"
 
 #: ../src/viewer.glade.h:16
 msgid "Full screen"
@@ -273,23 +286,23 @@ msgstr "도움말(_H)"
 
 #: ../src/viewer.glade.h:20
 msgid "_PrintScreen"
-msgstr ""
+msgstr "화면 프린트(_P)"
 
 #: ../src/viewer.glade.h:21
 msgid "_Send key"
-msgstr ""
+msgstr "키 전송(_S)"
 
 #: ../src/viewer.glade.h:22
 msgid "_View"
-msgstr ""
+msgstr "보기(_V)"
 
 #: ../src/viewer.glade.h:23
 msgid "gtk-about"
-msgstr ""
+msgstr "gtk-about"
 
 #: ../src/viewer.glade.h:24
 msgid "gtk-quit"
-msgstr ""
+msgstr "gtk-quit"
 
 #: ../src/viewer.glade.h:25
 msgid "page 1"

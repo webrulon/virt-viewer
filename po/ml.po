@@ -1,0 +1,311 @@
+# translation of virt-viewer.tip.virt-viewer.ml.po to
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the virt-viewer package.
+# Ani Peter <apeter@redhat.com>, 2010.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: virt-viewer.tip.virt-viewer.ml\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2010-01-28 06:20+0000\n"
+"PO-Revision-Date: 2010-01-28 15:57+0530\n"
+"Last-Translator: \n"
+"Language-Team:  <en@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: KBabel 1.11.4\n"
+
+#: ../src/main.c:34
+#, c-format
+msgid "%s version %s\n"
+msgstr "%s ലക്കം %s\n"
+
+#: ../src/main.c:52
+msgid "Run '"
+msgstr "പ്രവര്‍ത്തിപ്പിക്കുക"
+
+#: ../src/main.c:55
+msgid "display version information"
+msgstr "ലക്കം ലഭ്യമാക്കുക"
+
+#: ../src/main.c:57
+msgid "display verbose information"
+msgstr "വെര്‍ബോസ് വിവരം ലഭ്യമാക്കുക"
+
+#: ../src/main.c:59
+msgid "direct connection with no automatic tunnels"
+msgstr "ഓട്ടോമാറ്റിക് ടണലുകളില്ലാതെ നേരിട്ടുള്ള കണക്ഷന്‍"
+
+#: ../src/main.c:61
+msgid "connect to hypervisor"
+msgstr "ഹൈപ്പര്‍വൈസറിലേക്കു് കണക്ട് ചെയ്യുക"
+
+#: ../src/main.c:63
+msgid "wait for domain to start"
+msgstr "ആരംഭിക്കുന്നതിനായി ഡൊമെയിനിനായി കാത്തിരിക്കുക"
+
+#: ../src/main.c:65
+msgid "reconnect to domain upon restart"
+msgstr "വീണ്ടും ആരംഭിക്കുമ്പോള്‍ ഡൊമെയിനിലേക്കു് വീണ്ടും കണക്ട് ചെയ്യുക"
+
+#: ../src/main.c:67
+msgid "display debugging information"
+msgstr "ഡീബഗ്ഗിങ് വിവരം ലഭ്യമാക്കുക"
+
+#. Setup command line options
+#: ../src/main.c:79
+msgid "- Virtual machine graphical console"
+msgstr "- വിര്‍ച്ച്വല്‍ മഷീന്‍ ഗ്രാഫിക്കല്‍ കണ്‍സോള്‍"
+
+#: ../src/main.c:95
+#, c-format
+msgid ""
+"\n"
+"Usage: %s [OPTIONS] DOMAIN-NAME|ID|UUID\n"
+"\n"
+"%s\n"
+"\n"
+msgstr ""
+"\n"
+"Usage: %s [OPTIONS] DOMAIN-NAME|ID|UUID\n"
+"\n"
+"%s\n"
+"\n"
+
+#: ../src/viewer.c:878
+#, c-format
+msgid "Cannot determine the VNC port for the guest %s"
+msgstr "ഗസ്റ്റ് %s-നുള്ള വിഎന്‍സി പോര്‍ട്ട് ലഭ്യമാക്കുവാന്‍ സാധ്യമല്ല"
+
+#: ../src/viewer.c:884
+#, c-format
+msgid "Cannot determine the VNC host for the guest %s"
+msgstr "ഗസ്റ്റ് %s-നുള്ള വിഎന്‍സി ഹോസ്റ്റ് ലഭ്യമാക്കുവാന്‍ സാധ്യമല്ല"
+
+#: ../src/viewer.c:984
+#, c-format
+msgid "Unable to connect to the VNC server %s"
+msgstr "വിഎന്‍സി സര്‍വര്‍ %s-ലേക്ക് കണക്ട് ചെയ്യുവാന്‍ സാധ്യമല്ല"
+
+#: ../src/viewer.c:1001
+#, c-format
+msgid ""
+"Unable to authenticate with VNC server at %s: %s\n"
+"Retry connection again?"
+msgstr ""
+"%s: %s-ല്‍ വിഎന്‍സി സര്‍വറുമായി ആധികാരികത ഉറപ്പാക്കുവാന്‍ സാധ്യമല്ല\n"
+"കണക്ഷനുവേണ്ടി വീണ്ടും ശ്രമിക്കണമോ?"
+
+#: ../src/viewer.c:1019
+#, c-format
+msgid ""
+"Unable to authenticate with VNC server at %s\n"
+"Unsupported authentication type %d"
+msgstr ""
+"%s-ലുള്ള വിഎന്‍സി സര്‍വറുമായി ആധികാരികത ഉറപ്പാക്കുവാന്‍ സാധ്യമല്ല\n"
+"പിന്തുണലഭ്യമല്ലാത്ത ആധികാരികത രീതി %d"
+
+#: ../src/viewer.c:1111
+#, c-format
+msgid "Cannot find guest domain %s"
+msgstr "ഗസ്റ്റ് ഡൊമെയിന്‍ %s ലഭ്യമാക്കുവാന്‍ സാധ്യമല്ല"
+
+#: ../src/viewer.c:1213
+#, c-format
+msgid "Unable to connect to libvirt with URI %s"
+msgstr "libvrt-ലേക്ക് യുആര്‍ഐ %s  ഉപയോഗിച്ചു് കണക്ട് ചെയ്യുവാന്‍ സാധ്യമല്ല"
+
+#: ../src/viewer.c:1214
+msgid "[none]"
+msgstr "[ഒന്നുമില്ല]"
+
+#.
+#. * Local variables:
+#. *  c-indent-level: 8
+#. *  c-basic-offset: 8
+#. *  tab-width: 8
+#. * End:
+#.
+#: ../src/about.glade.h:1
+msgid "A remote desktop client built with GTK-VNC and libvirt"
+msgstr "GTK-VNC, libvrt എന്നിവയിലുള്ളൊരു റിമോട്ട് പണിയിട ക്ലയന്റ്"
+
+#: ../src/about.glade.h:2
+msgid "About Glade"
+msgstr "ഗ്ലേഡിനെ കുറിച്ചു്"
+
+#: ../src/about.glade.h:3
+msgid ""
+"Copyright 2007-2008 Daniel P. Berrange\n"
+"Copyright 2007-2008 Red Hat, Inc."
+msgstr ""
+"Copyright 2007-2008 Daniel P. Berrange\n"
+"Copyright 2007-2008 Red Hat, Inc."
+
+#: ../src/about.glade.h:5
+msgid "The Fedora Translation Team"
+msgstr "ഫെഡോറ പരിഭാഷ സംഘം"
+
+#: ../src/about.glade.h:6
+msgid ""
+"This program is free software; you can redistribute it and/or modify\n"
+"it under the terms of the GNU General Public License as published by\n"
+"the Free Software Foundation; either version 2 of the License, or\n"
+"(at your option) any later version.\n"
+"\n"
+"This program is distributed in the hope that it will be useful,\n"
+"but WITHOUT ANY WARRANTY; without even the implied warranty of\n"
+"MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\n"
+"GNU General Public License for more details.\n"
+"\n"
+"You should have received a copy of the GNU General Public License\n"
+"along with this program; if not, write to the Free Software\n"
+"Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA\n"
+msgstr ""
+"ഈ പ്രോഗ്രാം ഒരു സ്വതന്ത്ര സോഫ്റ്റ്‌വെയറാണു്, നിങ്ങള്‍ക്കതു് പുനര്‍വിതരണം\n"
+"നടത്തുകയോ സ്വതന്ത്ര സോഫ്റ്റ്‌വെയര്‍ ഫൌണ്ടേഷന്‍ പ്രസിദ്ധീകരിച്ച ഗ്നു ജനറല്‍\n"
+"പബ്ലിക് ലൈസന്‍സ് ലക്കം 2 ഓ അതിനേക്കാള്‍ പുതിയ പതിപ്പോ (നിങ്ങളുടെ ഇഷ്ടപ്രകാരം)\n"
+"പ്രകാരം ഭേദഗതി വരുത്താവുന്നതോ ആണു്.\n"
+"\n"
+"ഈ പ്രോഗ്രാം നിങ്ങള്‍ക്കു് പ്രയോജനപ്പെടും എന്ന പ്രതീക്ഷയില്‍ വിതരണം ചെയ്യുന്നതാണു്.\n"
+"പക്ഷേ, ഇതിന് ഒരു വാറണ്ടിയും ലഭ്യമല്ല; വ്യാപാരയോഗ്യതയോ ഒരു പ്രത്യേക കാര്യത്തിനു്\n"
+"ചേരുന്നതാണെന്നോ ഉള്ള പരോക്ഷമായ ഒരു വാറണ്ടി പോലും ഇല്ല. കൂടുതല്‍ വിവരങ്ങള്‍ക്കു് ഗ്നു\n"
+"ജനറല്‍ പബ്ലിക് ലൈസന്‍സ് കാണുക.\n"
+"\n"
+"നിങ്ങള്‍ക്കു്  ഈ പ്രോഗ്രാമിനൊപ്പം ഗ്നു ജനറല്‍ പബ്ലിക് ലൈസന്‍സിന്റെ ഒരു പകര്‍പ്പു് ലഭിച്ചിട്ടുണ്ടായിരിയ്ക്കണം;\n"
+"ഇല്ലെങ്കില്‍, ഈ വിലാസത്തിലേയ്ക്കെഴുതുക:\n"
+"Free Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA\n"
+
+#: ../src/about.glade.h:20
+msgid "virt-manager.org"
+msgstr "virt-manager.org"
+
+#: ../src/auth.glade.h:1
+msgid "Authentication required"
+msgstr "ആധികാരികത ആവശ്യമുണ്ടു്"
+
+#: ../src/auth.glade.h:2
+msgid "Password:"
+msgstr "രഹസ്യവാക്ക്"
+
+#: ../src/auth.glade.h:3
+msgid "Username:"
+msgstr "ഉപയോക്തൃനാമം"
+
+#: ../src/auth.glade.h:4
+msgid "gtk-cancel"
+msgstr "gtk-cancel"
+
+#: ../src/auth.glade.h:5
+msgid "gtk-ok"
+msgstr "gtk-ok"
+
+#: ../src/auth.glade.h:6
+msgid "label"
+msgstr "ലേബല്‍"
+
+#: ../src/viewer.glade.h:1
+msgid "Automatically resize"
+msgstr "സ്യവമായി വ്യാപ്തി മാറ്റുക"
+
+#: ../src/viewer.glade.h:2
+msgid "Ctrl+Alt+F11"
+msgstr "Ctrl+Alt+F11"
+
+#: ../src/viewer.glade.h:3
+msgid "Ctrl+Alt+F12"
+msgstr "Ctrl+Alt+F12"
+
+#: ../src/viewer.glade.h:4
+msgid "Ctrl+Alt+F1_0"
+msgstr "Ctrl+Alt+F1_0"
+
+#: ../src/viewer.glade.h:5
+msgid "Ctrl+Alt+F_1"
+msgstr "Ctrl+Alt+F_1"
+
+#: ../src/viewer.glade.h:6
+msgid "Ctrl+Alt+F_2"
+msgstr "Ctrl+Alt+F_2"
+
+#: ../src/viewer.glade.h:7
+msgid "Ctrl+Alt+F_3"
+msgstr "Ctrl+Alt+F_3"
+
+#: ../src/viewer.glade.h:8
+msgid "Ctrl+Alt+F_4"
+msgstr "Ctrl+Alt+F_4"
+
+#: ../src/viewer.glade.h:9
+msgid "Ctrl+Alt+F_5"
+msgstr "Ctrl+Alt+F_5"
+
+#: ../src/viewer.glade.h:10
+msgid "Ctrl+Alt+F_6"
+msgstr "Ctrl+Alt+F_6"
+
+#: ../src/viewer.glade.h:11
+msgid "Ctrl+Alt+F_7"
+msgstr "Ctrl+Alt+F_7"
+
+#: ../src/viewer.glade.h:12
+msgid "Ctrl+Alt+F_8"
+msgstr "Ctrl+Alt+F_8"
+
+#: ../src/viewer.glade.h:13
+msgid "Ctrl+Alt+F_9"
+msgstr "Ctrl+Alt+F_9"
+
+#: ../src/viewer.glade.h:14
+msgid "Ctrl+Alt+_Backspace"
+msgstr "Ctrl+Alt+_Backspace"
+
+#: ../src/viewer.glade.h:15
+msgid "Ctrl+Alt+_Del"
+msgstr "Ctrl+Alt+_Del"
+
+#: ../src/viewer.glade.h:16
+msgid "Full screen"
+msgstr "സ്ക്രീന്‍ പൂര്‍ണ്ണവലിപ്പത്തില്‍"
+
+#: ../src/viewer.glade.h:17
+msgid "Screenshot"
+msgstr "സ്ക്രീന്‍ഷോട്ട് എടുക്കുക"
+
+#: ../src/viewer.glade.h:18
+msgid "_File"
+msgstr "_ഫയല്‍"
+
+#: ../src/viewer.glade.h:19
+msgid "_Help"
+msgstr "_സഹായം"
+
+#: ../src/viewer.glade.h:20
+msgid "_PrintScreen"
+msgstr "_PrintScreen"
+
+#: ../src/viewer.glade.h:21
+msgid "_Send key"
+msgstr "കീ _അയയ്ക്കുക"
+
+#: ../src/viewer.glade.h:22
+msgid "_View"
+msgstr "_കാഴ്ച"
+
+#: ../src/viewer.glade.h:23
+msgid "gtk-about"
+msgstr "gtk-about"
+
+#: ../src/viewer.glade.h:24
+msgid "gtk-quit"
+msgstr "gtk-quit"
+
+#: ../src/viewer.glade.h:25
+msgid "page 1"
+msgstr "താള്‍ 1"
+
+#: ../src/viewer.glade.h:26
+msgid "page 2"
+msgstr "താള്‍ 2"
+

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: virt-viewer.tip\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-03-30 07:51+0000\n"
+"POT-Creation-Date: 2010-03-30 12:34+0000\n"
 "PO-Revision-Date: 2010-02-20 16:31+0100\n"
 "Last-Translator: Nikolas Slivka <snicore@gmail.com>\n"
 "Language-Team: Hungarian Fedora Translation Team <fedora-trans-hu@redhat.org>\n"
@@ -40,10 +40,6 @@ msgstr ""
 msgid "direct connection with no automatic tunnels"
 msgstr ""
 
-#: ../src/main.c:61
-msgid "connect to hypervisor"
-msgstr ""
-
 #: ../src/main.c:63
 msgid "wait for domain to start"
 msgstr ""
@@ -70,11 +66,6 @@ msgid ""
 "\n"
 "%s\n"
 "\n"
-msgstr ""
-
-#: ../src/viewer.c:878
-#, c-format
-msgid "Cannot determine the VNC port for the guest %s"
 msgstr ""
 
 #: ../src/viewer.c:884
@@ -106,24 +97,25 @@ msgstr ""
 msgid "Cannot find guest domain %s"
 msgstr "%s vendég-domaint nem sikerült megtalálni"
 
-#: ../src/viewer.c:1213
-#, c-format
-msgid "Unable to connect to libvirt with URI %s"
-msgstr ""
-
 #: ../src/viewer.c:1214
 msgid "[none]"
 msgstr ""
 
-#. * Local variables:
-#. *  c-indent-level: 8
-#. *  c-basic-offset: 8
-#. *  tab-width: 8
-#. * End:
-#. 
-#: ../src/about.glade.h:1
-msgid "A remote desktop client built with GTK-VNC and libvirt"
+#: ../src/about.glade.h:2
+msgid "About Glade"
 msgstr ""
+
+#: ../src/about.glade.h:3
+msgid ""
+"Copyright 2007-2008 Daniel P. Berrange\n"
+"Copyright 2007-2008 Red Hat, Inc."
+msgstr ""
+"Copyright 2007-2008 Daniel P. Berrange\n"
+"Copyright 2007-2008 Red Hat, Inc."
+
+#: ../src/about.glade.h:5
+msgid "The Fedora Translation Team"
+msgstr "A Fedora Honosító Csapat"
 
 #: ../src/about.glade.h:6
 msgid ""
@@ -141,6 +133,10 @@ msgid ""
 "along with this program; if not, write to the Free Software\n"
 "Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA\n"
 msgstr ""
+
+#: ../src/about.glade.h:20
+msgid "virt-manager.org"
+msgstr "virt-manager.org"
 
 #: ../src/auth.glade.h:1
 msgid "Authentication required"
@@ -165,6 +161,10 @@ msgstr ""
 #: ../src/auth.glade.h:6
 msgid "label"
 msgstr ""
+
+#: ../src/viewer.glade.h:1
+msgid "Automatically resize"
+msgstr "Automatikus átméretezés"
 
 #: ../src/viewer.glade.h:2
 msgid "Ctrl+Alt+F11"
@@ -266,26 +266,26 @@ msgstr ""
 msgid "page 2"
 msgstr ""
 
-#: ../src/about.glade.h:20
-msgid "virt-manager.org"
-msgstr "virt-manager.org"
+#: ../src/main.c:61
+msgid "connect to hypervisor"
+msgstr "kapcsolódás a hypervisorhoz"
 
-#: ../src/about.glade.h:2
-msgid "About Glade"
+#: ../src/viewer.c:1213
+#, c-format
+msgid "Unable to connect to libvirt with URI %s"
+msgstr "A %s címmel nem tudott csatlakozni a libvirthez"
+
+#: ../src/viewer.c:878
+#, c-format
+msgid "Cannot determine the VNC port for the guest %s"
 msgstr ""
 
-#: ../src/about.glade.h:3
-msgid ""
-"Copyright 2007-2008 Daniel P. Berrange\n"
-"Copyright 2007-2008 Red Hat, Inc."
-msgstr ""
-"Copyright 2007-2008 Daniel P. Berrange\n"
-"Copyright 2007-2008 Red Hat, Inc."
-
-#: ../src/about.glade.h:5
-msgid "The Fedora Translation Team"
-msgstr "A Fedora Honosító Csapat"
-
-#: ../src/viewer.glade.h:1
-msgid "Automatically resize"
-msgstr "Automatikus átméretezés"
+#. * Local variables:
+#. *  c-indent-level: 8
+#. *  c-basic-offset: 8
+#. *  tab-width: 8
+#. * End:
+#. 
+#: ../src/about.glade.h:1
+msgid "A remote desktop client built with GTK-VNC and libvirt"
+msgstr "A távoli asztali kliens a GTK-VNC és libvirt alkalmazások használatával készült."

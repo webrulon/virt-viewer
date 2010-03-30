@@ -19,37 +19,16 @@ msgstr ""
 "X-Poedit-SourceCharset: utf-8\n"
 "X-Poedit-Country: HUNGARY\n"
 
-#: ../src/main.c:34
-#, c-format
-msgid "%s version %s\n"
-msgstr ""
-
 #: ../src/main.c:52
 msgid "Run '"
-msgstr ""
-
-#: ../src/main.c:55
-msgid "display version information"
-msgstr ""
-
-#: ../src/main.c:57
-msgid "display verbose information"
 msgstr ""
 
 #: ../src/main.c:59
 msgid "direct connection with no automatic tunnels"
 msgstr ""
 
-#: ../src/main.c:63
-msgid "wait for domain to start"
-msgstr ""
-
 #: ../src/main.c:65
 msgid "reconnect to domain upon restart"
-msgstr ""
-
-#: ../src/main.c:67
-msgid "display debugging information"
 msgstr ""
 
 #. Setup command line options
@@ -57,16 +36,6 @@ msgstr ""
 #, fuzzy
 msgid "- Virtual machine graphical console"
 msgstr "- Virtuális gép grafikus konzol"
-
-#: ../src/main.c:95
-#, c-format
-msgid ""
-"\n"
-"Usage: %s [OPTIONS] DOMAIN-NAME|ID|UUID\n"
-"\n"
-"%s\n"
-"\n"
-msgstr ""
 
 #: ../src/viewer.c:884
 #, c-format
@@ -289,3 +258,39 @@ msgstr ""
 #: ../src/about.glade.h:1
 msgid "A remote desktop client built with GTK-VNC and libvirt"
 msgstr "A távoli asztali kliens a GTK-VNC és libvirt alkalmazások használatával készült."
+
+#: ../src/main.c:34
+#, c-format
+msgid "%s version %s\n"
+msgstr "%s verzió %s\n"
+
+#: ../src/main.c:55
+msgid "display version information"
+msgstr "verzió információk megjelenítése"
+
+#: ../src/main.c:57
+msgid "display verbose information"
+msgstr "részletes információk megjelenítése"
+
+#: ../src/main.c:63
+msgid "wait for domain to start"
+msgstr "várakozás a domain elindulására"
+
+#: ../src/main.c:67
+msgid "display debugging information"
+msgstr "hibakeresési információk megjelenítése"
+
+#: ../src/main.c:95
+#, c-format
+msgid ""
+"\n"
+"Usage: %s [OPTIONS] DOMAIN-NAME|ID|UUID\n"
+"\n"
+"%s\n"
+"\n"
+msgstr ""
+"\n"
+"Használata: %s [OPCIÓK] DOMAIN-NAME|ID|UUID\n"
+"\n"
+"%s\n"
+"\n"

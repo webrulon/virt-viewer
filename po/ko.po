@@ -1,4 +1,4 @@
-# translation of ko.po to Korean
+# translation of virt-viewer.default.ko.po to Korean
 # Korean translations for PACKAGE package.
 # Copyright (C) 2010 THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
@@ -7,10 +7,10 @@
 # Hyunsok Oh <hoh@redhat.com>, 2010.
 msgid ""
 msgstr ""
-"Project-Id-Version: ko\n"
+"Project-Id-Version: virt-viewer.default.ko\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-01-27 21:49+0000\n"
-"PO-Revision-Date: 2010-01-28 12:07+1000\n"
+"POT-Creation-Date: 2010-03-31 18:50+0000\n"
+"PO-Revision-Date: 2010-04-01 08:59+1000\n"
 "Last-Translator: Hyunsok Oh <hoh@redhat.com>\n"
 "Language-Team: Korean <ko@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -79,12 +79,12 @@ msgstr ""
 #: ../src/viewer.c:878
 #, c-format
 msgid "Cannot determine the VNC port for the guest %s"
-msgstr "손님 %s에 대한 VNC 포트를 결정할 수 없습니다"
+msgstr "게스트 %s에 대한 VNC 포트를 결정할 수 없습니다"
 
 #: ../src/viewer.c:884
 #, c-format
 msgid "Cannot determine the VNC host for the guest %s"
-msgstr "손님 %s에 대한 VNC 포트를 결정할 수 없습니다"
+msgstr "게스트 %s에 대한 VNC 포트를 결정할 수 없습니다"
 
 #: ../src/viewer.c:984
 #, c-format

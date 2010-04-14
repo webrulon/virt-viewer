@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: virt-viewer\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-02-08 22:44-0500\n"
-"PO-Revision-Date: 2010-03-22 16:44+0300\n"
+"PO-Revision-Date: 2010-04-14 16:44+0300\n"
 "Last-Translator: Maxim V. Dziumanenko <dziumanenko@gmail.com>\n"
 "Language-Team: Ukrainian <uk@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -85,7 +85,7 @@ msgstr "Не вдається визначити вузол VNC для гост�
 #: ../src/viewer.c:984
 #, c-format
 msgid "Unable to connect to the VNC server %s"
-msgstr "Не вдається приєднатися до VNC-серверв %s"
+msgstr "Не вдається приєднатися до VNC-сервера %s"
 
 #: ../src/viewer.c:1001
 #, c-format
@@ -103,7 +103,7 @@ msgid ""
 "Unsupported authentication type %d"
 msgstr ""
 "Не вдається авторизуватися на VNC-сервері %s\n"
-"Тип автентификації %d"
+"Тип автентифікації %d"
 
 #: ../src/viewer.c:1111
 #, c-format
@@ -144,7 +144,7 @@ msgstr ""
 
 #: ../src/about.glade.h:5
 msgid "The Fedora Translation Team"
-msgstr "Команда локализації Fedora"
+msgstr "Команда локалізації Fedora"
 
 #: ../src/about.glade.h:6
 msgid ""

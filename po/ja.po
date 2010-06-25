@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ja\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-06-09 07:56+0000\n"
-"PO-Revision-Date: 2010-06-09 18:06+0900\n"
+"POT-Creation-Date: 2010-06-25 01:51+0000\n"
+"PO-Revision-Date: 2010-06-25 13:31+0900\n"
 "Last-Translator: Hajime Taira <htaira@redhat.com>\n"
 "Language-Team: Japanese <jp@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -276,23 +276,23 @@ msgstr "スクリーンショット取得"
 
 #: ../src/viewer.glade.h:18
 msgid "_File"
-msgstr "ファイル（_F）"
+msgstr "ファイル(_F)"
 
 #: ../src/viewer.glade.h:19
 msgid "_Help"
-msgstr "ヘルプ（_H）"
+msgstr "ヘルプ(_H)"
 
 #: ../src/viewer.glade.h:20
 msgid "_PrintScreen"
-msgstr "PrintScreen（_P）"
+msgstr "PrintScreen(_P)"
 
 #: ../src/viewer.glade.h:21
 msgid "_Send key"
-msgstr "キー送信（_S）"
+msgstr "キー送信(_S)"
 
 #: ../src/viewer.glade.h:22
 msgid "_View"
-msgstr "表示（_V）"
+msgstr "表示(_V)"
 
 #: ../src/viewer.glade.h:23
 msgid "gtk-about"

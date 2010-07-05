@@ -27,6 +27,7 @@
 
 extern int viewer_start (const char *uri,
 			 const char *name,
+			 gint zoom,
 			 gboolean direct,
 			 gboolean waitvm,
 			 gboolean reconnect,

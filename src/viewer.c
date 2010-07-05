@@ -53,6 +53,8 @@
 #include "events.h"
 #include "auth.h"
 
+#define SCALE(x) do { x = viewer->fullscreen ? x : x * viewer->zoomlevel / 100; } while (0);
+
 gboolean doDebug = FALSE;
 
 enum menuNums {
@@ -107,6 +109,8 @@ typedef struct VirtViewer {
 	GtkWidget *window;
 	GtkWidget *container;
 	GtkWidget *vnc;
+
+	int zoomlevel;
 
 	int desktopWidth;
 	int desktopHeight;
@@ -342,12 +346,39 @@ viewer_resize_main_window(VirtViewer *viewer)
 		height = viewer->desktopHeight;
 	}
 
+	SCALE(width);
+	SCALE(height);
+
 	viewer_set_widget_size(viewer,
 			       glade_xml_get_widget(viewer->glade, "vnc-align"),
 			       width,
 			       height);
 }
 
+static void viewer_menu_view_zoom_out(GtkWidget *menu, VirtViewer *viewer)
+{
+	viewer->zoomlevel -= 10;
+	if (viewer->zoomlevel < 10)
+		viewer->zoomlevel = 10;
+
+	viewer_resize_main_window(viewer);
+}
+
+static void viewer_menu_view_zoom_in(GtkWidget *menu, VirtViewer *viewer)
+{
+	viewer->zoomlevel += 10;
+	if (viewer->zoomlevel > 200)
+		viewer->zoomlevel = 200;
+
+	viewer_resize_main_window(viewer);
+}
+
+static void viewer_menu_view_zoom_reset(GtkWidget *menu, VirtViewer *viewer)
+{
+	viewer->zoomlevel = 100;
+
+	viewer_resize_main_window(viewer);
+}
 
 /*
  * Called when VNC desktop size changes.
@@ -1166,6 +1197,7 @@ static void viewer_error_func (void *data G_GNUC_UNUSED, virErrorPtr error G_GNU
 int
 viewer_start (const char *uri,
 	      const char *name,
+	      gint zoom,
 	      gboolean direct,
 	      gboolean waitvm,
 	      gboolean reconnect,
@@ -1198,6 +1230,7 @@ viewer_start (const char *uri,
 	viewer->verbose = verbose;
 	viewer->domkey = g_strdup(name);
 	viewer->uri = g_strdup(uri);
+	viewer->zoomlevel = zoom;
 
 	g_value_init(&viewer->accelSetting, G_TYPE_STRING);
 
@@ -1229,6 +1262,12 @@ viewer_start (const char *uri,
 				      G_CALLBACK(viewer_menu_file_screenshot), viewer);
 	glade_xml_signal_connect_data(viewer->glade, "viewer_menu_view_fullscreen",
 				      G_CALLBACK(viewer_menu_view_fullscreen), viewer);
+	glade_xml_signal_connect_data(viewer->glade, "viewer_menu_view_zoom_in",
+				      G_CALLBACK(viewer_menu_view_zoom_in), viewer);
+	glade_xml_signal_connect_data(viewer->glade, "viewer_menu_view_zoom_out",
+				      G_CALLBACK(viewer_menu_view_zoom_out), viewer);
+	glade_xml_signal_connect_data(viewer->glade, "viewer_menu_view_zoom_reset",
+				      G_CALLBACK(viewer_menu_view_zoom_reset), viewer);
 	glade_xml_signal_connect_data(viewer->glade, "viewer_menu_view_resize",
 				      G_CALLBACK(viewer_menu_view_resize), viewer);
 	glade_xml_signal_connect_data(viewer->glade, "viewer_menu_send",

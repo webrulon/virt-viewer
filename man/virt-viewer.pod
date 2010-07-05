@@ -47,6 +47,10 @@ Wait for the domain to start up before attempting to connect to the console
 
 Automatically reconnect to the domain if it shuts down and restarts
 
+=item -z, --zoom=PCT
+
+Zoom level of the VNC window in percentage. Range 10-200.
+
 =item -d, --direct
 
 Do not attempt to tunnel the console over SSH, even if the main connection URI

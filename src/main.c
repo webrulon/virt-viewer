@@ -43,6 +43,7 @@ int main(int argc, char **argv)
 	GError *error = NULL;
 	int ret;
 	char *uri = NULL;
+	int zoom = 100;
 	gchar **args = NULL;
 	gboolean verbose = FALSE;
 	gboolean debug = FALSE;
@@ -63,6 +64,8 @@ int main(int argc, char **argv)
 		  N_("wait for domain to start"), NULL },
 		{ "reconnect", 'r', 0, G_OPTION_ARG_NONE, &reconnect,
 		  N_("reconnect to domain upon restart"), NULL },
+		{ "zoom", 'z', 0, G_OPTION_ARG_INT, &zoom,
+		  N_("Zoom level of window, in percentage"), "ZOOM" },
 		{ "debug", '\0', 0, G_OPTION_ARG_NONE, &debug,
 		  N_("display debugging information"), NULL },
   	     	{ G_OPTION_REMAINING, '\0', 0, G_OPTION_ARG_STRING_ARRAY, &args,
@@ -96,7 +99,12 @@ int main(int argc, char **argv)
 		return 1;
 	}
 
-	ret = viewer_start (uri, args[0], direct, waitvm, reconnect, verbose, debug, NULL);
+	if (zoom < 10 || zoom > 200) {
+		fprintf(stderr, "Zoom level must be within 10-200\n");
+		return 1;
+	}
+
+	ret = viewer_start (uri, args[0], zoom, direct, waitvm, reconnect, verbose, debug, NULL);
 	if (ret != 0)
 		return ret;
 

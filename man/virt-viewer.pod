@@ -43,11 +43,11 @@ Specify the hypervisor connection URI
 
 Wait for the domain to start up before attempting to connect to the console
 
-=item -w, --reconnect
+=item -r, --reconnect
 
 Automatically reconnect to the domain if it shuts down and restarts
 
-=item -z, --zoom=PCT
+=item -z PCT, --zoom=PCT
 
 Zoom level of the VNC window in percentage. Range 10-200.
 
@@ -55,6 +55,10 @@ Zoom level of the VNC window in percentage. Range 10-200.
 
 Do not attempt to tunnel the console over SSH, even if the main connection URI
 used SSH.
+
+=item --debug
+
+Print debugging information
 
 =back
 

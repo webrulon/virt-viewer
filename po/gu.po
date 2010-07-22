@@ -1,65 +1,65 @@
 # translation of virt-viewer.tip.virt-viewer.po to Gujarati
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-#
+# 
 # Sweta Kothari <swkothar@redhat.com>, 2010.
 msgid ""
 msgstr ""
 "Project-Id-Version: virt-viewer.tip.virt-viewer\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-01-21 06:26+0000\n"
+"POT-Creation-Date: 2010-07-21 21:23+0000\n"
 "PO-Revision-Date: 2010-01-21 14:19+0530\n"
 "Last-Translator: Sweta Kothari <swkothar@redhat.com>\n"
 "Language-Team: Gujarati\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: KBabel 1.11.4\n"
 "Plural-Forms: nplurals=2; plural=(n!=1);\n"
+"X-Generator: KBabel 1.11.4\n"
 
 #: ../src/main.c:34
 #, c-format
 msgid "%s version %s\n"
 msgstr "%s આવૃત્તિ %s\n"
 
-#: ../src/main.c:52
+#: ../src/main.c:53
 msgid "Run '"
 msgstr "ચલાવો '"
 
-#: ../src/main.c:55
+#: ../src/main.c:56
 msgid "display version information"
 msgstr "આવૃત્તિ જાણકારીને દર્શાવો"
 
-#: ../src/main.c:57
+#: ../src/main.c:58
 msgid "display verbose information"
 msgstr "વર્બોઝ જાણકારી ને દર્શાવો"
 
-#: ../src/main.c:59
+#: ../src/main.c:60
 msgid "direct connection with no automatic tunnels"
 msgstr "સીધુ જોડાણ સ્વયંચાલિત ટનલો સાથે નથી"
 
-#: ../src/main.c:61
+#: ../src/main.c:62
 msgid "connect to hypervisor"
 msgstr "હાઇપરવિઝર સાથે જોડાવો"
 
-#: ../src/main.c:63
+#: ../src/main.c:64
 msgid "wait for domain to start"
 msgstr "શરૂ કરવા માટે ડોમેઇન માટે થોભો"
 
-#: ../src/main.c:65
+#: ../src/main.c:66
 msgid "reconnect to domain upon restart"
 msgstr "પુન:શરૂ કરવા પર ડોમેઇન સાથે પુન:જોડાવો"
 
-#: ../src/main.c:67
+#: ../src/main.c:70
 msgid "display debugging information"
 msgstr "ડિબગીંગ જાણકારીને દર્શાવો"
 
 #. Setup command line options
-#: ../src/main.c:79
+#: ../src/main.c:82
 msgid "- Virtual machine graphical console"
 msgstr "- વર્ચ્યુઅલ મશીન ગ્રાફિકલ કન્સોલ"
 
-#: ../src/main.c:95
+#: ../src/main.c:98
 #, c-format
 msgid ""
 "\n"
@@ -74,22 +74,22 @@ msgstr ""
 "%s\n"
 "\n"
 
-#: ../src/viewer.c:878
+#: ../src/viewer.c:909
 #, c-format
 msgid "Cannot determine the VNC port for the guest %s"
 msgstr "મહેમાન %s માટે VNC પોર્ટને નક્કી કરી શકાતુ નથી"
 
-#: ../src/viewer.c:884
+#: ../src/viewer.c:915
 #, c-format
 msgid "Cannot determine the VNC host for the guest %s"
 msgstr "મહેમાન %s માટે VNC યજમાનને નક્કી કરી શકાતુ નથી"
 
-#: ../src/viewer.c:984
+#: ../src/viewer.c:1015
 #, c-format
 msgid "Unable to connect to the VNC server %s"
 msgstr "VNC સર્વર %s સાથે જોડાવાનું અસમર્થ"
 
-#: ../src/viewer.c:1001
+#: ../src/viewer.c:1032
 #, c-format
 msgid ""
 "Unable to authenticate with VNC server at %s: %s\n"
@@ -98,7 +98,7 @@ msgstr ""
 "%s પર VNC સર્વર સાથે સત્તાધિકરણ કરવાનું અસમર્થ: %s\n"
 "ફરીથી જોડાણનો પુન:પ્રયત્ન કરો?"
 
-#: ../src/viewer.c:1019
+#: ../src/viewer.c:1050
 #, c-format
 msgid ""
 "Unable to authenticate with VNC server at %s\n"
@@ -107,27 +107,26 @@ msgstr ""
 "%s પર VNC સર્વર સાથે સત્તાધિકરણ કરવાનુ અસમર્થ\n"
 "બિનઆધારભૂત સત્તાધિકરણ પ્રકાર %d"
 
-#: ../src/viewer.c:1111
+#: ../src/viewer.c:1142
 #, c-format
 msgid "Cannot find guest domain %s"
 msgstr "મહેમાન ડોમેઇન %s ને શોધી શકાતુ નથી"
 
-#: ../src/viewer.c:1213
+#: ../src/viewer.c:1246
 #, c-format
 msgid "Unable to connect to libvirt with URI %s"
 msgstr "URI %s સાથે libvirt ને જોડવાનું અસમર્થ"
 
-#: ../src/viewer.c:1214
+#: ../src/viewer.c:1247
 msgid "[none]"
 msgstr "[કંઇ નહિં]"
 
-#.
 #. * Local variables:
 #. *  c-indent-level: 8
 #. *  c-basic-offset: 8
 #. *  tab-width: 8
 #. * End:
-#.
+#. 
 #: ../src/about.glade.h:1
 msgid "A remote desktop client built with GTK-VNC and libvirt"
 msgstr "દૂરસ્થ ડેસ્કટોપ ક્લાઇન્ટ GTK-VNC અને libvirt સાથે બિલ્ટ છે"
@@ -294,19 +293,26 @@ msgstr "કીને મોકલો (_S)"
 msgid "_View"
 msgstr "દૃશ્ય (_V)"
 
-#: ../src/viewer.glade.h:23
+#: ../src/viewer.glade.h:24
 msgid "gtk-about"
 msgstr "gtk-about"
 
-#: ../src/viewer.glade.h:24
+#: ../src/viewer.glade.h:25
 msgid "gtk-quit"
 msgstr "gtk-quit"
 
-#: ../src/viewer.glade.h:25
+#: ../src/viewer.glade.h:26
 msgid "page 1"
 msgstr "પાનું ૧"
 
-#: ../src/viewer.glade.h:26
+#: ../src/viewer.glade.h:27
 msgid "page 2"
 msgstr "પાનું ૨"
 
+#: ../src/viewer.glade.h:23
+msgid "_Zoom"
+msgstr "નાનુંમોટું (_Z)"
+
+#: ../src/main.c:68
+msgid "Zoom level of window, in percentage"
+msgstr "નાનામોટાપણાનું સ્તર, ટકામાં"

@@ -356,7 +356,7 @@ viewer_resize_main_window(VirtViewer *viewer)
 			       height);
 }
 
-static void viewer_menu_view_zoom_out(GtkWidget *menu, VirtViewer *viewer)
+static void viewer_menu_view_zoom_out(G_GNUC_UNUSED GtkWidget *menu, VirtViewer *viewer)
 {
 	viewer->zoomlevel -= 10;
 	if (viewer->zoomlevel < 10)
@@ -365,7 +365,7 @@ static void viewer_menu_view_zoom_out(GtkWidget *menu, VirtViewer *viewer)
 	viewer_resize_main_window(viewer);
 }
 
-static void viewer_menu_view_zoom_in(GtkWidget *menu, VirtViewer *viewer)
+static void viewer_menu_view_zoom_in(G_GNUC_UNUSED GtkWidget *menu, VirtViewer *viewer)
 {
 	viewer->zoomlevel += 10;
 	if (viewer->zoomlevel > 200)
@@ -374,7 +374,7 @@ static void viewer_menu_view_zoom_in(GtkWidget *menu, VirtViewer *viewer)
 	viewer_resize_main_window(viewer);
 }
 
-static void viewer_menu_view_zoom_reset(GtkWidget *menu, VirtViewer *viewer)
+static void viewer_menu_view_zoom_reset(G_GNUC_UNUSED GtkWidget *menu, VirtViewer *viewer)
 {
 	viewer->zoomlevel = 100;
 

@@ -145,6 +145,7 @@ typedef struct VirtViewerSize {
 
 static gboolean viewer_connect_timer(void *opaque);
 static int viewer_initial_connect(VirtViewer *viewer);
+static void viewer_init_vnc_display(VirtViewer *viewer);
 
 
 static void viewer_simple_message_dialog(GtkWidget *window, const char *fmt, ...)
@@ -905,6 +906,8 @@ static int viewer_activate(VirtViewer *viewer,
 	if (viewer->active)
 		goto cleanup;
 
+	viewer_init_vnc_display(viewer);
+
 	if ((vncport = viewer_extract_vnc_port(dom)) == NULL) {
 		viewer_simple_message_dialog(viewer->window, _("Cannot determine the VNC port for the guest %s"),
 					     viewer->domkey);
@@ -1194,6 +1197,72 @@ static void viewer_error_func (void *data G_GNUC_UNUSED, virErrorPtr error G_GNU
 	/* nada */
 }
 
+static void viewer_init_vnc_display(VirtViewer *viewer)
+{
+	GtkWidget *notebook;
+	GtkWidget *align;
+
+	g_return_if_fail(viewer != NULL);
+
+	viewer->vnc = vnc_display_new();
+	vnc_display_set_keyboard_grab(VNC_DISPLAY(viewer->vnc), TRUE);
+	vnc_display_set_pointer_grab(VNC_DISPLAY(viewer->vnc), TRUE);
+
+	/*
+	 * In auto-resize mode we have things setup so that we always
+	 * automatically resize the top level window to be exactly the
+	 * same size as the VNC desktop, except when it won't fit on
+	 * the local screen, at which point we let it scale down.
+	 * The upshot is, we always want scaling enabled.
+	 * We disable force_size because we want to allow user to
+	 * manually size the widget smaller too
+	 */
+	vnc_display_set_force_size(VNC_DISPLAY(viewer->vnc), FALSE);
+	vnc_display_set_scaling(VNC_DISPLAY(viewer->vnc), TRUE);
+
+	g_signal_connect(viewer->vnc, "vnc-connected",
+			 G_CALLBACK(viewer_connected), viewer);
+	g_signal_connect(viewer->vnc, "vnc-initialized",
+			 G_CALLBACK(viewer_initialized), viewer);
+	g_signal_connect(viewer->vnc, "vnc-disconnected",
+			 G_CALLBACK(viewer_disconnected), viewer);
+
+	/* When VNC desktop resizes, we have to resize the containing widget */
+	g_signal_connect(viewer->vnc, "vnc-desktop-resize",
+			 G_CALLBACK(viewer_resize_desktop), viewer);
+	g_signal_connect(viewer->vnc, "vnc-pointer-grab",
+			 G_CALLBACK(viewer_mouse_grab), viewer);
+	g_signal_connect(viewer->vnc, "vnc-pointer-ungrab",
+			 G_CALLBACK(viewer_mouse_ungrab), viewer);
+	g_signal_connect(viewer->vnc, "vnc-keyboard-grab",
+			 G_CALLBACK(viewer_key_grab), viewer);
+	g_signal_connect(viewer->vnc, "vnc-keyboard-ungrab",
+			 G_CALLBACK(viewer_key_ungrab), viewer);
+
+	g_signal_connect(viewer->vnc, "vnc-auth-credential",
+			 G_CALLBACK(viewer_auth_vnc_credentials), &viewer->vncAddress);
+	g_signal_connect(viewer->vnc, "vnc-auth-failure",
+			 G_CALLBACK(viewer_vnc_auth_failure), viewer);
+	g_signal_connect(viewer->vnc, "vnc-auth-unsupported",
+			 G_CALLBACK(viewer_vnc_auth_unsupported), viewer);
+
+	g_signal_connect(viewer->vnc, "vnc-bell",
+			 G_CALLBACK(viewer_vnc_bell), viewer);
+	g_signal_connect(viewer->vnc, "vnc-server-cut-text",
+			 G_CALLBACK(viewer_vnc_server_cut_text), viewer);
+
+	notebook = glade_xml_get_widget(viewer->glade, "notebook");
+	align = glade_xml_get_widget(viewer->glade, "vnc-align");
+	gtk_container_add(GTK_CONTAINER(align), viewer->vnc);
+
+	if (!viewer->window) {
+		gtk_container_add(GTK_CONTAINER(viewer->container), GTK_WIDGET(notebook));
+		gtk_widget_show_all(viewer->container);
+	}
+
+	gtk_widget_realize(viewer->vnc);
+}
+
 int
 viewer_start (const char *uri,
 	      const char *name,
@@ -1276,66 +1345,14 @@ viewer_start (const char *uri,
 				      G_CALLBACK(viewer_menu_help_about), viewer);
 
 
-	viewer->vnc = vnc_display_new();
-        vnc_display_set_keyboard_grab(VNC_DISPLAY(viewer->vnc), TRUE);
-        vnc_display_set_pointer_grab(VNC_DISPLAY(viewer->vnc), TRUE);
-
-	/*
-	 * In auto-resize mode we have things setup so that we always
-	 * automatically resize the top level window to be exactly the
-	 * same size as the VNC desktop, except when it won't fit on
-	 * the local screen, at which point we let it scale down.
-	 * The upshot is, we always want scaling enabled.
-	 * We disable force_size because we want to allow user to
-	 * manually size the widget smaller too
-	 */
-	vnc_display_set_force_size(VNC_DISPLAY(viewer->vnc), FALSE);
-	vnc_display_set_scaling(VNC_DISPLAY(viewer->vnc), TRUE);
-
-        g_signal_connect(viewer->vnc, "vnc-connected",
-			 G_CALLBACK(viewer_connected), viewer);
-        g_signal_connect(viewer->vnc, "vnc-initialized",
-			 G_CALLBACK(viewer_initialized), viewer);
-        g_signal_connect(viewer->vnc, "vnc-disconnected",
-			 G_CALLBACK(viewer_disconnected), viewer);
-
-	/* When VNC desktop resizes, we have to resize the containing widget */
-	g_signal_connect(viewer->vnc, "vnc-desktop-resize",
-			 G_CALLBACK(viewer_resize_desktop), viewer);
-        g_signal_connect(viewer->vnc, "vnc-pointer-grab",
-			 G_CALLBACK(viewer_mouse_grab), viewer);
-        g_signal_connect(viewer->vnc, "vnc-pointer-ungrab",
-			 G_CALLBACK(viewer_mouse_ungrab), viewer);
-	g_signal_connect(viewer->vnc, "vnc-keyboard-grab",
-			 G_CALLBACK(viewer_key_grab), viewer);
-	g_signal_connect(viewer->vnc, "vnc-keyboard-ungrab",
-			 G_CALLBACK(viewer_key_ungrab), viewer);
-
-        g_signal_connect(viewer->vnc, "vnc-auth-credential",
-                         G_CALLBACK(viewer_auth_vnc_credentials), &viewer->vncAddress);
-        g_signal_connect(viewer->vnc, "vnc-auth-failure",
-                         G_CALLBACK(viewer_vnc_auth_failure), viewer);
-        g_signal_connect(viewer->vnc, "vnc-auth-unsupported",
-                         G_CALLBACK(viewer_vnc_auth_unsupported), viewer);
-
-	g_signal_connect(viewer->vnc, "vnc-bell",
-			 G_CALLBACK(viewer_vnc_bell), viewer);
-	g_signal_connect(viewer->vnc, "vnc-server-cut-text",
-			 G_CALLBACK(viewer_vnc_server_cut_text), viewer);
-
 	notebook = glade_xml_get_widget(viewer->glade, "notebook");
-
 	gtk_notebook_set_show_tabs(GTK_NOTEBOOK(notebook), FALSE);
 	align = glade_xml_get_widget(viewer->glade, "vnc-align");
-	gtk_container_add(GTK_CONTAINER(align), viewer->vnc);
-
 	g_signal_connect(align, "size-allocate",
 			 G_CALLBACK(viewer_resize_align), viewer);
 
 	if (container) {
 		viewer->container = container;
-		gtk_container_add(GTK_CONTAINER(container), GTK_WIDGET(notebook));
-		gtk_widget_show_all(container);
 	} else {
 		GtkWidget *window = glade_xml_get_widget(viewer->glade, "viewer");
 		GSList *accels;
@@ -1350,10 +1367,8 @@ viewer_start (const char *uri,
 			viewer->accelList = g_slist_append(viewer->accelList, accels->data);
 			g_object_ref(G_OBJECT(accels->data));
 		}
-		gtk_widget_show_all(window);
+		gtk_widget_show_all(viewer->window);
 	}
-
-	gtk_widget_realize(viewer->vnc);
 
 	if (viewer_initial_connect(viewer) < 0)
 		return -1;

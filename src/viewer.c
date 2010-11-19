@@ -728,7 +728,7 @@ static int viewer_matches_domain(VirtViewer *viewer,
 	return 0;
 }
 
-static char * viewer_extract_vnc_port(virDomainPtr dom)
+static char * viewer_extract_xpath_string(virDomainPtr dom, const gchar *xpath)
 {
 	char *xmldesc = virDomainGetXMLDesc(dom, 0);
 	xmlDocPtr xml = NULL;
@@ -752,7 +752,7 @@ static char * viewer_extract_vnc_port(virDomainPtr dom)
 	if (!ctxt)
 		goto error;
 
-	obj = xmlXPathEval((const xmlChar *)"string(/domain/devices/graphics[@type='vnc']/@port)", ctxt);
+	obj = xmlXPathEval((const xmlChar *)xpath, ctxt);
 	if (!obj || obj->type != XPATH_STRING || !obj->stringval || !obj->stringval[0])
 		goto error;
 	if (!strcmp((const char*)obj->stringval, "-1"))
@@ -908,7 +908,7 @@ static int viewer_activate(VirtViewer *viewer,
 
 	viewer_init_vnc_display(viewer);
 
-	if ((vncport = viewer_extract_vnc_port(dom)) == NULL) {
+	if ((vncport = viewer_extract_xpath_string(dom, "string(/domain/devices/graphics[@type='vnc']/@port)")) == NULL) {
 		viewer_simple_message_dialog(viewer->window, _("Cannot determine the VNC port for the guest %s"),
 					     viewer->domkey);
 		goto cleanup;

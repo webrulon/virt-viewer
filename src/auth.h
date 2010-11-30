@@ -29,6 +29,9 @@
 
 void viewer_auth_vnc_credentials(GtkWidget *vnc, GValueArray *credList, char **message);
 
+int viewer_auth_collect_credentials(const char *type, const char *address,
+                                    char **username, char **password);
+
 int viewer_auth_libvirt_credentials(virConnectCredentialPtr cred,
 				    unsigned int ncred,
 				    void *cbdata);

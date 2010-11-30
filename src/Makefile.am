@@ -11,10 +11,15 @@ virt_viewer_SOURCES = \
 	util.h util.c \
 	auth.h auth.c \
 	events.h events.c \
-	viewer.h viewer.c
+	viewer.h viewer.c \
+	viewer-priv.h \
+	display.h display.c \
+	display-vnc.h display-vnc.c \
+	display-spice.h display-spice.c
 
 virt_viewer_LDADD = \
 	@GTKVNC_LIBS@ \
+	@SPICEGTK_LIBS@ \
 	@GTK2_LIBS@ \
 	@LIBXML2_LIBS@ \
 	@LIBGLADE2_LIBS@ \
@@ -22,6 +27,7 @@ virt_viewer_LDADD = \
 
 virt_viewer_CFLAGS = \
 	@GTKVNC_CFLAGS@ \
+	@SPICEGTK_CFLAGS@ \
 	@GTK2_CFLAGS@ \
 	@LIBXML2_CFLAGS@ \
 	@LIBGLADE2_CFLAGS@ \

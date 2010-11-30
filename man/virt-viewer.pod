@@ -10,12 +10,13 @@ B<virt-viewer> [OPTIONS] DOMAIN-NAME|ID|UUID
 =head1 DESCRIPTION
 
 B<virt-viewer> is a minimal tool for displaying the graphical console
-of a virtual machine. The console is accessed using the VNC protocol.
-The guest can be referred to based on its name, ID, or UUID. If the
-guest is not already running, then the viewer can be told to wait
-until is starts before attempting to connect to the console The viewer
-can connect to remote hosts to lookup the console information and then
-also connect to the remote console using the same network transport.
+of a virtual machine. The console is accessed using the VNC or SPICE
+protocol. The guest can be referred to based on its name, ID, or
+UUID. If the guest is not already running, then the viewer can be told
+to wait until is starts before attempting to connect to the console
+The viewer can connect to remote hosts to lookup the console
+information and then also connect to the remote console using the same
+network transport.
 
 =head1 OPTIONS
 
@@ -49,7 +50,7 @@ Automatically reconnect to the domain if it shuts down and restarts
 
 =item -z PCT, --zoom=PCT
 
-Zoom level of the VNC window in percentage. Range 10-200.
+Zoom level of the display window in percentage. Range 10-200.
 
 =item -d, --direct
 

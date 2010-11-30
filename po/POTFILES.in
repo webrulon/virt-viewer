@@ -3,6 +3,8 @@ src/events.c
 src/main.c
 src/util.c
 src/viewer.c
+src/display-spice.c
+src/display-vnc.c
 src/about.glade
 src/auth.glade
 src/viewer.glade

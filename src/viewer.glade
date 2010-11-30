@@ -309,7 +309,7 @@
               </packing>
             </child>
             <child>
-              <widget class="GtkAlignment" id="vnc-align">
+              <widget class="GtkAlignment" id="display-align">
                 <property name="visible">True</property>
                 <property name="xscale">0</property>
                 <property name="yscale">0</property>

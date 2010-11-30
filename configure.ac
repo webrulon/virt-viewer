@@ -33,6 +33,7 @@ PKG_CHECK_MODULES(LIBVIRT, libvirt >= 0.6.0)
 PKG_CHECK_MODULES(GTK2, gtk+-2.0 >= 2.10.0)
 PKG_CHECK_MODULES(LIBGLADE2, libglade-2.0 >= 2.6.0)
 PKG_CHECK_MODULES(GTKVNC, gtk-vnc-1.0 >= 0.3.8)
+PKG_CHECK_MODULES(SPICEGTK, spice-client-gtk >= 0.1.0.14)
 
 dnl Decide if this platform can support the SSH tunnel feature.
 AC_CHECK_HEADERS([sys/socket.h sys/un.h windows.h])

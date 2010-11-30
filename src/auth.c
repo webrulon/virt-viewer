@@ -30,11 +30,8 @@
 #include "auth.h"
 
 
-static int
-viewer_auth_collect_credentials(const char *type,
-				const char *address,
-				char **username,
-				char **password)
+int viewer_auth_collect_credentials(const char *type, const char *address,
+                                    char **username, char **password)
 {
 	GtkWidget *dialog = NULL;
 	GladeXML *creds = viewer_load_glade("auth.glade", "auth");

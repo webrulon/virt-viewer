@@ -211,6 +211,8 @@ static void _spice_channel_new(SpiceSession *s, SpiceChannel *channel,
 		g_object_set(self->display,
 			     "grab-keyboard", TRUE,
 			     "grab-mouse", TRUE,
+			     "resize-guest", TRUE,
+			     "auto-clipboard", TRUE,
 			     NULL);
 		viewer_add_display_and_realize(display->viewer);
 		viewer_initialized(display->viewer);
@@ -262,6 +264,7 @@ VirtViewerDisplaySpice* virt_viewer_display_spice_new(VirtViewer *viewer)
 	self = g_object_new(VIRT_VIEWER_TYPE_DISPLAY_SPICE, NULL);
 	d = VIRT_VIEWER_DISPLAY(self);
 	d->viewer = viewer;
+	d->need_align = FALSE;
 
 	self->session = spice_session_new();
 	g_signal_connect(self->session, "channel-new",

@@ -49,6 +49,7 @@ G_BEGIN_DECLS
 /* perhaps this become an interface, and be pushed in gtkvnc and spice? */
 struct _VirtViewerDisplay {
 	GObject parent;
+	gboolean need_align;
 	VirtViewer *viewer;
 	GtkWidget *widget;
 };

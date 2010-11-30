@@ -130,8 +130,15 @@ void viewer_add_display_and_realize(VirtViewer *viewer)
 	g_return_if_fail(viewer->display->widget != NULL);
 
 	notebook = glade_xml_get_widget(viewer->glade, "notebook");
-	align = glade_xml_get_widget(viewer->glade, "display-align");
-	gtk_container_add(GTK_CONTAINER(align), viewer->display->widget);
+	if (viewer->display->need_align) {
+		align = glade_xml_get_widget(viewer->glade, "display-align");
+		gtk_container_add(GTK_CONTAINER(align), viewer->display->widget);
+	} else {
+		gtk_notebook_remove_page(GTK_NOTEBOOK(notebook), 2);
+		if (gtk_notebook_insert_page(GTK_NOTEBOOK(notebook), viewer->display->widget,
+					     NULL, 2) == -1)
+			g_warning("failed to insert a notebook page");
+	}
 
 	if (!viewer->window) {
 		gtk_container_add(GTK_CONTAINER(viewer->container), GTK_WIDGET(notebook));
@@ -763,9 +770,9 @@ static void viewer_show_display(VirtViewer *viewer)
 	g_return_if_fail(viewer->display->widget != NULL);
 
 	notebook = glade_xml_get_widget(viewer->glade, "notebook");
-	gtk_notebook_set_current_page(GTK_NOTEBOOK(notebook), 1);
-
 	gtk_widget_show(viewer->display->widget);
+	gtk_notebook_set_current_page(GTK_NOTEBOOK(notebook),
+				      viewer->display->need_align ? 1 : 2);
 }
 
 static void viewer_connect_info_free(VirtViewer *viewer)

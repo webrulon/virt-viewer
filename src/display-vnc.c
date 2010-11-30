@@ -264,6 +264,7 @@ VirtViewerDisplayVNC* virt_viewer_display_vnc_new(VirtViewer *viewer)
 	d->viewer = viewer;
 	viewer->display = d;
 
+	d->need_align = TRUE;
 	d->widget = vnc_display_new();
 	self->vnc = VNC_DISPLAY(d->widget);
 	vnc_display_set_keyboard_grab(self->vnc, TRUE);

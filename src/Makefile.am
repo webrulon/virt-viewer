@@ -14,8 +14,12 @@ virt_viewer_SOURCES = \
 	viewer.h viewer.c \
 	viewer-priv.h \
 	display.h display.c \
-	display-vnc.h display-vnc.c \
+	display-vnc.h display-vnc.c
+
+if HAVE_SPICE_GTK
+virt_viewer_SOURCES += \
 	display-spice.h display-spice.c
+endif
 
 virt_viewer_LDADD = \
 	@GTKVNC_LIBS@ \

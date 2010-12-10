@@ -49,7 +49,10 @@
 #include "events.h"
 #include "auth.h"
 #include "display-vnc.h"
+
+#ifdef HAVE_SPICE_GTK
 #include "display-spice.h"
+#endif
 
 #define SCALE(x) do { x = viewer->fullscreen ? x : x * viewer->zoomlevel / 100; } while (0);
 
@@ -806,8 +809,10 @@ static gboolean viewer_extract_connect_info(VirtViewer *viewer,
 
 	if (g_strcasecmp(type, "vnc") == 0)
 		viewer->display = VIRT_VIEWER_DISPLAY(virt_viewer_display_vnc_new(viewer));
+#ifdef HAVE_SPICE_GTK
 	else if (g_strcasecmp(type, "spice") == 0)
 		viewer->display = VIRT_VIEWER_DISPLAY(virt_viewer_display_spice_new(viewer));
+#endif
 	else {
 		viewer_simple_message_dialog(viewer->window, _("Unknown graphic type for the guest %s"),
 					     viewer->domkey);

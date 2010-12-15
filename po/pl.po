@@ -5,8 +5,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: pl\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-07-06 13:53+0000\n"
-"PO-Revision-Date: 2010-07-06 20:24+0200\n"
+"POT-Creation-Date: 2010-12-15 19:57+0000\n"
+"PO-Revision-Date: 2010-12-15 21:01+0100\n"
 "Last-Translator: Piotr Drąg <piotrdrag@gmail.com>\n"
 "Language-Team: Polish <trans-pl@lists.fedoraproject.org>\n"
 "MIME-Version: 1.0\n"
@@ -74,31 +74,58 @@ msgstr ""
 "%s\n"
 "\n"
 
-#: ../src/viewer.c:909
+#: ../src/viewer.c:805
 #, c-format
-msgid "Cannot determine the VNC port for the guest %s"
-msgstr "Nie można określić portu VNC dla gościa %s"
+msgid "Cannot determine the graphic type for the guest %s"
+msgstr "Nie można określić typu grafiki dla gościa %s"
 
-#: ../src/viewer.c:915
+#: ../src/viewer.c:817
 #, c-format
-msgid "Cannot determine the VNC host for the guest %s"
-msgstr "Nie można określić gospodarza VNC dla gościa %s"
+msgid "Unknown graphic type for the guest %s"
+msgstr "Nieznany typ grafiki dla gościa %s"
 
-#: ../src/viewer.c:1015
+#: ../src/viewer.c:824
 #, c-format
-msgid "Unable to connect to the VNC server %s"
-msgstr "Nie można połączyć się z serwerem VNC %s"
+msgid "Cannot determine the graphic port for the guest %s"
+msgstr "Nie można określić portu grafiki dla gościa %s"
 
-#: ../src/viewer.c:1032
+#: ../src/viewer.c:830
 #, c-format
-msgid ""
-"Unable to authenticate with VNC server at %s: %s\n"
-"Retry connection again?"
-msgstr ""
-"Nie można uwierzytelnić z serwerem VNC na %s: %s\n"
-"Ponownie ponowić połączenie?"
+msgid "Cannot determine the host for the guest %s"
+msgstr "Nie można określić gospodarza dla gościa %s"
 
-#: ../src/viewer.c:1050
+#: ../src/viewer.c:856
+msgid "Connect to ssh failed."
+msgstr "Połączenie z ssh nie powiodło się."
+
+#: ../src/viewer.c:858
+msgid "Can't connect to channel, SSH only supported."
+msgstr "Nie można połączyć się z kanałem, obsługiwane jest tylko SSH."
+
+#: ../src/viewer.c:863
+msgid "Connect to channel unsupported."
+msgstr "Łączenie z kanałem jest nieobsługiwane."
+
+#: ../src/viewer.c:1006
+#, c-format
+msgid "Unable to connect to the graphic server %s"
+msgstr "Nie można połączyć się z serwerem grafiki %s"
+
+#: ../src/viewer.c:1053
+#, c-format
+msgid "Cannot find guest domain %s"
+msgstr "Nie można odnaleźć domeny gościa %s"
+
+#: ../src/viewer.c:1161
+#, c-format
+msgid "Unable to connect to libvirt with URI %s"
+msgstr "Nie można połączyć się z biblioteką libvirt za pomocą adresu URL %s"
+
+#: ../src/viewer.c:1162
+msgid "[none]"
+msgstr "[brak]"
+
+#: ../src/display-vnc.c:142
 #, c-format
 msgid ""
 "Unable to authenticate with VNC server at %s\n"
@@ -107,19 +134,14 @@ msgstr ""
 "Nie można uwierzytelnić z serwerem VNC na %s\n"
 "Nieobsługiwany typ uwierzytelniania %d"
 
-#: ../src/viewer.c:1142
+#: ../src/display-vnc.c:158
 #, c-format
-msgid "Cannot find guest domain %s"
-msgstr "Nie można odnaleźć domeny gościa %s"
-
-#: ../src/viewer.c:1246
-#, c-format
-msgid "Unable to connect to libvirt with URI %s"
-msgstr "Nie można połączyć się z biblioteką libvirt za pomocą adresu URL %s"
-
-#: ../src/viewer.c:1247
-msgid "[none]"
-msgstr "[brak]"
+msgid ""
+"Unable to authenticate with VNC server at %s: %s\n"
+"Retry connection again?"
+msgstr ""
+"Nie można uwierzytelnić z serwerem VNC na %s: %s\n"
+"Ponownie ponowić połączenie?"
 
 #.
 #. * Local variables:
@@ -316,3 +338,7 @@ msgstr "strona 1"
 #: ../src/viewer.glade.h:27
 msgid "page 2"
 msgstr "strona 2"
+
+#: ../src/viewer.glade.h:28
+msgid "page 3"
+msgstr "strona 3"

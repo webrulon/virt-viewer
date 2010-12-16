@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: virt-viewer\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-07-29 07:52+0000\n"
-"PO-Revision-Date: 2010-08-03 12:43+0200\n"
+"POT-Creation-Date: 2010-12-15 20:07+0000\n"
+"PO-Revision-Date: 2010-12-16 10:39+0200\n"
 "Last-Translator: Geert Warrink <geert.warrink@onsnet.nu>\n"
 "Language-Team: Fedora\n"
 "Language: nl\n"
@@ -78,31 +78,58 @@ msgstr ""
 "%s\n"
 "\n"
 
-#: ../src/viewer.c:909
+#: ../src/viewer.c:805
 #, c-format
-msgid "Cannot determine the VNC port for the guest %s"
-msgstr "Kan de VNC poort voor gast %s niet bepalen"
+msgid "Cannot determine the graphic type for the guest %s"
+msgstr "Kan het grafische type voor de gast %s niet bepalen"
 
-#: ../src/viewer.c:915
+#: ../src/viewer.c:817
 #, c-format
-msgid "Cannot determine the VNC host for the guest %s"
-msgstr "Kan de VNC host voor gast %s niet bepalen"
+msgid "Unknown graphic type for the guest %s"
+msgstr "Onbekend grafisch type voor de gast %s"
 
-#: ../src/viewer.c:1015
+#: ../src/viewer.c:824
 #, c-format
-msgid "Unable to connect to the VNC server %s"
-msgstr "Niet in staat om verbinding te maken met VNC server %s"
+msgid "Cannot determine the graphic port for the guest %s"
+msgstr "Kan de grafische poort voor de gast %s niet bepalen"
 
-#: ../src/viewer.c:1032
+#: ../src/viewer.c:830
 #, c-format
-msgid ""
-"Unable to authenticate with VNC server at %s: %s\n"
-"Retry connection again?"
-msgstr ""
-"Kan geen authenticatie verkrijgen met VNC server op %s: %s\n"
-"Verbinding opnieuw proberen te maken?"
+msgid "Cannot determine the host for the guest %s"
+msgstr "Kan de host voor de gast %s niet bepalen"
 
-#: ../src/viewer.c:1050
+#: ../src/viewer.c:856
+msgid "Connect to ssh failed."
+msgstr "Verbinden met ssh mislukte."
+
+#: ../src/viewer.c:858
+msgid "Can't connect to channel, SSH only supported."
+msgstr "Kan geen verbinding maken met kanaal, alleen SSH wordt ondersteund"
+
+#: ../src/viewer.c:863
+msgid "Connect to channel unsupported."
+msgstr "Verbinding maken met kanaal wordt niet ondersteund."
+
+#: ../src/viewer.c:1006
+#, c-format
+msgid "Unable to connect to the graphic server %s"
+msgstr "Ka niet verbinden met de grafische server %s"
+
+#: ../src/viewer.c:1053
+#, c-format
+msgid "Cannot find guest domain %s"
+msgstr "Kan gast domein %s niet vinden"
+
+#: ../src/viewer.c:1161
+#, c-format
+msgid "Unable to connect to libvirt with URI %s"
+msgstr "Kan niet verbinden met libvirt met URI %s"
+
+#: ../src/viewer.c:1162
+msgid "[none]"
+msgstr "[geen]"
+
+#: ../src/display-vnc.c:142
 #, c-format
 msgid ""
 "Unable to authenticate with VNC server at %s\n"
@@ -111,19 +138,14 @@ msgstr ""
 "Kan geen authenticatie verkrijgen met VNC server op %s\n"
 "Niet-ondersteund authenticatie type %d"
 
-#: ../src/viewer.c:1142
+#: ../src/display-vnc.c:158
 #, c-format
-msgid "Cannot find guest domain %s"
-msgstr "Kan gast domein %s niet vinden"
-
-#: ../src/viewer.c:1246
-#, c-format
-msgid "Unable to connect to libvirt with URI %s"
-msgstr "Kan niet verbinden met libvirt met URI %s"
-
-#: ../src/viewer.c:1247
-msgid "[none]"
-msgstr "[geen]"
+msgid ""
+"Unable to authenticate with VNC server at %s: %s\n"
+"Retry connection again?"
+msgstr ""
+"Kan geen authenticatie verkrijgen met VNC server op %s: %s\n"
+"Verbinding opnieuw proberen te maken?"
 
 #.
 #. * Local variables:
@@ -169,7 +191,8 @@ msgid ""
 "Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA\n"
 msgstr ""
 "Dit programma is vrije software; Je kunt het verspreiden en/of wijzigen\n"
-"onder de bepalingen van de GNU General Public License, zoals uitgegeven door\n"
+"onder de bepalingen van de GNU General Public License, zoals uitgegeven "
+"door\n"
 "de Free Software Foundation; zowel versie 2 van de licentie, of\n"
 "(naar vrije keuze) een latere versie.\n"
 "\n"
@@ -178,10 +201,11 @@ msgstr ""
 "VERKOOPBAARHEID of GESCHIKTHEID VOOR EEN BEPAALD DOEL. Zie de\n"
 "GNU General Public License voor meer details.\n"
 "\n"
-"Je zou een kopie van de GNU General Public License, samen met dit programma,\n"
+"Je zou een kopie van de GNU General Public License, samen met dit "
+"programma,\n"
 "ontvangen moeten hebben; als dat niet het geval is kun je schrijven naar de\n"
-"Free Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA "
-"02111-1307  USA\n"
+"Free Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-"
+"1307  USA\n"
 
 #: ../src/about.glade.h:20
 msgid "virt-manager.org"
@@ -318,3 +342,7 @@ msgstr "pagina 1"
 #: ../src/viewer.glade.h:27
 msgid "page 2"
 msgstr "pagina 2"
+
+#: ../src/viewer.glade.h:28
+msgid "page 3"
+msgstr "pagina 3"

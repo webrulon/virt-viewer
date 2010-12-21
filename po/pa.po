@@ -1,64 +1,68 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-#
 # Jaswinder Singh <jsingh@redhat.com>, 2010.
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-01-25 10:20+0000\n"
-"PO-Revision-Date: 2010-01-29 13:08+0530\n"
+"POT-Creation-Date: 2010-12-16 10:17+0000\n"
+"PO-Revision-Date: 2010-12-21 12:25+0530\n"
 "Last-Translator: Jaswinder Singh <jsingh@redhat.com>\n"
-"Language-Team: Punjabi/Panjabi <kde-i18n-doc@kde.org>\n"
+"Language-Team: Punjabi Team\n"
+"Language: pa\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Lokalize 1.0\n"
-"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Virtaal 0.6.1\n"
 
 #: ../src/main.c:34
 #, c-format
 msgid "%s version %s\n"
 msgstr "%s ਵਰਜਨ %s\n"
 
-#: ../src/main.c:52
+#: ../src/main.c:53
 msgid "Run '"
 msgstr "ਚਲਾਓ '"
 
-#: ../src/main.c:55
+#: ../src/main.c:56
 msgid "display version information"
 msgstr "ਵਰਜਨ ਜਾਣਕਾਰੀ ਵੇਖਾਓ"
 
-#: ../src/main.c:57
+#: ../src/main.c:58
 msgid "display verbose information"
 msgstr "ਵਰਬੋਜ਼ ਜਾਣਕਾਰੀ ਵੇਖਾਓ"
 
-#: ../src/main.c:59
+#: ../src/main.c:60
 msgid "direct connection with no automatic tunnels"
 msgstr "ਬਿਨਾਂ ਕਿਸੇ ਆਟੋਮੈਟਿਕ ਟੰਨਲ ਡਾਇਰੈਕਟ ਕੁਨੈਕਸ਼ਨ"
 
-#: ../src/main.c:61
+#: ../src/main.c:62
 msgid "connect to hypervisor"
 msgstr "ਹਾਈਪਰਵਾਈਸਰ ਨਾਲ ਜੋੜੋ"
 
-#: ../src/main.c:63
+#: ../src/main.c:64
 msgid "wait for domain to start"
 msgstr "ਡੋਮੇਲ ਚਾਲੂ ਹੋਣ ਦੀ ਉਡੀਕ ਕਰੋ"
 
-#: ../src/main.c:65
+#: ../src/main.c:66
 msgid "reconnect to domain upon restart"
 msgstr "ਮੁੜ-ਚਾਲੂ ਹੋਣ ਤੇ ਡੋਮੇਨ ਨਾ ਮੁੜ-ਜੁੜੋ"
 
-#: ../src/main.c:67
+#: ../src/main.c:68
+msgid "Zoom level of window, in percentage"
+msgstr "ਵਿੰਡੋ ਦਾ ਜ਼ੂਮ ਲੈਵਲ, ਪ੍ਰਤੀਸ਼ਤ ਵਿੱਚ"
+
+#: ../src/main.c:70
 msgid "display debugging information"
 msgstr "ਡੀਬੱਗਿੰਗ ਜਾਣਕਾਰੀ ਵੇਖਾਓ"
 
 #. Setup command line options
-#: ../src/main.c:79
+#: ../src/main.c:82
 msgid "- Virtual machine graphical console"
 msgstr "- ਵਰਚੁਅਲ ਮਸ਼ੀਨ ਗਰਾਫੀਕਲ ਕੰਸੋਲ"
 
-#: ../src/main.c:95
+#: ../src/main.c:98
 #, c-format
 msgid ""
 "\n"
@@ -73,31 +77,58 @@ msgstr ""
 "%s\n"
 "\n"
 
-#: ../src/viewer.c:878
+#: ../src/viewer.c:805
 #, c-format
-msgid "Cannot determine the VNC port for the guest %s"
-msgstr "ਗਿਸਟ %s ਲਈ VNC ਪੋਰਟ ਪਤਾ ਨਹੀਂ ਕਰ ਸਕਦਾ"
+msgid "Cannot determine the graphic type for the guest %s"
+msgstr "ਗਿਸਟ %s ਲਈ ਗਰਾਫਿਕ ਕਿਸਮ ਪਤਾ ਨਹੀਂ ਕਰ ਸਕਦਾ"
 
-#: ../src/viewer.c:884
+#: ../src/viewer.c:817
 #, c-format
-msgid "Cannot determine the VNC host for the guest %s"
-msgstr "ਗਿਸਟ %s ਲਈ VNC ਹੋਸਟ ਪਤਾ ਨਹੀਂ ਕਰ ਸਕਦਾ"
+msgid "Unknown graphic type for the guest %s"
+msgstr "ਗਿਸਟ %s ਲਈ ਗਰਾਫਿਕਸ ਕਿਸਮ ਅਣਜਾਣ ਹੈ"
 
-#: ../src/viewer.c:984
+#: ../src/viewer.c:824
 #, c-format
-msgid "Unable to connect to the VNC server %s"
-msgstr "VNC ਸਰਵਰ %s ਨਾਲ ਜੁੜਨ ਵਿੱਚ ਅਸਮਰਥ"
+msgid "Cannot determine the graphic port for the guest %s"
+msgstr "ਗਿਸਟ %s ਲਈ ਗਰਾਫਿਕ ਪੋਰਟ ਪਤਾ ਨਹੀਂ ਕਰ ਸਕਦਾ"
 
-#: ../src/viewer.c:1001
+#: ../src/viewer.c:830
 #, c-format
-msgid ""
-"Unable to authenticate with VNC server at %s: %s\n"
-"Retry connection again?"
-msgstr ""
-"VNC ਸਰਵਰ ਨਾਲ %s ਤੋ ਪ੍ਰਮਾਣਿਤ ਹੋਣ ਵਿੱਚ ਅਸਮਰਥ: %s\n"
-"ਕੁਨੈਕਸ਼ਨ ਲਈ ਮਉੜ-ਕੋਸ਼ਿਸ਼ ਕਰੋ?"
+msgid "Cannot determine the host for the guest %s"
+msgstr "ਗਿਸਟ %s ਲਈ ਹੋਸਟ ਪਤਾ ਨਹੀਂ ਕਰ ਸਕਦਾ"
 
-#: ../src/viewer.c:1019
+#: ../src/viewer.c:856
+msgid "Connect to ssh failed."
+msgstr "ssh ਨਾਲ ਜੁੜਨ ਤੋਂ ਫੇਲ ਹੋਇਆ।"
+
+#: ../src/viewer.c:858
+msgid "Can't connect to channel, SSH only supported."
+msgstr "ਚੈਨਲ ਨਾਲ ਜੁੜ ਨਹੀਂ ਸਕਦਾ, ਸਿਰਫ SSH ਨੂੰ ਸਹਿਯੋਗ ਹੈ।"
+
+#: ../src/viewer.c:863
+msgid "Connect to channel unsupported."
+msgstr "ਚੈਨਲ ਨਾਲ ਜੁੜਨ ਨੂੰ ਸਹਿਯੋਗ ਨਹੀਂ ਹੈ।"
+
+#: ../src/viewer.c:1006
+#, c-format
+msgid "Unable to connect to the graphic server %s"
+msgstr "ਗਰਾਫਿਕਸ ਸਰਵਰ %s ਨਾਲ ਜੁੜਨ ਤੋਂ ਅਸਮਰਥ"
+
+#: ../src/viewer.c:1053
+#, c-format
+msgid "Cannot find guest domain %s"
+msgstr "ਗਿਸਟ ਡੋਮੇਨ %s ਨਹੀਂ ਲੱਭ ਸਕਿਆ"
+
+#: ../src/viewer.c:1161
+#, c-format
+msgid "Unable to connect to libvirt with URI %s"
+msgstr "libvirt ਨੂੰ URI %s ਨਾਲ ਜੋੜ ਨਹੀਂ ਸਕਿਆ"
+
+#: ../src/viewer.c:1162
+msgid "[none]"
+msgstr "[ਕੋਈ ਨਹੀਂ]"
+
+#: ../src/display-vnc.c:142
 #, c-format
 msgid ""
 "Unable to authenticate with VNC server at %s\n"
@@ -106,19 +137,14 @@ msgstr ""
 "VNC ਸਰਵਰ ਨਾਲ %s ਤੇ ਪ੍ਰਮਾਣਿਤ ਹੋਣ ਤੋਂ ਅਸਮਰਥ\n"
 "ਨਾ-ਸਹਿਯੋਗੀ ਪ੍ਰਮਾਣਿਕਤਾ ਕਿਸਮ %d"
 
-#: ../src/viewer.c:1111
+#: ../src/display-vnc.c:158
 #, c-format
-msgid "Cannot find guest domain %s"
-msgstr "ਗਿਸਟ ਡੋਮੇਨ %s ਨਹੀਂ ਲੱਭ ਸਕਿਆ"
-
-#: ../src/viewer.c:1213
-#, c-format
-msgid "Unable to connect to libvirt with URI %s"
-msgstr "libvirt ਨੂੰ URI %s ਨਾਲ ਜੋੜ ਨਹੀਂ ਸਕਿਆ"
-
-#: ../src/viewer.c:1214
-msgid "[none]"
-msgstr "[ਕੋਈ ਨਹੀਂ]"
+msgid ""
+"Unable to authenticate with VNC server at %s: %s\n"
+"Retry connection again?"
+msgstr ""
+"VNC ਸਰਵਰ ਨਾਲ %s ਤੋ ਪ੍ਰਮਾਣਿਤ ਹੋਣ ਵਿੱਚ ਅਸਮਰਥ: %s\n"
+"ਕੁਨੈਕਸ਼ਨ ਲਈ ਮਉੜ-ਕੋਸ਼ਿਸ਼ ਕਰੋ?"
 
 #.
 #. * Local variables:
@@ -294,19 +320,25 @@ msgid "_View"
 msgstr "ਵੇਖੋ(_V)"
 
 #: ../src/viewer.glade.h:23
+msgid "_Zoom"
+msgstr "ਜ਼ੂਮ(_Z)"
+
+#: ../src/viewer.glade.h:24
 msgid "gtk-about"
 msgstr "gtk-ਬਾਰੇ"
 
-#: ../src/viewer.glade.h:24
+#: ../src/viewer.glade.h:25
 msgid "gtk-quit"
 msgstr "gtk-ਬੰਦ"
 
-#: ../src/viewer.glade.h:25
+#: ../src/viewer.glade.h:26
 msgid "page 1"
 msgstr "ਪੇਜ਼ 1"
 
-#: ../src/viewer.glade.h:26
+#: ../src/viewer.glade.h:27
 msgid "page 2"
 msgstr "ਪੇਜ਼ 2"
 
-
+#: ../src/viewer.glade.h:28
+msgid "page 3"
+msgstr "ਪੇਜ਼ 3"

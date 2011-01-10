@@ -9,9 +9,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: es\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-07-06 07:52+0000\n"
-"PO-Revision-Date: 2010-07-06 09:13-0300\n"
-"Last-Translator: Claudio Rodrigo Pereyra Diaz <claudio@pereyradiaz.com.ar>\n"
+"POT-Creation-Date: 2011-01-10 01:49+0000\n"
+"PO-Revision-Date: 2011-01-10 15:14-0300\n"
+"Last-Translator: Claudio Rodrigo Pereyra Diaz <claudiorodrigo@pereyradiaz.com.ar>\n"
 "Language-Team: Spanish <en@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -80,31 +80,58 @@ msgstr ""
 "%s\n"
 "\n"
 
-#: ../src/viewer.c:909
+#: ../src/viewer.c:805
 #, c-format
-msgid "Cannot determine the VNC port for the guest %s"
-msgstr "No se puede determinar el puerto VNC para el huésped %s"
+msgid "Cannot determine the graphic type for the guest %s"
+msgstr "No se puede determinar el tipo de gráficos para el huésped %s"
 
-#: ../src/viewer.c:915
+#: ../src/viewer.c:817
 #, c-format
-msgid "Cannot determine the VNC host for the guest %s"
-msgstr "No se puede determinar el host VNC para el huésped %s"
+msgid "Unknown graphic type for the guest %s"
+msgstr "Tipo de gráficos desconocido para el huésped %s"
 
-#: ../src/viewer.c:1015
+#: ../src/viewer.c:824
 #, c-format
-msgid "Unable to connect to the VNC server %s"
-msgstr "No se pudo conectar al servidor VNC %s"
+msgid "Cannot determine the graphic port for the guest %s"
+msgstr "No se puede determinar el puerto de gráficos para el huésped %s"
 
-#: ../src/viewer.c:1032
+#: ../src/viewer.c:830
 #, c-format
-msgid ""
-"Unable to authenticate with VNC server at %s: %s\n"
-"Retry connection again?"
-msgstr ""
-"No se pudo autenticar con el servidor VNC en %s: %s\n"
-"¿Intentar de nuevo?"
+msgid "Cannot determine the host for the guest %s"
+msgstr "No se puede determinar el anfitrión para el huésped %s"
 
-#: ../src/viewer.c:1050
+#: ../src/viewer.c:856
+msgid "Connect to ssh failed."
+msgstr "Conección a ssh fallida."
+
+#: ../src/viewer.c:858
+msgid "Can't connect to channel, SSH only supported."
+msgstr "No se puede conectar al canal, soportado solamente SSH."
+
+#: ../src/viewer.c:863
+msgid "Connect to channel unsupported."
+msgstr "Conectar a canal no soportado."
+
+#: ../src/viewer.c:1006
+#, c-format
+msgid "Unable to connect to the graphic server %s"
+msgstr "No se pudo conectar al servidor gráfico %s"
+
+#: ../src/viewer.c:1053
+#, c-format
+msgid "Cannot find guest domain %s"
+msgstr "No se pudo encontrar el dominio huésped %s"
+
+#: ../src/viewer.c:1161
+#, c-format
+msgid "Unable to connect to libvirt with URI %s"
+msgstr "No se pudo conectar a libvirt con el URI %s"
+
+#: ../src/viewer.c:1162
+msgid "[none]"
+msgstr "[ninguno]"
+
+#: ../src/display-vnc.c:142
 #, c-format
 msgid ""
 "Unable to authenticate with VNC server at %s\n"
@@ -113,19 +140,14 @@ msgstr ""
 "No se pudo autenticar con el servidor VNC en %s\n"
 "No se soporta el tipo de autenticación %d"
 
-#: ../src/viewer.c:1142
+#: ../src/display-vnc.c:158
 #, c-format
-msgid "Cannot find guest domain %s"
-msgstr "No se pudo encontrar el dominio huésped %s"
-
-#: ../src/viewer.c:1246
-#, c-format
-msgid "Unable to connect to libvirt with URI %s"
-msgstr "No se pudo conectar a libvirt con el URI %s"
-
-#: ../src/viewer.c:1247
-msgid "[none]"
-msgstr "[ninguno]"
+msgid ""
+"Unable to authenticate with VNC server at %s: %s\n"
+"Retry connection again?"
+msgstr ""
+"No se pudo autenticar con el servidor VNC en %s: %s\n"
+"¿Intentar de nuevo?"
 
 #.
 #. * Local variables:
@@ -321,4 +343,8 @@ msgstr "Página 1"
 #: ../src/viewer.glade.h:27
 msgid "page 2"
 msgstr "Página 2"
+
+#: ../src/viewer.glade.h:28
+msgid "page 3"
+msgstr "página 3"
 

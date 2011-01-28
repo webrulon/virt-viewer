@@ -2,14 +2,14 @@
 # German translations for PACKAGE package.
 # Copyright (C) 2010 THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-#
+# 
 # Automatically generated, 2010.
 # Hedda Peters <hpeters@redhat.com>, 2010.
 msgid ""
 msgstr ""
 "Project-Id-Version: de\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-01-21 23:15+0000\n"
+"POT-Creation-Date: 2011-01-28 07:48+0000\n"
 "PO-Revision-Date: 2010-01-22 13:13+1000\n"
 "Last-Translator: Hedda Peters <hpeters@redhat.com>\n"
 "Language-Team: \n"
@@ -24,44 +24,44 @@ msgstr ""
 msgid "%s version %s\n"
 msgstr "%s Version %s\n"
 
-#: ../src/main.c:52
+#: ../src/main.c:53
 msgid "Run '"
 msgstr "Ausführen '"
 
-#: ../src/main.c:55
+#: ../src/main.c:56
 msgid "display version information"
 msgstr "Versionsinformationen anzeigen"
 
-#: ../src/main.c:57
+#: ../src/main.c:58
 msgid "display verbose information"
 msgstr "Ausführliche Informationen anzeigen"
 
-#: ../src/main.c:59
+#: ../src/main.c:60
 msgid "direct connection with no automatic tunnels"
 msgstr "Direkte Verbindung ohne automatische Tunnel"
 
-#: ../src/main.c:61
+#: ../src/main.c:62
 msgid "connect to hypervisor"
 msgstr "Verbinden mit Hypervisor"
 
-#: ../src/main.c:63
+#: ../src/main.c:64
 msgid "wait for domain to start"
 msgstr "Warten auf Start der Domain"
 
-#: ../src/main.c:65
+#: ../src/main.c:66
 msgid "reconnect to domain upon restart"
 msgstr "Nach Neustart erneut mit Domain verbinden"
 
-#: ../src/main.c:67
+#: ../src/main.c:70
 msgid "display debugging information"
 msgstr "Debugging-Informationen anzeigen"
 
 #. Setup command line options
-#: ../src/main.c:79
+#: ../src/main.c:82
 msgid "- Virtual machine graphical console"
 msgstr "- Grafische Konsole der virtuellen Maschine"
 
-#: ../src/main.c:95
+#: ../src/main.c:98
 #, c-format
 msgid ""
 "\n"
@@ -76,31 +76,21 @@ msgstr ""
 "%s\n"
 "\n"
 
-#: ../src/viewer.c:878
+#: ../src/viewer.c:1053
 #, c-format
-msgid "Cannot determine the VNC port for the guest %s"
-msgstr "VNC-Port für den Gast %s konnte nicht ermittelt werden "
+msgid "Cannot find guest domain %s"
+msgstr "Gast-Domain %s konnte nicht gefunden werden"
 
-#: ../src/viewer.c:884
+#: ../src/viewer.c:1161
 #, c-format
-msgid "Cannot determine the VNC host for the guest %s"
-msgstr "VNC-Host für den Gast %s konnte nicht ermittelt werden"
+msgid "Unable to connect to libvirt with URI %s"
+msgstr "Verbindung zu libvirt mit URI %s konnte nicht hergestellt werden"
 
-#: ../src/viewer.c:984
-#, c-format
-msgid "Unable to connect to the VNC server %s"
-msgstr "Verbindung zu VNC-Server %s konnte nicht hergestellt werden"
+#: ../src/viewer.c:1162
+msgid "[none]"
+msgstr "[keine]"
 
-#: ../src/viewer.c:1001
-#, c-format
-msgid ""
-"Unable to authenticate with VNC server at %s: %s\n"
-"Retry connection again?"
-msgstr ""
-"Authentifikation beim VNC-Server unter %s fehlgeschlagen: %s\n"
-"Verbindung erneut versuchen?"
-
-#: ../src/viewer.c:1019
+#: ../src/display-vnc.c:142
 #, c-format
 msgid ""
 "Unable to authenticate with VNC server at %s\n"
@@ -109,27 +99,21 @@ msgstr ""
 "Authentifikation beim VNC-Server unter %s fehlgeschlagen\n"
 "Nicht unterstützter Authentifikationsstyp %d"
 
-#: ../src/viewer.c:1111
+#: ../src/display-vnc.c:158
 #, c-format
-msgid "Cannot find guest domain %s"
-msgstr "Gast-Domain %s konnte nicht gefunden werden"
+msgid ""
+"Unable to authenticate with VNC server at %s: %s\n"
+"Retry connection again?"
+msgstr ""
+"Authentifikation beim VNC-Server unter %s fehlgeschlagen: %s\n"
+"Verbindung erneut versuchen?"
 
-#: ../src/viewer.c:1213
-#, c-format
-msgid "Unable to connect to libvirt with URI %s"
-msgstr "Verbindung zu libvirt mit URI %s konnte nicht hergestellt werden"
-
-#: ../src/viewer.c:1214
-msgid "[none]"
-msgstr "[keine]"
-
-#.
 #. * Local variables:
 #. *  c-indent-level: 8
 #. *  c-basic-offset: 8
 #. *  tab-width: 8
 #. * End:
-#.
+#. 
 #: ../src/about.glade.h:1
 msgid "A remote desktop client built with GTK-VNC and libvirt"
 msgstr "Ein Remote-Desktop-Client basierend auf GTK-VNC und libvirt"
@@ -296,19 +280,67 @@ msgstr "_Taste senden"
 msgid "_View"
 msgstr "_Ansicht"
 
-#: ../src/viewer.glade.h:23
+#: ../src/viewer.glade.h:24
 msgid "gtk-about"
 msgstr "gtk-about"
 
-#: ../src/viewer.glade.h:24
+#: ../src/viewer.glade.h:25
 msgid "gtk-quit"
 msgstr "gtk-quit"
 
-#: ../src/viewer.glade.h:25
+#: ../src/viewer.glade.h:26
 msgid "page 1"
 msgstr "Seite 1"
 
-#: ../src/viewer.glade.h:26
+#: ../src/viewer.glade.h:27
 msgid "page 2"
 msgstr "Seite 2"
 
+#: ../src/viewer.glade.h:23
+msgid "_Zoom"
+msgstr "_Zoom"
+
+#: ../src/viewer.glade.h:28
+msgid "page 3"
+msgstr "Seite 3"
+
+#: ../src/main.c:68
+msgid "Zoom level of window, in percentage"
+msgstr "Zoomlevel des Fensters in Prozent"
+
+#: ../src/viewer.c:863
+msgid "Connect to channel unsupported."
+msgstr "Verbindung zu dem Kanal wird nicht unterstützt"
+
+#: ../src/viewer.c:858
+msgid "Can't connect to channel, SSH only supported."
+msgstr "Zu dem Kanal konnte nicht verbunden werden, es wird nur SSH unterstützt"
+
+#: ../src/viewer.c:805
+#, c-format
+msgid "Cannot determine the graphic type for the guest %s"
+msgstr "Grafiktyp für den Gast %s konnte nicht ermittelt werden "
+
+#: ../src/viewer.c:824
+#, c-format
+msgid "Cannot determine the graphic port for the guest %s"
+msgstr "Grafikport für den Gast %s konnte nicht ermittelt werden "
+
+#: ../src/viewer.c:817
+#, c-format
+msgid "Unknown graphic type for the guest %s"
+msgstr "Unbekannter Grafiktyp für Gast %s"
+
+#: ../src/viewer.c:856
+msgid "Connect to ssh failed."
+msgstr "Verbindung über SSH ist fehlgeschlagen"
+
+#: ../src/viewer.c:830
+#, c-format
+msgid "Cannot determine the host for the guest %s"
+msgstr "Host für den Gast %s konnte nicht ermittelt werden"
+
+#: ../src/viewer.c:1006
+#, c-format
+msgid "Unable to connect to the graphic server %s"
+msgstr "Verbindung zum Grafik-Server %s konnte nicht hergestellt werden"

@@ -6,15 +6,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: it\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-11-17 01:50+0000\n"
+"POT-Creation-Date: 2011-01-29 07:48+0000\n"
 "PO-Revision-Date: 2010-11-18 00:08+0100\n"
 "Last-Translator: Francesco Tombolini <tombo@adamantio.net>\n"
 "Language-Team: Italian <trans-it@lists.fedoraproject.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Lokalize 1.1\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Lokalize 1.1\n"
 
 #: ../src/main.c:34
 #, c-format
@@ -77,31 +77,21 @@ msgstr ""
 "%s\n"
 "\n"
 
-#: ../src/viewer.c:909
+#: ../src/viewer.c:1053
 #, c-format
-msgid "Cannot determine the VNC port for the guest %s"
-msgstr "Impossibile determinare la porta VNC per il guest %s"
+msgid "Cannot find guest domain %s"
+msgstr "Impossibile trovare il dominio guest %s"
 
-#: ../src/viewer.c:915
+#: ../src/viewer.c:1161
 #, c-format
-msgid "Cannot determine the VNC host for the guest %s"
-msgstr "Impossibile determinare l'host VNC per il guest %s"
+msgid "Unable to connect to libvirt with URI %s"
+msgstr "Impossibile connettersi a libvirt con la URI %s"
 
-#: ../src/viewer.c:1015
-#, c-format
-msgid "Unable to connect to the VNC server %s"
-msgstr "Impossibile connettersi al server VNC %s"
+#: ../src/viewer.c:1162
+msgid "[none]"
+msgstr "[nessuno]"
 
-#: ../src/viewer.c:1032
-#, c-format
-msgid ""
-"Unable to authenticate with VNC server at %s: %s\n"
-"Retry connection again?"
-msgstr ""
-"Impossibile autenticarsi con il server VNC %s: %s\n"
-"Riprovare la connessione?"
-
-#: ../src/viewer.c:1050
+#: ../src/display-vnc.c:142
 #, c-format
 msgid ""
 "Unable to authenticate with VNC server at %s\n"
@@ -110,27 +100,21 @@ msgstr ""
 "Impossibile autenticarsi con il server VNC %s\n"
 "Tipo di autenticazione non supportato: %d"
 
-#: ../src/viewer.c:1142
+#: ../src/display-vnc.c:158
 #, c-format
-msgid "Cannot find guest domain %s"
-msgstr "Impossibile trovare il dominio guest %s"
+msgid ""
+"Unable to authenticate with VNC server at %s: %s\n"
+"Retry connection again?"
+msgstr ""
+"Impossibile autenticarsi con il server VNC %s: %s\n"
+"Riprovare la connessione?"
 
-#: ../src/viewer.c:1246
-#, c-format
-msgid "Unable to connect to libvirt with URI %s"
-msgstr "Impossibile connettersi a libvirt con la URI %s"
-
-#: ../src/viewer.c:1247
-msgid "[none]"
-msgstr "[nessuno]"
-
-#.
 #. * Local variables:
 #. *  c-indent-level: 8
 #. *  c-basic-offset: 8
 #. *  tab-width: 8
 #. * End:
-#.
+#. 
 #: ../src/about.glade.h:1
 msgid "A remote desktop client built with GTK-VNC and libvirt"
 msgstr "Un remote desktop client basato su GTK-VNC e libvirt"
@@ -320,4 +304,43 @@ msgstr "pagina 1"
 msgid "page 2"
 msgstr "pagina 2"
 
+#: ../src/viewer.glade.h:28
+msgid "page 3"
+msgstr "pagina 3"
 
+#: ../src/viewer.c:863
+msgid "Connect to channel unsupported."
+msgstr "Connessione al canale non supportata"
+
+#: ../src/viewer.c:858
+msgid "Can't connect to channel, SSH only supported."
+msgstr "Impossibile connettersi al canale, solo SSH è supportato."
+
+#: ../src/viewer.c:805
+#, c-format
+msgid "Cannot determine the graphic type for the guest %s"
+msgstr "Impossibile determinare il tipo grafico per il guest %s"
+
+#: ../src/viewer.c:824
+#, c-format
+msgid "Cannot determine the graphic port for the guest %s"
+msgstr "Impossibile determinare la porta grafica per il guest %s"
+
+#: ../src/viewer.c:817
+#, c-format
+msgid "Unknown graphic type for the guest %s"
+msgstr "Impossibile determinare il tipo grafico per il guest %s"
+
+#: ../src/viewer.c:856
+msgid "Connect to ssh failed."
+msgstr "Connessione a ssh fallita"
+
+#: ../src/viewer.c:830
+#, c-format
+msgid "Cannot determine the host for the guest %s"
+msgstr "Impossibile determinare l'host per il guest %s"
+
+#: ../src/viewer.c:1006
+#, c-format
+msgid "Unable to connect to the graphic server %s"
+msgstr "Impossibile connettersi al server grafico %s"

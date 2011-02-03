@@ -597,7 +597,7 @@ static int viewer_matches_domain(VirtViewer *viewer,
 		if (virDomainGetID(dom) == id)
 			return 1;
 	}
-	if (!dom && viewer_parse_uuid(viewer->domkey, wantuuid) == 0) {
+	if (viewer_parse_uuid(viewer->domkey, wantuuid) == 0) {
 		virDomainGetUUID(dom, domuuid);
 		if (memcmp(wantuuid, domuuid, VIR_UUID_BUFLEN) == 0)
 			return 1;

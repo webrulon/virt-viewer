@@ -610,9 +610,8 @@ static int viewer_matches_domain(VirtViewer *viewer,
 	return 0;
 }
 
-static char * viewer_extract_xpath_string(virDomainPtr dom, const gchar *xpath)
+static char * viewer_extract_xpath_string(const gchar *xmldesc, const gchar *xpath)
 {
-	char *xmldesc = virDomainGetXMLDesc(dom, 0);
 	xmlDocPtr xml = NULL;
 	xmlParserCtxtPtr pctxt = NULL;
 	xmlXPathContextPtr ctxt = NULL;
@@ -626,7 +625,6 @@ static char * viewer_extract_xpath_string(virDomainPtr dom, const gchar *xpath)
 	xml = xmlCtxtReadDoc(pctxt, (const xmlChar *)xmldesc, "domain.xml", NULL,
 			     XML_PARSE_NOENT | XML_PARSE_NONET |
 			     XML_PARSE_NOWARNING);
-	free(xmldesc);
 	if (!xml)
 		goto error;
 
@@ -798,10 +796,11 @@ static gboolean viewer_extract_connect_info(VirtViewer *viewer,
 	char *type = NULL;
 	char *xpath = NULL;
 	gboolean retval = FALSE;
+	char *xmldesc = virDomainGetXMLDesc(dom, 0);
 
 	viewer_connect_info_free(viewer);
 
-	if ((type = viewer_extract_xpath_string(dom, "string(/domain/devices/graphics/@type)")) == NULL) {
+	if ((type = viewer_extract_xpath_string(xmldesc, "string(/domain/devices/graphics/@type)")) == NULL) {
 		viewer_simple_message_dialog(viewer->window, _("Cannot determine the graphic type for the guest %s"),
 					     viewer->domkey);
 		goto cleanup;
@@ -820,8 +819,8 @@ static gboolean viewer_extract_connect_info(VirtViewer *viewer,
 	}
 
 	xpath = g_strdup_printf("string(/domain/devices/graphics[@type='%s']/@port)", type);
-	if ((viewer->gport = viewer_extract_xpath_string(dom, xpath)) == NULL) {
-		viewer_simple_message_dialog(viewer->window, _("Cannot determine the graphic port for the guest %s"),
+	if ((viewer->gport = viewer_extract_xpath_string(xmldesc, xpath)) == NULL) {
+		viewer_simple_message_dialog(viewer->window, _("Cannot determine the graphic address for the guest %s"),
 					     viewer->domkey);
 		goto cleanup;
 	}
@@ -839,6 +838,7 @@ static gboolean viewer_extract_connect_info(VirtViewer *viewer,
 
 cleanup:
 	free(xpath);
+	free(xmldesc);
 	return retval;
 }
 

@@ -721,7 +721,8 @@ static int viewer_open_tunnel(const char **cmd)
 }
 
 
-static int viewer_open_tunnel_ssh(const char *sshhost, int sshport, const char *sshuser, const char *port)
+static int viewer_open_tunnel_ssh(const char *sshhost, int sshport, const char *sshuser,
+				  const char *port, const char *unixsock)
 {
 	const char *cmd[10];
 	char portstr[50];
@@ -741,11 +742,36 @@ static int viewer_open_tunnel_ssh(const char *sshhost, int sshport, const char *
 	}
 	cmd[n++] = sshhost;
 	cmd[n++] = "nc";
-	cmd[n++] = "localhost";
-	cmd[n++] = port;
+	if (port) {
+		cmd[n++] = "localhost";
+		cmd[n++] = port;
+	} else {
+		cmd[n++] = "-U";
+		cmd[n++] = unixsock;
+	}
 	cmd[n++] = NULL;
 
 	return viewer_open_tunnel(cmd);
+}
+
+static int viewer_open_unix_sock(const char *unixsock)
+{
+	struct sockaddr_un addr;
+	int fd;
+
+	memset(&addr, 0, sizeof addr);
+	addr.sun_family = AF_UNIX;
+	strcpy(addr.sun_path, unixsock);
+
+	if ((fd = socket(AF_UNIX, SOCK_STREAM, 0)) < 0)
+		return -1;
+
+	if (connect(fd, (struct sockaddr *)&addr, sizeof addr) < 0) {
+		close(fd);
+		return -1;
+	}
+
+	return fd;
 }
 
 #endif /* defined(HAVE_SOCKETPAIR) && defined(HAVE_FORK) */
@@ -820,19 +846,22 @@ static gboolean viewer_extract_connect_info(VirtViewer *viewer,
 
 	xpath = g_strdup_printf("string(/domain/devices/graphics[@type='%s']/@port)", type);
 	if ((viewer->gport = viewer_extract_xpath_string(xmldesc, xpath)) == NULL) {
-		viewer_simple_message_dialog(viewer->window, _("Cannot determine the graphic address for the guest %s"),
-					     viewer->domkey);
-		goto cleanup;
+		free(xpath);
+		xpath = g_strdup_printf("string(/domain/devices/graphics[@type='%s']/@socket)", type);
+		if ((viewer->unixsock = viewer_extract_xpath_string(xmldesc, xpath)) == NULL) {
+			viewer_simple_message_dialog(viewer->window, _("Cannot determine the graphic address for the guest %s"),
+						     viewer->domkey);
+			goto cleanup;
+		}
 	}
+
+	DEBUG_LOG("Guest graphics address is %s", viewer->gport ? viewer->gport : viewer->unixsock);
 
 	if (viewer_extract_host(viewer->uri, &viewer->host, &viewer->transport, &viewer->user, &viewer->port) < 0) {
 		viewer_simple_message_dialog(viewer->window, _("Cannot determine the host for the guest %s"),
 					     viewer->domkey);
 		goto cleanup;
 	}
-
-	DEBUG_LOG("Remote host is %s and transport %s user %s",
-		  viewer->host, viewer->transport ? viewer->transport : "", viewer->user ? viewer->user : "");
 
 	retval = TRUE;
 
@@ -852,7 +881,7 @@ void viewer_channel_open_fd(VirtViewer *viewer, VirtViewerDisplayChannel *channe
 
 	if (viewer->transport && g_strcasecmp(viewer->transport, "ssh") == 0 &&
 	    !viewer->direct) {
-		if ((fd = viewer_open_tunnel_ssh(viewer->host, viewer->port, viewer->user, viewer->gport)) < 0)
+		if ((fd = viewer_open_tunnel_ssh(viewer->host, viewer->port, viewer->user, viewer->gport, NULL)) < 0)
 			viewer_simple_message_dialog(viewer->window, _("Connect to ssh failed."));
 	} else
 		viewer_simple_message_dialog(viewer->window, _("Can't connect to channel, SSH only supported."));
@@ -878,19 +907,33 @@ static int viewer_activate(VirtViewer *viewer,
 	if (!viewer_extract_connect_info(viewer, dom))
 		goto cleanup;
 
-	viewer->pretty_address = g_strdup_printf("%s:%s", viewer->host, viewer->gport);
+	if (viewer->gport)
+		viewer->pretty_address = g_strdup_printf("%s:%s", viewer->host, viewer->gport);
+	else
+		viewer->pretty_address = g_strdup_printf("%s:%s", viewer->host, viewer->unixsock);
 
 #if defined(HAVE_SOCKETPAIR) && defined(HAVE_FORK)
-	if (viewer->transport && g_strcasecmp(viewer->transport, "ssh") == 0 &&
-	    !viewer->direct)
+	if (viewer->transport &&
+	    g_strcasecmp(viewer->transport, "ssh") == 0 &&
+	    !viewer->direct) {
+		DEBUG_LOG("Opening SSH tunnel to %s@%s:%d (%s)",
+			  viewer->user, viewer->host,
+			  viewer->port, viewer->gport ? viewer->gport : viewer->unixsock);
 		if ((fd = viewer_open_tunnel_ssh(viewer->host, viewer->port,
-						 viewer->user, viewer->gport)) < 0)
+						 viewer->user, viewer->gport, viewer->unixsock)) < 0)
 			return -1;
+	} else if (viewer->unixsock) {
+		DEBUG_LOG("Connecting to UNIX socket %s", viewer->unixsock);
+		if ((fd = viewer_open_unix_sock(viewer->unixsock)) < 0)
+			return -1;
+	}
 #endif
 
 	if (fd >= 0) {
+		DEBUG_LOG("Connecting to tunnel %d", fd);
 		ret = virt_viewer_display_open_fd(viewer->display, fd);
 	} else {
+		DEBUG_LOG("Connecting to TCP socket %s:%s", viewer->host, viewer->gport);
 		ret = virt_viewer_display_open_host(viewer->display,
 						    viewer->host, viewer->gport);
 	}

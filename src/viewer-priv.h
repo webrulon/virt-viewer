@@ -85,6 +85,7 @@ struct _VirtViewer {
 
 	VirtViewerDisplay *display;
 
+	char *unixsock;
 	char *gport;
 	char *host;
 	char *transport;

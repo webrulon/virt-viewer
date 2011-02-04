@@ -1,13 +1,13 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-# Geert Warrink <geert.warrink@onsnet.nu>, 2010.
+# Geert Warrink <geert.warrink@onsnet.nu>, 2010, 2011.
 msgid ""
 msgstr ""
 "Project-Id-Version: virt-viewer\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-12-15 20:07+0000\n"
-"PO-Revision-Date: 2010-12-16 10:39+0200\n"
+"POT-Creation-Date: 2011-02-04 07:50+0000\n"
+"PO-Revision-Date: 2011-02-04 19:13+0200\n"
 "Last-Translator: Geert Warrink <geert.warrink@onsnet.nu>\n"
 "Language-Team: Fedora\n"
 "Language: nl\n"
@@ -78,54 +78,54 @@ msgstr ""
 "%s\n"
 "\n"
 
-#: ../src/viewer.c:805
+#: ../src/viewer.c:830
 #, c-format
 msgid "Cannot determine the graphic type for the guest %s"
 msgstr "Kan het grafische type voor de gast %s niet bepalen"
 
-#: ../src/viewer.c:817
+#: ../src/viewer.c:842
 #, c-format
 msgid "Unknown graphic type for the guest %s"
 msgstr "Onbekend grafisch type voor de gast %s"
 
-#: ../src/viewer.c:824
+#: ../src/viewer.c:852
 #, c-format
-msgid "Cannot determine the graphic port for the guest %s"
-msgstr "Kan de grafische poort voor de gast %s niet bepalen"
+msgid "Cannot determine the graphic address for the guest %s"
+msgstr "Kan het grafische adres voor de gast %s niet bepalen"
 
-#: ../src/viewer.c:830
+#: ../src/viewer.c:861
 #, c-format
 msgid "Cannot determine the host for the guest %s"
 msgstr "Kan de host voor de gast %s niet bepalen"
 
-#: ../src/viewer.c:856
+#: ../src/viewer.c:885
 msgid "Connect to ssh failed."
 msgstr "Verbinden met ssh mislukte."
 
-#: ../src/viewer.c:858
+#: ../src/viewer.c:887
 msgid "Can't connect to channel, SSH only supported."
 msgstr "Kan geen verbinding maken met kanaal, alleen SSH wordt ondersteund"
 
-#: ../src/viewer.c:863
+#: ../src/viewer.c:892
 msgid "Connect to channel unsupported."
 msgstr "Verbinding maken met kanaal wordt niet ondersteund."
 
-#: ../src/viewer.c:1006
+#: ../src/viewer.c:1049
 #, c-format
 msgid "Unable to connect to the graphic server %s"
 msgstr "Ka niet verbinden met de grafische server %s"
 
-#: ../src/viewer.c:1053
+#: ../src/viewer.c:1096
 #, c-format
 msgid "Cannot find guest domain %s"
 msgstr "Kan gast domein %s niet vinden"
 
-#: ../src/viewer.c:1161
+#: ../src/viewer.c:1204
 #, c-format
 msgid "Unable to connect to libvirt with URI %s"
 msgstr "Kan niet verbinden met libvirt met URI %s"
 
-#: ../src/viewer.c:1162
+#: ../src/viewer.c:1205
 msgid "[none]"
 msgstr "[geen]"
 
@@ -346,3 +346,6 @@ msgstr "pagina 2"
 #: ../src/viewer.glade.h:28
 msgid "page 3"
 msgstr "pagina 3"
+
+#~ msgid "Cannot determine the graphic port for the guest %s"
+#~ msgstr "Kan de grafische poort voor de gast %s niet bepalen"

@@ -5,8 +5,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: pl\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-12-15 19:57+0000\n"
-"PO-Revision-Date: 2010-12-15 21:01+0100\n"
+"POT-Creation-Date: 2011-02-04 07:50+0000\n"
+"PO-Revision-Date: 2011-01-04 12:15+0100\n"
 "Last-Translator: Piotr Drąg <piotrdrag@gmail.com>\n"
 "Language-Team: Polish <trans-pl@lists.fedoraproject.org>\n"
 "MIME-Version: 1.0\n"
@@ -74,54 +74,54 @@ msgstr ""
 "%s\n"
 "\n"
 
-#: ../src/viewer.c:805
+#: ../src/viewer.c:830
 #, c-format
 msgid "Cannot determine the graphic type for the guest %s"
 msgstr "Nie można określić typu grafiki dla gościa %s"
 
-#: ../src/viewer.c:817
+#: ../src/viewer.c:842
 #, c-format
 msgid "Unknown graphic type for the guest %s"
 msgstr "Nieznany typ grafiki dla gościa %s"
 
-#: ../src/viewer.c:824
+#: ../src/viewer.c:852
 #, c-format
-msgid "Cannot determine the graphic port for the guest %s"
-msgstr "Nie można określić portu grafiki dla gościa %s"
+msgid "Cannot determine the graphic address for the guest %s"
+msgstr "Nie można określić adresu grafiki dla gościa %s"
 
-#: ../src/viewer.c:830
+#: ../src/viewer.c:861
 #, c-format
 msgid "Cannot determine the host for the guest %s"
 msgstr "Nie można określić gospodarza dla gościa %s"
 
-#: ../src/viewer.c:856
+#: ../src/viewer.c:885
 msgid "Connect to ssh failed."
 msgstr "Połączenie z ssh nie powiodło się."
 
-#: ../src/viewer.c:858
+#: ../src/viewer.c:887
 msgid "Can't connect to channel, SSH only supported."
 msgstr "Nie można połączyć się z kanałem, obsługiwane jest tylko SSH."
 
-#: ../src/viewer.c:863
+#: ../src/viewer.c:892
 msgid "Connect to channel unsupported."
 msgstr "Łączenie z kanałem jest nieobsługiwane."
 
-#: ../src/viewer.c:1006
+#: ../src/viewer.c:1049
 #, c-format
 msgid "Unable to connect to the graphic server %s"
 msgstr "Nie można połączyć się z serwerem grafiki %s"
 
-#: ../src/viewer.c:1053
+#: ../src/viewer.c:1096
 #, c-format
 msgid "Cannot find guest domain %s"
 msgstr "Nie można odnaleźć domeny gościa %s"
 
-#: ../src/viewer.c:1161
+#: ../src/viewer.c:1204
 #, c-format
 msgid "Unable to connect to libvirt with URI %s"
 msgstr "Nie można połączyć się z biblioteką libvirt za pomocą adresu URL %s"
 
-#: ../src/viewer.c:1162
+#: ../src/viewer.c:1205
 msgid "[none]"
 msgstr "[brak]"
 

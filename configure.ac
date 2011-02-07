@@ -38,7 +38,7 @@ AC_ARG_WITH([spice-gtk],
     AS_HELP_STRING([--without-spice-gtk], [Ignore presence of spice-gtk and disable it]))
 
 AS_IF([test "x$with_spice_gtk" != "xno"],
-      [PKG_CHECK_MODULES(SPICEGTK, spice-client-gtk >= 0.1.0.14, [have_spice_gtk=yes], [have_spice_gtk=no])],
+      [PKG_CHECK_MODULES(SPICEGTK, spice-client-gtk-2.0 >= 0.5, [have_spice_gtk=yes], [have_spice_gtk=no])],
       [have_spice_gtk=no])
 
 AS_IF([test "x$have_spice_gtk" = "xyes"],

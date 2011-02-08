@@ -1,63 +1,71 @@
 # Ukrainian translation to virt-viewer.
 # Copyright (C) Free Software Foundation
 # This file is distributed under the same license as the virt-viewer package.
-# Maxim Dziumanenko <dziumanenko@gmail.com>, 2003-2010.
 #
+# Maxim Dziumanenko <dziumanenko@gmail.com>, 2003-2010.
+# Yuri Chornoivan <yurchor@ukr.net>, 2011.
 msgid ""
 msgstr ""
 "Project-Id-Version: virt-viewer\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-02-08 22:44-0500\n"
-"PO-Revision-Date: 2010-04-14 16:44+0300\n"
-"Last-Translator: Maxim V. Dziumanenko <dziumanenko@gmail.com>\n"
+"POT-Creation-Date: 2011-02-08 07:51+0000\n"
+"PO-Revision-Date: 2011-02-08 18:30+0200\n"
+"Last-Translator: Yuri Chornoivan <yurchor@ukr.net>\n"
 "Language-Team: Ukrainian <uk@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: uk"
+"X-Generator: Lokalize 1.2\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
 
 #: ../src/main.c:34
 #, c-format
 msgid "%s version %s\n"
 msgstr "%s версія %s\n"
 
-#: ../src/main.c:52
+#: ../src/main.c:53
 msgid "Run '"
 msgstr "Виконати '"
 
-#: ../src/main.c:55
+#: ../src/main.c:56
 msgid "display version information"
-msgstr "показати інформацію про версію"
+msgstr "показати інформацію щодо версії"
 
-#: ../src/main.c:57
+#: ../src/main.c:58
 msgid "display verbose information"
 msgstr "показати докладну інформацію"
 
-#: ../src/main.c:59
+#: ../src/main.c:60
 msgid "direct connection with no automatic tunnels"
 msgstr "пряме з'єднання без тунелів"
 
-#: ../src/main.c:61
+#: ../src/main.c:62
 msgid "connect to hypervisor"
 msgstr "з'єднатися з гіпервізором"
 
-#: ../src/main.c:63
+#: ../src/main.c:64
 msgid "wait for domain to start"
-msgstr "чекати запуск служби"
+msgstr "чекати на запуск служби"
 
-#: ../src/main.c:65
+#: ../src/main.c:66
 msgid "reconnect to domain upon restart"
 msgstr "заново приєднатися до домену після перезапуску"
 
-#: ../src/main.c:67
+#: ../src/main.c:68
+msgid "Zoom level of window, in percentage"
+msgstr "Масштаб вікна, у відсотках"
+
+#: ../src/main.c:70
 msgid "display debugging information"
-msgstr "показати інформацію налагодження"
+msgstr "показати діагностичну інформацію"
 
 #. Setup command line options
-#: ../src/main.c:79
+#: ../src/main.c:82
 msgid "- Virtual machine graphical console"
 msgstr "— графічна консоль віртуальної машини"
 
-#: ../src/main.c:95
+#: ../src/main.c:98
 #, c-format
 msgid ""
 "\n"
@@ -72,52 +80,75 @@ msgstr ""
 "%s\n"
 "\n"
 
-#: ../src/viewer.c:878
+#: ../src/viewer.c:830
 #, c-format
-msgid "Cannot determine the VNC port for the guest %s"
-msgstr "Не вдається визначити порт VNC для гостьової системи %s"
+msgid "Cannot determine the graphic type for the guest %s"
+msgstr "Не вдалося визначити тип графічної підсистеми для гостьової системи %s"
 
-#: ../src/viewer.c:884
+#: ../src/viewer.c:842
 #, c-format
-msgid "Cannot determine the VNC host for the guest %s"
-msgstr "Не вдається визначити вузол VNC для гостьової системи %s"
+msgid "Unknown graphic type for the guest %s"
+msgstr "Невідомий тип графічної підсистеми для гостьової системи %s"
 
-#: ../src/viewer.c:984
+#: ../src/viewer.c:852
 #, c-format
-msgid "Unable to connect to the VNC server %s"
-msgstr "Не вдається приєднатися до VNC-сервера %s"
-
-#: ../src/viewer.c:1001
-#, c-format
-msgid ""
-"Unable to authenticate with VNC server at %s: %s\n"
-"Retry connection again?"
+msgid "Cannot determine the graphic address for the guest %s"
 msgstr ""
-"Не вдається авторизуватися на сервері VNC %s: %s\n"
-"Повторить спробу підключення?"
+"Не вдалося визначити адресу графічного інтерфейсу для гостьової системи %s"
 
-#: ../src/viewer.c:1019
+#: ../src/viewer.c:861
+#, c-format
+msgid "Cannot determine the host for the guest %s"
+msgstr "Не вдалося визначити вузол для гостьової системи %s"
+
+#: ../src/viewer.c:885
+msgid "Connect to ssh failed."
+msgstr "Спроба встановлення з’єднання ssh зазнала невдачі."
+
+#: ../src/viewer.c:887
+msgid "Can't connect to channel, SSH only supported."
+msgstr "Не вдалося встановити з’єднання з каналом, підтримується лише SSH."
+
+#: ../src/viewer.c:892
+msgid "Connect to channel unsupported."
+msgstr "Встановлення з’єднання з каналом не підтримується."
+
+#: ../src/viewer.c:1049
+#, c-format
+msgid "Unable to connect to the graphic server %s"
+msgstr "Не вдалося встановити з’єднання з графічним сервером %s"
+
+#: ../src/viewer.c:1096
+#, c-format
+msgid "Cannot find guest domain %s"
+msgstr "Не вдалося знайти гостьовий домен %s"
+
+#: ../src/viewer.c:1204
+#, c-format
+msgid "Unable to connect to libvirt with URI %s"
+msgstr "Не вдається встановити з’єднання з libvirt за адресою URI %s"
+
+#: ../src/viewer.c:1205
+msgid "[none]"
+msgstr "[немає]"
+
+#: ../src/display-vnc.c:142
 #, c-format
 msgid ""
 "Unable to authenticate with VNC server at %s\n"
 "Unsupported authentication type %d"
 msgstr ""
-"Не вдається авторизуватися на VNC-сервері %s\n"
-"Тип автентифікації %d"
+"Не вдалося пройти розпізнавання на VNC-сервері %s\n"
+"Тип розпізнавання %d не підтримується"
 
-#: ../src/viewer.c:1111
+#: ../src/display-vnc.c:158
 #, c-format
-msgid "Cannot find guest domain %s"
-msgstr "Не вдається знайти гостьовий домен %s"
-
-#: ../src/viewer.c:1213
-#, c-format
-msgid "Unable to connect to libvirt with URI %s"
-msgstr "Не вдається підключитися до libvirt через URI %s"
-
-#: ../src/viewer.c:1214
-msgid "[none]"
-msgstr "[немає]"
+msgid ""
+"Unable to authenticate with VNC server at %s: %s\n"
+"Retry connection again?"
+msgstr ""
+"Не вдалося пройти розпізнавання на сервері VNC %s: %s\n"
+"Повторити спробу встановлення з’єднання?"
 
 #.
 #. * Local variables:
@@ -162,21 +193,18 @@ msgid ""
 "along with this program; if not, write to the Free Software\n"
 "Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA\n"
 msgstr ""
-"Ця програма є вільною. \n"
-"Дозволяється її поширювати чи змінювати відповідно до умов\n"
-"лицензії GNU General Public License версії 2 або стар старшої,\n"
-"що видана Фондом вільного програмного забезпечення. \n"
+"Ця програма є вільним програмним забезпеченням; ви можете поширювати її "
+"і/або змінювати її за умов дотримання GNU General Public License у тому "
+"вигляді, у якому її оприлюднено Free Software Foundation; версії 2 цієї "
+"ліцензії, або (за потреби) будь-якої пізнішої версії\n"
 "\n"
-"Ця програма поширюється зі сподіванням, що вона може бути корисною, \n"
-"але БЕЗ БУДЬ-ЯКИХ ГАРАНТІЙ, ЯВНИХ ЧИ НЕЯВНИХ,\n"
-"ВКЛЮЧАЮЧИ ГАРАНТІЇ КОМЕРЦІЙНОЇ ЗДАТНОСТІ ТА ПРИДАТНОСТІ \n"
-"ДЛЯ ПЕВНОЇ МЕТИ. Для отримання додаткових відомостей\n"
-"зверніться до ліцензії GNU General Public License.\n"
-"\n"
-"Копія ліцензії GNU GPL надається разом з цією програмою. \n"
-"Якщо ліцензія відсутня, надішліть письмовий запит за адресою:\n"
-"Free Software Foundation, Inc., \n"
-"59 Temple Place, Suite 330, Boston, MA  02111-1307  USA\n"
+"Ця програма поширюється у сподіванні, що вона буде корисною, але БЕЗ БУДЬ-"
+"ЯКИХ ГАРАНТІЙ; навіть без очевидної гарантії КОМЕРЦІЙНОЇ ЦІННОСТІ або "
+"ПРИДАТНОСТІ ДЛЯ ЯКОЇСЬ МЕТИ  Докладніше про це ви можете дізнатися з \n"
+"GNU General Public License\n"
+"Разом з цією програмою ви маєте отримати копію GNU General Public License "
+"Якщо ви її не отримали, повідомте про це на адресу Free Software\n"
+"Foundation, Inc, 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.\n"
 
 #: ../src/about.glade.h:20
 msgid "virt-manager.org"
@@ -184,7 +212,7 @@ msgstr "virt-manager.org"
 
 #: ../src/auth.glade.h:1
 msgid "Authentication required"
-msgstr "Вимагається авторизація"
+msgstr "Потрібно пройти розпізнавання"
 
 #: ../src/auth.glade.h:2
 msgid "Password:"
@@ -192,7 +220,7 @@ msgstr "Пароль:"
 
 #: ../src/auth.glade.h:3
 msgid "Username:"
-msgstr "Ім'я користувача:"
+msgstr "Користувач:"
 
 #: ../src/auth.glade.h:4
 msgid "gtk-cancel"
@@ -272,7 +300,7 @@ msgstr "На весь екран"
 
 #: ../src/viewer.glade.h:17
 msgid "Screenshot"
-msgstr "Знімок екрану"
+msgstr "Знімок екрана"
 
 #: ../src/viewer.glade.h:18
 msgid "_File"
@@ -295,19 +323,26 @@ msgid "_View"
 msgstr "_Вигляд"
 
 #: ../src/viewer.glade.h:23
+msgid "_Zoom"
+msgstr "_Масштаб"
+
+#: ../src/viewer.glade.h:24
 msgid "gtk-about"
 msgstr "gtk-about"
 
-#: ../src/viewer.glade.h:24
+#: ../src/viewer.glade.h:25
 msgid "gtk-quit"
 msgstr "gtk-quit"
 
-#: ../src/viewer.glade.h:25
+#: ../src/viewer.glade.h:26
 msgid "page 1"
 msgstr "сторінка 1"
 
-#: ../src/viewer.glade.h:26
+#: ../src/viewer.glade.h:27
 msgid "page 2"
 msgstr "сторінка 2"
 
+#: ../src/viewer.glade.h:28
+msgid "page 3"
+msgstr "сторінка 3"
 

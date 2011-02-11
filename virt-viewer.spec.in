@@ -4,6 +4,11 @@
 # a security audit at very least
 %define _with_plugin %{?with_plugin:1}%{!?with_plugin:0}
 
+%define with_spice 0
+%if 0%{fedora} >= 014
+%define with_spice 1
+%endif
+
 Name: @PACKAGE@
 Version: @VERSION@
 Release: 1%{?dist}%{?extra_release}
@@ -20,6 +25,9 @@ BuildRequires: libvirt-devel >= 0.6.0
 BuildRequires: libxml2-devel
 BuildRequires: libglade2-devel
 BuildRequires: gtk-vnc-devel >= 0.3.8
+%if %{with_spice}
+BuildRequires: spice-gtk-devel >= 0.5.0
+%endif
 BuildRequires: /usr/bin/pod2man
 %if %{_with_plugin}
 %if "%{fedora}" > "8"
@@ -52,11 +60,20 @@ browsers.
 %setup -q
 
 %build
+
 %if %{_with_plugin}
-%configure --enable-plugin=yes
+%define plugin_arg --enable-plugin
 %else
-%configure
+%define plugin_arg --disable-plugin
 %endif
+
+%if %{with_spice}
+%define spice_arg --enable-spice
+%else
+%define spice_arg --disable-spice
+%endif
+
+%configure %{spice_arg} %{plugin_arg}
 %__make %{?_smp_mflags}
 
 

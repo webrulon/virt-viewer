@@ -12,7 +12,7 @@ cd build
 
 ../autogen.sh --prefix=$AUTOBUILD_INSTALL_ROOT \
     --enable-compile-warnings=error \
-    --enable-plugin
+    --disable-plugin
 
 make
 make install

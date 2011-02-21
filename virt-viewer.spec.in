@@ -5,7 +5,7 @@
 %define _with_plugin %{?with_plugin:1}%{!?with_plugin:0}
 
 %define with_spice 0
-%if 0%{fedora} >= 014
+%if 0%{?fedora} >= 14
 %define with_spice 1
 %endif
 
@@ -26,11 +26,12 @@ BuildRequires: libxml2-devel
 BuildRequires: libglade2-devel
 BuildRequires: gtk-vnc-devel >= 0.3.8
 %if %{with_spice}
-BuildRequires: spice-gtk-devel >= 0.5.0
+BuildRequires: spice-gtk-devel >= 0.5
 %endif
 BuildRequires: /usr/bin/pod2man
+BuildRequires: intltool
 %if %{_with_plugin}
-%if "%{fedora}" > "8"
+%if 0%{?fedora} > 8
 BuildRequires: xulrunner-devel
 %else
 BuildRequires: firefox-devel
@@ -107,12 +108,3 @@ rm -rf $RPM_BUILD_ROOT
 %endif
 
 %changelog
-* Sun Mar  9 2008 Daniel P. Berrange <berrange@redhat.com> - 0.0.3-1
-- Added optional plugin subRPM
-
-* Tue Aug 28 2007 Daniel P. Berrange <berrange@redhat.com> - 0.0.2-1
-- Added support for remote console access
-
-* Wed Aug 15 2007 Daniel P. Berrange <berrange@redhat.com> - 0.0.1-1
-- First release
-

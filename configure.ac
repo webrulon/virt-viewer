@@ -42,7 +42,7 @@ AS_IF([test "x$with_spice_gtk" != "xno"],
       [have_spice_gtk=no])
 
 AS_IF([test "x$have_spice_gtk" = "xyes"],
-      [AC_DEFINE([HAVE_SPICE], 1, [Have spice-gtk?])],
+      [AC_DEFINE([HAVE_SPICE_GTK], 1, [Have spice-gtk?])],
       [AS_IF([test "x$with_spice_gtk" = "xyes"],
              [AC_MSG_ERROR([spice-gtk requested but not found])
       ])

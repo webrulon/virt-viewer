@@ -1,6 +1,15 @@
   Virt Viewer News
   ================
 
+0.3.0: Feb 21, 2011
+-------------------
+
+  - Add support for SPICE graphics client
+  - Allow connections to VNC server over UNIX sockets
+  - Improve error messages on auth/connection failure
+  - Add support for zoom levels
+  - Many updated translations
+
 0.2.1: Jan 15, 2010
 -------------------
 

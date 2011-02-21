@@ -13,6 +13,11 @@ of the VNC protocol. This is available from
 
   http://gtk-vnc.sourceforge.net/
 
+Optionally Virt Viewer can also provide a SPICE client
+using the SPICE-GTK widget (>= 0.5) available from
+
+  http://spice-space.org/page/Spice-Gtk
+
 Virt Viewer uses libvirt to lookup information about the
 guest OS display. This is available from
 

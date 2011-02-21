@@ -1,8 +1,20 @@
 2011-02-21  Daniel P. Berrange  <dan@berrange.com>
 
+	* configure.ac:
+	Fix typo in SPICE configure setup
+	[cfb261f0ffed] [tip]
+
+	* .hgtags:
+	Added tag release-0.3.0 for changeset 807203083e74
+	[22b287a68428]
+
+	* ChangeLog, NEWS, README, configure.ac:
+	Updates for 0.3.0 release
+	[807203083e74] [release-0.3.0]
+
 	* virt-viewer.spec.in:
 	Fix misc RPM specfile bugs
-	[74bd54a2be1b] [tip]
+	[74bd54a2be1b]
 
 2011-02-11  Daniel P. Berrange  <dan@berrange.com>
 

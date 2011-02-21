@@ -1,5 +1,5 @@
 
-AC_INIT(virt-viewer, 0.3.0)
+AC_INIT(virt-viewer, 0.3.1)
 AC_CONFIG_SRCDIR(src/main.c)
 AM_CONFIG_HEADER(config.h)
 dnl Make automake keep quiet about wildcards & other GNUmake-isms

@@ -1,6 +1,11 @@
   Virt Viewer News
   ================
 
+0.3.1: Feb 21, 2011
+-------------------
+
+  - Fix typo in configure script that broke SPICE
+
 0.3.0: Feb 21, 2011
 -------------------
 

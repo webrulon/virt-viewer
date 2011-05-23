@@ -913,18 +913,18 @@ static int viewer_activate(VirtViewer *viewer,
 	int fd = -1;
 	int ret = -1;
 
-	g_return_val_if_fail(viewer->display == NULL, -1);
-
 	if (viewer->active)
 		goto cleanup;
 
-	if (!viewer_extract_connect_info(viewer, dom))
-		goto cleanup;
+	if (viewer->display == NULL) {
+		if (!viewer_extract_connect_info(viewer, dom))
+			goto cleanup;
 
-	if (viewer->gport)
-		viewer->pretty_address = g_strdup_printf("%s:%s", viewer->ghost, viewer->gport);
-	else
-		viewer->pretty_address = g_strdup_printf("%s:%s", viewer->host, viewer->unixsock);
+		if (viewer->gport)
+			viewer->pretty_address = g_strdup_printf("%s:%s", viewer->ghost, viewer->gport);
+		else
+			viewer->pretty_address = g_strdup_printf("%s:%s", viewer->host, viewer->unixsock);
+	}
 
 #if defined(HAVE_SOCKETPAIR) && defined(HAVE_FORK)
 	if (viewer->transport &&

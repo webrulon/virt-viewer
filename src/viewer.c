@@ -722,7 +722,7 @@ static int viewer_open_tunnel(const char **cmd)
 
 
 static int viewer_open_tunnel_ssh(const char *sshhost, int sshport, const char *sshuser,
-				  const char *port, const char *unixsock)
+				  const char *host, const char *port, const char *unixsock)
 {
 	const char *cmd[10];
 	char portstr[50];
@@ -743,7 +743,7 @@ static int viewer_open_tunnel_ssh(const char *sshhost, int sshport, const char *
 	cmd[n++] = sshhost;
 	cmd[n++] = "nc";
 	if (port) {
-		cmd[n++] = "localhost";
+		cmd[n++] = host;
 		cmd[n++] = port;
 	} else {
 		cmd[n++] = "-U";
@@ -805,14 +805,18 @@ static void viewer_show_display(VirtViewer *viewer)
 static void viewer_connect_info_free(VirtViewer *viewer)
 {
 	free(viewer->host);
+	free(viewer->ghost);
 	free(viewer->gport);
 	free(viewer->transport);
 	free(viewer->user);
+	free(viewer->unixsock);
 
 	viewer->host = NULL;
+	viewer->ghost = NULL;
 	viewer->gport = NULL;
 	viewer->transport = NULL;
 	viewer->user = NULL;
+	viewer->unixsock = NULL;
 	viewer->port = 0;
 }
 
@@ -853,9 +857,18 @@ static gboolean viewer_extract_connect_info(VirtViewer *viewer,
 						     viewer->domkey);
 			goto cleanup;
 		}
+	} else {
+		free(xpath);
+		xpath = g_strdup_printf("string(/domain/devices/graphics[@type='%s']/@listen)", type);
+		viewer->ghost = viewer_extract_xpath_string(xmldesc, xpath);
+		if (viewer->ghost == NULL)
+			viewer->ghost = g_strdup("localhost");
 	}
 
-	DEBUG_LOG("Guest graphics address is %s", viewer->gport ? viewer->gport : viewer->unixsock);
+	if (viewer->gport)
+		DEBUG_LOG("Guest graphics address is %s:%s", viewer->ghost, viewer->gport);
+	else
+		DEBUG_LOG("Guest graphics address is %s", viewer->unixsock);
 
 	if (viewer_extract_host(viewer->uri, &viewer->host, &viewer->transport, &viewer->user, &viewer->port) < 0) {
 		viewer_simple_message_dialog(viewer->window, _("Cannot determine the host for the guest %s"),
@@ -881,7 +894,8 @@ void viewer_channel_open_fd(VirtViewer *viewer, VirtViewerDisplayChannel *channe
 
 	if (viewer->transport && g_strcasecmp(viewer->transport, "ssh") == 0 &&
 	    !viewer->direct) {
-		if ((fd = viewer_open_tunnel_ssh(viewer->host, viewer->port, viewer->user, viewer->gport, NULL)) < 0)
+		if ((fd = viewer_open_tunnel_ssh(viewer->host, viewer->port, viewer->user,
+						 viewer->ghost, viewer->gport, NULL)) < 0)
 			viewer_simple_message_dialog(viewer->window, _("Connect to ssh failed."));
 	} else
 		viewer_simple_message_dialog(viewer->window, _("Can't connect to channel, SSH only supported."));
@@ -908,7 +922,7 @@ static int viewer_activate(VirtViewer *viewer,
 		goto cleanup;
 
 	if (viewer->gport)
-		viewer->pretty_address = g_strdup_printf("%s:%s", viewer->host, viewer->gport);
+		viewer->pretty_address = g_strdup_printf("%s:%s", viewer->ghost, viewer->gport);
 	else
 		viewer->pretty_address = g_strdup_printf("%s:%s", viewer->host, viewer->unixsock);
 
@@ -916,11 +930,19 @@ static int viewer_activate(VirtViewer *viewer,
 	if (viewer->transport &&
 	    g_strcasecmp(viewer->transport, "ssh") == 0 &&
 	    !viewer->direct) {
+		char *dst;
+
+		if (viewer->gport)
+			dst = g_strdup_printf("%s:%s", viewer->ghost, viewer->gport);
+		else
+			dst = g_strdup(viewer->unixsock);
 		DEBUG_LOG("Opening SSH tunnel to %s@%s:%d (%s)",
-			  viewer->user, viewer->host,
-			  viewer->port, viewer->gport ? viewer->gport : viewer->unixsock);
+			  viewer->user, viewer->host, viewer->port, dst);
+		free(dst);
+
 		if ((fd = viewer_open_tunnel_ssh(viewer->host, viewer->port,
-						 viewer->user, viewer->gport, viewer->unixsock)) < 0)
+						 viewer->user, viewer->ghost,
+						 viewer->gport, viewer->unixsock)) < 0)
 			return -1;
 	} else if (viewer->unixsock) {
 		DEBUG_LOG("Connecting to UNIX socket %s", viewer->unixsock);
@@ -933,9 +955,9 @@ static int viewer_activate(VirtViewer *viewer,
 		DEBUG_LOG("Connecting to tunnel %d", fd);
 		ret = virt_viewer_display_open_fd(viewer->display, fd);
 	} else {
-		DEBUG_LOG("Connecting to TCP socket %s:%s", viewer->host, viewer->gport);
+		DEBUG_LOG("Connecting to TCP socket %s:%s", viewer->ghost, viewer->gport);
 		ret = virt_viewer_display_open_host(viewer->display,
-						    viewer->host, viewer->gport);
+						    viewer->ghost, viewer->gport);
 	}
 
 	viewer_set_status(viewer, "Connecting to graphic server");

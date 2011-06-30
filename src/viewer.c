@@ -31,6 +31,7 @@
 #include <string.h>
 #include <unistd.h>
 #include <locale.h>
+#include <glib/gprintf.h>
 
 #ifdef HAVE_SYS_SOCKET_H
 #include <sys/socket.h>
@@ -776,6 +777,23 @@ static int viewer_open_unix_sock(const char *unixsock)
 
 #endif /* defined(HAVE_SOCKETPAIR) && defined(HAVE_FORK) */
 
+static void viewer_trace(VirtViewer *viewer, const char *fmt, ...)
+{
+	va_list ap;
+
+	if (doDebug) {
+		va_start(ap, fmt);
+		g_logv(G_LOG_DOMAIN, G_LOG_LEVEL_DEBUG, fmt, ap);
+		va_end(ap);
+	}
+
+	if (viewer->verbose) {
+		va_start(ap, fmt);
+		g_vprintf(fmt, ap);
+		va_end(ap);
+	}
+}
+
 void viewer_set_status(VirtViewer *viewer, const char *text)
 {
 	GtkWidget *status, *notebook;
@@ -916,6 +934,8 @@ static int viewer_activate(VirtViewer *viewer,
 	if (viewer->active)
 		goto cleanup;
 
+	viewer_trace(viewer, "Guest %s is running, determining display location\n",
+		     viewer->domkey);
 	if (viewer->display == NULL) {
 		if (!viewer_extract_connect_info(viewer, dom))
 			goto cleanup;
@@ -932,30 +952,34 @@ static int viewer_activate(VirtViewer *viewer,
 	    !viewer->direct) {
 		char *dst;
 
-		if (viewer->gport)
-			dst = g_strdup_printf("%s:%s", viewer->ghost, viewer->gport);
-		else
+		if (viewer->gport) {
+			viewer_trace(viewer, "Opening indirect TCP connection to display at %s:%s\n",
+				     viewer->ghost, viewer->gport);
+		} else {
+			viewer_trace(viewer, "Opening indirect UNIX connection to display at %s\n",
+				     viewer->unixsock);
 			dst = g_strdup(viewer->unixsock);
-		DEBUG_LOG("Opening SSH tunnel to %s@%s:%d (%s)",
-			  viewer->user, viewer->host, viewer->port, dst);
-		free(dst);
+		}
+		viewer_trace(viewer, "Setting up SSH tunnel via %s@%s:%d\n",
+			     viewer->user, viewer->host, viewer->port ? viewer->port : 22);
 
 		if ((fd = viewer_open_tunnel_ssh(viewer->host, viewer->port,
 						 viewer->user, viewer->ghost,
 						 viewer->gport, viewer->unixsock)) < 0)
 			return -1;
 	} else if (viewer->unixsock) {
-		DEBUG_LOG("Connecting to UNIX socket %s", viewer->unixsock);
+		viewer_trace(viewer, "Opening direct UNIX connection to display at %s",
+			     viewer->unixsock);
 		if ((fd = viewer_open_unix_sock(viewer->unixsock)) < 0)
 			return -1;
 	}
 #endif
 
 	if (fd >= 0) {
-		DEBUG_LOG("Connecting to tunnel %d", fd);
 		ret = virt_viewer_display_open_fd(viewer->display, fd);
 	} else {
-		DEBUG_LOG("Connecting to TCP socket %s:%s", viewer->ghost, viewer->gport);
+		viewer_trace(viewer, "Opening direct TCP connection to display at %s:%s\n",
+			     viewer->ghost, viewer->gport);
 		ret = virt_viewer_display_open_host(viewer->display,
 						    viewer->ghost, viewer->gport);
 	}
@@ -1047,8 +1071,12 @@ static void viewer_deactivate(VirtViewer *viewer)
 		}
 
 		viewer_set_status(viewer, "Waiting for guest domain to re-start");
+		viewer_trace(viewer, "Guest %s display has disconnected, waiting to reconnect",
+			     viewer->domkey);
 	} else {
 		viewer_set_status(viewer, "Guest domain has shutdown");
+		viewer_trace(viewer, "Guest %s display has disconnected, shutting down",
+			     viewer->domkey);
 		gtk_main_quit();
 	}
 }
@@ -1113,6 +1141,8 @@ static int viewer_initial_connect(VirtViewer *viewer)
 	if (!dom) {
 		if (viewer->waitvm) {
 			viewer_set_status(viewer, "Waiting for guest domain to be created");
+			viewer_trace(viewer, "Guest %s does not yet exist, waiting for it to be created\n",
+				     viewer->domkey);
 			goto done;
 		} else {
 			viewer_simple_message_dialog(viewer->window, _("Cannot find guest domain %s"),
@@ -1135,6 +1165,8 @@ static int viewer_initial_connect(VirtViewer *viewer)
 		if (ret < 0) {
 			if (viewer->waitvm) {
 				viewer_set_status(viewer, "Waiting for guest domain to start server");
+				viewer_trace(viewer, "Guest %s has not activated its display yet, waiting for it to start\n",
+					     viewer->domkey);
 			} else {
 				DEBUG_LOG("Failed to activate viewer");
 				goto cleanup;
@@ -1218,6 +1250,8 @@ viewer_start (const char *uri,
 
 	virSetErrorFunc(NULL, viewer_error_func);
 
+	viewer_trace(viewer, "Opening connection to libvirt with URI %s\n",
+		     uri ? uri : "<null>");
 	viewer->conn = virConnectOpenAuth(uri,
 					  //virConnectAuthPtrDefault,
 					  &auth_libvirt,

@@ -854,13 +854,19 @@ static gboolean viewer_extract_connect_info(VirtViewer *viewer,
 		goto cleanup;
 	}
 
-	if (g_strcasecmp(type, "vnc") == 0)
+	if (g_strcasecmp(type, "vnc") == 0) {
+		viewer_trace(viewer, "Guest %s has a %s display\n",
+			     viewer->domkey, type);
 		viewer->display = VIRT_VIEWER_DISPLAY(virt_viewer_display_vnc_new(viewer));
 #ifdef HAVE_SPICE_GTK
-	else if (g_strcasecmp(type, "spice") == 0)
+	} else if (g_strcasecmp(type, "spice") == 0) {
+		viewer_trace(viewer, "Guest %s has a %s display\n",
+			     viewer->domkey, type);
 		viewer->display = VIRT_VIEWER_DISPLAY(virt_viewer_display_spice_new(viewer));
 #endif
-	else {
+	} else {
+		viewer_trace(viewer, "Guest %s has unsupported %s display type\n",
+			     viewer->domkey, type);
 		viewer_simple_message_dialog(viewer->window, _("Unknown graphic type for the guest %s"),
 					     viewer->domkey);
 		goto cleanup;
@@ -934,7 +940,7 @@ static int viewer_activate(VirtViewer *viewer,
 	if (viewer->active)
 		goto cleanup;
 
-	viewer_trace(viewer, "Guest %s is running, determining display location\n",
+	viewer_trace(viewer, "Guest %s is running, determining display\n",
 		     viewer->domkey);
 	if (viewer->display == NULL) {
 		if (!viewer_extract_connect_info(viewer, dom))

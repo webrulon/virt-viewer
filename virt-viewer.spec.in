@@ -26,7 +26,7 @@ BuildRequires: libxml2-devel
 BuildRequires: libglade2-devel
 BuildRequires: gtk-vnc-devel >= 0.3.8
 %if %{with_spice}
-BuildRequires: spice-gtk-devel >= 0.5
+BuildRequires: spice-gtk-devel >= 0.6
 %endif
 BuildRequires: /usr/bin/pod2man
 BuildRequires: intltool
@@ -40,8 +40,8 @@ BuildRequires: firefox-devel
 
 %description
 Virtual Machine Viewer provides a graphical console client for connecting
-to virtual machines. It uses the GTK-VNC widget to provide the display,
-and libvirt for looking up VNC server details.
+to virtual machines. It uses the GTK-VNC or SPICE-GTK widgets to provide
+the display, and libvirt for looking up VNC/SPICE server details.
 
 %if %{_with_plugin}
 %package plugin
@@ -50,8 +50,9 @@ Group: Development/Libraries
 Requires: %{name} = %{version}
 
 %description plugin
-gtk-vnc is a VNC viewer widget for GTK. It is built using coroutines
-allowing it to be completely asynchronous while remaining single threaded.
+Virtual Machine Viewer provides a graphical console client for connecting
+to virtual machines. It uses the GTK-VNC or SPICE-GTK widgets to provide
+the display, and libvirt for looking up VNC/SPICE server details.
 
 This package provides a web browser plugin for Mozilla compatible
 browsers.

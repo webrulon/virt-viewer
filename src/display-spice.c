@@ -184,6 +184,93 @@ static void _spice_main_channel_event(G_GNUC_UNUSED SpiceChannel *channel,
 	g_free(password);
 }
 
+
+/*
+ * Triggers a resize of the main container to indirectly cause
+ * the display widget to be resized to fit the available space
+ */
+static void
+viewer_resize_display_widget(VirtViewer *viewer)
+{
+	gtk_widget_queue_resize(viewer->align);
+}
+
+
+/*
+ * Called when desktop size changes.
+ *
+ * It either tries to resize the main window, or it triggers
+ * recalculation of the display within existing window size
+ */
+static void viewer_resize_desktop(SpiceChannel *channel G_GNUC_UNUSED, gint format G_GNUC_UNUSED,
+				  gint width, gint height, gint stride G_GNUC_UNUSED,
+				  gint shmid G_GNUC_UNUSED, gpointer imgdata G_GNUC_UNUSED,
+				  VirtViewer *viewer)
+{
+	DEBUG_LOG("desktop resize %dx%d", width, height);
+	viewer->desktopWidth = width;
+	viewer->desktopHeight = height;
+
+	if (viewer->autoResize && viewer->window && !viewer->fullscreen) {
+		viewer_resize_main_window(viewer);
+	} else {
+		viewer_resize_display_widget(viewer);
+	}
+}
+
+
+/*
+ * Called when the main container widget's size has been set.
+ * It attempts to fit the display widget into this space while
+ * maintaining aspect ratio
+ */
+static gboolean viewer_resize_align(GtkWidget *widget,
+				    GtkAllocation *alloc,
+				    VirtViewer *viewer)
+{
+	double desktopAspect;
+	double scrollAspect;
+	int height, width;
+	GtkAllocation child;
+	int dx = 0, dy = 0;
+
+	if (!viewer->active) {
+		DEBUG_LOG("Skipping inactive resize");
+		return TRUE;
+	}
+
+	if (viewer->desktopWidth == 0 || viewer->desktopHeight == 0)
+		desktopAspect = 1;
+	else
+		desktopAspect = (double)viewer->desktopWidth / (double)viewer->desktopHeight;
+	scrollAspect = (double)alloc->width / (double)alloc->height;
+
+	if (scrollAspect > desktopAspect) {
+		width = alloc->height * desktopAspect;
+		dx = (alloc->width - width) / 2;
+		height = alloc->height;
+	} else {
+		width = alloc->width;
+		height = alloc->width / desktopAspect;
+		dy = (alloc->height - height) / 2;
+	}
+
+	DEBUG_LOG("Align widget=%p is %dx%d, desktop is %dx%d, setting display to %dx%d",
+		  widget,
+		  alloc->width, alloc->height,
+		  viewer->desktopWidth, viewer->desktopHeight,
+		  width, height);
+
+	child.x = alloc->x + dx;
+	child.y = alloc->y + dy;
+	child.width = width;
+	child.height = height;
+	if (viewer->display && viewer->display->widget)
+		gtk_widget_size_allocate(viewer->display->widget, &child);
+
+	return FALSE;
+}
+
 static void _spice_channel_new(SpiceSession *s, SpiceChannel *channel,
 			       VirtViewerDisplay *display)
 {
@@ -206,15 +293,24 @@ static void _spice_channel_new(SpiceSession *s, SpiceChannel *channel,
 		DEBUG_LOG("new display channel (#%d)", id);
 		if (display->widget != NULL)
 			return;
+
+		g_signal_connect(channel, "display-primary-create",
+				 G_CALLBACK(viewer_resize_desktop), display->viewer);
+
 		self->display = spice_display_new(s, id);
 		display->widget = GTK_WIDGET(self->display);
 		g_object_set(self->display,
 			     "grab-keyboard", TRUE,
 			     "grab-mouse", TRUE,
-			     "resize-guest", TRUE,
+			     "resize-guest", FALSE,
+			     "scaling", TRUE,
 			     "auto-clipboard", TRUE,
 			     NULL);
 		viewer_add_display_and_realize(display->viewer);
+
+		g_signal_connect(display->viewer->align, "size-allocate",
+				 G_CALLBACK(viewer_resize_align), display->viewer);
+
 		viewer_initialized(display->viewer);
 	}
 
@@ -264,7 +360,6 @@ VirtViewerDisplaySpice* virt_viewer_display_spice_new(VirtViewer *viewer)
 	self = g_object_new(VIRT_VIEWER_TYPE_DISPLAY_SPICE, NULL);
 	d = VIRT_VIEWER_DISPLAY(self);
 	d->viewer = viewer;
-	d->need_align = FALSE;
 
 	self->session = spice_session_new();
 	g_signal_connect(self->session, "channel-new",

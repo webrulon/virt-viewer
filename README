@@ -3,9 +3,9 @@
 
 Virt Viewer provides a graphical viewer for the guest OS
 display. At this time is supports guest OS using the VNC
-protocol. Further protocols may be supported in the future
-as user demand dicatates. The viewer can connect directly
-to both local and remotely hosted guest OS, optionally
+or SPICE protocols. Further protocols may be supported in
+the future as user demand dicatates. The viewer can connect
+directly to both local and remotely hosted guest OS, optionally
 using SSL/TLS encryption.
 
 Virt Viewer uses the GTK-VNC widget to provide a display
@@ -14,7 +14,7 @@ of the VNC protocol. This is available from
   http://gtk-vnc.sourceforge.net/
 
 Optionally Virt Viewer can also provide a SPICE client
-using the SPICE-GTK widget (>= 0.5) available from
+using the SPICE-GTK widget (>= 0.6) available from
 
   http://spice-space.org/page/Spice-Gtk
 

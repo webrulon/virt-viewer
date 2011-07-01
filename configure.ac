@@ -10,6 +10,13 @@ AC_CANONICAL_HOST
 m4_ifndef([AM_SILENT_RULES], [m4_define([AM_SILENT_RULES],[])])
 AM_SILENT_RULES([yes])
 
+LIBXML2_REQUIRED="2.6.0"
+LIBVIRT_REQUIRED="0.6.0"
+GTK2_REQUIRED="2.10.0"
+LIBGLADE2_REQUIRED="2.6.0"
+GTK_VNC_REQUIRED="0.3.8"
+SPICE_GTK_REQUIRED="0.6"
+
 AC_PROG_CC
 AM_PROG_CC_C_O
 AC_PROG_LIBTOOL
@@ -28,17 +35,17 @@ IT_PROG_INTLTOOL([0.35.0])
 AM_GLIB_GNU_GETTEXT
 
 
-PKG_CHECK_MODULES(LIBXML2, libxml-2.0 >= 2.6.0)
-PKG_CHECK_MODULES(LIBVIRT, libvirt >= 0.6.0)
-PKG_CHECK_MODULES(GTK2, gtk+-2.0 >= 2.10.0)
-PKG_CHECK_MODULES(LIBGLADE2, libglade-2.0 >= 2.6.0)
-PKG_CHECK_MODULES(GTKVNC, gtk-vnc-1.0 >= 0.3.8)
+PKG_CHECK_MODULES(LIBXML2, libxml-2.0 >= $LIBXML2_REQUIRED)
+PKG_CHECK_MODULES(LIBVIRT, libvirt >= $LIBVIRT_REQUIRED)
+PKG_CHECK_MODULES(GTK2, gtk+-2.0 >= $GTK2_REQUIRED)
+PKG_CHECK_MODULES(LIBGLADE2, libglade-2.0 >= $LIBGLADE2_REQUIRED)
+PKG_CHECK_MODULES(GTKVNC, gtk-vnc-1.0 >= $GTK_VNC_REQUIRED)
 
 AC_ARG_WITH([spice-gtk],
     AS_HELP_STRING([--without-spice-gtk], [Ignore presence of spice-gtk and disable it]))
 
 AS_IF([test "x$with_spice_gtk" != "xno"],
-      [PKG_CHECK_MODULES(SPICEGTK, spice-client-gtk-2.0 >= 0.6, [have_spice_gtk=yes], [have_spice_gtk=no])],
+      [PKG_CHECK_MODULES(SPICEGTK, spice-client-gtk-2.0 >= $SPICE_GTK_REQUIRED, [have_spice_gtk=yes], [have_spice_gtk=no])],
       [have_spice_gtk=no])
 
 AS_IF([test "x$have_spice_gtk" = "xyes"],

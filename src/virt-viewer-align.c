@@ -25,6 +25,7 @@
 #include <locale.h>
 
 #include "virt-viewer-align.h"
+#include "virt-viewer-util.h"
 
 
 #define VIRT_VIEWER_ALIGN_GET_PRIVATE(o) (G_TYPE_INSTANCE_GET_PRIVATE((o), VIRT_VIEWER_TYPE_ALIGN, VirtViewerAlignPrivate))
@@ -40,6 +41,14 @@ struct _VirtViewerAlignPrivate
 
 static void virt_viewer_align_size_request(GtkWidget *widget,
 					   GtkRequisition *requisition);
+#if GTK_CHECK_VERSION(3, 0, 0)
+static void virt_viewer_align_get_preferred_width(GtkWidget *widget,
+						  int *minwidth,
+						  int *defwidth);
+static void virt_viewer_align_get_preferred_height(GtkWidget *widget,
+						   int *minheight,
+						   int *defheight);
+#endif
 static void virt_viewer_align_size_allocate(GtkWidget *widget,
 					    GtkAllocation *allocation);
 static void virt_viewer_align_set_property(GObject *object,
@@ -70,11 +79,16 @@ virt_viewer_align_class_init(VirtViewerAlignClass *class)
 
 	gobject_class = (GObjectClass*) class;
 	widget_class = (GtkWidgetClass*) class;
-  
+
 	gobject_class->set_property = virt_viewer_align_set_property;
 	gobject_class->get_property = virt_viewer_align_get_property;
 
+#if GTK_CHECK_VERSION(3, 0, 0)
+	widget_class->get_preferred_width = virt_viewer_align_get_preferred_width;
+	widget_class->get_preferred_height = virt_viewer_align_get_preferred_height;
+#else
 	widget_class->size_request = virt_viewer_align_size_request;
+#endif
 	widget_class->size_allocate = virt_viewer_align_size_allocate;
 
 	g_object_class_install_property(gobject_class,
@@ -111,8 +125,8 @@ virt_viewer_align_class_init(VirtViewerAlignClass *class)
 							 400,
 							 100,
 							 G_PARAM_READWRITE));
-	
-	g_type_class_add_private(gobject_class, sizeof(VirtViewerAlignPrivate));  
+
+	g_type_class_add_private(gobject_class, sizeof(VirtViewerAlignPrivate));
 }
 
 static void
@@ -203,9 +217,10 @@ virt_viewer_align_size_request(GtkWidget *widget,
 {
 	VirtViewerAlign *align = VIRT_VIEWER_ALIGN(widget);
 	VirtViewerAlignPrivate *priv = align->priv;
+	int border_width = gtk_container_get_border_width(GTK_CONTAINER(widget));
 
-	requisition->width = GTK_CONTAINER(widget)->border_width * 2;
-	requisition->height = GTK_CONTAINER(widget)->border_width * 2;
+	requisition->width = border_width * 2;
+	requisition->height = border_width * 2;
 
 	if (priv->dirty) {
 		if (priv->zoom)
@@ -224,11 +239,37 @@ virt_viewer_align_size_request(GtkWidget *widget,
 		requisition->height += 50;
 	}
 
-	if (priv->dirty) {
-		g_idle_add(virt_viewer_align_idle, widget);
-		priv->dirty = FALSE;
-	}
+	DEBUG_LOG("Align size request %dx%d (preferred %dx%d)",
+		  requisition->width, requisition->height,
+		  priv->preferred_width, priv->preferred_height);
 }
+
+
+#if GTK_CHECK_VERSION(3, 0, 0)
+static void virt_viewer_align_get_preferred_width(GtkWidget *widget,
+						  int *minwidth,
+						  int *defwidth)
+{
+	GtkRequisition req;
+
+	virt_viewer_align_size_request(widget, &req);
+
+	*minwidth = *defwidth = req.width;
+}
+
+
+static void virt_viewer_align_get_preferred_height(GtkWidget *widget,
+						   int *minheight,
+						   int *defheight)
+{
+	GtkRequisition req;
+
+	virt_viewer_align_size_request(widget, &req);
+
+	*minheight = *defheight = req.height;
+}
+#endif
+
 
 static void
 virt_viewer_align_size_allocate(GtkWidget *widget,
@@ -242,13 +283,15 @@ virt_viewer_align_size_allocate(GtkWidget *widget,
 	gint border_width;
 	double preferredAspect;
 	double actualAspect;
+	GtkWidget *child = gtk_bin_get_child(bin);
 
-	widget->allocation = *allocation;
-  
+	DEBUG_LOG("Allocated %dx%d", allocation->width, allocation->height);
+	gtk_widget_set_allocation(widget, allocation);
+
 	preferredAspect = (double)priv->preferred_width / (double)priv->preferred_height;
 
-	if (bin->child && gtk_widget_get_visible(bin->child)) {
-		border_width = GTK_CONTAINER(align)->border_width;
+	if (child && gtk_widget_get_visible(child)) {
+		border_width = gtk_container_get_border_width(GTK_CONTAINER(align));
 
 		width  = MAX(1, allocation->width - 2 * border_width);
 		height = MAX(1, allocation->height - 2 * border_width);
@@ -265,7 +308,17 @@ virt_viewer_align_size_allocate(GtkWidget *widget,
 		child_allocation.x = 0.5 * (width - child_allocation.width) + allocation->x + border_width;
 		child_allocation.y = 0.5 * (height - child_allocation.height) + allocation->y + border_width;
 
-		gtk_widget_size_allocate(bin->child, &child_allocation);
+		DEBUG_LOG("Child allocate %dx%d", child_allocation.width, child_allocation.height);
+		gtk_widget_size_allocate(child, &child_allocation);
+	}
+
+
+	/* This unsets the size request, so that the user can
+	 * manually resize the window smaller again
+	 */
+	if (priv->dirty) {
+		g_idle_add(virt_viewer_align_idle, widget);
+		priv->dirty = FALSE;
 	}
 }
 
@@ -287,7 +340,7 @@ void virt_viewer_align_set_zoom_level(VirtViewerAlign *align,
 				      guint zoom)
 {
 	VirtViewerAlignPrivate *priv = align->priv;
-	GtkBin *bin = GTK_BIN(align);
+	GtkWidget *child = gtk_bin_get_child(GTK_BIN(align));
 
 	if (zoom < 10)
 		zoom = 10;
@@ -295,7 +348,7 @@ void virt_viewer_align_set_zoom_level(VirtViewerAlign *align,
 		zoom = 400;
 	priv->zoom_level = zoom;
 
-	if (bin->child && gtk_widget_get_visible(bin->child)) {
+	if (child && gtk_widget_get_visible(child)) {
 		priv->dirty = TRUE;
 		gtk_widget_queue_resize(GTK_WIDGET(align));
 	}
@@ -324,10 +377,10 @@ void virt_viewer_align_set_zoom(VirtViewerAlign *align,
 				gboolean zoom)
 {
 	VirtViewerAlignPrivate *priv = align->priv;
-	GtkBin *bin = GTK_BIN(align);
+	GtkWidget *child = gtk_bin_get_child(GTK_BIN(align));
 
 	priv->zoom = zoom;
-	if (bin->child && gtk_widget_get_visible(bin->child)) {
+	if (child && gtk_widget_get_visible(child)) {
 		priv->dirty = TRUE;
 		gtk_widget_queue_resize(GTK_WIDGET(align));
 	}

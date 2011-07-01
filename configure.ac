@@ -14,6 +14,7 @@ GLIB2_REQUIRED=2.12.0
 LIBXML2_REQUIRED="2.6.0"
 LIBVIRT_REQUIRED="0.6.0"
 GTK2_REQUIRED="2.12.0"
+GTK3_REQUIRED="3.0"
 GTK_VNC_REQUIRED="0.3.8"
 SPICE_GTK_REQUIRED="0.6"
 
@@ -39,13 +40,47 @@ PKG_CHECK_MODULES(GLIB2, gmodule-export-2.0 >= $GLIB2_REQUIRED)
 PKG_CHECK_MODULES(LIBXML2, libxml-2.0 >= $LIBXML2_REQUIRED)
 PKG_CHECK_MODULES(LIBVIRT, libvirt >= $LIBVIRT_REQUIRED)
 PKG_CHECK_MODULES(GTK2, gtk+-2.0 >= $GTK2_REQUIRED)
-PKG_CHECK_MODULES(GTKVNC, gtk-vnc-1.0 >= $GTK_VNC_REQUIRED)
+
+AC_MSG_CHECKING([which gtk+ version to compile against])
+AC_ARG_WITH([gtk],
+  [AS_HELP_STRING([--with-gtk=2.0|3.0],[which gtk+ version to compile against (default: 2.0)])],
+  [case "$with_gtk" in
+     2.0|3.0) ;;
+     *) AC_MSG_ERROR([invalid gtk version specified]) ;;
+   esac],
+  [with_gtk=2.0])
+AC_MSG_RESULT([$with_gtk])
+
+case "$with_gtk" in
+  2.0) GTK_API_VERSION=2.0
+       GTK_REQUIRED=$GTK2_REQUIRED
+       GTK_VNC_API_VERSION=1.0
+       SPICE_GTK_API_VERSION=2.0
+       ;;
+  3.0) GTK_API_VERSION=3.0
+       GTK_REQUIRED=$GTK3_REQUIRED
+       GTK_VNC_API_VERSION=2.0
+       SPICE_GTK_API_VERSION=3.0
+       ;;
+esac
+
+AC_SUBST([GTK_API_VERSION])
+AC_SUBST([GTK_REQUIRED])
+AC_SUBST([GTK_VNC_API_VERSION])
+AM_CONDITIONAL([HAVE_GTK_2],[test "$with_gtk" = "2.0"])
+AM_CONDITIONAL([HAVE_GTK_3],[test "$with_gtk" = "3.0"])
+
+PKG_CHECK_MODULES(GTK, gtk+-$GTK_API_VERSION >= $GTK_REQUIRED)
+
+PKG_CHECK_MODULES(GTK_VNC, gtk-vnc-$GTK_VNC_API_VERSION >= $GTK_VNC_REQUIRED)
 
 AC_ARG_WITH([spice-gtk],
     AS_HELP_STRING([--without-spice-gtk], [Ignore presence of spice-gtk and disable it]))
 
 AS_IF([test "x$with_spice_gtk" != "xno"],
-      [PKG_CHECK_MODULES(SPICEGTK, spice-client-gtk-2.0 >= $SPICE_GTK_REQUIRED, [have_spice_gtk=yes], [have_spice_gtk=no])],
+      [PKG_CHECK_MODULES(SPICE_GTK,
+                         spice-client-gtk-$SPICE_GTK_API_VERSION >= $SPICE_GTK_REQUIRED,
+                         [have_spice_gtk=yes], [have_spice_gtk=no])],
       [have_spice_gtk=no])
 
 AS_IF([test "x$have_spice_gtk" = "xyes"],

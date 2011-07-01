@@ -4,8 +4,13 @@
 # a security audit at very least
 %define _with_plugin %{?with_plugin:1}%{!?with_plugin:0}
 
+%define with_gtk3 0
+%if 0%{?fedora} >= 15
+%define with_gtk3 1
+%endif
+
 %define with_spice 0
-%if 0%{?fedora} >= 14
+%if 0%{?fedora} >= 16
 %define with_spice 1
 %endif
 
@@ -20,10 +25,13 @@ Source0: http://virt-manager.org/download/sources/%{name}/%{name}-%{version}.tar
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 Requires: openssh-clients
 
+%if %{with_gtk3}
+BuildRequires: gtk3-devel >= 3.0.0
+%else
 BuildRequires: gtk2-devel >= 2.12.0
+%endif
 BuildRequires: libvirt-devel >= 0.6.0
 BuildRequires: libxml2-devel
-BuildRequires: libglade2-devel
 BuildRequires: gtk-vnc-devel >= 0.3.8
 %if %{with_spice}
 BuildRequires: spice-gtk-devel >= 0.6
@@ -75,7 +83,13 @@ browsers.
 %define spice_arg --disable-spice
 %endif
 
-%configure %{spice_arg} %{plugin_arg}
+%if %{with_gtk3}
+%define gtk_arg --with-gtk=3.0
+%else
+%define gtk_arg --with-gtk=2.0
+%endif
+
+%configure %{spice_arg} %{plugin_arg} %{gtk_arg}
 %__make %{?_smp_mflags}
 
 

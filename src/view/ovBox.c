@@ -475,7 +475,6 @@ ViewOvBoxUnrealize(GtkWidget *widget) // IN
  *
  *-----------------------------------------------------------------------------
  */
-
 static void
 ViewOvBoxSizeRequest(GtkWidget *widget,           // IN
                      GtkRequisition *requisition) // OUT
@@ -505,7 +504,7 @@ ViewOvBoxSizeRequest(GtkWidget *widget,           // IN
    requisition->height = MAX(underR.height + min, priv->overR.height);
 }
 
-#ifdef WITH_GTK3
+#if GTK_CHECK_VERSION(3, 0, 0)
 static void
 ViewOvBox_get_preferred_width (GtkWidget *widget,
                                gint      *minimal_width,
@@ -529,7 +528,6 @@ ViewOvBox_get_preferred_height (GtkWidget *widget,
 
   *minimal_height = *natural_height = requisition.height;
 }
-#else
 #endif
 
 
@@ -712,7 +710,7 @@ ViewOvBoxClassInit(ViewOvBoxClass *klass) // IN
    widgetClass->unmap = ViewOvBoxUnmap;
    widgetClass->realize = ViewOvBoxRealize;
    widgetClass->unrealize = ViewOvBoxUnrealize;
-#if WITH_GTK3
+#if GTK_CHECK_VERSION(3, 0, 0)
    widgetClass->get_preferred_width = ViewOvBox_get_preferred_width;
    widgetClass->get_preferred_height = ViewOvBox_get_preferred_height;
 #else

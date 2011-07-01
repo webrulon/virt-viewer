@@ -155,7 +155,7 @@ static void
 virt_viewer_display_vnc_bell(VirtViewer *viewer,
 			     gpointer data G_GNUC_UNUSED)
 {
-	gdk_window_beep(GTK_WIDGET(viewer->window)->window);
+	gdk_window_beep(gtk_widget_get_window(GTK_WIDGET(viewer->window)));
 }
 
 static void

@@ -8,6 +8,12 @@ the future as user demand dicatates. The viewer can connect
 directly to both local and remotely hosted guest OS, optionally
 using SSL/TLS encryption.
 
+Virt Viewer can be built with either GTK2 or GTK3, with the
+default option currently being GTK2. The choice can be made
+with:
+
+   ./configure --with-gtk=3.0  (or =2.0)
+
 Virt Viewer uses the GTK-VNC widget to provide a display
 of the VNC protocol. This is available from
 

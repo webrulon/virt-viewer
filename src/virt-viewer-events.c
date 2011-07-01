@@ -63,7 +63,7 @@ virt_viewer_events_dispatch_handle(GIOChannel *source G_GNUC_UNUSED,
     if (condition & G_IO_ERR)
         events |= VIR_EVENT_HANDLE_ERROR;
 
-    DEBUG_LOG("Dispatch handler %d %d %p\n", data->fd, events, data->opaque);
+    DEBUG_LOG("Dispatch handler %d %d %p", data->fd, events, data->opaque);
 
     (data->cb)(data->watch, data->fd, events, data->opaque);
 
@@ -98,7 +98,7 @@ int virt_viewer_events_add_handle(int fd,
     data->channel = g_io_channel_unix_new(fd);
     data->ff = ff;
 
-    DEBUG_LOG("Add handle %d %d %p\n", data->fd, events, data->opaque);
+    DEBUG_LOG("Add handle %d %d %p", data->fd, events, data->opaque);
 
     data->source = g_io_add_watch(data->channel,
                                   cond,
@@ -170,7 +170,7 @@ virt_viewer_events_remove_handle(int watch)
         return -1;
     }
 
-    DEBUG_LOG("Remove handle %d %d\n", watch, data->fd);
+    DEBUG_LOG("Remove handle %d %d", watch, data->fd);
 
     g_source_remove(data->source);
     data->source = 0;
@@ -201,7 +201,7 @@ static gboolean
 virt_viewer_events_dispatch_timeout(void *opaque)
 {
     struct virt_viewer_events_timeout *data = opaque;
-    DEBUG_LOG("Dispatch timeout %p %p %d %p\n", data, data->cb, data->timer, data->opaque);
+    DEBUG_LOG("Dispatch timeout %p %p %d %p", data, data->cb, data->timer, data->opaque);
     (data->cb)(data->timer, data->opaque);
 
     return TRUE;
@@ -231,7 +231,7 @@ virt_viewer_events_add_timeout(int interval,
 
     timeouts[ntimeouts++] = data;
 
-    DEBUG_LOG("Add timeout %p %d %p %p %d\n", data, interval, cb, opaque, data->timer);
+    DEBUG_LOG("Add timeout %p %d %p %p %d", data, interval, cb, opaque, data->timer);
 
     return data->timer;
 }
@@ -260,7 +260,7 @@ virt_viewer_events_update_timeout(int timer,
         return;
     }
 
-    DEBUG_LOG("Update timeout %p %d %d\n", data, timer, interval);
+    DEBUG_LOG("Update timeout %p %d %d", data, timer, interval);
 
     if (interval >= 0) {
         if (data->source)
@@ -289,7 +289,7 @@ virt_viewer_events_remove_timeout(int timer)
         return -1;
     }
 
-    DEBUG_LOG("Remove timeout %p %d\n", data, timer);
+    DEBUG_LOG("Remove timeout %p %d", data, timer);
 
     if (!data->source)
         return -1;

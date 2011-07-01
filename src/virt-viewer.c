@@ -81,6 +81,26 @@ static const char * const menuNames[LAST_MENU] = {
 };
 
 
+#if GTK_CHECK_VERSION(3, 0, 0)
+#define GDK_Control_L GDK_KEY_Control_L
+#define GDK_Alt_L GDK_KEY_Alt_L
+#define GDK_Delete GDK_KEY_Delete
+#define GDK_BackSpace GDK_KEY_BackSpace
+#define GDK_Print GDK_KEY_Print
+#define GDK_F1 GDK_KEY_F1
+#define GDK_F2 GDK_KEY_F2
+#define GDK_F3 GDK_KEY_F3
+#define GDK_F4 GDK_KEY_F4
+#define GDK_F5 GDK_KEY_F5
+#define GDK_F6 GDK_KEY_F6
+#define GDK_F7 GDK_KEY_F7
+#define GDK_F8 GDK_KEY_F8
+#define GDK_F9 GDK_KEY_F9
+#define GDK_F10 GDK_KEY_F10
+#define GDK_F11 GDK_KEY_F11
+#define GDK_F12 GDK_KEY_F12
+#endif
+
 #define MAX_KEY_COMBO 3
 struct	keyComboDef {
 	guint keys[MAX_KEY_COMBO];
@@ -184,7 +204,7 @@ virt_viewer_resize_main_window(VirtViewer *viewer)
 
 	gtk_window_resize(GTK_WINDOW (viewer->window), 1, 1);
 
-	screen = gdk_drawable_get_screen(gtk_widget_get_window(viewer->window));
+	screen = gtk_widget_get_screen(viewer->window);
 	gdk_screen_get_monitor_geometry(screen,
 					gdk_screen_get_monitor_at_window
 					(screen, gtk_widget_get_window(viewer->window)),
@@ -208,6 +228,10 @@ virt_viewer_resize_main_window(VirtViewer *viewer)
 		width = viewer->desktopWidth;
 		height = viewer->desktopHeight;
 	}
+
+	DEBUG_LOG("Decided todo %dx%d (desktop is %dx%d, fullscreen is %dx%d",
+		  width, height, viewer->desktopWidth, viewer->desktopHeight,
+		  fullscreen.width, fullscreen.height);
 
 	virt_viewer_align_set_preferred_size(VIRT_VIEWER_ALIGN(viewer->align),
 					     width, height);
@@ -1322,6 +1346,8 @@ virt_viewer_start(const char *uri,
 	viewer->domkey = g_strdup(name);
 	viewer->uri = g_strdup(uri);
 
+	viewer->desktopWidth = viewer->desktopHeight = 400;
+
 	g_value_init(&viewer->accelSetting, G_TYPE_STRING);
 
 	virt_viewer_events_register();
@@ -1380,6 +1406,9 @@ virt_viewer_start(const char *uri,
 		viewer->container = window;
 		viewer->window = window;
 		gtk_window_set_resizable(GTK_WINDOW(window), TRUE);
+#if GTK_CHECK_VERSION(3, 0, 0)
+		gtk_window_set_has_resize_grip(GTK_WINDOW(window), FALSE);
+#endif
 		viewer->accelEnabled = TRUE;
 		accels = gtk_accel_groups_from_object(G_OBJECT(window));
 		for ( ; accels ; accels = accels->next) {

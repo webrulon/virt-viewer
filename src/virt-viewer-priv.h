@@ -102,6 +102,8 @@ struct _VirtViewerSize {
 	VirtViewer *viewer;
 	gint width, height;
 	gulong sig_id;
+	gulong sig_id_h;
+	gulong sig_id_w;
 };
 
 void virt_viewer_connected(VirtViewer *viewer);

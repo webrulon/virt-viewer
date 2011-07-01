@@ -57,6 +57,13 @@ struct _VirtViewer {
 	GtkWidget *window;
 	GtkWidget *container;
 
+	GtkWidget *notebook;
+	GtkWidget *align;
+	GtkWidget *status;
+
+	GtkWidget *toolbar;
+	GtkWidget *layout;
+
 	char *pretty_address;
 
 	int zoomlevel;

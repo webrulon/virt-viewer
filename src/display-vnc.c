@@ -176,9 +176,7 @@ static void viewer_vnc_auth_failure(VirtViewer *viewer,
 static void
 viewer_resize_display_widget(VirtViewer *viewer)
 {
-	GtkWidget *align;
-	align = glade_xml_get_widget(viewer->glade, "display-align");
-	gtk_widget_queue_resize(align);
+	gtk_widget_queue_resize(viewer->align);
 }
 
 
@@ -255,7 +253,6 @@ VirtViewerDisplayVNC* virt_viewer_display_vnc_new(VirtViewer *viewer)
 {
 	VirtViewerDisplayVNC *self;
 	VirtViewerDisplay *d;
-	GtkWidget *align;
 
 	g_return_val_if_fail(viewer != NULL, NULL);
 
@@ -315,8 +312,7 @@ VirtViewerDisplayVNC* virt_viewer_display_vnc_new(VirtViewer *viewer)
 
 	viewer_add_display_and_realize(viewer);
 
-	align = glade_xml_get_widget(viewer->glade, "display-align");
-	g_signal_connect(align, "size-allocate",
+	g_signal_connect(viewer->align, "size-allocate",
 			 G_CALLBACK(viewer_resize_align), viewer);
 
 	return self;

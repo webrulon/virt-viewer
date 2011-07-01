@@ -55,6 +55,8 @@
 #include "display-spice.h"
 #endif
 
+#include "view/autoDrawer.h"
+
 #define SCALE(x) do { x = viewer->fullscreen ? x : x * viewer->zoomlevel / 100; } while (0);
 
 gboolean doDebug = FALSE;
@@ -126,26 +128,21 @@ void viewer_simple_message_dialog(GtkWidget *window, const char *fmt, ...)
 
 void viewer_add_display_and_realize(VirtViewer *viewer)
 {
-	GtkWidget *notebook;
-	GtkWidget *align;
-
 	g_return_if_fail(viewer != NULL);
 	g_return_if_fail(viewer->display != NULL);
 	g_return_if_fail(viewer->display->widget != NULL);
 
-	notebook = glade_xml_get_widget(viewer->glade, "notebook");
 	if (viewer->display->need_align) {
-		align = glade_xml_get_widget(viewer->glade, "display-align");
-		gtk_container_add(GTK_CONTAINER(align), viewer->display->widget);
+		gtk_container_add(GTK_CONTAINER(viewer->align), viewer->display->widget);
 	} else {
-		gtk_notebook_remove_page(GTK_NOTEBOOK(notebook), 2);
-		if (gtk_notebook_insert_page(GTK_NOTEBOOK(notebook), viewer->display->widget,
+		gtk_notebook_remove_page(GTK_NOTEBOOK(viewer->notebook), 2);
+		if (gtk_notebook_insert_page(GTK_NOTEBOOK(viewer->notebook), viewer->display->widget,
 					     NULL, 2) == -1)
 			g_warning("failed to insert a notebook page");
 	}
 
 	if (!viewer->window) {
-		gtk_container_add(GTK_CONTAINER(viewer->container), GTK_WIDGET(notebook));
+		gtk_container_add(GTK_CONTAINER(viewer->container), GTK_WIDGET(viewer->notebook));
 		gtk_widget_show_all(viewer->container);
 	}
 
@@ -267,7 +264,7 @@ void viewer_resize_main_window(VirtViewer *viewer)
 	SCALE(height);
 
 	viewer_set_widget_size(viewer,
-			       glade_xml_get_widget(viewer->glade, "display-align"),
+			       viewer->align,
 			       width,
 			       height);
 }
@@ -410,19 +407,52 @@ static void viewer_menu_file_quit(GtkWidget *src G_GNUC_UNUSED, VirtViewer *view
 	viewer_quit(viewer);
 }
 
+
+static void viewer_leave_fullscreen(VirtViewer *viewer)
+{
+	GtkWidget *menu = glade_xml_get_widget(viewer->glade, "top-menu");
+	if (!viewer->fullscreen)
+		return;
+	viewer->fullscreen = FALSE;
+	ViewAutoDrawer_SetActive(VIEW_AUTODRAWER(viewer->layout), FALSE);
+	gtk_widget_show(menu);
+	gtk_widget_hide(viewer->toolbar);
+	gtk_window_unfullscreen(GTK_WINDOW(viewer->window));
+	if (viewer->autoResize)
+		viewer_resize_main_window(viewer);
+}
+
+static void viewer_enter_fullscreen(VirtViewer *viewer)
+{
+	GtkWidget *menu = glade_xml_get_widget(viewer->glade, "top-menu");
+	if (viewer->fullscreen)
+		return;
+	viewer->fullscreen = TRUE;
+	gtk_widget_hide(menu);
+	gtk_window_fullscreen(GTK_WINDOW(viewer->window));
+	gtk_widget_show(viewer->toolbar);
+	ViewAutoDrawer_SetActive(VIEW_AUTODRAWER(viewer->layout), TRUE);
+}
+
+
+static void viewer_toolbar_leave_fullscreen(GtkWidget *button G_GNUC_UNUSED, VirtViewer *viewer)
+{
+	GtkWidget *menu = glade_xml_get_widget(viewer->glade, "menu-view-fullscreen");
+
+	gtk_check_menu_item_set_active(GTK_CHECK_MENU_ITEM(menu), FALSE);
+	viewer_leave_fullscreen(viewer);
+}
+
+
 static void viewer_menu_view_fullscreen(GtkWidget *menu, VirtViewer *viewer)
 {
 	if (!viewer->window)
 		return;
 
 	if (gtk_check_menu_item_get_active(GTK_CHECK_MENU_ITEM(menu))) {
-		viewer->fullscreen = TRUE;
-		gtk_window_fullscreen(GTK_WINDOW(viewer->window));
+		viewer_enter_fullscreen(viewer);
 	} else {
-		viewer->fullscreen = FALSE;
-		gtk_window_unfullscreen(GTK_WINDOW(viewer->window));
-		if (viewer->autoResize)
-			viewer_resize_main_window(viewer);
+		viewer_leave_fullscreen(viewer);
 	}
 }
 
@@ -796,27 +826,20 @@ static void viewer_trace(VirtViewer *viewer, const char *fmt, ...)
 
 void viewer_set_status(VirtViewer *viewer, const char *text)
 {
-	GtkWidget *status, *notebook;
-
-	notebook = glade_xml_get_widget(viewer->glade, "notebook");
-	status = glade_xml_get_widget(viewer->glade, "status");
-
-	gtk_notebook_set_current_page(GTK_NOTEBOOK(notebook), 0);
-	gtk_label_set_text(GTK_LABEL(status), text);
+	gtk_notebook_set_current_page(GTK_NOTEBOOK(viewer->notebook), 0);
+	gtk_label_set_text(GTK_LABEL(viewer->status), text);
 }
 
 
 static void viewer_show_display(VirtViewer *viewer)
 {
-	GtkWidget *notebook;
-
 	g_return_if_fail(viewer != NULL);
 	g_return_if_fail(viewer->display != NULL);
 	g_return_if_fail(viewer->display->widget != NULL);
 
-	notebook = glade_xml_get_widget(viewer->glade, "notebook");
 	gtk_widget_show(viewer->display->widget);
-	gtk_notebook_set_current_page(GTK_NOTEBOOK(notebook),
+	gtk_widget_grab_focus(viewer->display->widget);
+	gtk_notebook_set_current_page(GTK_NOTEBOOK(viewer->notebook),
 				      viewer->display->need_align ? 1 : 2);
 }
 
@@ -1208,6 +1231,43 @@ static gboolean viewer_connect_timer(void *opaque)
 	return TRUE;
 }
 
+static void viewer_toolbar_setup(VirtViewer *viewer)
+{
+	GtkWidget *button;
+
+	viewer->toolbar = gtk_toolbar_new();
+	gtk_toolbar_set_show_arrow(GTK_TOOLBAR(viewer->toolbar), FALSE);
+	gtk_widget_set_no_show_all(viewer->toolbar, TRUE);
+	gtk_toolbar_set_style(GTK_TOOLBAR(viewer->toolbar), GTK_TOOLBAR_BOTH_HORIZ);
+
+	/* Close connection */
+	button = GTK_WIDGET(gtk_tool_button_new_from_stock(GTK_STOCK_CLOSE));
+	gtk_tool_item_set_tooltip_text(GTK_TOOL_ITEM(button), _("Disconnect"));
+	gtk_widget_show(GTK_WIDGET(button));
+	gtk_toolbar_insert(GTK_TOOLBAR(viewer->toolbar), GTK_TOOL_ITEM (button), 0);
+	g_signal_connect(button, "clicked", G_CALLBACK(gtk_main_quit), NULL);
+
+	/* Leave fullscreen */
+	button = GTK_WIDGET(gtk_tool_button_new_from_stock(GTK_STOCK_LEAVE_FULLSCREEN));
+	gtk_tool_button_set_label(GTK_TOOL_BUTTON(button), _("Leave fullscreen"));
+	gtk_tool_item_set_tooltip_text(GTK_TOOL_ITEM(button), _("Leave fullscreen"));
+	gtk_tool_item_set_is_important(GTK_TOOL_ITEM(button), TRUE);
+	gtk_widget_show(GTK_WIDGET(button));
+	gtk_toolbar_insert(GTK_TOOLBAR(viewer->toolbar), GTK_TOOL_ITEM(button), 0);
+	g_signal_connect(button, "clicked", G_CALLBACK(viewer_toolbar_leave_fullscreen), viewer);
+
+	viewer->layout = ViewAutoDrawer_New();
+
+	ViewAutoDrawer_SetActive(VIEW_AUTODRAWER(viewer->layout), FALSE);
+	ViewOvBox_SetOver(VIEW_OV_BOX(viewer->layout), viewer->toolbar);
+	ViewOvBox_SetUnder(VIEW_OV_BOX(viewer->layout), viewer->notebook);
+	ViewAutoDrawer_SetOffset(VIEW_AUTODRAWER(viewer->layout), -1);
+	ViewAutoDrawer_SetFill(VIEW_AUTODRAWER(viewer->layout), FALSE);
+	ViewAutoDrawer_SetOverlapPixels(VIEW_AUTODRAWER(viewer->layout), 1);
+	ViewAutoDrawer_SetNoOverlapPixels(VIEW_AUTODRAWER(viewer->layout), 0);
+}
+
+
 static void viewer_error_func (void *data G_GNUC_UNUSED, virErrorPtr error G_GNUC_UNUSED)
 {
 	/* nada */
@@ -1225,7 +1285,6 @@ viewer_start (const char *uri,
 	      GtkWidget *container)
 {
 	VirtViewer *viewer;
-	GtkWidget *notebook;
 	GtkWidget *menu;
 	int cred_types[] =
 		{ VIR_CRED_AUTHNAME, VIR_CRED_PASSPHRASE };
@@ -1268,40 +1327,57 @@ viewer_start (const char *uri,
 		return -1;
 	}
 
-	if (!(viewer->glade = viewer_load_glade("viewer.glade",
-						container ? "notebook" : "viewer")))
-		return -1;
+	if (!container) {
+		if (!(viewer->glade = viewer_load_glade("viewer.glade", "viewer")))
+			return -1;
 
-	menu = glade_xml_get_widget(viewer->glade, "menu-view-resize");
-	if (!container)
+		menu = glade_xml_get_widget(viewer->glade, "menu-view-resize");
 		gtk_check_menu_item_set_active(GTK_CHECK_MENU_ITEM(menu), TRUE);
 
-	glade_xml_signal_connect_data(viewer->glade, "viewer_menu_file_quit",
-				      G_CALLBACK(viewer_menu_file_quit), viewer);
-	glade_xml_signal_connect_data(viewer->glade, "viewer_menu_file_screenshot",
-				      G_CALLBACK(viewer_menu_file_screenshot), viewer);
-	glade_xml_signal_connect_data(viewer->glade, "viewer_menu_view_fullscreen",
-				      G_CALLBACK(viewer_menu_view_fullscreen), viewer);
-	glade_xml_signal_connect_data(viewer->glade, "viewer_menu_view_zoom_in",
-				      G_CALLBACK(viewer_menu_view_zoom_in), viewer);
-	glade_xml_signal_connect_data(viewer->glade, "viewer_menu_view_zoom_out",
-				      G_CALLBACK(viewer_menu_view_zoom_out), viewer);
-	glade_xml_signal_connect_data(viewer->glade, "viewer_menu_view_zoom_reset",
-				      G_CALLBACK(viewer_menu_view_zoom_reset), viewer);
-	glade_xml_signal_connect_data(viewer->glade, "viewer_menu_view_resize",
-				      G_CALLBACK(viewer_menu_view_resize), viewer);
-	glade_xml_signal_connect_data(viewer->glade, "viewer_menu_send",
-				      G_CALLBACK(viewer_menu_send), viewer);
-	glade_xml_signal_connect_data(viewer->glade, "viewer_menu_help_about",
-				      G_CALLBACK(viewer_menu_help_about), viewer);
+		glade_xml_signal_connect_data(viewer->glade, "viewer_menu_file_quit",
+					      G_CALLBACK(viewer_menu_file_quit), viewer);
+		glade_xml_signal_connect_data(viewer->glade, "viewer_menu_file_screenshot",
+					      G_CALLBACK(viewer_menu_file_screenshot), viewer);
+		glade_xml_signal_connect_data(viewer->glade, "viewer_menu_view_fullscreen",
+					      G_CALLBACK(viewer_menu_view_fullscreen), viewer);
+		glade_xml_signal_connect_data(viewer->glade, "viewer_menu_view_zoom_in",
+					      G_CALLBACK(viewer_menu_view_zoom_in), viewer);
+		glade_xml_signal_connect_data(viewer->glade, "viewer_menu_view_zoom_out",
+					      G_CALLBACK(viewer_menu_view_zoom_out), viewer);
+		glade_xml_signal_connect_data(viewer->glade, "viewer_menu_view_zoom_reset",
+					      G_CALLBACK(viewer_menu_view_zoom_reset), viewer);
+		glade_xml_signal_connect_data(viewer->glade, "viewer_menu_view_resize",
+					      G_CALLBACK(viewer_menu_view_resize), viewer);
+		glade_xml_signal_connect_data(viewer->glade, "viewer_menu_send",
+					      G_CALLBACK(viewer_menu_send), viewer);
+		glade_xml_signal_connect_data(viewer->glade, "viewer_menu_help_about",
+					      G_CALLBACK(viewer_menu_help_about), viewer);
+	}
 
+	viewer->status = gtk_label_new("");
+	viewer->align = gtk_alignment_new(0.5, 0.5, 0, 0);
 
-	notebook = glade_xml_get_widget(viewer->glade, "notebook");
-	gtk_notebook_set_show_tabs(GTK_NOTEBOOK(notebook), FALSE);
+	viewer->notebook = gtk_notebook_new();
+	gtk_notebook_set_show_tabs(GTK_NOTEBOOK(viewer->notebook), FALSE);
+	gtk_notebook_set_show_border(GTK_NOTEBOOK(viewer->notebook), FALSE);
+
+	gtk_notebook_append_page(GTK_NOTEBOOK(viewer->notebook), viewer->status, NULL);
+	gtk_notebook_append_page(GTK_NOTEBOOK(viewer->notebook), viewer->align, NULL);
 
 	if (container) {
 		viewer->container = container;
+
+		gtk_box_pack_end(GTK_BOX(container), viewer->notebook, TRUE, TRUE, 0);
+		gtk_widget_show_all(GTK_WIDGET(container));
 	} else {
+		GtkWidget *vbox = glade_xml_get_widget(viewer->glade, "viewer-box");
+		viewer_toolbar_setup(viewer);
+
+		//gtk_box_pack_end(GTK_BOX(vbox), viewer->toolbar, TRUE, TRUE, 0);
+		//gtk_box_pack_end(GTK_BOX(vbox), viewer->notebook, TRUE, TRUE, 0);
+		gtk_box_pack_end(GTK_BOX(vbox), viewer->layout, TRUE, TRUE, 0);
+		gtk_widget_show_all(GTK_WIDGET(vbox));
+
 		GtkWidget *window = glade_xml_get_widget(viewer->glade, "viewer");
 		GSList *accels;
 		viewer->container = window;

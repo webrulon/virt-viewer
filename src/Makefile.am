@@ -14,7 +14,14 @@ virt_viewer_SOURCES = \
 	viewer.h viewer.c \
 	viewer-priv.h \
 	display.h display.c \
-	display-vnc.h display-vnc.c
+	display-vnc.h display-vnc.c \
+	view/autoDrawer.c \
+	view/autoDrawer.h \
+	view/drawer.c \
+	view/drawer.h \
+	view/ovBox.c \
+	view/ovBox.h
+
 
 if HAVE_SPICE_GTK
 virt_viewer_SOURCES += \

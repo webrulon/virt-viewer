@@ -931,9 +931,9 @@ cleanup:
 	return retval;
 }
 
+#if defined(HAVE_SOCKETPAIR) && defined(HAVE_FORK)
 void viewer_channel_open_fd(VirtViewer *viewer, VirtViewerDisplayChannel *channel)
 {
-#if defined(HAVE_SOCKETPAIR) && defined(HAVE_FORK)
 	int fd = -1;
 
 	g_return_if_fail(viewer != NULL);
@@ -949,10 +949,14 @@ void viewer_channel_open_fd(VirtViewer *viewer, VirtViewerDisplayChannel *channe
 
 	if (fd >= 0)
 		virt_viewer_display_channel_open_fd(viewer->display, channel, fd);
-#else
-	viewer_simple_message_dialog(viewer->window, _("Connect to channel unsupported."));
-#endif
 }
+#else
+void viewer_channel_open_fd(VirtViewer *viewer G_GNUC_UNUSED,
+			    VirtViewerDisplayChannel *channel G_GNUC_UNUSED)
+{
+	viewer_simple_message_dialog(viewer->window, _("Connect to channel unsupported."));
+}
+#endif
 
 static int viewer_activate(VirtViewer *viewer,
 			   virDomainPtr dom)

@@ -67,7 +67,7 @@ static ViewOvBoxClass *parentClass;
 
 static void
 ViewDrawerInit(GTypeInstance *instance, // IN
-               gpointer klass)          // Unused
+               gpointer klass G_GNUC_UNUSED)          // Unused
 {
    ViewDrawer *that;
 
@@ -175,6 +175,7 @@ ViewDrawer_GetType(void)
          sizeof (ViewDrawer),
          0, /* n_preallocs */
          (GInstanceInitFunc)ViewDrawerInit,
+	 NULL
       };
 
       type = g_type_register_static(VIEW_TYPE_OV_BOX, "ViewDrawer", &info, 0);

@@ -25,7 +25,6 @@
 # define _VIRT_VIEWER_PRIV_H
 
 #include <gtk/gtk.h>
-#include <glade/glade.h>
 #include <glib/gi18n.h>
 
 #include <libvirt/libvirt.h>
@@ -53,7 +52,7 @@ struct _VirtViewer {
 	char *domkey;
 	char *domtitle;
 
-	GladeXML *glade;
+	GtkBuilder *builder;
 	GtkWidget *window;
 	GtkWidget *container;
 

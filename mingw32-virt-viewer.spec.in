@@ -16,10 +16,9 @@ Source0:        ftp://virt-manager.org/downloads/virt-viewer/virt-viewer-%{versi
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 BuildRequires:  mingw32-filesystem >= 23
-BuildRequires:  mingw32-gtk2
+BuildRequires:  mingw32-gtk2 >= 2.12.0
 BuildRequires:  mingw32-libvirt >= 0.6.0
 BuildRequires:  mingw32-libxml2
-BuildRequires:  mingw32-libglade2
 BuildRequires:  mingw32-gtk-vnc >= 0.3.8
 BuildRequires:  pkgconfig
 
@@ -56,9 +55,9 @@ rm -rf $RPM_BUILD_ROOT
 
 %dir %{_mingw32_datadir}/virt-viewer/
 %dir %{_mingw32_datadir}/virt-viewer/ui/
-%{_mingw32_datadir}/virt-viewer/ui/about.glade
-%{_mingw32_datadir}/virt-viewer/ui/auth.glade
-%{_mingw32_datadir}/virt-viewer/ui/viewer.glade
+%{_mingw32_datadir}/virt-viewer/ui/about.xml
+%{_mingw32_datadir}/virt-viewer/ui/auth.xml
+%{_mingw32_datadir}/virt-viewer/ui/viewer.xml
 
 %{_mingw32_mandir}/man1/virt-viewer.1*
 

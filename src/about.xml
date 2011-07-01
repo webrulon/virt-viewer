@@ -1,14 +1,13 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<!DOCTYPE glade-interface SYSTEM "glade-2.0.dtd">
-<!--Generated with glade3 3.4.5 on Wed Nov 26 12:15:46 2008 -->
-<glade-interface>
-  <widget class="GtkAboutDialog" id="about">
+<?xml version="1.0"?>
+<interface>
+  <!-- interface-requires gtk+ 2.12 -->
+  <!-- interface-naming-policy toplevel-contextual -->
+  <object class="GtkAboutDialog" id="about">
     <property name="border_width">5</property>
     <property name="title" translatable="yes">About Glade</property>
     <property name="resizable">False</property>
-    <property name="window_position">GTK_WIN_POS_CENTER_ON_PARENT</property>
-    <property name="type_hint">GDK_WINDOW_TYPE_HINT_DIALOG</property>
-    <property name="has_separator">False</property>
+    <property name="window_position">center-on-parent</property>
+    <property name="type_hint">dialog</property>
     <property name="program_name">Virtual Machine Viewer</property>
     <property name="copyright" translatable="yes">Copyright 2007-2008 Daniel P. Berrange
 Copyright 2007-2008 Red Hat, Inc.</property>
@@ -31,26 +30,27 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 </property>
     <property name="authors">Daniel P. Berrange</property>
     <property name="translator_credits" translatable="yes">The Fedora Translation Team</property>
-    <signal name="delete_event" handler="about_delete"/>
-    <signal name="response" handler="about_close"/>
+    <signal name="response" handler="viewer_about_close"/>
+    <signal name="delete_event" handler="viewer_about_delete"/>
     <child internal-child="vbox">
-      <widget class="GtkVBox" id="dialog-vbox1">
+      <object class="GtkVBox" id="dialog-vbox1">
         <property name="visible">True</property>
         <property name="spacing">2</property>
         <child>
           <placeholder/>
         </child>
         <child internal-child="action_area">
-          <widget class="GtkHButtonBox" id="dialog-action_area1">
+          <object class="GtkHButtonBox" id="dialog-action_area1">
             <property name="visible">True</property>
-            <property name="layout_style">GTK_BUTTONBOX_END</property>
-          </widget>
+            <property name="layout_style">end</property>
+          </object>
           <packing>
             <property name="expand">False</property>
-            <property name="pack_type">GTK_PACK_END</property>
+            <property name="pack_type">end</property>
+            <property name="position">0</property>
           </packing>
         </child>
-      </widget>
+      </object>
     </child>
-  </widget>
-</glade-interface>
+  </object>
+</interface>

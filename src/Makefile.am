@@ -1,10 +1,10 @@
 
 bin_PROGRAMS = virt-viewer
 
-gladedir = $(pkgdatadir)/ui
-glade_DATA = viewer.glade about.glade auth.glade
+builderxmldir = $(pkgdatadir)/ui
+builderxml_DATA = viewer.xml about.xml auth.xml
 
-EXTRA_DIST = $(glade_DATA)
+EXTRA_DIST = $(builderxml_DATA)
 
 virt_viewer_SOURCES = \
 	main.c \
@@ -31,18 +31,18 @@ endif
 virt_viewer_LDADD = \
 	@GTKVNC_LIBS@ \
 	@SPICEGTK_LIBS@ \
+	@GLIB2_LIBS@ \
 	@GTK2_LIBS@ \
 	@LIBXML2_LIBS@ \
-	@LIBGLADE2_LIBS@ \
 	@LIBVIRT_LIBS@
 
 virt_viewer_CFLAGS = \
 	@GTKVNC_CFLAGS@ \
 	@SPICEGTK_CFLAGS@ \
+	@GLIB2_CFLAGS@ \
 	@GTK2_CFLAGS@ \
 	@LIBXML2_CFLAGS@ \
-	@LIBGLADE2_CFLAGS@ \
 	@LIBVIRT_CFLAGS@ \
 	@WARN_CFLAGS@ \
-	-DGLADE_DIR="\"$(gladedir)\"" \
+	-DBUILDER_XML_DIR="\"$(builderxmldir)\"" \
 	-DLOCALE_DIR=\""$(datadir)/locale"\"

@@ -61,6 +61,19 @@
 
 gboolean doDebug = FALSE;
 
+void viewer_menu_view_zoom_out(G_GNUC_UNUSED GtkWidget *menu, VirtViewer *viewer);
+void viewer_menu_view_zoom_in(G_GNUC_UNUSED GtkWidget *menu, VirtViewer *viewer);
+void viewer_menu_view_zoom_reset(G_GNUC_UNUSED GtkWidget *menu, VirtViewer *viewer);
+void viewer_delete(GtkWidget *src G_GNUC_UNUSED, void *dummy G_GNUC_UNUSED, VirtViewer *viewer);
+void viewer_menu_file_quit(GtkWidget *src G_GNUC_UNUSED, VirtViewer *viewer);
+void viewer_about_close(GtkWidget *dialog, VirtViewer *viewer G_GNUC_UNUSED);
+void viewer_about_delete(GtkWidget *dialog, void *dummy G_GNUC_UNUSED, VirtViewer *viewer G_GNUC_UNUSED);
+void viewer_menu_help_about(GtkWidget *menu G_GNUC_UNUSED, VirtViewer *viewer);
+void viewer_menu_view_fullscreen(GtkWidget *menu, VirtViewer *viewer);
+void viewer_menu_view_resize(GtkWidget *menu, VirtViewer *viewer);
+void viewer_menu_send(GtkWidget *menu G_GNUC_UNUSED, VirtViewer *viewer);
+void viewer_menu_file_screenshot(GtkWidget *menu G_GNUC_UNUSED, VirtViewer *viewer);
+
 static const char * const menuNames[LAST_MENU] = {
 	"menu-file", "menu-view", "menu-send", "menu-help"
 };
@@ -262,7 +275,7 @@ void viewer_resize_main_window(VirtViewer *viewer)
 			       height);
 }
 
-static void viewer_menu_view_zoom_out(G_GNUC_UNUSED GtkWidget *menu, VirtViewer *viewer)
+void viewer_menu_view_zoom_out(G_GNUC_UNUSED GtkWidget *menu, VirtViewer *viewer)
 {
 	viewer->zoomlevel -= 10;
 	if (viewer->zoomlevel < 10)
@@ -271,7 +284,7 @@ static void viewer_menu_view_zoom_out(G_GNUC_UNUSED GtkWidget *menu, VirtViewer 
 	viewer_resize_main_window(viewer);
 }
 
-static void viewer_menu_view_zoom_in(G_GNUC_UNUSED GtkWidget *menu, VirtViewer *viewer)
+void viewer_menu_view_zoom_in(G_GNUC_UNUSED GtkWidget *menu, VirtViewer *viewer)
 {
 	viewer->zoomlevel += 10;
 	if (viewer->zoomlevel > 200)
@@ -280,7 +293,7 @@ static void viewer_menu_view_zoom_in(G_GNUC_UNUSED GtkWidget *menu, VirtViewer *
 	viewer_resize_main_window(viewer);
 }
 
-static void viewer_menu_view_zoom_reset(G_GNUC_UNUSED GtkWidget *menu, VirtViewer *viewer)
+void viewer_menu_view_zoom_reset(G_GNUC_UNUSED GtkWidget *menu, VirtViewer *viewer)
 {
 	viewer->zoomlevel = 100;
 
@@ -342,7 +355,7 @@ void viewer_disable_modifiers(VirtViewer *viewer)
 
 	/* This stops menu bar shortcuts like Alt+F == File */
 	for (i = 0 ; i < LAST_MENU ; i++) {
-		GtkWidget *menu = glade_xml_get_widget(viewer->glade, menuNames[i]);
+		GtkWidget *menu = GTK_WIDGET(gtk_builder_get_object(viewer->builder, menuNames[i]));
 		viewer->accelMenuSig[i] =
 			g_signal_connect(menu, "mnemonic-activate",
 					 G_CALLBACK(viewer_ignore_accel), viewer);
@@ -374,7 +387,7 @@ void viewer_enable_modifiers(VirtViewer *viewer)
 
 	/* This allows menu bar shortcuts like Alt+F == File */
 	for (i = 0 ; i < LAST_MENU ; i++) {
-		GtkWidget *menu = glade_xml_get_widget(viewer->glade, menuNames[i]);
+		GtkWidget *menu = GTK_WIDGET(gtk_builder_get_object(viewer->builder, menuNames[i]));
 		g_signal_handler_disconnect(menu, viewer->accelMenuSig[i]);
 	}
 
@@ -390,12 +403,12 @@ void viewer_quit(VirtViewer *viewer)
 	gtk_main_quit();
 }
 
-static void viewer_delete(GtkWidget *src G_GNUC_UNUSED, void *dummy G_GNUC_UNUSED, VirtViewer *viewer)
+void viewer_delete(GtkWidget *src G_GNUC_UNUSED, void *dummy G_GNUC_UNUSED, VirtViewer *viewer)
 {
 	viewer_quit(viewer);
 }
 
-static void viewer_menu_file_quit(GtkWidget *src G_GNUC_UNUSED, VirtViewer *viewer)
+void viewer_menu_file_quit(GtkWidget *src G_GNUC_UNUSED, VirtViewer *viewer)
 {
 	viewer_quit(viewer);
 }
@@ -403,7 +416,7 @@ static void viewer_menu_file_quit(GtkWidget *src G_GNUC_UNUSED, VirtViewer *view
 
 static void viewer_leave_fullscreen(VirtViewer *viewer)
 {
-	GtkWidget *menu = glade_xml_get_widget(viewer->glade, "top-menu");
+	GtkWidget *menu = GTK_WIDGET(gtk_builder_get_object(viewer->builder, "top-menu"));
 	if (!viewer->fullscreen)
 		return;
 	viewer->fullscreen = FALSE;
@@ -417,7 +430,7 @@ static void viewer_leave_fullscreen(VirtViewer *viewer)
 
 static void viewer_enter_fullscreen(VirtViewer *viewer)
 {
-	GtkWidget *menu = glade_xml_get_widget(viewer->glade, "top-menu");
+	GtkWidget *menu = GTK_WIDGET(gtk_builder_get_object(viewer->builder, "top-menu"));
 	if (viewer->fullscreen)
 		return;
 	viewer->fullscreen = TRUE;
@@ -430,14 +443,14 @@ static void viewer_enter_fullscreen(VirtViewer *viewer)
 
 static void viewer_toolbar_leave_fullscreen(GtkWidget *button G_GNUC_UNUSED, VirtViewer *viewer)
 {
-	GtkWidget *menu = glade_xml_get_widget(viewer->glade, "menu-view-fullscreen");
+	GtkWidget *menu = GTK_WIDGET(gtk_builder_get_object(viewer->builder, "menu-view-fullscreen"));
 
 	gtk_check_menu_item_set_active(GTK_CHECK_MENU_ITEM(menu), FALSE);
 	viewer_leave_fullscreen(viewer);
 }
 
 
-static void viewer_menu_view_fullscreen(GtkWidget *menu, VirtViewer *viewer)
+void viewer_menu_view_fullscreen(GtkWidget *menu, VirtViewer *viewer)
 {
 	if (!viewer->window)
 		return;
@@ -449,7 +462,7 @@ static void viewer_menu_view_fullscreen(GtkWidget *menu, VirtViewer *viewer)
 	}
 }
 
-static void viewer_menu_view_resize(GtkWidget *menu, VirtViewer *viewer)
+void viewer_menu_view_resize(GtkWidget *menu, VirtViewer *viewer)
 {
 	if (gtk_check_menu_item_get_active(GTK_CHECK_MENU_ITEM(menu))) {
 		viewer->autoResize = TRUE;
@@ -460,7 +473,7 @@ static void viewer_menu_view_resize(GtkWidget *menu, VirtViewer *viewer)
 	}
 }
 
-static void viewer_menu_send(GtkWidget *menu G_GNUC_UNUSED, VirtViewer *viewer)
+void viewer_menu_send(GtkWidget *menu G_GNUC_UNUSED, VirtViewer *viewer)
 {
 	int i;
 	GtkWidget *label = gtk_bin_get_child(GTK_BIN(menu));
@@ -487,7 +500,7 @@ static void viewer_save_screenshot(VirtViewer *viewer, const char *file)
 	gdk_pixbuf_unref(pix);
 }
 
-static void viewer_menu_file_screenshot(GtkWidget *menu G_GNUC_UNUSED, VirtViewer *viewer)
+void viewer_menu_file_screenshot(GtkWidget *menu G_GNUC_UNUSED, VirtViewer *viewer)
 {
 	GtkWidget *dialog;
 
@@ -515,31 +528,26 @@ static void viewer_menu_file_screenshot(GtkWidget *menu G_GNUC_UNUSED, VirtViewe
 	gtk_widget_destroy (dialog);
 }
 
-static void viewer_about_close(GtkWidget *dialog, VirtViewer *viewer G_GNUC_UNUSED)
+void viewer_about_close(GtkWidget *dialog, VirtViewer *viewer G_GNUC_UNUSED)
 {
 	gtk_widget_hide(dialog);
 	gtk_widget_destroy(dialog);
 }
 
-static void viewer_about_delete(GtkWidget *dialog, void *dummy G_GNUC_UNUSED, VirtViewer *viewer G_GNUC_UNUSED)
+void viewer_about_delete(GtkWidget *dialog, void *dummy G_GNUC_UNUSED, VirtViewer *viewer G_GNUC_UNUSED)
 {
 	gtk_widget_hide(dialog);
 	gtk_widget_destroy(dialog);
 }
 
-static void viewer_menu_help_about(GtkWidget *menu G_GNUC_UNUSED, VirtViewer *viewer)
+void viewer_menu_help_about(GtkWidget *menu G_GNUC_UNUSED, VirtViewer *viewer)
 {
-	GladeXML *about;
-	GtkWidget *dialog;
+	GtkBuilder *about = viewer_load_ui("about.xml");
 
-	about = viewer_load_glade("about.glade", "about");
-
-	dialog = glade_xml_get_widget(about, "about");
+	GtkWidget *dialog = GTK_WIDGET(gtk_builder_get_object(about, "about"));
 	gtk_about_dialog_set_version(GTK_ABOUT_DIALOG(dialog), VERSION);
-	glade_xml_signal_connect_data(about, "about_delete",
-				      G_CALLBACK(viewer_about_delete), viewer);
-	glade_xml_signal_connect_data(about, "about_close",
-				      G_CALLBACK(viewer_about_close), viewer);
+
+	gtk_builder_connect_signals(about, viewer);
 
 	gtk_widget_show_all(dialog);
 
@@ -1320,30 +1328,12 @@ viewer_start (const char *uri,
 	}
 
 	if (!container) {
-		if (!(viewer->glade = viewer_load_glade("viewer.glade", "viewer")))
-			return -1;
+		viewer->builder = viewer_load_ui("viewer.xml");
 
-		menu = glade_xml_get_widget(viewer->glade, "menu-view-resize");
+		menu = GTK_WIDGET(gtk_builder_get_object(viewer->builder, "menu-view-resize"));
 		gtk_check_menu_item_set_active(GTK_CHECK_MENU_ITEM(menu), TRUE);
 
-		glade_xml_signal_connect_data(viewer->glade, "viewer_menu_file_quit",
-					      G_CALLBACK(viewer_menu_file_quit), viewer);
-		glade_xml_signal_connect_data(viewer->glade, "viewer_menu_file_screenshot",
-					      G_CALLBACK(viewer_menu_file_screenshot), viewer);
-		glade_xml_signal_connect_data(viewer->glade, "viewer_menu_view_fullscreen",
-					      G_CALLBACK(viewer_menu_view_fullscreen), viewer);
-		glade_xml_signal_connect_data(viewer->glade, "viewer_menu_view_zoom_in",
-					      G_CALLBACK(viewer_menu_view_zoom_in), viewer);
-		glade_xml_signal_connect_data(viewer->glade, "viewer_menu_view_zoom_out",
-					      G_CALLBACK(viewer_menu_view_zoom_out), viewer);
-		glade_xml_signal_connect_data(viewer->glade, "viewer_menu_view_zoom_reset",
-					      G_CALLBACK(viewer_menu_view_zoom_reset), viewer);
-		glade_xml_signal_connect_data(viewer->glade, "viewer_menu_view_resize",
-					      G_CALLBACK(viewer_menu_view_resize), viewer);
-		glade_xml_signal_connect_data(viewer->glade, "viewer_menu_send",
-					      G_CALLBACK(viewer_menu_send), viewer);
-		glade_xml_signal_connect_data(viewer->glade, "viewer_menu_help_about",
-					      G_CALLBACK(viewer_menu_help_about), viewer);
+		gtk_builder_connect_signals(viewer->builder, viewer);
 	}
 
 	viewer->status = gtk_label_new("");
@@ -1362,7 +1352,7 @@ viewer_start (const char *uri,
 		gtk_box_pack_end(GTK_BOX(container), viewer->notebook, TRUE, TRUE, 0);
 		gtk_widget_show_all(GTK_WIDGET(container));
 	} else {
-		GtkWidget *vbox = glade_xml_get_widget(viewer->glade, "viewer-box");
+		GtkWidget *vbox = GTK_WIDGET(gtk_builder_get_object(viewer->builder, "viewer-box"));
 		viewer_toolbar_setup(viewer);
 
 		//gtk_box_pack_end(GTK_BOX(vbox), viewer->toolbar, TRUE, TRUE, 0);
@@ -1370,12 +1360,10 @@ viewer_start (const char *uri,
 		gtk_box_pack_end(GTK_BOX(vbox), viewer->layout, TRUE, TRUE, 0);
 		gtk_widget_show_all(GTK_WIDGET(vbox));
 
-		GtkWidget *window = glade_xml_get_widget(viewer->glade, "viewer");
+		GtkWidget *window = GTK_WIDGET(gtk_builder_get_object(viewer->builder, "viewer"));
 		GSList *accels;
 		viewer->container = window;
 		viewer->window = window;
-		g_signal_connect(window, "delete-event",
-				 G_CALLBACK(viewer_delete), viewer);
 		gtk_window_set_resizable(GTK_WINDOW(window), TRUE);
 		viewer->accelEnabled = TRUE;
 		accels = gtk_accel_groups_from_object(G_OBJECT(window));

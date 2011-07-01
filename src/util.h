@@ -25,11 +25,6 @@
 #define VIRT_VIEWER_UTIL_H
 
 #include <gtk/gtk.h>
-#include <glade/glade.h>
-
-#if (GTK_MAJOR_VERSION == 2 && GTK_MINOR_VERSION <= 12)
-#define gtk_widget_get_window(widget) ((widget)->window)
-#endif
 
 extern gboolean doDebug;
 
@@ -37,6 +32,6 @@ extern gboolean doDebug;
 #define ARRAY_CARDINALITY(Array) (sizeof (Array) / sizeof *(Array))
 
 
-GladeXML *viewer_load_glade(const char *name, const char *widget);
+GtkBuilder *viewer_load_ui(const char *name);
 
 #endif

@@ -24,7 +24,6 @@
 
 #include <vncdisplay.h>
 #include <gtk/gtk.h>
-#include <glade/glade.h>
 #include <string.h>
 
 #include "auth.h"
@@ -34,7 +33,7 @@ int viewer_auth_collect_credentials(const char *type, const char *address,
                                     char **username, char **password)
 {
 	GtkWidget *dialog = NULL;
-	GladeXML *creds = viewer_load_glade("auth.glade", "auth");
+	GtkBuilder *creds = viewer_load_ui("auth.xml");
 	GtkWidget *credUsername;
 	GtkWidget *credPassword;
 	GtkWidget *promptUsername;
@@ -43,14 +42,14 @@ int viewer_auth_collect_credentials(const char *type, const char *address,
 	int response;
 	char *message;
 
-	dialog = glade_xml_get_widget(creds, "auth");
+	dialog = GTK_WIDGET(gtk_builder_get_object(creds, "auth"));
 	gtk_dialog_set_default_response(GTK_DIALOG(dialog), GTK_RESPONSE_OK);
 
-	labelMessage = glade_xml_get_widget(creds, "message");
-	credUsername = glade_xml_get_widget(creds, "cred-username");
-	promptUsername = glade_xml_get_widget(creds, "prompt-username");
-	credPassword = glade_xml_get_widget(creds, "cred-password");
-	promptPassword = glade_xml_get_widget(creds, "prompt-password");
+	labelMessage = GTK_WIDGET(gtk_builder_get_object(creds, "message"));
+	credUsername = GTK_WIDGET(gtk_builder_get_object(creds, "cred-username"));
+	promptUsername = GTK_WIDGET(gtk_builder_get_object(creds, "prompt-username"));
+	credPassword = GTK_WIDGET(gtk_builder_get_object(creds, "cred-password"));
+	promptPassword = GTK_WIDGET(gtk_builder_get_object(creds, "prompt-password"));
 
 	gtk_widget_set_sensitive(credUsername, username != NULL);
 	gtk_widget_set_sensitive(promptUsername, username != NULL);

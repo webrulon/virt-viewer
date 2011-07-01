@@ -20,7 +20,7 @@ Source0: http://virt-manager.org/download/sources/%{name}/%{name}-%{version}.tar
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 Requires: openssh-clients
 
-BuildRequires: gtk2-devel
+BuildRequires: gtk2-devel >= 2.12.0
 BuildRequires: libvirt-devel >= 0.6.0
 BuildRequires: libxml2-devel
 BuildRequires: libglade2-devel
@@ -97,9 +97,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_bindir}/%{name}
 %dir %{_datadir}/%{name}
 %dir %{_datadir}/%{name}/ui/
-%{_datadir}/%{name}/ui/auth.glade
-%{_datadir}/%{name}/ui/about.glade
-%{_datadir}/%{name}/ui/viewer.glade
+%{_datadir}/%{name}/ui/auth.xml
+%{_datadir}/%{name}/ui/about.xml
+%{_datadir}/%{name}/ui/viewer.xml
 %{_mandir}/man1/%{name}*
 
 %if %{_with_plugin}

@@ -41,6 +41,7 @@
                         <property name="use_underline">True</property>
                         <property name="use_stock">True</property>
                         <signal name="activate" handler="virt_viewer_menu_file_quit"/>
+                        <accelerator key="q" signal="activate" modifiers="GDK_CONTROL_MASK|GDK_SHIFT_MASK"/>
                       </object>
                     </child>
                   </object>
@@ -60,6 +61,7 @@
                         <property name="visible">True</property>
                         <property name="label" translatable="yes">Full screen</property>
                         <property name="use_underline">True</property>
+                        <accelerator key="F11" signal="activate"/>
                         <signal name="toggled" handler="virt_viewer_menu_view_fullscreen"/>
                       </object>
                     </child>
@@ -72,17 +74,21 @@
                           <object class="GtkMenu" id="menu4">
                             <property name="visible">True</property>
                             <child>
-                              <object class="GtkMenuItem" id="menu-view-zoom-in">
+                              <object class="GtkImageMenuItem" id="menu-view-zoom-in">
                                 <property name="visible">True</property>
                                 <property name="label">gtk-zoom-in</property>
+                                <property name="use_underline">True</property>
+                                <property name="use_stock">True</property>
                                 <accelerator key="plus" signal="activate" modifiers="GDK_CONTROL_MASK"/>
                                 <signal name="activate" handler="virt_viewer_menu_view_zoom_in"/>
                               </object>
                             </child>
                             <child>
-                              <object class="GtkMenuItem" id="menu-view-zoom-out">
+                              <object class="GtkImageMenuItem" id="menu-view-zoom-out">
                                 <property name="visible">True</property>
                                 <property name="label">gtk-zoom-out</property>
+                                <property name="use_underline">True</property>
+                                <property name="use_stock">True</property>
                                 <accelerator key="minus" signal="activate" modifiers="GDK_CONTROL_MASK"/>
                                 <signal name="activate" handler="virt_viewer_menu_view_zoom_out"/>
                               </object>
@@ -93,9 +99,11 @@
                               </object>
                             </child>
                             <child>
-                              <object class="GtkMenuItem" id="menu-view-zoom-reset">
+                              <object class="GtkImageMenuItem" id="menu-view-zoom-reset">
                                 <property name="visible">True</property>
                                 <property name="label">gtk-zoom-100</property>
+                                <property name="use_underline">True</property>
+                                <property name="use_stock">True</property>
                                 <accelerator key="0" signal="activate" modifiers="GDK_CONTROL_MASK"/>
                                 <signal name="activate" handler="virt_viewer_menu_view_zoom_reset"/>
                               </object>

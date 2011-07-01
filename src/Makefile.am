@@ -16,6 +16,7 @@ virt_viewer_SOURCES = \
 	virt-viewer-events.h virt-viewer-events.c \
 	virt-viewer.h virt-viewer.c \
 	virt-viewer-priv.h \
+	virt-viewer-align.h virt-viewer-align.c \
 	virt-viewer-display.h virt-viewer-display.c \
 	virt-viewer-display-vnc.h virt-viewer-display-vnc.c \
 	view/autoDrawer.c \

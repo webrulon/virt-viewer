@@ -65,8 +65,6 @@ struct _VirtViewer {
 
 	char *pretty_address;
 
-	int zoomlevel;
-
 	int desktopWidth;
 	int desktopHeight;
 	gboolean autoResize;

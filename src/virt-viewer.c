@@ -47,6 +47,7 @@
 
 #include "virt-viewer.h"
 #include "virt-viewer-priv.h"
+#include "virt-viewer-align.h"
 #include "virt-viewer-events.h"
 #include "virt-viewer-auth.h"
 #include "virt-viewer-display-vnc.h"
@@ -56,8 +57,6 @@
 #endif
 
 #include "view/autoDrawer.h"
-
-#define SCALE(x) do { x = viewer->fullscreen ? x : x * viewer->zoomlevel / 100; } while (0);
 
 gboolean doDebug = FALSE;
 
@@ -161,69 +160,6 @@ virt_viewer_add_display_and_realize(VirtViewer *viewer)
 	gtk_widget_realize(viewer->display->widget);
 }
 
-/* Now that the size is set to our preferred sizing, this
- * triggers another resize calculation but without our
- * scrolled window callback active. This is the key that
- * allows us to set the fixed size, but then allow the user
- * to later resize it smaller again
- */
-static gboolean
-virt_viewer_unset_widget_size_cb(gpointer data)
-{
-	GtkWidget *widget = data;
-	DEBUG_LOG("Unset requisition on widget=%p", widget);
-
-	gtk_widget_queue_resize_no_redraw (widget);
-
-	return FALSE;
-}
-
-/*
- * This sets the actual size of the widget, and then
- * sets an idle callback to resize again, without constraints
- * activated
- */
-static gboolean
-virt_viewer_set_widget_size_cb(GtkWidget *widget,
-			       GtkRequisition *req,
-			       gpointer data)
-{
-	VirtViewerSize *size = data;
-	DEBUG_LOG("Set requisition on widget=%p to %dx%d", widget, size->width, size->height);
-
-	req->width = size->width;
-	req->height = size->height;
-
-	g_signal_handler_disconnect(widget, size->sig_id);
-	g_free(size);
-	g_idle_add(virt_viewer_unset_widget_size_cb, widget);
-
-	return FALSE;
-}
-
-
-/*
- * Registers a callback used to set the widget size once
- */
-static void
-virt_viewer_set_widget_size(VirtViewer *viewer,
-			    GtkWidget *widget,
-			    int width,
-			    int height)
-{
-	VirtViewerSize *size = g_new (VirtViewerSize, 1);
-	DEBUG_LOG("Queue resize widget=%p width=%d height=%d", widget, width, height);
-	size->viewer = viewer;
-	size->width = width;
-	size->height = height;
-	size->sig_id = g_signal_connect
-		(widget, "size-request",
-		 G_CALLBACK (virt_viewer_set_widget_size_cb),
-		 size);
-
-	gtk_widget_queue_resize (widget);
-}
-
 
 /*
  * This code attempts to resize the top level window to be large enough
@@ -273,44 +209,32 @@ virt_viewer_resize_main_window(VirtViewer *viewer)
 		height = viewer->desktopHeight;
 	}
 
-	SCALE(width);
-	SCALE(height);
-
-	virt_viewer_set_widget_size(viewer,
-			       viewer->align,
-			       width,
-			       height);
+	virt_viewer_align_set_preferred_size(VIRT_VIEWER_ALIGN(viewer->align),
+					     width, height);
 }
 
 void
 virt_viewer_menu_view_zoom_out(GtkWidget *menu G_GNUC_UNUSED,
 			       VirtViewer *viewer)
 {
-	viewer->zoomlevel -= 10;
-	if (viewer->zoomlevel < 10)
-		viewer->zoomlevel = 10;
-
-	virt_viewer_resize_main_window(viewer);
+	gtk_window_resize(GTK_WINDOW(viewer->window), 1, 1);
+	virt_viewer_align_zoom_out(VIRT_VIEWER_ALIGN(viewer->align));
 }
 
 void
 virt_viewer_menu_view_zoom_in(GtkWidget *menu G_GNUC_UNUSED,
 			      VirtViewer *viewer)
 {
-	viewer->zoomlevel += 10;
-	if (viewer->zoomlevel > 200)
-		viewer->zoomlevel = 200;
-
-	virt_viewer_resize_main_window(viewer);
+	gtk_window_resize(GTK_WINDOW(viewer->window), 1, 1);
+	virt_viewer_align_zoom_in(VIRT_VIEWER_ALIGN(viewer->align));
 }
 
 void
 virt_viewer_menu_view_zoom_reset(GtkWidget *menu G_GNUC_UNUSED,
 				 VirtViewer *viewer)
 {
-	viewer->zoomlevel = 100;
-
-	virt_viewer_resize_main_window(viewer);
+	gtk_window_resize(GTK_WINDOW(viewer->window), 1, 1);
+	virt_viewer_align_zoom_normal(VIRT_VIEWER_ALIGN(viewer->align));
 }
 
 void
@@ -1397,7 +1321,6 @@ virt_viewer_start(const char *uri,
 	viewer->verbose = verbose;
 	viewer->domkey = g_strdup(name);
 	viewer->uri = g_strdup(uri);
-	viewer->zoomlevel = zoom;
 
 	g_value_init(&viewer->accelSetting, G_TYPE_STRING);
 
@@ -1427,7 +1350,9 @@ virt_viewer_start(const char *uri,
 	}
 
 	viewer->status = gtk_label_new("");
-	viewer->align = gtk_alignment_new(0.5, 0.5, 0, 0);
+	viewer->align = virt_viewer_align_new();
+
+	virt_viewer_align_set_zoom_level(VIRT_VIEWER_ALIGN(viewer->align), zoom);
 
 	viewer->notebook = gtk_notebook_new();
 	gtk_notebook_set_show_tabs(GTK_NOTEBOOK(viewer->notebook), FALSE);

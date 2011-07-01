@@ -28,7 +28,7 @@
 #include <spice-widget.h>
 #include <spice-audio.h>
 
-#include "display.h"
+#include "virt-viewer-display.h"
 
 G_BEGIN_DECLS
 

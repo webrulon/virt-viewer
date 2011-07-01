@@ -23,8 +23,8 @@
 #ifndef VIRT_VIEWER_EVENT_H
 #define VIRT_VIEWER_EVENT_H
 
-#include "util.h"
+#include "virt-viewer-util.h"
 
-void viewer_event_register(void);
+void virt_viewer_events_register(void);
 
 #endif

@@ -22,56 +22,69 @@
  * Author: Daniel P. Berrange <berrange@redhat.com>
  */
 
-#include "auth.h"
-#include "display-vnc.h"
+#include "virt-viewer-auth.h"
+#include "virt-viewer-display-vnc.h"
 
 G_DEFINE_TYPE(VirtViewerDisplayVNC, virt_viewer_display_vnc, VIRT_VIEWER_TYPE_DISPLAY)
 
-static void _vnc_close(VirtViewerDisplay* display);
-static void _vnc_send_keys(VirtViewerDisplay* display, const guint *keyvals, int nkeyvals);
-static GdkPixbuf* _vnc_get_pixbuf(VirtViewerDisplay* display);
-static gboolean _vnc_open_fd(VirtViewerDisplay* display, int fd);
-static gboolean _vnc_open_host(VirtViewerDisplay* display, char *host, char *port);
-static gboolean _vnc_channel_open_fd(VirtViewerDisplay* display,
-				     VirtViewerDisplayChannel* channel, int fd);
+static void virt_viewer_display_vnc_close(VirtViewerDisplay* display);
+static void virt_viewer_display_vnc_send_keys(VirtViewerDisplay* display, const guint *keyvals, int nkeyvals);
+static GdkPixbuf* virt_viewer_display_vnc_get_pixbuf(VirtViewerDisplay* display);
+static gboolean virt_viewer_display_vnc_open_fd(VirtViewerDisplay* display, int fd);
+static gboolean virt_viewer_display_vnc_open_host(VirtViewerDisplay* display, char *host, char *port);
+static gboolean virt_viewer_display_vnc_channel_open_fd(VirtViewerDisplay* display,
+							VirtViewerDisplayChannel* channel, int fd);
 
-static void virt_viewer_display_vnc_class_init(VirtViewerDisplayVNCClass *klass)
+static void
+virt_viewer_display_vnc_class_init(VirtViewerDisplayVNCClass *klass)
 {
 	VirtViewerDisplayClass *dclass = VIRT_VIEWER_DISPLAY_CLASS(klass);
 
-	dclass->close = _vnc_close;
-	dclass->send_keys = _vnc_send_keys;
-	dclass->get_pixbuf = _vnc_get_pixbuf;
-	dclass->open_fd = _vnc_open_fd;
-	dclass->open_host = _vnc_open_host;
-	dclass->channel_open_fd = _vnc_channel_open_fd;
+	dclass->close = virt_viewer_display_vnc_close;
+	dclass->send_keys = virt_viewer_display_vnc_send_keys;
+	dclass->get_pixbuf = virt_viewer_display_vnc_get_pixbuf;
+	dclass->open_fd = virt_viewer_display_vnc_open_fd;
+	dclass->open_host = virt_viewer_display_vnc_open_host;
+	dclass->channel_open_fd = virt_viewer_display_vnc_channel_open_fd;
 }
 
-static void virt_viewer_display_vnc_init(VirtViewerDisplayVNC *self G_GNUC_UNUSED)
+static void
+virt_viewer_display_vnc_init(VirtViewerDisplayVNC *self G_GNUC_UNUSED)
 {
 }
 
-static void _vnc_mouse_grab(GtkWidget *vnc G_GNUC_UNUSED, VirtViewerDisplayVNC *self)
+static void
+virt_viewer_display_vnc_mouse_grab(GtkWidget *vnc G_GNUC_UNUSED,
+				   VirtViewerDisplayVNC *self)
 {
-	viewer_set_title(VIRT_VIEWER_DISPLAY(self)->viewer, TRUE);
+	virt_viewer_set_title(VIRT_VIEWER_DISPLAY(self)->viewer, TRUE);
 }
 
-static void _vnc_mouse_ungrab(GtkWidget *vnc G_GNUC_UNUSED, VirtViewerDisplayVNC *self)
+static void
+virt_viewer_display_vnc_mouse_ungrab(GtkWidget *vnc G_GNUC_UNUSED,
+				     VirtViewerDisplayVNC *self)
 {
-	viewer_set_title(VIRT_VIEWER_DISPLAY(self)->viewer, FALSE);
+	virt_viewer_set_title(VIRT_VIEWER_DISPLAY(self)->viewer, FALSE);
 }
 
-static void _vnc_key_grab(GtkWidget *vnc G_GNUC_UNUSED, VirtViewerDisplayVNC *self)
+static void
+virt_viewer_display_vnc_key_grab(GtkWidget *vnc G_GNUC_UNUSED,
+				 VirtViewerDisplayVNC *self)
 {
-	viewer_disable_modifiers(VIRT_VIEWER_DISPLAY(self)->viewer);
+	virt_viewer_disable_modifiers(VIRT_VIEWER_DISPLAY(self)->viewer);
 }
 
-static void _vnc_key_ungrab(GtkWidget *vnc G_GNUC_UNUSED, VirtViewerDisplayVNC *self)
+static void
+virt_viewer_display_vnc_key_ungrab(GtkWidget *vnc G_GNUC_UNUSED,
+				   VirtViewerDisplayVNC *self)
 {
-	viewer_enable_modifiers(VIRT_VIEWER_DISPLAY(self)->viewer);
+	virt_viewer_enable_modifiers(VIRT_VIEWER_DISPLAY(self)->viewer);
 }
 
-static void _vnc_send_keys(VirtViewerDisplay* display, const guint *keyvals, int nkeyvals)
+static void
+virt_viewer_display_vnc_send_keys(VirtViewerDisplay* display,
+				  const guint *keyvals,
+				  int nkeyvals)
 {
 	VirtViewerDisplayVNC *self = VIRT_VIEWER_DISPLAY_VNC(display);
 
@@ -82,7 +95,8 @@ static void _vnc_send_keys(VirtViewerDisplay* display, const guint *keyvals, int
 	vnc_display_send_keys(self->vnc, keyvals, nkeyvals);
 }
 
-static GdkPixbuf* _vnc_get_pixbuf(VirtViewerDisplay* display)
+static GdkPixbuf*
+virt_viewer_display_vnc_get_pixbuf(VirtViewerDisplay* display)
 {
 	VirtViewerDisplayVNC *self = VIRT_VIEWER_DISPLAY_VNC(display);
 
@@ -92,7 +106,9 @@ static GdkPixbuf* _vnc_get_pixbuf(VirtViewerDisplay* display)
 	return vnc_display_get_pixbuf(self->vnc);
 }
 
-static gboolean _vnc_open_fd(VirtViewerDisplay* display, int fd)
+static gboolean
+virt_viewer_display_vnc_open_fd(VirtViewerDisplay* display,
+				int fd)
 {
 	VirtViewerDisplayVNC *self = VIRT_VIEWER_DISPLAY_VNC(display);
 
@@ -102,15 +118,19 @@ static gboolean _vnc_open_fd(VirtViewerDisplay* display, int fd)
 	return vnc_display_open_fd(self->vnc, fd);
 }
 
-static gboolean _vnc_channel_open_fd(VirtViewerDisplay* display G_GNUC_UNUSED,
-				     VirtViewerDisplayChannel* channel G_GNUC_UNUSED,
-				     int fd G_GNUC_UNUSED)
+static gboolean
+virt_viewer_display_vnc_channel_open_fd(VirtViewerDisplay* display G_GNUC_UNUSED,
+					VirtViewerDisplayChannel* channel G_GNUC_UNUSED,
+					int fd G_GNUC_UNUSED)
 {
 	g_warning("channel_open_fd is not supported by VNC");
 	return FALSE;
 }
 
-static gboolean _vnc_open_host(VirtViewerDisplay* display, char *host, char *port)
+static gboolean
+virt_viewer_display_vnc_open_host(VirtViewerDisplay* display,
+				  char *host,
+				  char *port)
 {
 	VirtViewerDisplayVNC *self = VIRT_VIEWER_DISPLAY_VNC(display);
 
@@ -120,7 +140,8 @@ static gboolean _vnc_open_host(VirtViewerDisplay* display, char *host, char *por
 	return vnc_display_open_host(self->vnc, host, port);
 }
 
-static void _vnc_close(VirtViewerDisplay* display)
+static void
+virt_viewer_display_vnc_close(VirtViewerDisplay* display)
 {
 	VirtViewerDisplayVNC *self = VIRT_VIEWER_DISPLAY_VNC(display);
 
@@ -130,22 +151,28 @@ static void _vnc_close(VirtViewerDisplay* display)
 		vnc_display_close(self->vnc);
  }
 
-static void viewer_bell(VirtViewer *viewer, gpointer data G_GNUC_UNUSED)
+static void
+virt_viewer_display_vnc_bell(VirtViewer *viewer,
+			     gpointer data G_GNUC_UNUSED)
 {
 	gdk_window_beep(GTK_WIDGET(viewer->window)->window);
 }
 
-static void viewer_vnc_auth_unsupported(VirtViewer *viewer,
-					unsigned int authType, gpointer data G_GNUC_UNUSED)
+static void
+virt_viewer_display_vnc_auth_unsupported(VirtViewer *viewer,
+					 unsigned int authType,
+					 gpointer data G_GNUC_UNUSED)
 {
-	viewer_simple_message_dialog(viewer->window,
-				     _("Unable to authenticate with VNC server at %s\n"
-				       "Unsupported authentication type %d"),
-				     viewer->pretty_address, authType);
+	virt_viewer_simple_message_dialog(viewer->window,
+					  _("Unable to authenticate with VNC server at %s\n"
+					    "Unsupported authentication type %d"),
+					  viewer->pretty_address, authType);
 }
 
-static void viewer_vnc_auth_failure(VirtViewer *viewer,
-				    const char *reason, gpointer data G_GNUC_UNUSED)
+static void
+virt_viewer_display_vnc_auth_failure(VirtViewer *viewer,
+				     const char *reason,
+				     gpointer data G_GNUC_UNUSED)
 {
 	GtkWidget *dialog;
 	int ret;
@@ -174,7 +201,7 @@ static void viewer_vnc_auth_failure(VirtViewer *viewer,
  * the display widget to be resized to fit the available space
  */
 static void
-viewer_resize_display_widget(VirtViewer *viewer)
+virt_viewer_display_vnc_resize_widget(VirtViewer *viewer)
 {
 	gtk_widget_queue_resize(viewer->align);
 }
@@ -186,16 +213,17 @@ viewer_resize_display_widget(VirtViewer *viewer)
  * It either tries to resize the main window, or it triggers
  * recalculation of the display within existing window size
  */
-static void viewer_resize_desktop(VirtViewer *viewer, gint width, gint height)
+static void
+virt_viewer_display_vnc_resize_desktop(VirtViewer *viewer, gint width, gint height)
 {
 	DEBUG_LOG("desktop resize %dx%d", width, height);
 	viewer->desktopWidth = width;
 	viewer->desktopHeight = height;
 
 	if (viewer->autoResize && viewer->window && !viewer->fullscreen) {
-		viewer_resize_main_window(viewer);
+		virt_viewer_resize_main_window(viewer);
 	} else {
-		viewer_resize_display_widget(viewer);
+		virt_viewer_display_vnc_resize_widget(viewer);
 	}
 }
 
@@ -205,9 +233,10 @@ static void viewer_resize_desktop(VirtViewer *viewer, gint width, gint height)
  * It attempts to fit the display widget into this space while
  * maintaining aspect ratio
  */
-static gboolean viewer_resize_align(GtkWidget *widget,
-				    GtkAllocation *alloc,
-				    VirtViewer *viewer)
+static gboolean
+virt_viewer_display_vnc_resize_align(GtkWidget *widget,
+				     GtkAllocation *alloc,
+				     VirtViewer *viewer)
 {
 	double desktopAspect;
 	double scrollAspect;
@@ -249,7 +278,8 @@ static gboolean viewer_resize_align(GtkWidget *widget,
 	return FALSE;
 }
 
-VirtViewerDisplayVNC* virt_viewer_display_vnc_new(VirtViewer *viewer)
+VirtViewerDisplayVNC*
+virt_viewer_display_vnc_new(VirtViewer *viewer)
 {
 	VirtViewerDisplayVNC *self;
 	VirtViewerDisplay *d;
@@ -279,40 +309,40 @@ VirtViewerDisplayVNC* virt_viewer_display_vnc_new(VirtViewer *viewer)
 	vnc_display_set_scaling(self->vnc, TRUE);
 
 	g_signal_connect_swapped(self->vnc, "vnc-connected",
-				 G_CALLBACK(viewer_connected), viewer);
+				 G_CALLBACK(virt_viewer_connected), viewer);
 	g_signal_connect_swapped(self->vnc, "vnc-initialized",
-				 G_CALLBACK(viewer_initialized), viewer);
+				 G_CALLBACK(virt_viewer_initialized), viewer);
 	g_signal_connect_swapped(self->vnc, "vnc-disconnected",
-				 G_CALLBACK(viewer_disconnected), viewer);
+				 G_CALLBACK(virt_viewer_disconnected), viewer);
 
 	/* When VNC desktop resizes, we have to resize the containing widget */
 	g_signal_connect_swapped(self->vnc, "vnc-desktop-resize",
-				 G_CALLBACK(viewer_resize_desktop), viewer);
+				 G_CALLBACK(virt_viewer_display_vnc_resize_desktop), viewer);
 	g_signal_connect_swapped(self->vnc, "vnc-bell",
-				 G_CALLBACK(viewer_bell), NULL);
+				 G_CALLBACK(virt_viewer_display_vnc_bell), NULL);
 	g_signal_connect_swapped(self->vnc, "vnc-auth-failure",
-				 G_CALLBACK(viewer_vnc_auth_failure), viewer);
+				 G_CALLBACK(virt_viewer_display_vnc_auth_failure), viewer);
 	g_signal_connect_swapped(self->vnc, "vnc-auth-unsupported",
-				 G_CALLBACK(viewer_vnc_auth_unsupported), viewer);
+				 G_CALLBACK(virt_viewer_display_vnc_auth_unsupported), viewer);
 	g_signal_connect_swapped(self->vnc, "vnc-server-cut-text",
-				 G_CALLBACK(viewer_server_cut_text), viewer);
+				 G_CALLBACK(virt_viewer_server_cut_text), viewer);
 
 	g_signal_connect(self->vnc, "vnc-pointer-grab",
-			 G_CALLBACK(_vnc_mouse_grab), self);
+			 G_CALLBACK(virt_viewer_display_vnc_mouse_grab), self);
 	g_signal_connect(self->vnc, "vnc-pointer-ungrab",
-			 G_CALLBACK(_vnc_mouse_ungrab), self);
+			 G_CALLBACK(virt_viewer_display_vnc_mouse_ungrab), self);
 	g_signal_connect(self->vnc, "vnc-keyboard-grab",
-			 G_CALLBACK(_vnc_key_grab), self);
+			 G_CALLBACK(virt_viewer_display_vnc_key_grab), self);
 	g_signal_connect(self->vnc, "vnc-keyboard-ungrab",
-			 G_CALLBACK(_vnc_key_ungrab), self);
+			 G_CALLBACK(virt_viewer_display_vnc_key_ungrab), self);
 
 	g_signal_connect(self->vnc, "vnc-auth-credential",
-			 G_CALLBACK(viewer_auth_vnc_credentials), &viewer->pretty_address);
+			 G_CALLBACK(virt_viewer_auth_vnc_credentials), &viewer->pretty_address);
 
-	viewer_add_display_and_realize(viewer);
+	virt_viewer_add_display_and_realize(viewer);
 
 	g_signal_connect(viewer->align, "size-allocate",
-			 G_CALLBACK(viewer_resize_align), viewer);
+			 G_CALLBACK(virt_viewer_display_vnc_resize_align), viewer);
 
 	return self;
 }

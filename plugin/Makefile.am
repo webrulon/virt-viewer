@@ -4,10 +4,10 @@ plugindir       = $(libdir)/mozilla/plugins
 plugin_LTLIBRARIES = virt-viewer-plugin.la
 
 virt_viewer_plugin_la_SOURCES = \
-	../src/util.c ../src/util.h \
-	../src/auth.c ../src/auth.h \
-	../src/viewer.c ../src/viewer.h \
-	../src/events.c ../src/events.h \
+	../src/virt-viewer-util.c ../src/virt-viewer-util.h \
+	../src/virt-viewer-auth.c ../src/virt-viewer-auth.h \
+	../src/virt-viewer.c ../src/virt-viewer.h \
+	../src/virt-viewer-events.c ../src/virt-viewer-events.h \
 	virt-viewer-plugin.c virt-viewer-plugin.h \
 	npshell.c npunix.c
 virt_viewer_plugin_la_LIBADD = \

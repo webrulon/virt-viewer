@@ -97,9 +97,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_bindir}/%{name}
 %dir %{_datadir}/%{name}
 %dir %{_datadir}/%{name}/ui/
-%{_datadir}/%{name}/ui/auth.xml
-%{_datadir}/%{name}/ui/about.xml
-%{_datadir}/%{name}/ui/viewer.xml
+%{_datadir}/%{name}/ui/virt-viewer.xml
+%{_datadir}/%{name}/ui/virt-viewer-auth.xml
+%{_datadir}/%{name}/ui/virt-viewer-about.xml
 %{_mandir}/man1/%{name}*
 
 %if %{_with_plugin}

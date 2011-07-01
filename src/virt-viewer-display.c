@@ -21,7 +21,7 @@
  *
  * Author: Daniel P. Berrange <berrange@redhat.com>
  */
-#include "display.h"
+#include "virt-viewer-display.h"
 
 G_DEFINE_ABSTRACT_TYPE(VirtViewerDisplay, virt_viewer_display, G_TYPE_OBJECT)
 

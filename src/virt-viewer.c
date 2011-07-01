@@ -45,14 +45,14 @@
 #include <windows.h>
 #endif
 
-#include "viewer.h"
-#include "viewer-priv.h"
-#include "events.h"
-#include "auth.h"
-#include "display-vnc.h"
+#include "virt-viewer.h"
+#include "virt-viewer-priv.h"
+#include "virt-viewer-events.h"
+#include "virt-viewer-auth.h"
+#include "virt-viewer-display-vnc.h"
 
 #ifdef HAVE_SPICE_GTK
-#include "display-spice.h"
+#include "virt-viewer-display-spice.h"
 #endif
 
 #include "view/autoDrawer.h"
@@ -61,18 +61,21 @@
 
 gboolean doDebug = FALSE;
 
-void viewer_menu_view_zoom_out(G_GNUC_UNUSED GtkWidget *menu, VirtViewer *viewer);
-void viewer_menu_view_zoom_in(G_GNUC_UNUSED GtkWidget *menu, VirtViewer *viewer);
-void viewer_menu_view_zoom_reset(G_GNUC_UNUSED GtkWidget *menu, VirtViewer *viewer);
-void viewer_delete(GtkWidget *src G_GNUC_UNUSED, void *dummy G_GNUC_UNUSED, VirtViewer *viewer);
-void viewer_menu_file_quit(GtkWidget *src G_GNUC_UNUSED, VirtViewer *viewer);
-void viewer_about_close(GtkWidget *dialog, VirtViewer *viewer G_GNUC_UNUSED);
-void viewer_about_delete(GtkWidget *dialog, void *dummy G_GNUC_UNUSED, VirtViewer *viewer G_GNUC_UNUSED);
-void viewer_menu_help_about(GtkWidget *menu G_GNUC_UNUSED, VirtViewer *viewer);
-void viewer_menu_view_fullscreen(GtkWidget *menu, VirtViewer *viewer);
-void viewer_menu_view_resize(GtkWidget *menu, VirtViewer *viewer);
-void viewer_menu_send(GtkWidget *menu G_GNUC_UNUSED, VirtViewer *viewer);
-void viewer_menu_file_screenshot(GtkWidget *menu G_GNUC_UNUSED, VirtViewer *viewer);
+/* Signal handlers for main window */
+void virt_viewer_menu_view_zoom_out(GtkWidget *menu, VirtViewer *viewer);
+void virt_viewer_menu_view_zoom_in(GtkWidget *menu, VirtViewer *viewer);
+void virt_viewer_menu_view_zoom_reset(GtkWidget *menu, VirtViewer *viewer);
+void virt_viewer_delete(GtkWidget *src, void *dummy, VirtViewer *viewer);
+void virt_viewer_menu_file_quit(GtkWidget *src, VirtViewer *viewer);
+void virt_viewer_menu_help_about(GtkWidget *menu, VirtViewer *viewer);
+void virt_viewer_menu_view_fullscreen(GtkWidget *menu, VirtViewer *viewer);
+void virt_viewer_menu_view_resize(GtkWidget *menu, VirtViewer *viewer);
+void virt_viewer_menu_send(GtkWidget *menu, VirtViewer *viewer);
+void virt_viewer_menu_file_screenshot(GtkWidget *menu, VirtViewer *viewer);
+
+/* Signal handlers for about dialog */
+void virt_viewer_about_close(GtkWidget *dialog, VirtViewer *viewer);
+void virt_viewer_about_delete(GtkWidget *dialog, void *dummy, VirtViewer *viewer);
 
 static const char * const menuNames[LAST_MENU] = {
 	"menu-file", "menu-view", "menu-send", "menu-help"
@@ -107,11 +110,13 @@ static const struct keyComboDef keyCombos[] = {
 };
 
 
-static gboolean viewer_connect_timer(void *opaque);
-static int viewer_initial_connect(VirtViewer *viewer);
+static gboolean virt_viewer_connect_timer(void *opaque);
+static int virt_viewer_initial_connect(VirtViewer *viewer);
 
 
-void viewer_simple_message_dialog(GtkWidget *window, const char *fmt, ...)
+void
+virt_viewer_simple_message_dialog(GtkWidget *window,
+				  const char *fmt, ...)
 {
 	GtkWidget *dialog;
 	char *msg;
@@ -139,7 +144,8 @@ void viewer_simple_message_dialog(GtkWidget *window, const char *fmt, ...)
 }
 
 
-void viewer_add_display_and_realize(VirtViewer *viewer)
+void
+virt_viewer_add_display_and_realize(VirtViewer *viewer)
 {
 	g_return_if_fail(viewer != NULL);
 	g_return_if_fail(viewer->display != NULL);
@@ -162,7 +168,7 @@ void viewer_add_display_and_realize(VirtViewer *viewer)
  * to later resize it smaller again
  */
 static gboolean
-viewer_unset_widget_size_cb(gpointer data)
+virt_viewer_unset_widget_size_cb(gpointer data)
 {
 	GtkWidget *widget = data;
 	DEBUG_LOG("Unset requisition on widget=%p", widget);
@@ -178,9 +184,9 @@ viewer_unset_widget_size_cb(gpointer data)
  * activated
  */
 static gboolean
-viewer_set_widget_size_cb(GtkWidget *widget,
-			  GtkRequisition *req,
-			  gpointer data)
+virt_viewer_set_widget_size_cb(GtkWidget *widget,
+			       GtkRequisition *req,
+			       gpointer data)
 {
 	VirtViewerSize *size = data;
 	DEBUG_LOG("Set requisition on widget=%p to %dx%d", widget, size->width, size->height);
@@ -188,9 +194,9 @@ viewer_set_widget_size_cb(GtkWidget *widget,
 	req->width = size->width;
 	req->height = size->height;
 
-	g_signal_handler_disconnect (widget, size->sig_id);
-	g_free (size);
-	g_idle_add (viewer_unset_widget_size_cb, widget);
+	g_signal_handler_disconnect(widget, size->sig_id);
+	g_free(size);
+	g_idle_add(virt_viewer_unset_widget_size_cb, widget);
 
 	return FALSE;
 }
@@ -200,10 +206,10 @@ viewer_set_widget_size_cb(GtkWidget *widget,
  * Registers a callback used to set the widget size once
  */
 static void
-viewer_set_widget_size(VirtViewer *viewer,
-		       GtkWidget *widget,
-		       int width,
-		       int height)
+virt_viewer_set_widget_size(VirtViewer *viewer,
+			    GtkWidget *widget,
+			    int width,
+			    int height)
 {
 	VirtViewerSize *size = g_new (VirtViewerSize, 1);
 	DEBUG_LOG("Queue resize widget=%p width=%d height=%d", widget, width, height);
@@ -212,7 +218,7 @@ viewer_set_widget_size(VirtViewer *viewer,
 	size->height = height;
 	size->sig_id = g_signal_connect
 		(widget, "size-request",
-		 G_CALLBACK (viewer_set_widget_size_cb),
+		 G_CALLBACK (virt_viewer_set_widget_size_cb),
 		 size);
 
 	gtk_widget_queue_resize (widget);
@@ -225,7 +231,8 @@ viewer_set_widget_size(VirtViewer *viewer,
  * isn't large enough that it goes as large as possible and lets the display
  * scale down to fit, maintaining aspect ratio
  */
-void viewer_resize_main_window(VirtViewer *viewer)
+void
+virt_viewer_resize_main_window(VirtViewer *viewer)
 {
 	GdkRectangle fullscreen;
 	GdkScreen *screen;
@@ -269,38 +276,46 @@ void viewer_resize_main_window(VirtViewer *viewer)
 	SCALE(width);
 	SCALE(height);
 
-	viewer_set_widget_size(viewer,
+	virt_viewer_set_widget_size(viewer,
 			       viewer->align,
 			       width,
 			       height);
 }
 
-void viewer_menu_view_zoom_out(G_GNUC_UNUSED GtkWidget *menu, VirtViewer *viewer)
+void
+virt_viewer_menu_view_zoom_out(GtkWidget *menu G_GNUC_UNUSED,
+			       VirtViewer *viewer)
 {
 	viewer->zoomlevel -= 10;
 	if (viewer->zoomlevel < 10)
 		viewer->zoomlevel = 10;
 
-	viewer_resize_main_window(viewer);
+	virt_viewer_resize_main_window(viewer);
 }
 
-void viewer_menu_view_zoom_in(G_GNUC_UNUSED GtkWidget *menu, VirtViewer *viewer)
+void
+virt_viewer_menu_view_zoom_in(GtkWidget *menu G_GNUC_UNUSED,
+			      VirtViewer *viewer)
 {
 	viewer->zoomlevel += 10;
 	if (viewer->zoomlevel > 200)
 		viewer->zoomlevel = 200;
 
-	viewer_resize_main_window(viewer);
+	virt_viewer_resize_main_window(viewer);
 }
 
-void viewer_menu_view_zoom_reset(G_GNUC_UNUSED GtkWidget *menu, VirtViewer *viewer)
+void
+virt_viewer_menu_view_zoom_reset(GtkWidget *menu G_GNUC_UNUSED,
+				 VirtViewer *viewer)
 {
 	viewer->zoomlevel = 100;
 
-	viewer_resize_main_window(viewer);
+	virt_viewer_resize_main_window(viewer);
 }
 
-void viewer_set_title(VirtViewer *viewer, gboolean grabbed)
+void
+virt_viewer_set_title(VirtViewer *viewer,
+		      gboolean grabbed)
 {
 	char *title;
 	const char *subtitle;
@@ -321,15 +336,17 @@ void viewer_set_title(VirtViewer *viewer, gboolean grabbed)
 	g_free(title);
 }
 
-static gboolean viewer_ignore_accel(GtkWidget *menu G_GNUC_UNUSED,
-				    VirtViewer *viewer G_GNUC_UNUSED)
+static gboolean
+virt_viewer_ignore_accel(GtkWidget *menu G_GNUC_UNUSED,
+			 VirtViewer *viewer G_GNUC_UNUSED)
 {
 	/* ignore accelerator */
 	return TRUE;
 }
 
 
-void viewer_disable_modifiers(VirtViewer *viewer)
+void
+virt_viewer_disable_modifiers(VirtViewer *viewer)
 {
 	GtkSettings *settings = gtk_settings_get_default();
 	GValue empty;
@@ -358,14 +375,15 @@ void viewer_disable_modifiers(VirtViewer *viewer)
 		GtkWidget *menu = GTK_WIDGET(gtk_builder_get_object(viewer->builder, menuNames[i]));
 		viewer->accelMenuSig[i] =
 			g_signal_connect(menu, "mnemonic-activate",
-					 G_CALLBACK(viewer_ignore_accel), viewer);
+					 G_CALLBACK(virt_viewer_ignore_accel), viewer);
 	}
 
 	viewer->accelEnabled = FALSE;
 }
 
 
-void viewer_enable_modifiers(VirtViewer *viewer)
+void
+virt_viewer_enable_modifiers(VirtViewer *viewer)
 {
 	GtkSettings *settings = gtk_settings_get_default();
 	GSList *accels;
@@ -394,7 +412,8 @@ void viewer_enable_modifiers(VirtViewer *viewer)
 	viewer->accelEnabled = TRUE;
 }
 
-void viewer_quit(VirtViewer *viewer)
+void
+virt_viewer_quit(VirtViewer *viewer)
 {
 	g_return_if_fail(viewer != NULL);
 
@@ -403,18 +422,24 @@ void viewer_quit(VirtViewer *viewer)
 	gtk_main_quit();
 }
 
-void viewer_delete(GtkWidget *src G_GNUC_UNUSED, void *dummy G_GNUC_UNUSED, VirtViewer *viewer)
+void
+virt_viewer_delete(GtkWidget *src G_GNUC_UNUSED,
+		   void *dummy G_GNUC_UNUSED,
+		   VirtViewer *viewer)
 {
-	viewer_quit(viewer);
+	virt_viewer_quit(viewer);
 }
 
-void viewer_menu_file_quit(GtkWidget *src G_GNUC_UNUSED, VirtViewer *viewer)
+void
+virt_viewer_menu_file_quit(GtkWidget *src G_GNUC_UNUSED,
+			   VirtViewer *viewer)
 {
-	viewer_quit(viewer);
+	virt_viewer_quit(viewer);
 }
 
 
-static void viewer_leave_fullscreen(VirtViewer *viewer)
+static void
+virt_viewer_leave_fullscreen(VirtViewer *viewer)
 {
 	GtkWidget *menu = GTK_WIDGET(gtk_builder_get_object(viewer->builder, "top-menu"));
 	if (!viewer->fullscreen)
@@ -425,10 +450,11 @@ static void viewer_leave_fullscreen(VirtViewer *viewer)
 	gtk_widget_hide(viewer->toolbar);
 	gtk_window_unfullscreen(GTK_WINDOW(viewer->window));
 	if (viewer->autoResize)
-		viewer_resize_main_window(viewer);
+		virt_viewer_resize_main_window(viewer);
 }
 
-static void viewer_enter_fullscreen(VirtViewer *viewer)
+static void
+virt_viewer_enter_fullscreen(VirtViewer *viewer)
 {
 	GtkWidget *menu = GTK_WIDGET(gtk_builder_get_object(viewer->builder, "top-menu"));
 	if (viewer->fullscreen)
@@ -441,39 +467,47 @@ static void viewer_enter_fullscreen(VirtViewer *viewer)
 }
 
 
-static void viewer_toolbar_leave_fullscreen(GtkWidget *button G_GNUC_UNUSED, VirtViewer *viewer)
+static void
+virt_viewer_toolbar_leave_fullscreen(GtkWidget *button G_GNUC_UNUSED,
+				     VirtViewer *viewer)
 {
 	GtkWidget *menu = GTK_WIDGET(gtk_builder_get_object(viewer->builder, "menu-view-fullscreen"));
 
 	gtk_check_menu_item_set_active(GTK_CHECK_MENU_ITEM(menu), FALSE);
-	viewer_leave_fullscreen(viewer);
+	virt_viewer_leave_fullscreen(viewer);
 }
 
 
-void viewer_menu_view_fullscreen(GtkWidget *menu, VirtViewer *viewer)
+void
+virt_viewer_menu_view_fullscreen(GtkWidget *menu,
+				 VirtViewer *viewer)
 {
 	if (!viewer->window)
 		return;
 
 	if (gtk_check_menu_item_get_active(GTK_CHECK_MENU_ITEM(menu))) {
-		viewer_enter_fullscreen(viewer);
+		virt_viewer_enter_fullscreen(viewer);
 	} else {
-		viewer_leave_fullscreen(viewer);
+		virt_viewer_leave_fullscreen(viewer);
 	}
 }
 
-void viewer_menu_view_resize(GtkWidget *menu, VirtViewer *viewer)
+void
+virt_viewer_menu_view_resize(GtkWidget *menu,
+			     VirtViewer *viewer)
 {
 	if (gtk_check_menu_item_get_active(GTK_CHECK_MENU_ITEM(menu))) {
 		viewer->autoResize = TRUE;
 		if (!viewer->fullscreen)
-			viewer_resize_main_window(viewer);
+			virt_viewer_resize_main_window(viewer);
 	} else {
 		viewer->autoResize = FALSE;
 	}
 }
 
-void viewer_menu_send(GtkWidget *menu G_GNUC_UNUSED, VirtViewer *viewer)
+void
+virt_viewer_menu_send(GtkWidget *menu G_GNUC_UNUSED,
+		      VirtViewer *viewer)
 {
 	int i;
 	GtkWidget *label = gtk_bin_get_child(GTK_BIN(menu));
@@ -492,7 +526,9 @@ void viewer_menu_send(GtkWidget *menu G_GNUC_UNUSED, VirtViewer *viewer)
 }
 
 
-static void viewer_save_screenshot(VirtViewer *viewer, const char *file)
+static void
+virt_viewer_save_screenshot(VirtViewer *viewer,
+			    const char *file)
 {
 	GdkPixbuf *pix = virt_viewer_display_get_pixbuf(viewer->display);
 	gdk_pixbuf_save(pix, file, "png", NULL,
@@ -500,7 +536,10 @@ static void viewer_save_screenshot(VirtViewer *viewer, const char *file)
 	gdk_pixbuf_unref(pix);
 }
 
-void viewer_menu_file_screenshot(GtkWidget *menu G_GNUC_UNUSED, VirtViewer *viewer)
+
+void
+virt_viewer_menu_file_screenshot(GtkWidget *menu G_GNUC_UNUSED,
+				 VirtViewer *viewer)
 {
 	GtkWidget *dialog;
 
@@ -521,28 +560,35 @@ void viewer_menu_file_screenshot(GtkWidget *menu G_GNUC_UNUSED, VirtViewer *view
 		char *filename;
 
 		filename = gtk_file_chooser_get_filename (GTK_FILE_CHOOSER (dialog));
-		viewer_save_screenshot(viewer, filename);
+		virt_viewer_save_screenshot(viewer, filename);
 		g_free (filename);
 	}
 
 	gtk_widget_destroy (dialog);
 }
 
-void viewer_about_close(GtkWidget *dialog, VirtViewer *viewer G_GNUC_UNUSED)
+void
+virt_viewer_about_close(GtkWidget *dialog,
+			VirtViewer *viewer G_GNUC_UNUSED)
 {
 	gtk_widget_hide(dialog);
 	gtk_widget_destroy(dialog);
 }
 
-void viewer_about_delete(GtkWidget *dialog, void *dummy G_GNUC_UNUSED, VirtViewer *viewer G_GNUC_UNUSED)
+void
+virt_viewer_about_delete(GtkWidget *dialog,
+			 void *dummy G_GNUC_UNUSED,
+			 VirtViewer *viewer G_GNUC_UNUSED)
 {
 	gtk_widget_hide(dialog);
 	gtk_widget_destroy(dialog);
 }
 
-void viewer_menu_help_about(GtkWidget *menu G_GNUC_UNUSED, VirtViewer *viewer)
+void
+virt_viewer_menu_help_about(GtkWidget *menu G_GNUC_UNUSED,
+			    VirtViewer *viewer)
 {
-	GtkBuilder *about = viewer_load_ui("about.xml");
+	GtkBuilder *about = virt_viewer_util_load_ui("virt-viewer-about.xml");
 
 	GtkWidget *dialog = GTK_WIDGET(gtk_builder_get_object(about, "about"));
 	gtk_about_dialog_set_version(GTK_ABOUT_DIALOG(dialog), VERSION);
@@ -555,8 +601,9 @@ void viewer_menu_help_about(GtkWidget *menu G_GNUC_UNUSED, VirtViewer *viewer)
 }
 
 
-
-static int viewer_parse_uuid(const char *name, unsigned char *uuid)
+static int
+virt_viewer_parse_uuid(const char *name,
+		       unsigned char *uuid)
 {
 	int i;
 
@@ -597,7 +644,8 @@ static int viewer_parse_uuid(const char *name, unsigned char *uuid)
 }
 
 
-static virDomainPtr viewer_lookup_domain(VirtViewer *viewer)
+static virDomainPtr
+virt_viewer_lookup_domain(VirtViewer *viewer)
 {
 	char *end;
 	int id = strtol(viewer->domkey, &end, 10);
@@ -607,7 +655,7 @@ static virDomainPtr viewer_lookup_domain(VirtViewer *viewer)
 	if (id >= 0 && end && !*end) {
 		dom = virDomainLookupByID(viewer->conn, id);
 	}
-	if (!dom && viewer_parse_uuid(viewer->domkey, uuid) == 0) {
+	if (!dom && virt_viewer_parse_uuid(viewer->domkey, uuid) == 0) {
 		dom = virDomainLookupByUUID(viewer->conn, uuid);
 	}
 	if (!dom) {
@@ -616,8 +664,9 @@ static virDomainPtr viewer_lookup_domain(VirtViewer *viewer)
 	return dom;
 }
 
-static int viewer_matches_domain(VirtViewer *viewer,
-				 virDomainPtr dom)
+static int
+virt_viewer_matches_domain(VirtViewer *viewer,
+			   virDomainPtr dom)
 {
 	char *end;
 	const char *name;
@@ -629,7 +678,7 @@ static int viewer_matches_domain(VirtViewer *viewer,
 		if (virDomainGetID(dom) == id)
 			return 1;
 	}
-	if (viewer_parse_uuid(viewer->domkey, wantuuid) == 0) {
+	if (virt_viewer_parse_uuid(viewer->domkey, wantuuid) == 0) {
 		virDomainGetUUID(dom, domuuid);
 		if (memcmp(wantuuid, domuuid, VIR_UUID_BUFLEN) == 0)
 			return 1;
@@ -642,7 +691,9 @@ static int viewer_matches_domain(VirtViewer *viewer,
 	return 0;
 }
 
-static char * viewer_extract_xpath_string(const gchar *xmldesc, const gchar *xpath)
+static char *
+virt_viewer_extract_xpath_string(const gchar *xmldesc,
+				 const gchar *xpath)
 {
 	xmlDocPtr xml = NULL;
 	xmlParserCtxtPtr pctxt = NULL;
@@ -687,7 +738,12 @@ static char * viewer_extract_xpath_string(const gchar *xmldesc, const gchar *xpa
 }
 
 
-static int viewer_extract_host(const char *uristr, char **host, char **transport, char **user, int *port)
+static int
+virt_viewer_extract_host(const char *uristr,
+			 char **host,
+			 char **transport,
+			 char **user,
+			 int *port)
 {
 	xmlURIPtr uri;
 	char *offset;
@@ -721,7 +777,8 @@ static int viewer_extract_host(const char *uristr, char **host, char **transport
 
 #if defined(HAVE_SOCKETPAIR) && defined(HAVE_FORK)
 
-static int viewer_open_tunnel(const char **cmd)
+static int
+virt_viewer_open_tunnel(const char **cmd)
 {
 	int fd[2];
 	pid_t pid;
@@ -753,8 +810,13 @@ static int viewer_open_tunnel(const char **cmd)
 }
 
 
-static int viewer_open_tunnel_ssh(const char *sshhost, int sshport, const char *sshuser,
-				  const char *host, const char *port, const char *unixsock)
+static int
+virt_viewer_open_tunnel_ssh(const char *sshhost,
+			    int sshport,
+			    const char *sshuser,
+			    const char *host,
+			    const char *port,
+			    const char *unixsock)
 {
 	const char *cmd[10];
 	char portstr[50];
@@ -783,10 +845,11 @@ static int viewer_open_tunnel_ssh(const char *sshhost, int sshport, const char *
 	}
 	cmd[n++] = NULL;
 
-	return viewer_open_tunnel(cmd);
+	return virt_viewer_open_tunnel(cmd);
 }
 
-static int viewer_open_unix_sock(const char *unixsock)
+static int
+virt_viewer_open_unix_sock(const char *unixsock)
 {
 	struct sockaddr_un addr;
 	int fd;
@@ -808,7 +871,9 @@ static int viewer_open_unix_sock(const char *unixsock)
 
 #endif /* defined(HAVE_SOCKETPAIR) && defined(HAVE_FORK) */
 
-static void viewer_trace(VirtViewer *viewer, const char *fmt, ...)
+static void
+virt_viewer_trace(VirtViewer *viewer,
+		  const char *fmt, ...)
 {
 	va_list ap;
 
@@ -825,14 +890,18 @@ static void viewer_trace(VirtViewer *viewer, const char *fmt, ...)
 	}
 }
 
-void viewer_set_status(VirtViewer *viewer, const char *text)
+
+void
+virt_viewer_set_status(VirtViewer *viewer,
+		       const char *text)
 {
 	gtk_notebook_set_current_page(GTK_NOTEBOOK(viewer->notebook), 0);
 	gtk_label_set_text(GTK_LABEL(viewer->status), text);
 }
 
 
-static void viewer_show_display(VirtViewer *viewer)
+static void
+virt_viewer_show_display(VirtViewer *viewer)
 {
 	g_return_if_fail(viewer != NULL);
 	g_return_if_fail(viewer->display != NULL);
@@ -843,7 +912,8 @@ static void viewer_show_display(VirtViewer *viewer)
 	gtk_notebook_set_current_page(GTK_NOTEBOOK(viewer->notebook), 1);
 }
 
-static void viewer_connect_info_free(VirtViewer *viewer)
+static void
+virt_viewer_connect_info_free(VirtViewer *viewer)
 {
 	free(viewer->host);
 	free(viewer->ghost);
@@ -861,53 +931,54 @@ static void viewer_connect_info_free(VirtViewer *viewer)
 	viewer->port = 0;
 }
 
-static gboolean viewer_extract_connect_info(VirtViewer *viewer,
-					    virDomainPtr dom)
+static gboolean
+virt_viewer_extract_connect_info(VirtViewer *viewer,
+				 virDomainPtr dom)
 {
 	char *type = NULL;
 	char *xpath = NULL;
 	gboolean retval = FALSE;
 	char *xmldesc = virDomainGetXMLDesc(dom, 0);
 
-	viewer_connect_info_free(viewer);
+	virt_viewer_connect_info_free(viewer);
 
-	if ((type = viewer_extract_xpath_string(xmldesc, "string(/domain/devices/graphics/@type)")) == NULL) {
-		viewer_simple_message_dialog(viewer->window, _("Cannot determine the graphic type for the guest %s"),
+	if ((type = virt_viewer_extract_xpath_string(xmldesc, "string(/domain/devices/graphics/@type)")) == NULL) {
+		virt_viewer_simple_message_dialog(viewer->window, _("Cannot determine the graphic type for the guest %s"),
 					     viewer->domkey);
 		goto cleanup;
 	}
 
 	if (g_strcasecmp(type, "vnc") == 0) {
-		viewer_trace(viewer, "Guest %s has a %s display\n",
+		virt_viewer_trace(viewer, "Guest %s has a %s display\n",
 			     viewer->domkey, type);
 		viewer->display = VIRT_VIEWER_DISPLAY(virt_viewer_display_vnc_new(viewer));
 #ifdef HAVE_SPICE_GTK
 	} else if (g_strcasecmp(type, "spice") == 0) {
-		viewer_trace(viewer, "Guest %s has a %s display\n",
+		virt_viewer_trace(viewer, "Guest %s has a %s display\n",
 			     viewer->domkey, type);
 		viewer->display = VIRT_VIEWER_DISPLAY(virt_viewer_display_spice_new(viewer));
 #endif
 	} else {
-		viewer_trace(viewer, "Guest %s has unsupported %s display type\n",
+		virt_viewer_trace(viewer, "Guest %s has unsupported %s display type\n",
 			     viewer->domkey, type);
-		viewer_simple_message_dialog(viewer->window, _("Unknown graphic type for the guest %s"),
+		virt_viewer_simple_message_dialog(viewer->window, _("Unknown graphic type for the guest %s"),
 					     viewer->domkey);
 		goto cleanup;
 	}
 
 	xpath = g_strdup_printf("string(/domain/devices/graphics[@type='%s']/@port)", type);
-	if ((viewer->gport = viewer_extract_xpath_string(xmldesc, xpath)) == NULL) {
+	if ((viewer->gport = virt_viewer_extract_xpath_string(xmldesc, xpath)) == NULL) {
 		free(xpath);
 		xpath = g_strdup_printf("string(/domain/devices/graphics[@type='%s']/@socket)", type);
-		if ((viewer->unixsock = viewer_extract_xpath_string(xmldesc, xpath)) == NULL) {
-			viewer_simple_message_dialog(viewer->window, _("Cannot determine the graphic address for the guest %s"),
+		if ((viewer->unixsock = virt_viewer_extract_xpath_string(xmldesc, xpath)) == NULL) {
+			virt_viewer_simple_message_dialog(viewer->window, _("Cannot determine the graphic address for the guest %s"),
 						     viewer->domkey);
 			goto cleanup;
 		}
 	} else {
 		free(xpath);
 		xpath = g_strdup_printf("string(/domain/devices/graphics[@type='%s']/@listen)", type);
-		viewer->ghost = viewer_extract_xpath_string(xmldesc, xpath);
+		viewer->ghost = virt_viewer_extract_xpath_string(xmldesc, xpath);
 		if (viewer->ghost == NULL)
 			viewer->ghost = g_strdup("localhost");
 	}
@@ -917,8 +988,8 @@ static gboolean viewer_extract_connect_info(VirtViewer *viewer,
 	else
 		DEBUG_LOG("Guest graphics address is %s", viewer->unixsock);
 
-	if (viewer_extract_host(viewer->uri, &viewer->host, &viewer->transport, &viewer->user, &viewer->port) < 0) {
-		viewer_simple_message_dialog(viewer->window, _("Cannot determine the host for the guest %s"),
+	if (virt_viewer_extract_host(viewer->uri, &viewer->host, &viewer->transport, &viewer->user, &viewer->port) < 0) {
+		virt_viewer_simple_message_dialog(viewer->window, _("Cannot determine the host for the guest %s"),
 					     viewer->domkey);
 		goto cleanup;
 	}
@@ -932,7 +1003,9 @@ cleanup:
 }
 
 #if defined(HAVE_SOCKETPAIR) && defined(HAVE_FORK)
-void viewer_channel_open_fd(VirtViewer *viewer, VirtViewerDisplayChannel *channel)
+void
+virt_viewer_channel_open_fd(VirtViewer *viewer,
+			    VirtViewerDisplayChannel *channel)
 {
 	int fd = -1;
 
@@ -941,25 +1014,27 @@ void viewer_channel_open_fd(VirtViewer *viewer, VirtViewerDisplayChannel *channe
 
 	if (viewer->transport && g_strcasecmp(viewer->transport, "ssh") == 0 &&
 	    !viewer->direct) {
-		if ((fd = viewer_open_tunnel_ssh(viewer->host, viewer->port, viewer->user,
+		if ((fd = virt_viewer_open_tunnel_ssh(viewer->host, viewer->port, viewer->user,
 						 viewer->ghost, viewer->gport, NULL)) < 0)
-			viewer_simple_message_dialog(viewer->window, _("Connect to ssh failed."));
+			virt_viewer_simple_message_dialog(viewer->window, _("Connect to ssh failed."));
 	} else
-		viewer_simple_message_dialog(viewer->window, _("Can't connect to channel, SSH only supported."));
+		virt_viewer_simple_message_dialog(viewer->window, _("Can't connect to channel, SSH only supported."));
 
 	if (fd >= 0)
 		virt_viewer_display_channel_open_fd(viewer->display, channel, fd);
 }
 #else
-void viewer_channel_open_fd(VirtViewer *viewer G_GNUC_UNUSED,
+void
+virt_viewer_channel_open_fd(VirtViewer *viewer G_GNUC_UNUSED,
 			    VirtViewerDisplayChannel *channel G_GNUC_UNUSED)
 {
-	viewer_simple_message_dialog(viewer->window, _("Connect to channel unsupported."));
+	virt_viewer_simple_message_dialog(viewer->window, _("Connect to channel unsupported."));
 }
 #endif
 
-static int viewer_activate(VirtViewer *viewer,
-			   virDomainPtr dom)
+static int
+virt_viewer_activate(VirtViewer *viewer,
+		     virDomainPtr dom)
 {
 	int fd = -1;
 	int ret = -1;
@@ -967,10 +1042,10 @@ static int viewer_activate(VirtViewer *viewer,
 	if (viewer->active)
 		goto cleanup;
 
-	viewer_trace(viewer, "Guest %s is running, determining display\n",
+	virt_viewer_trace(viewer, "Guest %s is running, determining display\n",
 		     viewer->domkey);
 	if (viewer->display == NULL) {
-		if (!viewer_extract_connect_info(viewer, dom))
+		if (!virt_viewer_extract_connect_info(viewer, dom))
 			goto cleanup;
 
 		if (viewer->gport)
@@ -983,27 +1058,24 @@ static int viewer_activate(VirtViewer *viewer,
 	if (viewer->transport &&
 	    g_strcasecmp(viewer->transport, "ssh") == 0 &&
 	    !viewer->direct) {
-		char *dst;
-
 		if (viewer->gport) {
-			viewer_trace(viewer, "Opening indirect TCP connection to display at %s:%s\n",
+			virt_viewer_trace(viewer, "Opening indirect TCP connection to display at %s:%s\n",
 				     viewer->ghost, viewer->gport);
 		} else {
-			viewer_trace(viewer, "Opening indirect UNIX connection to display at %s\n",
+			virt_viewer_trace(viewer, "Opening indirect UNIX connection to display at %s\n",
 				     viewer->unixsock);
-			dst = g_strdup(viewer->unixsock);
 		}
-		viewer_trace(viewer, "Setting up SSH tunnel via %s@%s:%d\n",
+		virt_viewer_trace(viewer, "Setting up SSH tunnel via %s@%s:%d\n",
 			     viewer->user, viewer->host, viewer->port ? viewer->port : 22);
 
-		if ((fd = viewer_open_tunnel_ssh(viewer->host, viewer->port,
+		if ((fd = virt_viewer_open_tunnel_ssh(viewer->host, viewer->port,
 						 viewer->user, viewer->ghost,
 						 viewer->gport, viewer->unixsock)) < 0)
 			return -1;
 	} else if (viewer->unixsock) {
-		viewer_trace(viewer, "Opening direct UNIX connection to display at %s",
+		virt_viewer_trace(viewer, "Opening direct UNIX connection to display at %s",
 			     viewer->unixsock);
-		if ((fd = viewer_open_unix_sock(viewer->unixsock)) < 0)
+		if ((fd = virt_viewer_open_unix_sock(viewer->unixsock)) < 0)
 			return -1;
 	}
 #endif
@@ -1011,35 +1083,38 @@ static int viewer_activate(VirtViewer *viewer,
 	if (fd >= 0) {
 		ret = virt_viewer_display_open_fd(viewer->display, fd);
 	} else {
-		viewer_trace(viewer, "Opening direct TCP connection to display at %s:%s\n",
+		virt_viewer_trace(viewer, "Opening direct TCP connection to display at %s:%s\n",
 			     viewer->ghost, viewer->gport);
 		ret = virt_viewer_display_open_host(viewer->display,
 						    viewer->ghost, viewer->gport);
 	}
 
-	viewer_set_status(viewer, "Connecting to graphic server");
+	virt_viewer_set_status(viewer, "Connecting to graphic server");
 
 	free(viewer->domtitle);
 	viewer->domtitle = g_strdup(virDomainGetName(dom));
 
 	viewer->connected = FALSE;
 	viewer->active = TRUE;
-	viewer_set_title(viewer, FALSE);
+	virt_viewer_set_title(viewer, FALSE);
 
 cleanup:
 	return ret;
 }
 
 /* text was actually requested */
-static void viewer_vnc_clipboard_copy(GtkClipboard *clipboard G_GNUC_UNUSED,
-				      GtkSelectionData *data,
-				      guint info G_GNUC_UNUSED,
-				      VirtViewer *viewer)
+static void
+virt_viewer_clipboard_copy(GtkClipboard *clipboard G_GNUC_UNUSED,
+			   GtkSelectionData *data,
+			   guint info G_GNUC_UNUSED,
+			   VirtViewer *viewer)
 {
 	gtk_selection_data_set_text(data, viewer->clipboard, -1);
 }
 
-void viewer_server_cut_text(VirtViewer *viewer, const gchar *text)
+void
+virt_viewer_server_cut_text(VirtViewer *viewer,
+			    const gchar *text)
 {
 	GtkClipboard *cb;
 	gsize a, b;
@@ -1062,21 +1137,23 @@ void viewer_server_cut_text(VirtViewer *viewer, const gchar *text)
 		gtk_clipboard_set_with_owner (cb,
 					      targets,
 					      G_N_ELEMENTS(targets),
-					      (GtkClipboardGetFunc)viewer_vnc_clipboard_copy,
+					      (GtkClipboardGetFunc)virt_viewer_clipboard_copy,
 					      NULL,
 					      G_OBJECT (viewer));
 	}
 }
 
-static gboolean viewer_retryauth(gpointer opaque)
+static gboolean
+virt_viewer_retryauth(gpointer opaque)
 {
 	VirtViewer *viewer = opaque;
-	viewer_initial_connect(viewer);
+	virt_viewer_initial_connect(viewer);
 
 	return FALSE;
 }
 
-static void viewer_deactivate(VirtViewer *viewer)
+static void
+virt_viewer_deactivate(VirtViewer *viewer)
 {
 	if (!viewer->active)
 		return;
@@ -1090,72 +1167,76 @@ static void viewer_deactivate(VirtViewer *viewer)
 	viewer->active = FALSE;
 	g_free(viewer->pretty_address);
 	viewer->pretty_address = NULL;
-	viewer_set_title(viewer, FALSE);
+	virt_viewer_set_title(viewer, FALSE);
 
 	if (viewer->authretry) {
 		viewer->authretry = FALSE;
-		g_idle_add(viewer_retryauth, viewer);
+		g_idle_add(virt_viewer_retryauth, viewer);
 	} else if (viewer->reconnect) {
 		if (!viewer->withEvents) {
 			DEBUG_LOG("No domain events, falling back to polling");
 			g_timeout_add(500,
-				      viewer_connect_timer,
+				      virt_viewer_connect_timer,
 				      viewer);
 		}
 
-		viewer_set_status(viewer, "Waiting for guest domain to re-start");
-		viewer_trace(viewer, "Guest %s display has disconnected, waiting to reconnect",
+		virt_viewer_set_status(viewer, "Waiting for guest domain to re-start");
+		virt_viewer_trace(viewer, "Guest %s display has disconnected, waiting to reconnect",
 			     viewer->domkey);
 	} else {
-		viewer_set_status(viewer, "Guest domain has shutdown");
-		viewer_trace(viewer, "Guest %s display has disconnected, shutting down",
+		virt_viewer_set_status(viewer, "Guest domain has shutdown");
+		virt_viewer_trace(viewer, "Guest %s display has disconnected, shutting down",
 			     viewer->domkey);
 		gtk_main_quit();
 	}
 }
 
-void viewer_connected(VirtViewer *viewer)
+void
+virt_viewer_connected(VirtViewer *viewer)
 {
 	viewer->connected = TRUE;
-	viewer_set_status(viewer, "Connected to graphic server");
+	virt_viewer_set_status(viewer, "Connected to graphic server");
 }
 
-void viewer_initialized(VirtViewer *viewer)
+void
+virt_viewer_initialized(VirtViewer *viewer)
 {
-	viewer_show_display(viewer);
-	viewer_set_title(viewer, FALSE);
+	virt_viewer_show_display(viewer);
+	virt_viewer_set_title(viewer, FALSE);
 }
 
-void viewer_disconnected(VirtViewer *viewer)
+void
+virt_viewer_disconnected(VirtViewer *viewer)
 {
 	if (!viewer->connected) {
-		viewer_simple_message_dialog(viewer->window, _("Unable to connect to the graphic server %s"),
+		virt_viewer_simple_message_dialog(viewer->window, _("Unable to connect to the graphic server %s"),
 					     viewer->pretty_address);
 	}
-	viewer_deactivate(viewer);
+	virt_viewer_deactivate(viewer);
 }
 
 
-static int viewer_domain_event(virConnectPtr conn G_GNUC_UNUSED,
-			       virDomainPtr dom,
-			       int event,
-			       int detail G_GNUC_UNUSED,
-			       void *opaque)
+static int
+virt_viewer_domain_event(virConnectPtr conn G_GNUC_UNUSED,
+			 virDomainPtr dom,
+			 int event,
+			 int detail G_GNUC_UNUSED,
+			 void *opaque)
 {
 	VirtViewer *viewer = opaque;
 
 	DEBUG_LOG("Got domain event %d %d", event, detail);
 
-	if (!viewer_matches_domain(viewer, dom))
+	if (!virt_viewer_matches_domain(viewer, dom))
 		return 0;
-
+	
 	switch (event) {
 	case VIR_DOMAIN_EVENT_STOPPED:
-		viewer_deactivate(viewer);
+		virt_viewer_deactivate(viewer);
 		break;
 
 	case VIR_DOMAIN_EVENT_STARTED:
-		viewer_activate(viewer, dom);
+		virt_viewer_activate(viewer, dom);
 		break;
 	}
 
@@ -1163,42 +1244,43 @@ static int viewer_domain_event(virConnectPtr conn G_GNUC_UNUSED,
 }
 
 
-static int viewer_initial_connect(VirtViewer *viewer)
+static int
+virt_viewer_initial_connect(VirtViewer *viewer)
 {
 	virDomainPtr dom = NULL;
 	virDomainInfo info;
 	int ret = -1;
 
-	viewer_set_status(viewer, "Finding guest domain");
-	dom = viewer_lookup_domain(viewer);
+	virt_viewer_set_status(viewer, "Finding guest domain");
+	dom = virt_viewer_lookup_domain(viewer);
 	if (!dom) {
 		if (viewer->waitvm) {
-			viewer_set_status(viewer, "Waiting for guest domain to be created");
-			viewer_trace(viewer, "Guest %s does not yet exist, waiting for it to be created\n",
+			virt_viewer_set_status(viewer, "Waiting for guest domain to be created");
+			virt_viewer_trace(viewer, "Guest %s does not yet exist, waiting for it to be created\n",
 				     viewer->domkey);
 			goto done;
 		} else {
-			viewer_simple_message_dialog(viewer->window, _("Cannot find guest domain %s"),
+			virt_viewer_simple_message_dialog(viewer->window, _("Cannot find guest domain %s"),
 						     viewer->domkey);
 			DEBUG_LOG("Cannot find guest %s", viewer->domkey);
 			goto cleanup;
 		}
 	}
 
-	viewer_set_status(viewer, "Checking guest domain status");
+	virt_viewer_set_status(viewer, "Checking guest domain status");
 	if (virDomainGetInfo(dom, &info) < 0) {
 		DEBUG_LOG("Cannot get guest state");
 		goto cleanup;
 	}
 
 	if (info.state == VIR_DOMAIN_SHUTOFF) {
-		viewer_set_status(viewer, "Waiting for guest domain to start");
+		virt_viewer_set_status(viewer, "Waiting for guest domain to start");
 	} else {
-		ret = viewer_activate(viewer, dom);
+		ret = virt_viewer_activate(viewer, dom);
 		if (ret < 0) {
 			if (viewer->waitvm) {
-				viewer_set_status(viewer, "Waiting for guest domain to start server");
-				viewer_trace(viewer, "Guest %s has not activated its display yet, waiting for it to start\n",
+				virt_viewer_set_status(viewer, "Waiting for guest domain to start server");
+				virt_viewer_trace(viewer, "Guest %s has not activated its display yet, waiting for it to start\n",
 					     viewer->domkey);
 			} else {
 				DEBUG_LOG("Failed to activate viewer");
@@ -1219,14 +1301,15 @@ static int viewer_initial_connect(VirtViewer *viewer)
 	return ret;
 }
 
-static gboolean viewer_connect_timer(void *opaque)
+static gboolean
+virt_viewer_connect_timer(void *opaque)
 {
 	VirtViewer *viewer = opaque;
 
 	DEBUG_LOG("Connect timer fired");
 
 	if (!viewer->active &&
-	    viewer_initial_connect(viewer) < 0)
+	    virt_viewer_initial_connect(viewer) < 0)
 		gtk_main_quit();
 
 	if (viewer->active)
@@ -1235,7 +1318,8 @@ static gboolean viewer_connect_timer(void *opaque)
 	return TRUE;
 }
 
-static void viewer_toolbar_setup(VirtViewer *viewer)
+static void
+virt_viewer_toolbar_setup(VirtViewer *viewer)
 {
 	GtkWidget *button;
 
@@ -1258,7 +1342,7 @@ static void viewer_toolbar_setup(VirtViewer *viewer)
 	gtk_tool_item_set_is_important(GTK_TOOL_ITEM(button), TRUE);
 	gtk_widget_show(GTK_WIDGET(button));
 	gtk_toolbar_insert(GTK_TOOLBAR(viewer->toolbar), GTK_TOOL_ITEM(button), 0);
-	g_signal_connect(button, "clicked", G_CALLBACK(viewer_toolbar_leave_fullscreen), viewer);
+	g_signal_connect(button, "clicked", G_CALLBACK(virt_viewer_toolbar_leave_fullscreen), viewer);
 
 	viewer->layout = ViewAutoDrawer_New();
 
@@ -1272,21 +1356,23 @@ static void viewer_toolbar_setup(VirtViewer *viewer)
 }
 
 
-static void viewer_error_func (void *data G_GNUC_UNUSED, virErrorPtr error G_GNUC_UNUSED)
+static void
+virt_viewer_error_func (void *data G_GNUC_UNUSED,
+			virErrorPtr error G_GNUC_UNUSED)
 {
 	/* nada */
 }
 
 int
-viewer_start (const char *uri,
-	      const char *name,
-	      gint zoom,
-	      gboolean direct,
-	      gboolean waitvm,
-	      gboolean reconnect,
-	      gboolean verbose,
-	      gboolean debug,
-	      GtkWidget *container)
+virt_viewer_start(const char *uri,
+		  const char *name,
+		  gint zoom,
+		  gboolean direct,
+		  gboolean waitvm,
+		  gboolean reconnect,
+		  gboolean verbose,
+		  gboolean debug,
+		  GtkWidget *container)
 {
 	VirtViewer *viewer;
 	GtkWidget *menu;
@@ -1295,7 +1381,7 @@ viewer_start (const char *uri,
 	virConnectAuth auth_libvirt = {
 		.credtype = cred_types,
 		.ncredtype = ARRAY_CARDINALITY(cred_types),
-		.cb = viewer_auth_libvirt_credentials,
+		.cb = virt_viewer_auth_libvirt_credentials,
 		.cbdata = (void *)uri,
 	};
 
@@ -1315,24 +1401,24 @@ viewer_start (const char *uri,
 
 	g_value_init(&viewer->accelSetting, G_TYPE_STRING);
 
-	viewer_event_register();
+	virt_viewer_events_register();
 
-	virSetErrorFunc(NULL, viewer_error_func);
+	virSetErrorFunc(NULL, virt_viewer_error_func);
 
-	viewer_trace(viewer, "Opening connection to libvirt with URI %s\n",
+	virt_viewer_trace(viewer, "Opening connection to libvirt with URI %s\n",
 		     uri ? uri : "<null>");
 	viewer->conn = virConnectOpenAuth(uri,
 					  //virConnectAuthPtrDefault,
 					  &auth_libvirt,
 					  VIR_CONNECT_RO);
 	if (!viewer->conn) {
-		viewer_simple_message_dialog(NULL, _("Unable to connect to libvirt with URI %s"),
+		virt_viewer_simple_message_dialog(NULL, _("Unable to connect to libvirt with URI %s"),
 					     uri ? uri : _("[none]"));
 		return -1;
 	}
 
 	if (!container) {
-		viewer->builder = viewer_load_ui("viewer.xml");
+		viewer->builder = virt_viewer_util_load_ui("virt-viewer.xml");
 
 		menu = GTK_WIDGET(gtk_builder_get_object(viewer->builder, "menu-view-resize"));
 		gtk_check_menu_item_set_active(GTK_CHECK_MENU_ITEM(menu), TRUE);
@@ -1357,7 +1443,7 @@ viewer_start (const char *uri,
 		gtk_widget_show_all(GTK_WIDGET(container));
 	} else {
 		GtkWidget *vbox = GTK_WIDGET(gtk_builder_get_object(viewer->builder, "viewer-box"));
-		viewer_toolbar_setup(viewer);
+		virt_viewer_toolbar_setup(viewer);
 
 		//gtk_box_pack_end(GTK_BOX(vbox), viewer->toolbar, TRUE, TRUE, 0);
 		//gtk_box_pack_end(GTK_BOX(vbox), viewer->notebook, TRUE, TRUE, 0);
@@ -1378,11 +1464,11 @@ viewer_start (const char *uri,
 		gtk_widget_show_all(viewer->window);
 	}
 
-	if (viewer_initial_connect(viewer) < 0)
+	if (virt_viewer_initial_connect(viewer) < 0)
 		return -1;
 
 	if (virConnectDomainEventRegister(viewer->conn,
-					  viewer_domain_event,
+					  virt_viewer_domain_event,
 					  viewer,
 					  NULL) < 0)
 		viewer->withEvents = FALSE;
@@ -1393,7 +1479,7 @@ viewer_start (const char *uri,
 	    !viewer->active) {
 		DEBUG_LOG("No domain events, falling back to polling");
 		g_timeout_add(500,
-			      viewer_connect_timer,
+			      virt_viewer_connect_timer,
 			      viewer);
 	}
 

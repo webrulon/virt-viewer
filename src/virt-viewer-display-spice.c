@@ -23,19 +23,20 @@
  */
 
 #include <spice-audio.h>
-#include "util.h"
-#include "display-spice.h"
-#include "auth.h"
+
+#include "virt-viewer-util.h"
+#include "virt-viewer-display-spice.h"
+#include "virt-viewer-auth.h"
 
 G_DEFINE_TYPE (VirtViewerDisplaySpice, virt_viewer_display_spice, VIRT_VIEWER_TYPE_DISPLAY)
 
 
-static void _spice_close(VirtViewerDisplay* display);
-static void _spice_send_keys(VirtViewerDisplay* display, const guint *keyvals, int nkeyvals);
-static GdkPixbuf* _spice_get_pixbuf(VirtViewerDisplay* display);
-static gboolean _spice_open_fd(VirtViewerDisplay* display, int fd);
-static gboolean _spice_open_host(VirtViewerDisplay* display, char *host, char *port);
-static gboolean _spice_channel_open_fd(VirtViewerDisplay* display, VirtViewerDisplayChannel* channel, int fd);
+static void virt_viewer_display_spice_close(VirtViewerDisplay *display);
+static void virt_viewer_display_spice_send_keys(VirtViewerDisplay *display, const guint *keyvals, int nkeyvals);
+static GdkPixbuf *virt_viewer_display_spice_get_pixbuf(VirtViewerDisplay *display);
+static gboolean virt_viewer_display_spice_open_fd(VirtViewerDisplay *display, int fd);
+static gboolean virt_viewer_display_spice_open_host(VirtViewerDisplay *display, char *host, char *port);
+static gboolean virt_viewer_display_spice_channel_open_fd(VirtViewerDisplay *display, VirtViewerDisplayChannel *channel, int fd);
 
 
 static void
@@ -43,12 +44,12 @@ virt_viewer_display_spice_class_init(VirtViewerDisplaySpiceClass *klass)
 {
 	VirtViewerDisplayClass *dclass = VIRT_VIEWER_DISPLAY_CLASS(klass);
 
-	dclass->close = _spice_close;
-	dclass->send_keys = _spice_send_keys;
-	dclass->get_pixbuf = _spice_get_pixbuf;
-	dclass->open_fd = _spice_open_fd;
-	dclass->open_host = _spice_open_host;
-	dclass->channel_open_fd = _spice_channel_open_fd;
+	dclass->close = virt_viewer_display_spice_close;
+	dclass->send_keys = virt_viewer_display_spice_send_keys;
+	dclass->get_pixbuf = virt_viewer_display_spice_get_pixbuf;
+	dclass->open_fd = virt_viewer_display_spice_open_fd;
+	dclass->open_host = virt_viewer_display_spice_open_host;
+	dclass->channel_open_fd = virt_viewer_display_spice_channel_open_fd;
 }
 
 static void
@@ -56,7 +57,10 @@ virt_viewer_display_spice_init(VirtViewerDisplaySpice *self G_GNUC_UNUSED)
 {
 }
 
-static void _spice_send_keys(VirtViewerDisplay* display, const guint *keyvals, int nkeyvals)
+static void
+virt_viewer_display_spice_send_keys(VirtViewerDisplay *display,
+				    const guint *keyvals,
+				    int nkeyvals)
 {
 	VirtViewerDisplaySpice *self = VIRT_VIEWER_DISPLAY_SPICE(display);
 
@@ -66,7 +70,8 @@ static void _spice_send_keys(VirtViewerDisplay* display, const guint *keyvals, i
 	spice_display_send_keys(self->display, keyvals, nkeyvals, SPICE_DISPLAY_KEY_EVENT_CLICK);
 }
 
-static GdkPixbuf* _spice_get_pixbuf(VirtViewerDisplay* display)
+static GdkPixbuf *
+virt_viewer_display_spice_get_pixbuf(VirtViewerDisplay *display)
 {
 	VirtViewerDisplaySpice *self = VIRT_VIEWER_DISPLAY_SPICE(display);
 
@@ -76,7 +81,8 @@ static GdkPixbuf* _spice_get_pixbuf(VirtViewerDisplay* display)
 	return spice_display_get_pixbuf(self->display);
 }
 
-static void _spice_close(VirtViewerDisplay* display)
+static void
+virt_viewer_display_spice_close(VirtViewerDisplay *display)
 {
 	VirtViewerDisplaySpice *self = VIRT_VIEWER_DISPLAY_SPICE(display);
 
@@ -96,7 +102,10 @@ static void _spice_close(VirtViewerDisplay* display)
 	self->audio = NULL;
 }
 
-static gboolean _spice_open_host(VirtViewerDisplay* display, char *host, char *port)
+static gboolean
+virt_viewer_display_spice_open_host(VirtViewerDisplay *display,
+				    char *host,
+				    char *port)
 {
 	VirtViewerDisplaySpice *self = VIRT_VIEWER_DISPLAY_SPICE(display);
 
@@ -111,7 +120,9 @@ static gboolean _spice_open_host(VirtViewerDisplay* display, char *host, char *p
 	return spice_session_connect(self->session);
 }
 
-static gboolean _spice_open_fd(VirtViewerDisplay* display, int fd)
+static gboolean
+virt_viewer_display_spice_open_fd(VirtViewerDisplay *display,
+				  int fd)
 {
 	VirtViewerDisplaySpice *self = VIRT_VIEWER_DISPLAY_SPICE(display);
 
@@ -120,8 +131,10 @@ static gboolean _spice_open_fd(VirtViewerDisplay* display, int fd)
 	return spice_session_open_fd(self->session, fd);
 }
 
-static gboolean _spice_channel_open_fd(VirtViewerDisplay* display,
-				       VirtViewerDisplayChannel* channel, int fd)
+static gboolean
+virt_viewer_display_spice_channel_open_fd(VirtViewerDisplay *display,
+					  VirtViewerDisplayChannel *channel,
+					  int fd)
 {
 	VirtViewerDisplaySpice *self = VIRT_VIEWER_DISPLAY_SPICE(display);
 
@@ -130,20 +143,22 @@ static gboolean _spice_channel_open_fd(VirtViewerDisplay* display,
 	return spice_channel_open_fd(SPICE_CHANNEL(channel), fd);
 }
 
-static void _spice_channel_open_fd_request(SpiceChannel *channel,
-                                           G_GNUC_UNUSED gint tls,
-					   VirtViewerDisplay *display)
+static void
+virt_viewer_display_spice_channel_open_fd_request(SpiceChannel *channel,
+						  gint tls G_GNUC_UNUSED,
+						  VirtViewerDisplay *display)
 {
 	VirtViewerDisplaySpice *self = VIRT_VIEWER_DISPLAY_SPICE(display);
 
 	g_return_if_fail(self != NULL);
 
-	viewer_channel_open_fd(display->viewer, (VirtViewerDisplayChannel *)channel);
+	virt_viewer_channel_open_fd(display->viewer, (VirtViewerDisplayChannel *)channel);
 }
 
-static void _spice_main_channel_event(G_GNUC_UNUSED SpiceChannel *channel,
-				      SpiceChannelEvent event,
-				      VirtViewerDisplay *display)
+static void
+virt_viewer_display_spice_main_channel_event(SpiceChannel *channel G_GNUC_UNUSED,
+					     SpiceChannelEvent event,
+					     VirtViewerDisplay *display)
 {
 	VirtViewerDisplaySpice *self = VIRT_VIEWER_DISPLAY_SPICE(display);
 	char *password = NULL;
@@ -157,19 +172,19 @@ static void _spice_main_channel_event(G_GNUC_UNUSED SpiceChannel *channel,
 		break;
 	case SPICE_CHANNEL_CLOSED:
 		DEBUG_LOG("main channel: closed");
-		viewer_quit(display->viewer);
+		virt_viewer_quit(display->viewer);
 		break;
 	case SPICE_CHANNEL_ERROR_CONNECT:
 		DEBUG_LOG("main channel: failed to connect");
-		viewer_disconnected(display->viewer);
+		virt_viewer_disconnected(display->viewer);
 		break;
 	case SPICE_CHANNEL_ERROR_AUTH:
 		DEBUG_LOG("main channel: auth failure (wrong password?)");
-		int ret = viewer_auth_collect_credentials("SPICE",
-							  display->viewer->pretty_address,
-							  NULL, &password);
+		int ret = virt_viewer_auth_collect_credentials("SPICE",
+							       display->viewer->pretty_address,
+							       NULL, &password);
 		if (ret < 0) {
-			viewer_quit(display->viewer);
+			virt_viewer_quit(display->viewer);
 		} else {
 			g_object_set(self->session, "password", password, NULL);
 			spice_session_connect(self->session);
@@ -177,7 +192,7 @@ static void _spice_main_channel_event(G_GNUC_UNUSED SpiceChannel *channel,
 		break;
 	default:
 		g_warning("unknown main channel event: %d", event);
-		viewer_disconnected(display->viewer);
+		virt_viewer_disconnected(display->viewer);
 		break;
 	}
 
@@ -190,7 +205,7 @@ static void _spice_main_channel_event(G_GNUC_UNUSED SpiceChannel *channel,
  * the display widget to be resized to fit the available space
  */
 static void
-viewer_resize_display_widget(VirtViewer *viewer)
+virt_viewer_display_spice_resize_widget(VirtViewer *viewer)
 {
 	gtk_widget_queue_resize(viewer->align);
 }
@@ -202,19 +217,24 @@ viewer_resize_display_widget(VirtViewer *viewer)
  * It either tries to resize the main window, or it triggers
  * recalculation of the display within existing window size
  */
-static void viewer_resize_desktop(SpiceChannel *channel G_GNUC_UNUSED, gint format G_GNUC_UNUSED,
-				  gint width, gint height, gint stride G_GNUC_UNUSED,
-				  gint shmid G_GNUC_UNUSED, gpointer imgdata G_GNUC_UNUSED,
-				  VirtViewer *viewer)
+static void
+virt_viewer_display_spice_resize_desktop(SpiceChannel *channel G_GNUC_UNUSED,
+					 gint format G_GNUC_UNUSED,
+					 gint width,
+					 gint height,
+					 gint stride G_GNUC_UNUSED,
+					 gint shmid G_GNUC_UNUSED,
+					 gpointer imgdata G_GNUC_UNUSED,
+					 VirtViewer *viewer)
 {
 	DEBUG_LOG("desktop resize %dx%d", width, height);
 	viewer->desktopWidth = width;
 	viewer->desktopHeight = height;
 
 	if (viewer->autoResize && viewer->window && !viewer->fullscreen) {
-		viewer_resize_main_window(viewer);
+		virt_viewer_resize_main_window(viewer);
 	} else {
-		viewer_resize_display_widget(viewer);
+		virt_viewer_display_spice_resize_widget(viewer);
 	}
 }
 
@@ -224,9 +244,10 @@ static void viewer_resize_desktop(SpiceChannel *channel G_GNUC_UNUSED, gint form
  * It attempts to fit the display widget into this space while
  * maintaining aspect ratio
  */
-static gboolean viewer_resize_align(GtkWidget *widget,
-				    GtkAllocation *alloc,
-				    VirtViewer *viewer)
+static gboolean
+virt_viewer_display_spice_resize_align(GtkWidget *widget,
+				       GtkAllocation *alloc,
+				       VirtViewer *viewer)
 {
 	double desktopAspect;
 	double scrollAspect;
@@ -271,8 +292,10 @@ static gboolean viewer_resize_align(GtkWidget *widget,
 	return FALSE;
 }
 
-static void _spice_channel_new(SpiceSession *s, SpiceChannel *channel,
-			       VirtViewerDisplay *display)
+static void
+virt_viewer_display_spice_channel_new(SpiceSession *s,
+				      SpiceChannel *channel,
+				      VirtViewerDisplay *display)
 {
 	VirtViewerDisplaySpice *self = VIRT_VIEWER_DISPLAY_SPICE(display);
 	int id;
@@ -280,13 +303,13 @@ static void _spice_channel_new(SpiceSession *s, SpiceChannel *channel,
 	g_return_if_fail(self != NULL);
 
 	g_signal_connect(channel, "open-fd",
-			 G_CALLBACK(_spice_channel_open_fd_request), self);
+			 G_CALLBACK(virt_viewer_display_spice_channel_open_fd_request), self);
 
 	g_object_get(channel, "channel-id", &id, NULL);
 
 	if (SPICE_IS_MAIN_CHANNEL(channel)) {
 		g_signal_connect(channel, "channel-event",
-				 G_CALLBACK(_spice_main_channel_event), self);
+				 G_CALLBACK(virt_viewer_display_spice_main_channel_event), self);
 	}
 
 	if (SPICE_IS_DISPLAY_CHANNEL(channel)) {
@@ -295,7 +318,7 @@ static void _spice_channel_new(SpiceSession *s, SpiceChannel *channel,
 			return;
 
 		g_signal_connect(channel, "display-primary-create",
-				 G_CALLBACK(viewer_resize_desktop), display->viewer);
+				 G_CALLBACK(virt_viewer_display_spice_resize_desktop), display->viewer);
 
 		self->display = spice_display_new(s, id);
 		display->widget = GTK_WIDGET(self->display);
@@ -306,12 +329,12 @@ static void _spice_channel_new(SpiceSession *s, SpiceChannel *channel,
 			     "scaling", TRUE,
 			     "auto-clipboard", TRUE,
 			     NULL);
-		viewer_add_display_and_realize(display->viewer);
+		virt_viewer_add_display_and_realize(display->viewer);
 
 		g_signal_connect(display->viewer->align, "size-allocate",
-				 G_CALLBACK(viewer_resize_align), display->viewer);
+				 G_CALLBACK(virt_viewer_display_spice_resize_align), display->viewer);
 
-		viewer_initialized(display->viewer);
+		virt_viewer_initialized(display->viewer);
 	}
 
 	if (SPICE_IS_INPUTS_CHANNEL(channel)) {
@@ -326,8 +349,10 @@ static void _spice_channel_new(SpiceSession *s, SpiceChannel *channel,
 	}
 }
 
-static void _spice_channel_destroy(G_GNUC_UNUSED SpiceSession *s, SpiceChannel *channel,
-				   VirtViewerDisplay *display)
+static void
+virt_viewer_display_spice_channel_destroy(G_GNUC_UNUSED SpiceSession *s,
+					  SpiceChannel *channel,
+					  VirtViewerDisplay *display)
 {
 	VirtViewerDisplaySpice *self = VIRT_VIEWER_DISPLAY_SPICE(display);
 	int id;
@@ -350,7 +375,8 @@ static void _spice_channel_destroy(G_GNUC_UNUSED SpiceSession *s, SpiceChannel *
 	}
 }
 
-VirtViewerDisplaySpice* virt_viewer_display_spice_new(VirtViewer *viewer)
+VirtViewerDisplaySpice *
+virt_viewer_display_spice_new(VirtViewer *viewer)
 {
 	VirtViewerDisplaySpice *self;
 	VirtViewerDisplay *d;
@@ -363,9 +389,9 @@ VirtViewerDisplaySpice* virt_viewer_display_spice_new(VirtViewer *viewer)
 
 	self->session = spice_session_new();
 	g_signal_connect(self->session, "channel-new",
-			 G_CALLBACK(_spice_channel_new), self);
+			 G_CALLBACK(virt_viewer_display_spice_channel_new), self);
 	g_signal_connect(self->session, "channel-destroy",
-			 G_CALLBACK(_spice_channel_destroy), self);
+			 G_CALLBACK(virt_viewer_display_spice_channel_destroy), self);
 
 	return self;
 }

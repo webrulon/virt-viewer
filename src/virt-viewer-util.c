@@ -21,17 +21,41 @@
  * Author: Daniel P. Berrange <berrange@redhat.com>
  */
 
-#ifndef VIRT_VIEWER_UTIL_H
-#define VIRT_VIEWER_UTIL_H
+#include <config.h>
 
-#include <gtk/gtk.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <unistd.h>
 
-extern gboolean doDebug;
+#include "virt-viewer-util.h"
 
-#define DEBUG_LOG(s, ...) do { if (doDebug) g_debug((s), ## __VA_ARGS__); } while (0)
-#define ARRAY_CARDINALITY(Array) (sizeof (Array) / sizeof *(Array))
+GtkBuilder *virt_viewer_util_load_ui(const char *name)
+{
+	struct stat sb;
+	GtkBuilder *builder;
+	GError *error = NULL;
+
+	builder = gtk_builder_new();
+	if (stat(name, &sb) >= 0) {
+		gtk_builder_add_from_file(builder, name, &error);
+	} else {
+		gchar *path = g_strdup_printf("%s/%s", BUILDER_XML_DIR, name);
+		gtk_builder_add_from_file(builder, path, &error);
+		g_free(path);
+	}
+
+	if (error)
+		g_error("Cannot load UI description %s: %s", name,
+			error->message);
+
+	return builder;
+}
 
 
-GtkBuilder *viewer_load_ui(const char *name);
-
-#endif
+/*
+ * Local variables:
+ *  c-indent-level: 8
+ *  c-basic-offset: 8
+ *  tab-width: 8
+ * End:
+ */

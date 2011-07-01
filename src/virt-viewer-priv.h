@@ -106,20 +106,20 @@ struct _VirtViewerSize {
 	gulong sig_id;
 };
 
-void viewer_connected(VirtViewer *viewer);
-void viewer_initialized(VirtViewer *viewer);
-void viewer_disconnected(VirtViewer *viewer);
-void viewer_set_status(VirtViewer *viewer, const char *text);
-void viewer_set_title(VirtViewer *viewer, gboolean grabbed);
-void viewer_enable_modifiers(VirtViewer *viewer);
-void viewer_disable_modifiers(VirtViewer *viewer);
-void viewer_add_display_and_realize(VirtViewer *viewer);
-void viewer_server_cut_text(VirtViewer *viewer, const gchar *text);
-void viewer_resize_main_window(VirtViewer *viewer);
-void viewer_channel_open_fd(VirtViewer *viewer, VirtViewerDisplayChannel *channel);
-void viewer_quit(VirtViewer *viewer);
+void virt_viewer_connected(VirtViewer *viewer);
+void virt_viewer_initialized(VirtViewer *viewer);
+void virt_viewer_disconnected(VirtViewer *viewer);
+void virt_viewer_set_status(VirtViewer *viewer, const char *text);
+void virt_viewer_set_title(VirtViewer *viewer, gboolean grabbed);
+void virt_viewer_enable_modifiers(VirtViewer *viewer);
+void virt_viewer_disable_modifiers(VirtViewer *viewer);
+void virt_viewer_add_display_and_realize(VirtViewer *viewer);
+void virt_viewer_server_cut_text(VirtViewer *viewer, const gchar *text);
+void virt_viewer_resize_main_window(VirtViewer *viewer);
+void virt_viewer_channel_open_fd(VirtViewer *viewer, VirtViewerDisplayChannel *channel);
+void virt_viewer_quit(VirtViewer *viewer);
 
-void viewer_simple_message_dialog(GtkWidget *window, const char *fmt, ...);
+void virt_viewer_simple_message_dialog(GtkWidget *window, const char *fmt, ...);
 
 #endif // _VIRT_VIEWER_PRIV_H
 /*

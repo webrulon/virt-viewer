@@ -1,7 +1,8 @@
 /*
  * Virt Viewer: A virtual machine console viewer
  *
- * Copyright (C) 2007 Red Hat,
+ * Copyright (C) 2007-2009 Red Hat,
+ * Copyright (C) 2009 Daniel P. Berrange
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,19 +21,17 @@
  * Author: Daniel P. Berrange <berrange@redhat.com>
  */
 
-#ifndef VIRT_VIEWER_H
-#define VIRT_VIEWER_H
+#ifndef VIRT_VIEWER_UTIL_H
+#define VIRT_VIEWER_UTIL_H
 
-#include "util.h"
+#include <gtk/gtk.h>
 
-extern int viewer_start (const char *uri,
-			 const char *name,
-			 gint zoom,
-			 gboolean direct,
-			 gboolean waitvm,
-			 gboolean reconnect,
-			 gboolean verbose,
-			 gboolean debug,
-			 GtkWidget *container);
+extern gboolean doDebug;
 
-#endif /* VIRT_VIEWER_H */
+#define DEBUG_LOG(s, ...) do { if (doDebug) g_debug((s), ## __VA_ARGS__); } while (0)
+#define ARRAY_CARDINALITY(Array) (sizeof (Array) / sizeof *(Array))
+
+
+GtkBuilder *virt_viewer_util_load_ui(const char *name);
+
+#endif

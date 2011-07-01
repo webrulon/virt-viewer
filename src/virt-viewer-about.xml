@@ -30,8 +30,8 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 </property>
     <property name="authors">Daniel P. Berrange</property>
     <property name="translator_credits" translatable="yes">The Fedora Translation Team</property>
-    <signal name="response" handler="viewer_about_close"/>
-    <signal name="delete_event" handler="viewer_about_delete"/>
+    <signal name="response" handler="virt_viewer_about_close"/>
+    <signal name="delete_event" handler="virt_viewer_about_delete"/>
     <child internal-child="vbox">
       <object class="GtkVBox" id="dialog-vbox1">
         <property name="visible">True</property>

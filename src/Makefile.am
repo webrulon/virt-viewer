@@ -2,19 +2,22 @@
 bin_PROGRAMS = virt-viewer
 
 builderxmldir = $(pkgdatadir)/ui
-builderxml_DATA = viewer.xml about.xml auth.xml
+builderxml_DATA = \
+	virt-viewer.xml \
+	virt-viewer-about.xml \
+	virt-viewer-auth.xml
 
 EXTRA_DIST = $(builderxml_DATA)
 
 virt_viewer_SOURCES = \
-	main.c \
-	util.h util.c \
-	auth.h auth.c \
-	events.h events.c \
-	viewer.h viewer.c \
-	viewer-priv.h \
-	display.h display.c \
-	display-vnc.h display-vnc.c \
+	virt-viewer-main.c \
+	virt-viewer-util.h virt-viewer-util.c \
+	virt-viewer-auth.h virt-viewer-auth.c \
+	virt-viewer-events.h virt-viewer-events.c \
+	virt-viewer.h virt-viewer.c \
+	virt-viewer-priv.h \
+	virt-viewer-display.h virt-viewer-display.c \
+	virt-viewer-display-vnc.h virt-viewer-display-vnc.c \
 	view/autoDrawer.c \
 	view/autoDrawer.h \
 	view/drawer.c \
@@ -25,7 +28,7 @@ virt_viewer_SOURCES = \
 
 if HAVE_SPICE_GTK
 virt_viewer_SOURCES += \
-	display-spice.h display-spice.c
+	virt-viewer-display-spice.h virt-viewer-display-spice.c
 endif
 
 virt_viewer_LDADD = \

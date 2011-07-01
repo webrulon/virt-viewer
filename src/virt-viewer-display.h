@@ -25,7 +25,8 @@
 #define _VIRT_VIEWER_DISPLAY_H
 
 #include <glib-object.h>
-#include "viewer-priv.h"
+
+#include "virt-viewer-priv.h"
 
 G_BEGIN_DECLS
 

@@ -27,9 +27,9 @@
 #include <glib/gi18n.h>
 #include <stdlib.h>
 
-#include "viewer.h"
+#include "virt-viewer.h"
 
-static void viewer_version(void)
+static void virt_viewer_version(void)
 {
 	g_print(_("%s version %s\n"), PACKAGE, VERSION);
 
@@ -53,7 +53,7 @@ int main(int argc, char **argv)
 	const char *help_msg = N_("Run '" PACKAGE " --help' to see a full list of available command line options");
 	const GOptionEntry options [] = {
 		{ "version", 'V', G_OPTION_FLAG_NO_ARG, G_OPTION_ARG_CALLBACK,
-		  viewer_version, N_("display version information"), NULL },
+		  virt_viewer_version, N_("display version information"), NULL },
 		{ "verbose", 'v', 0, G_OPTION_ARG_NONE, &verbose,
 		  N_("display verbose information"), NULL },
 		{ "direct", 'd', 0, G_OPTION_ARG_NONE, &direct,
@@ -104,7 +104,7 @@ int main(int argc, char **argv)
 		return 1;
 	}
 
-	ret = viewer_start (uri, args[0], zoom, direct, waitvm, reconnect, verbose, debug, NULL);
+	ret = virt_viewer_start(uri, args[0], zoom, direct, waitvm, reconnect, verbose, debug, NULL);
 	if (ret != 0)
 		return ret;
 

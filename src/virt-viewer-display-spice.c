@@ -243,6 +243,9 @@ virt_viewer_display_spice_channel_new(SpiceSession *s,
 	}
 
 	if (SPICE_IS_DISPLAY_CHANNEL(channel)) {
+		if (id != 0)
+			return;
+
 		DEBUG_LOG("new display channel (#%d)", id);
 		g_signal_connect(channel, "display-primary-create",
 				 G_CALLBACK(virt_viewer_display_spice_primary_create), display);

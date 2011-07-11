@@ -39,7 +39,12 @@ static GdkPixbuf *virt_viewer_display_spice_get_pixbuf(VirtViewerDisplay *displa
 static gboolean virt_viewer_display_spice_open_fd(VirtViewerDisplay *display, int fd);
 static gboolean virt_viewer_display_spice_open_host(VirtViewerDisplay *display, char *host, char *port);
 static gboolean virt_viewer_display_spice_channel_open_fd(VirtViewerDisplay *display, VirtViewerDisplayChannel *channel, int fd);
-
+static void virt_viewer_display_spice_channel_new(SpiceSession *s,
+						  SpiceChannel *channel,
+						  VirtViewerDisplay *display);
+static void virt_viewer_display_spice_channel_destroy(SpiceSession *s,
+						      SpiceChannel *channel,
+						      VirtViewerDisplay *display);
 
 static void
 virt_viewer_display_spice_class_init(VirtViewerDisplaySpiceClass *klass)
@@ -90,18 +95,25 @@ virt_viewer_display_spice_close(VirtViewerDisplay *display)
 
 	g_return_if_fail(self != NULL);
 
-	if (self->session == NULL)
-		return;
-
-	spice_session_disconnect(self->session);
-
-	if (self->session) /* let viewer_quit() be reentrant */
+	if (self->session) {
+		spice_session_disconnect(self->session);
 		g_object_unref(self->session);
-	self->session = NULL;
 
-	if (self->audio)
-		g_object_unref(self->audio);
-	self->audio = NULL;
+		if (self->audio)
+			g_object_unref(self->audio);
+		self->audio = NULL;
+
+		if (self->display)
+			gtk_container_remove(GTK_CONTAINER(self), GTK_WIDGET(self->display));
+		self->display = NULL;
+	}
+
+	self->session = spice_session_new();
+	g_signal_connect(self->session, "channel-new",
+			 G_CALLBACK(virt_viewer_display_spice_channel_new), self);
+	g_signal_connect(self->session, "channel-destroy",
+			 G_CALLBACK(virt_viewer_display_spice_channel_destroy), self);
+
 }
 
 static gboolean
@@ -295,10 +307,10 @@ virt_viewer_display_spice_channel_destroy(G_GNUC_UNUSED SpiceSession *s,
 		DEBUG_LOG("zap display channel (#%d)", id);
 	}
 
-	if (SPICE_IS_PLAYBACK_CHANNEL(channel)) {
-		if (self->audio == NULL)
-			return;
+	if (SPICE_IS_PLAYBACK_CHANNEL(channel) && self->audio) {
 		DEBUG_LOG("zap audio channel");
+		g_object_unref(self->audio);
+		self->audio = NULL;
 	}
 }
 
@@ -323,5 +335,6 @@ virt_viewer_display_spice_new(void)
  *  c-indent-level: 8
  *  c-basic-offset: 8
  *  tab-width: 8
+ *  indent-tabs-mode: t
  * End:
  */

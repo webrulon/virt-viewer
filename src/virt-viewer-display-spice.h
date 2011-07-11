@@ -49,21 +49,24 @@ G_BEGIN_DECLS
 #define VIRT_VIEWER_DISPLAY_SPICE_GET_CLASS(obj)			\
 	(G_TYPE_INSTANCE_GET_CLASS ((obj), VIRT_VIEWER_TYPE_DISPLAY_SPICE, VirtViewerDisplaySpiceClass))
 
-typedef struct {
+typedef struct _VirtViewerDisplaySpice VirtViewerDisplaySpice;
+typedef struct _VirtViewerDisplaySpiceClass VirtViewerDisplaySpiceClass;
+typedef struct _VirtViewerDisplaySpicePrivate VirtViewerDisplaySpicePrivate;
+
+struct _VirtViewerDisplaySpice {
 	VirtViewerDisplay parent;
 
-	SpiceSession *session;
-	SpiceDisplay *display;
-	SpiceAudio *audio;
-} VirtViewerDisplaySpice;
+	VirtViewerDisplaySpicePrivate *priv;
+};
 
-typedef struct {
+struct _VirtViewerDisplaySpiceClass {
 	VirtViewerDisplayClass parent_class;
-} VirtViewerDisplaySpiceClass;
+};
 
 GType virt_viewer_display_spice_get_type(void);
 
-GtkWidget* virt_viewer_display_spice_new(void);
+GtkWidget* virt_viewer_display_spice_new(SpiceChannel *channel,
+					 SpiceDisplay *display);
 
 G_END_DECLS
 

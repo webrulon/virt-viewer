@@ -48,19 +48,23 @@ G_BEGIN_DECLS
 #define VIRT_VIEWER_DISPLAY_VNC_GET_CLASS(obj)				\
 	(G_TYPE_INSTANCE_GET_CLASS ((obj), VIRT_VIEWER_TYPE_DISPLAY_VNC, VirtViewerDisplayVncClass))
 
-typedef struct {
+typedef struct _VirtViewerDisplayVnc VirtViewerDisplayVnc;
+typedef struct _VirtViewerDisplayVncClass VirtViewerDisplayVncClass;
+typedef struct _VirtViewerDisplayVncPrivate VirtViewerDisplayVncPrivate;
+
+struct _VirtViewerDisplayVnc {
 	VirtViewerDisplay parent;
 
-	VncDisplay *vnc;
-} VirtViewerDisplayVnc;
+	VirtViewerDisplayVncPrivate *priv;
+};
 
-typedef struct {
+struct _VirtViewerDisplayVncClass {
 	VirtViewerDisplayClass parent_class;
-} VirtViewerDisplayVncClass;
+};
 
 GType virt_viewer_display_vnc_get_type(void);
 
-GtkWidget* virt_viewer_display_vnc_new(void);
+GtkWidget* virt_viewer_display_vnc_new(VncDisplay *display);
 
 G_END_DECLS
 

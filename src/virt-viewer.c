@@ -56,10 +56,10 @@
 #include "virt-viewer.h"
 #include "virt-viewer-events.h"
 #include "virt-viewer-auth.h"
-#include "virt-viewer-display-vnc.h"
+#include "virt-viewer-session-vnc.h"
 
 #ifdef HAVE_SPICE_GTK
-#include "virt-viewer-display-spice.h"
+#include "virt-viewer-session-spice.h"
 #endif
 
 #include "view/autoDrawer.h"
@@ -84,23 +84,23 @@ void virt_viewer_about_delete(GtkWidget *dialog, void *dummy, VirtViewer *viewer
 
 
 /* Internal methods */
-static void virt_viewer_connected(VirtViewerDisplay *display,
+static void virt_viewer_connected(VirtViewerSession *session,
 				  VirtViewer *viewer);
-static void virt_viewer_initialized(VirtViewerDisplay *display,
+static void virt_viewer_initialized(VirtViewerSession *session,
 				  VirtViewer *viewer);
-static void virt_viewer_disconnected(VirtViewerDisplay *display,
+static void virt_viewer_disconnected(VirtViewerSession *session,
 				  VirtViewer *viewer);
-static void virt_viewer_auth_refused(VirtViewerDisplay *display,
+static void virt_viewer_auth_refused(VirtViewerSession *session,
 				     const char *msg,
 				     VirtViewer *viewer);
-static void virt_viewer_auth_failed(VirtViewerDisplay *display,
+static void virt_viewer_auth_failed(VirtViewerSession *session,
 				    const char *msg,
 				    VirtViewer *viewer);
 
-static void virt_viewer_server_cut_text(VirtViewerDisplay *display,
+static void virt_viewer_server_cut_text(VirtViewerSession *session,
 					const gchar *text,
 					VirtViewer *viewer);
-static void virt_viewer_bell(VirtViewerDisplay *display,
+static void virt_viewer_bell(VirtViewerSession *session,
 			     VirtViewer *viewer);
 static void virt_viewer_enable_modifiers(VirtViewer *viewer);
 static void virt_viewer_disable_modifiers(VirtViewer *viewer);
@@ -108,8 +108,8 @@ static void virt_viewer_resize_main_window(VirtViewer *viewer);
 
 static void virt_viewer_set_status(VirtViewer *viewer, const char *text);
 static void virt_viewer_set_title(VirtViewer *viewer, gboolean grabbed);
-static void virt_viewer_channel_open(VirtViewerDisplay *display,
-				     VirtViewerDisplayChannel *channel,
+static void virt_viewer_channel_open(VirtViewerSession *session,
+				     VirtViewerSessionChannel *channel,
 				     VirtViewer *viewer);
 static void virt_viewer_quit(VirtViewer *viewer);
 
@@ -183,6 +183,7 @@ struct _VirtViewer {
 	gchar *clipboard;
 
 	GtkWidget *display;
+	VirtViewerSession *session;
 
 	gint zoomlevel;
 
@@ -474,8 +475,8 @@ virt_viewer_quit(VirtViewer *viewer)
 {
 	g_return_if_fail(viewer != NULL);
 
-	if (viewer->display)
-		virt_viewer_display_close(VIRT_VIEWER_DISPLAY(viewer->display));
+	if (viewer->session)
+		virt_viewer_session_close(VIRT_VIEWER_SESSION(viewer->session));
 	gtk_main_quit();
 }
 
@@ -1013,6 +1014,48 @@ virt_viewer_keyboard_ungrab(VirtViewerDisplay *display G_GNUC_UNUSED,
 
 
 static void
+virt_viewer_display_added(VirtViewerSession *session G_GNUC_UNUSED,
+			  VirtViewerDisplay *display,
+			  VirtViewer *viewer)
+{
+	/* XXX multihead */
+	if (viewer->display)
+		return;
+	viewer->display = GTK_WIDGET(display);
+
+	g_signal_connect(viewer->display, "display-pointer-grab",
+			 G_CALLBACK(virt_viewer_pointer_grab), viewer);
+	g_signal_connect(viewer->display, "display-pointer-ungrab",
+			 G_CALLBACK(virt_viewer_pointer_ungrab), viewer);
+	g_signal_connect(viewer->display, "display-keyboard-grab",
+			 G_CALLBACK(virt_viewer_keyboard_grab), viewer);
+	g_signal_connect(viewer->display, "display-keyboard-ungrab",
+			 G_CALLBACK(virt_viewer_keyboard_ungrab), viewer);
+
+	g_signal_connect(viewer->display, "display-desktop-resize",
+			 G_CALLBACK(virt_viewer_desktop_resize), viewer);
+
+	gtk_notebook_append_page(GTK_NOTEBOOK(viewer->notebook), viewer->display, NULL);
+	if (gtk_bin_get_child(GTK_BIN(viewer->display)))
+		gtk_widget_realize(GTK_WIDGET(gtk_bin_get_child(GTK_BIN(viewer->display))));
+	gtk_widget_show_all(viewer->display);
+}
+
+static void
+virt_viewer_display_removed(VirtViewerSession *session G_GNUC_UNUSED,
+			    VirtViewerDisplay *display,
+			    VirtViewer *viewer)
+{
+	/* XXX multihead */
+	if (viewer->display != GTK_WIDGET(display))
+		return;
+
+	gtk_widget_hide(GTK_WIDGET(display));
+	gtk_notebook_remove_page(GTK_NOTEBOOK(viewer->notebook), 1);
+	viewer->display = NULL;
+}
+
+static void
 virt_viewer_connect_info_free(VirtViewer *viewer)
 {
 	free(viewer->host);
@@ -1051,12 +1094,12 @@ virt_viewer_extract_connect_info(VirtViewer *viewer,
 	if (g_strcasecmp(type, "vnc") == 0) {
 		virt_viewer_trace(viewer, "Guest %s has a %s display\n",
 			     viewer->domkey, type);
-		viewer->display = virt_viewer_display_vnc_new();
+		viewer->session = virt_viewer_session_vnc_new();
 #ifdef HAVE_SPICE_GTK
 	} else if (g_strcasecmp(type, "spice") == 0) {
 		virt_viewer_trace(viewer, "Guest %s has a %s display\n",
 			     viewer->domkey, type);
-		viewer->display = virt_viewer_display_spice_new();
+		viewer->session = virt_viewer_session_spice_new();
 #endif
 	} else {
 		virt_viewer_trace(viewer, "Guest %s has unsupported %s display type\n",
@@ -1066,39 +1109,27 @@ virt_viewer_extract_connect_info(VirtViewer *viewer,
 		goto cleanup;
 	}
 
-	g_signal_connect(viewer->display, "display-initialized",
+	g_signal_connect(viewer->session, "session-initialized",
 			 G_CALLBACK(virt_viewer_initialized), viewer);
-	g_signal_connect(viewer->display, "display-connected",
+	g_signal_connect(viewer->session, "session-connected",
 			 G_CALLBACK(virt_viewer_connected), viewer);
-	g_signal_connect(viewer->display, "display-disconnected",
+	g_signal_connect(viewer->session, "session-disconnected",
 			 G_CALLBACK(virt_viewer_disconnected), viewer);
-	g_signal_connect(viewer->display, "display-channel-open",
+	g_signal_connect(viewer->session, "session-channel-open",
 			 G_CALLBACK(virt_viewer_channel_open), viewer);
-	g_signal_connect(viewer->display, "display-auth-refused",
+	g_signal_connect(viewer->session, "session-auth-refused",
 			 G_CALLBACK(virt_viewer_auth_refused), viewer);
-	g_signal_connect(viewer->display, "display-auth-failed",
+	g_signal_connect(viewer->session, "session-auth-failed",
 			 G_CALLBACK(virt_viewer_auth_failed), viewer);
+	g_signal_connect(viewer->session, "session-display-added",
+			 G_CALLBACK(virt_viewer_display_added), viewer);
+	g_signal_connect(viewer->session, "session-display-removed",
+			 G_CALLBACK(virt_viewer_display_removed), viewer);
 
-	g_signal_connect(viewer->display, "display-pointer-grab",
-			 G_CALLBACK(virt_viewer_pointer_grab), viewer);
-	g_signal_connect(viewer->display, "display-pointer-ungrab",
-			 G_CALLBACK(virt_viewer_pointer_ungrab), viewer);
-	g_signal_connect(viewer->display, "display-keyboard-grab",
-			 G_CALLBACK(virt_viewer_keyboard_grab), viewer);
-	g_signal_connect(viewer->display, "display-keyboard-ungrab",
-			 G_CALLBACK(virt_viewer_keyboard_ungrab), viewer);
-
-	g_signal_connect(viewer->display, "display-desktop-resize",
-			 G_CALLBACK(virt_viewer_desktop_resize), viewer);
-	g_signal_connect(viewer->display, "display-cut-text",
+	g_signal_connect(viewer->session, "session-cut-text",
 			 G_CALLBACK(virt_viewer_server_cut_text), viewer);
-	g_signal_connect(viewer->display, "display-bell",
+	g_signal_connect(viewer->session, "session-bell",
 			 G_CALLBACK(virt_viewer_bell), viewer);
-
-	gtk_notebook_append_page(GTK_NOTEBOOK(viewer->notebook), viewer->display, NULL);
-	if (gtk_bin_get_child(GTK_BIN(viewer->display)))
-		gtk_widget_realize(GTK_WIDGET(gtk_bin_get_child(GTK_BIN(viewer->display))));
-	gtk_widget_show_all(viewer->display);
 
 	xpath = g_strdup_printf("string(/domain/devices/graphics[@type='%s']/@port)", type);
 	if ((viewer->gport = virt_viewer_extract_xpath_string(xmldesc, xpath)) == NULL) {
@@ -1138,8 +1169,8 @@ cleanup:
 
 #if defined(HAVE_SOCKETPAIR) && defined(HAVE_FORK)
 static void
-virt_viewer_channel_open(VirtViewerDisplay *display,
-			 VirtViewerDisplayChannel *channel,
+virt_viewer_channel_open(VirtViewerSession *session,
+			 VirtViewerSessionChannel *channel,
 			 VirtViewer *viewer)
 {
 	int fd = -1;
@@ -1156,12 +1187,12 @@ virt_viewer_channel_open(VirtViewerDisplay *display,
 	}
 
 	if (fd >= 0)
-		virt_viewer_display_channel_open_fd(display, channel, fd);
+		virt_viewer_session_channel_open_fd(session, channel, fd);
 }
 #else
 static void
-virt_viewer_channel_open(VirtViewerDisplay *display,
-			 VirtViewerDisplayChannel *channel,
+virt_viewer_channel_open(VirtViewerSession *session,
+			 VirtViewerSessionChannel *channel,
 			 VirtViewer *viewer)
 {
 	virt_viewer_simple_message_dialog(viewer->window, _("Connect to channel unsupported."));
@@ -1179,8 +1210,8 @@ virt_viewer_activate(VirtViewer *viewer,
 		goto cleanup;
 
 	virt_viewer_trace(viewer, "Guest %s is running, determining display\n",
-		     viewer->domkey);
-	if (viewer->display == NULL) {
+			  viewer->domkey);
+	if (viewer->session == NULL) {
 		if (!virt_viewer_extract_connect_info(viewer, dom))
 			goto cleanup;
 
@@ -1217,11 +1248,11 @@ virt_viewer_activate(VirtViewer *viewer,
 #endif
 
 	if (fd >= 0) {
-		ret = virt_viewer_display_open_fd(VIRT_VIEWER_DISPLAY(viewer->display), fd);
+		ret = virt_viewer_session_open_fd(VIRT_VIEWER_SESSION(viewer->session), fd);
 	} else {
 		virt_viewer_trace(viewer, "Opening direct TCP connection to display at %s:%s\n",
 			     viewer->ghost, viewer->gport);
-		ret = virt_viewer_display_open_host(VIRT_VIEWER_DISPLAY(viewer->display),
+		ret = virt_viewer_session_open_host(VIRT_VIEWER_SESSION(viewer->session),
 						    viewer->ghost, viewer->gport);
 	}
 
@@ -1246,7 +1277,7 @@ virt_viewer_clipboard_copy(GtkClipboard *clipboard G_GNUC_UNUSED,
 }
 
 static void
-virt_viewer_server_cut_text(VirtViewerDisplay *display G_GNUC_UNUSED,
+virt_viewer_server_cut_text(VirtViewerSession *session G_GNUC_UNUSED,
 			    const gchar *text,
 			    VirtViewer *viewer)
 {
@@ -1278,7 +1309,7 @@ virt_viewer_server_cut_text(VirtViewerDisplay *display G_GNUC_UNUSED,
 }
 
 
-static void virt_viewer_bell(VirtViewerDisplay *display G_GNUC_UNUSED,
+static void virt_viewer_bell(VirtViewerSession *session G_GNUC_UNUSED,
 			     VirtViewer *viewer)
 {
 	gdk_window_beep(gtk_widget_get_window(GTK_WIDGET(viewer->window)));
@@ -1300,13 +1331,15 @@ virt_viewer_deactivate(VirtViewer *viewer)
 	if (!viewer->active)
 		return;
 
-	if (viewer->display)
-		virt_viewer_display_close(VIRT_VIEWER_DISPLAY(viewer->display));
+	if (viewer->session)
+		virt_viewer_session_close(VIRT_VIEWER_SESSION(viewer->session));
 
 	viewer->connected = FALSE;
 	viewer->active = FALSE;
+#if 0
 	g_free(viewer->pretty_address);
 	viewer->pretty_address = NULL;
+#endif
 	virt_viewer_set_title(viewer, FALSE);
 
 	if (viewer->authretry) {
@@ -1332,7 +1365,7 @@ virt_viewer_deactivate(VirtViewer *viewer)
 }
 
 static void
-virt_viewer_connected(VirtViewerDisplay *display G_GNUC_UNUSED,
+virt_viewer_connected(VirtViewerSession *session G_GNUC_UNUSED,
 		      VirtViewer *viewer)
 {
 	viewer->connected = TRUE;
@@ -1340,7 +1373,7 @@ virt_viewer_connected(VirtViewerDisplay *display G_GNUC_UNUSED,
 }
 
 static void
-virt_viewer_initialized(VirtViewerDisplay *display G_GNUC_UNUSED,
+virt_viewer_initialized(VirtViewerSession *session G_GNUC_UNUSED,
 			VirtViewer *viewer)
 {
 	virt_viewer_show_display(viewer);
@@ -1348,7 +1381,7 @@ virt_viewer_initialized(VirtViewerDisplay *display G_GNUC_UNUSED,
 }
 
 static void
-virt_viewer_disconnected(VirtViewerDisplay *display G_GNUC_UNUSED,
+virt_viewer_disconnected(VirtViewerSession *session G_GNUC_UNUSED,
 			 VirtViewer *viewer)
 {
 	if (!viewer->connected) {
@@ -1360,7 +1393,7 @@ virt_viewer_disconnected(VirtViewerDisplay *display G_GNUC_UNUSED,
 }
 
 
-static void virt_viewer_auth_refused(VirtViewerDisplay *display G_GNUC_UNUSED,
+static void virt_viewer_auth_refused(VirtViewerSession *session G_GNUC_UNUSED,
 				     const char *msg,
 				     VirtViewer *viewer)
 {
@@ -1387,7 +1420,7 @@ static void virt_viewer_auth_refused(VirtViewerDisplay *display G_GNUC_UNUSED,
 }
 
 
-static void virt_viewer_auth_failed(VirtViewerDisplay *display G_GNUC_UNUSED,
+static void virt_viewer_auth_failed(VirtViewerSession *session G_GNUC_UNUSED,
 				    const char *msg,
 				    VirtViewer *viewer)
 {
@@ -1413,7 +1446,7 @@ virt_viewer_domain_event(virConnectPtr conn G_GNUC_UNUSED,
 	
 	switch (event) {
 	case VIR_DOMAIN_EVENT_STOPPED:
-		virt_viewer_deactivate(viewer);
+		//virt_viewer_deactivate(viewer);
 		break;
 
 	case VIR_DOMAIN_EVENT_STARTED:

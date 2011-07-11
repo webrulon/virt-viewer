@@ -16,6 +16,8 @@ virt_viewer_SOURCES = \
 	virt-viewer-events.h virt-viewer-events.c \
 	virt-viewer.h virt-viewer.c \
 	virt-viewer-priv.h \
+	virt-viewer-session.h virt-viewer-session.c \
+	virt-viewer-session-vnc.h virt-viewer-session-vnc.c \
 	virt-viewer-display.h virt-viewer-display.c \
 	virt-viewer-display-vnc.h virt-viewer-display-vnc.c \
 	view/autoDrawer.c \
@@ -28,6 +30,7 @@ virt_viewer_SOURCES = \
 
 if HAVE_SPICE_GTK
 virt_viewer_SOURCES += \
+	virt-viewer-session-spice.h virt-viewer-session-spice.c \
 	virt-viewer-display-spice.h virt-viewer-display-spice.c
 endif
 

@@ -63,32 +63,17 @@ struct _VirtViewerDisplayClass {
 	GtkBinClass parent_class;
 
 	/* virtual methods */
-	void (* close) (VirtViewerDisplay* display);
-	void (* send_keys) (VirtViewerDisplay* display,
-			    const guint *keyvals, int nkeyvals);
-	GdkPixbuf* (* get_pixbuf) (VirtViewerDisplay* display);
-	gboolean (* open_fd) (VirtViewerDisplay* display, int fd);
-	gboolean (* open_host) (VirtViewerDisplay* display, char *host, char *port);
-	gboolean (* channel_open_fd) (VirtViewerDisplay* display, VirtViewerDisplayChannel *channel, int fd);
+	void (*send_keys)(VirtViewerDisplay* display,
+			  const guint *keyvals, int nkeyvals);
+	GdkPixbuf *(*get_pixbuf)(VirtViewerDisplay* display);
 
 	/* signals */
-	void (*display_connected)(VirtViewerDisplay *display);
-	void (*display_initialized)(VirtViewerDisplay *display);
-	void (*display_disconnected)(VirtViewerDisplay *display);
-	void (*display_auth_refused)(VirtViewerDisplay *display, const char *msg);
-	void (*display_auth_failed)(VirtViewerDisplay *display, const char *msg);
-
-	void (*display_channel_open)(VirtViewerDisplay *display, VirtViewerDisplayChannel *channel);
-
 	void (*display_pointer_grab)(VirtViewerDisplay *display);
 	void (*display_pointer_ungrab)(VirtViewerDisplay *display);
 	void (*display_keyboard_grab)(VirtViewerDisplay *display);
 	void (*display_keyboard_ungrab)(VirtViewerDisplay *display);
 
 	void (*display_desktop_resize)(VirtViewerDisplay *display);
-
-	void (*display_cut_text)(VirtViewerDisplay *display, const char *str);
-	void (*display_bell)(VirtViewerDisplay *display);
 };
 
 GType virt_viewer_display_get_type(void);
@@ -108,16 +93,9 @@ void virt_viewer_display_set_zoom_level(VirtViewerDisplay *display,
 void virt_viewer_display_set_zoom(VirtViewerDisplay *display,
 				  gboolean zoom);
 
-
-void virt_viewer_display_close(VirtViewerDisplay* display);
 void virt_viewer_display_send_keys(VirtViewerDisplay* display,
 				   const guint *keyvals, int nkeyvals);
 GdkPixbuf* virt_viewer_display_get_pixbuf(VirtViewerDisplay* display);
-gboolean virt_viewer_display_open_fd(VirtViewerDisplay* display, int fd);
-gboolean virt_viewer_display_open_host(VirtViewerDisplay* display, char *host, char *port);
-GObject* virt_viewer_display_get(VirtViewerDisplay* display);
-gboolean virt_viewer_display_channel_open_fd(VirtViewerDisplay* display,
-					     VirtViewerDisplayChannel* channel, int fd);
 
 G_END_DECLS
 

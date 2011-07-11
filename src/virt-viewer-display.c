@@ -124,65 +124,6 @@ virt_viewer_display_class_init(VirtViewerDisplayClass *class)
 							 100,
 							 G_PARAM_READWRITE));
 
-	g_signal_new("display-connected",
-		     G_OBJECT_CLASS_TYPE(object_class),
-		     G_SIGNAL_RUN_FIRST,
-		     G_STRUCT_OFFSET(VirtViewerDisplayClass, display_connected),
-		     NULL, NULL,
-		     g_cclosure_marshal_VOID__VOID,
-		     G_TYPE_NONE,
-		     0);
-
-	g_signal_new("display-initialized",
-		     G_OBJECT_CLASS_TYPE(object_class),
-		     G_SIGNAL_RUN_FIRST,
-		     G_STRUCT_OFFSET(VirtViewerDisplayClass, display_initialized),
-		     NULL, NULL,
-		     g_cclosure_marshal_VOID__VOID,
-		     G_TYPE_NONE,
-		     0);
-
-	g_signal_new("display-disconnected",
-		     G_OBJECT_CLASS_TYPE(object_class),
-		     G_SIGNAL_RUN_FIRST,
-		     G_STRUCT_OFFSET(VirtViewerDisplayClass, display_disconnected),
-		     NULL, NULL,
-		     g_cclosure_marshal_VOID__VOID,
-		     G_TYPE_NONE,
-		     0);
-
-	g_signal_new("display-channel-open",
-		     G_OBJECT_CLASS_TYPE(object_class),
-		     G_SIGNAL_RUN_FIRST,
-		     G_STRUCT_OFFSET(VirtViewerDisplayClass, display_channel_open),
-		     NULL, NULL,
-		     g_cclosure_marshal_VOID__OBJECT,
-		     G_TYPE_NONE,
-		     1,
-		     G_TYPE_OBJECT);
-
-	g_signal_new("display-auth-refused",
-		     G_OBJECT_CLASS_TYPE(object_class),
-		     G_SIGNAL_RUN_LAST | G_SIGNAL_NO_HOOKS,
-		     G_STRUCT_OFFSET(VirtViewerDisplayClass, display_auth_refused),
-		     NULL,
-		     NULL,
-		     g_cclosure_marshal_VOID__STRING,
-		     G_TYPE_NONE,
-		     1,
-		     G_TYPE_STRING);
-
-	g_signal_new("display-auth-failed",
-		     G_OBJECT_CLASS_TYPE(object_class),
-		     G_SIGNAL_RUN_LAST | G_SIGNAL_NO_HOOKS,
-		     G_STRUCT_OFFSET(VirtViewerDisplayClass, display_auth_failed),
-		     NULL,
-		     NULL,
-		     g_cclosure_marshal_VOID__STRING,
-		     G_TYPE_NONE,
-		     1,
-		     G_TYPE_STRING);
-
 
 	g_signal_new("display-pointer-grab",
 		     G_OBJECT_CLASS_TYPE(object_class),
@@ -228,27 +169,6 @@ virt_viewer_display_class_init(VirtViewerDisplayClass *class)
 		     G_OBJECT_CLASS_TYPE(object_class),
 		     G_SIGNAL_RUN_LAST | G_SIGNAL_NO_HOOKS,
 		     G_STRUCT_OFFSET(VirtViewerDisplayClass, display_desktop_resize),
-		     NULL,
-		     NULL,
-		     g_cclosure_marshal_VOID__VOID,
-		     G_TYPE_NONE,
-		     0);
-
-	g_signal_new("display-cut-text",
-		     G_OBJECT_CLASS_TYPE(object_class),
-		     G_SIGNAL_RUN_LAST | G_SIGNAL_NO_HOOKS,
-		     G_STRUCT_OFFSET(VirtViewerDisplayClass, display_cut_text),
-		     NULL,
-		     NULL,
-		     g_cclosure_marshal_VOID__STRING,
-		     G_TYPE_NONE,
-		     1,
-		     G_TYPE_STRING);
-
-	g_signal_new("display-bell",
-		     G_OBJECT_CLASS_TYPE(object_class),
-		     G_SIGNAL_RUN_LAST | G_SIGNAL_NO_HOOKS,
-		     G_STRUCT_OFFSET(VirtViewerDisplayClass, display_bell),
 		     NULL,
 		     NULL,
 		     g_cclosure_marshal_VOID__VOID,
@@ -509,14 +429,6 @@ void virt_viewer_display_set_zoom(VirtViewerDisplay *display,
 	}
 }
 
-
-void virt_viewer_display_close(VirtViewerDisplay *display)
-{
-	g_return_if_fail(VIRT_VIEWER_IS_DISPLAY(display));
-
-	VIRT_VIEWER_DISPLAY_GET_CLASS(display)->close(display);
-}
-
 void virt_viewer_display_send_keys(VirtViewerDisplay *display,
 				   const guint *keyvals, int nkeyvals)
 {
@@ -530,31 +442,6 @@ GdkPixbuf* virt_viewer_display_get_pixbuf(VirtViewerDisplay *display)
 	g_return_val_if_fail(VIRT_VIEWER_IS_DISPLAY(display), NULL);
 
 	return VIRT_VIEWER_DISPLAY_GET_CLASS(display)->get_pixbuf(display);
-}
-
-gboolean virt_viewer_display_open_fd(VirtViewerDisplay *display, int fd)
-{
-	g_return_val_if_fail(VIRT_VIEWER_IS_DISPLAY(display), FALSE);
-
-	return VIRT_VIEWER_DISPLAY_GET_CLASS(display)->open_fd(display, fd);
-}
-
-gboolean virt_viewer_display_open_host(VirtViewerDisplay *display, char *host, char *port)
-{
-        VirtViewerDisplayClass *klass;
-
-	g_return_val_if_fail(VIRT_VIEWER_IS_DISPLAY(display), FALSE);
-
-	klass = VIRT_VIEWER_DISPLAY_GET_CLASS(display);
-        return klass->open_host(display, host, port);
-}
-
-gboolean virt_viewer_display_channel_open_fd(VirtViewerDisplay *display,
-					     VirtViewerDisplayChannel *channel, int fd)
-{
-	g_return_val_if_fail(VIRT_VIEWER_IS_DISPLAY(display), FALSE);
-
-	return VIRT_VIEWER_DISPLAY_GET_CLASS(display)->channel_open_fd(display, channel, fd);
 }
 
 /*

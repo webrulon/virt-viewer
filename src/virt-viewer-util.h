@@ -28,7 +28,7 @@
 
 extern gboolean doDebug;
 
-#define DEBUG_LOG(s, ...) do { if (doDebug) g_debug((s), ## __VA_ARGS__); } while (0)
+#define DEBUG_LOG(s, ...) do { if (doDebug) g_debug(s, ## __VA_ARGS__); } while (0)
 #define ARRAY_CARDINALITY(Array) (sizeof (Array) / sizeof *(Array))
 
 

@@ -60,7 +60,7 @@ typedef struct {
 
 GType virt_viewer_display_vnc_get_type(void);
 
-VirtViewerDisplayVNC* virt_viewer_display_vnc_new(VirtViewer *viewer);
+GtkWidget* virt_viewer_display_vnc_new(VirtViewer *viewer);
 
 G_END_DECLS
 

@@ -63,7 +63,7 @@ typedef struct {
 
 GType virt_viewer_display_spice_get_type(void);
 
-VirtViewerDisplaySpice* virt_viewer_display_spice_new(VirtViewer *viewer);
+GtkWidget* virt_viewer_display_spice_new(VirtViewer *viewer);
 
 G_END_DECLS
 

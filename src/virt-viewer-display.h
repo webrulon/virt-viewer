@@ -24,7 +24,7 @@
 #ifndef _VIRT_VIEWER_DISPLAY_H
 #define _VIRT_VIEWER_DISPLAY_H
 
-#include <glib-object.h>
+#include <gtk/gtk.h>
 
 #include "virt-viewer-priv.h"
 
@@ -47,15 +47,22 @@ G_BEGIN_DECLS
 #define VIRT_VIEWER_DISPLAY_GET_CLASS(obj)				\
 	(G_TYPE_INSTANCE_GET_CLASS ((obj), VIRT_VIEWER_TYPE_DISPLAY, VirtViewerDisplayClass))
 
+typedef struct _VirtViewerDisplay       VirtViewerDisplay;
+typedef struct _VirtViewerDisplayClass  VirtViewerDisplayClass;
+typedef struct _VirtViewerDisplayPrivate VirtViewerDisplayPrivate;
+
+
 /* perhaps this become an interface, and be pushed in gtkvnc and spice? */
 struct _VirtViewerDisplay {
-	GObject parent;
+	GtkBin parent;
+
 	VirtViewer *viewer;
-	GtkWidget *widget;
+
+	VirtViewerDisplayPrivate *priv;
 };
 
 struct _VirtViewerDisplayClass {
-	GObjectClass parent_class;
+	GtkBinClass parent_class;
 
 	/* virtual methods */
 	void (* close) (VirtViewerDisplay* display);
@@ -69,6 +76,22 @@ struct _VirtViewerDisplayClass {
 };
 
 GType virt_viewer_display_get_type(void);
+
+GtkWidget *virt_viewer_display_new(void);
+
+void virt_viewer_display_set_desktop_size(VirtViewerDisplay *display,
+					  guint width,
+					  guint height);
+
+void virt_viewer_display_get_desktop_size(VirtViewerDisplay *display,
+					  guint *width,
+					  guint *height);
+
+void virt_viewer_display_set_zoom_level(VirtViewerDisplay *display,
+					guint zoom);
+void virt_viewer_display_set_zoom(VirtViewerDisplay *display,
+				  gboolean zoom);
+
 
 void virt_viewer_display_close(VirtViewerDisplay* display);
 void virt_viewer_display_send_keys(VirtViewerDisplay* display,

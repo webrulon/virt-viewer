@@ -201,17 +201,6 @@ virt_viewer_display_spice_main_channel_event(SpiceChannel *channel G_GNUC_UNUSED
 
 
 /*
- * Triggers a resize of the main container to indirectly cause
- * the display widget to be resized to fit the available space
- */
-static void
-virt_viewer_display_spice_resize_widget(VirtViewer *viewer)
-{
-	gtk_widget_queue_resize(viewer->align);
-}
-
-
-/*
  * Called when desktop size changes.
  *
  * It either tries to resize the main window, or it triggers
@@ -228,69 +217,13 @@ virt_viewer_display_spice_resize_desktop(SpiceChannel *channel G_GNUC_UNUSED,
 					 VirtViewer *viewer)
 {
 	DEBUG_LOG("desktop resize %dx%d", width, height);
-	viewer->desktopWidth = width;
-	viewer->desktopHeight = height;
 
-	if (viewer->autoResize && viewer->window && !viewer->fullscreen) {
+	virt_viewer_display_set_desktop_size(VIRT_VIEWER_DISPLAY(viewer->display), width, height);
+
+	if (viewer->autoResize && viewer->window && !viewer->fullscreen)
 		virt_viewer_resize_main_window(viewer);
-	} else {
-		virt_viewer_display_spice_resize_widget(viewer);
-	}
 }
 
-
-/*
- * Called when the main container widget's size has been set.
- * It attempts to fit the display widget into this space while
- * maintaining aspect ratio
- */
-static gboolean
-virt_viewer_display_spice_resize_align(GtkWidget *widget,
-				       GtkAllocation *alloc,
-				       VirtViewer *viewer)
-{
-	double desktopAspect;
-	double scrollAspect;
-	int height, width;
-	GtkAllocation child;
-	int dx = 0, dy = 0;
-
-	if (!viewer->active) {
-		DEBUG_LOG("Skipping inactive resize");
-		return TRUE;
-	}
-
-	if (viewer->desktopWidth == 0 || viewer->desktopHeight == 0)
-		desktopAspect = 1;
-	else
-		desktopAspect = (double)viewer->desktopWidth / (double)viewer->desktopHeight;
-	scrollAspect = (double)alloc->width / (double)alloc->height;
-
-	if (scrollAspect > desktopAspect) {
-		width = alloc->height * desktopAspect;
-		dx = (alloc->width - width) / 2;
-		height = alloc->height;
-	} else {
-		width = alloc->width;
-		height = alloc->width / desktopAspect;
-		dy = (alloc->height - height) / 2;
-	}
-
-	DEBUG_LOG("Align widget=%p is %dx%d, desktop is %dx%d, setting display to %dx%d",
-		  widget,
-		  alloc->width, alloc->height,
-		  viewer->desktopWidth, viewer->desktopHeight,
-		  width, height);
-
-	child.x = alloc->x + dx;
-	child.y = alloc->y + dy;
-	child.width = width;
-	child.height = height;
-	if (viewer->display && viewer->display->widget)
-		gtk_widget_size_allocate(viewer->display->widget, &child);
-
-	return FALSE;
-}
 
 static void
 virt_viewer_display_spice_channel_new(SpiceSession *s,
@@ -314,14 +247,12 @@ virt_viewer_display_spice_channel_new(SpiceSession *s,
 
 	if (SPICE_IS_DISPLAY_CHANNEL(channel)) {
 		DEBUG_LOG("new display channel (#%d)", id);
-		if (display->widget != NULL)
-			return;
-
 		g_signal_connect(channel, "display-primary-create",
 				 G_CALLBACK(virt_viewer_display_spice_resize_desktop), display->viewer);
 
 		self->display = spice_display_new(s, id);
-		display->widget = GTK_WIDGET(self->display);
+		gtk_container_add(GTK_CONTAINER(self), GTK_WIDGET(self->display));
+		gtk_widget_show(GTK_WIDGET(self->display));
 		g_object_set(self->display,
 			     "grab-keyboard", TRUE,
 			     "grab-mouse", TRUE,
@@ -329,10 +260,6 @@ virt_viewer_display_spice_channel_new(SpiceSession *s,
 			     "scaling", TRUE,
 			     "auto-clipboard", TRUE,
 			     NULL);
-		virt_viewer_add_display_and_realize(display->viewer);
-
-		g_signal_connect(display->viewer->align, "size-allocate",
-				 G_CALLBACK(virt_viewer_display_spice_resize_align), display->viewer);
 
 		virt_viewer_initialized(display->viewer);
 	}
@@ -375,7 +302,7 @@ virt_viewer_display_spice_channel_destroy(G_GNUC_UNUSED SpiceSession *s,
 	}
 }
 
-VirtViewerDisplaySpice *
+GtkWidget *
 virt_viewer_display_spice_new(VirtViewer *viewer)
 {
 	VirtViewerDisplaySpice *self;
@@ -393,7 +320,7 @@ virt_viewer_display_spice_new(VirtViewer *viewer)
 	g_signal_connect(self->session, "channel-destroy",
 			 G_CALLBACK(virt_viewer_display_spice_channel_destroy), self);
 
-	return self;
+	return GTK_WIDGET(self);
 }
 
 /*

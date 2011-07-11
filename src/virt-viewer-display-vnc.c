@@ -197,17 +197,6 @@ virt_viewer_display_vnc_auth_failure(VirtViewer *viewer,
 }
 
 /*
- * Triggers a resize of the main container to indirectly cause
- * the display widget to be resized to fit the available space
- */
-static void
-virt_viewer_display_vnc_resize_widget(VirtViewer *viewer)
-{
-	gtk_widget_queue_resize(viewer->align);
-}
-
-
-/*
  * Called when desktop size changes.
  *
  * It either tries to resize the main window, or it triggers
@@ -217,68 +206,15 @@ static void
 virt_viewer_display_vnc_resize_desktop(VirtViewer *viewer, gint width, gint height)
 {
 	DEBUG_LOG("desktop resize %dx%d", width, height);
-	viewer->desktopWidth = width;
-	viewer->desktopHeight = height;
 
-	if (viewer->autoResize && viewer->window && !viewer->fullscreen) {
+	virt_viewer_display_set_desktop_size(VIRT_VIEWER_DISPLAY(viewer->display), width, height);
+
+	if (viewer->autoResize && viewer->window && !viewer->fullscreen)
 		virt_viewer_resize_main_window(viewer);
-	} else {
-		virt_viewer_display_vnc_resize_widget(viewer);
-	}
 }
 
 
-/*
- * Called when the main container widget's size has been set.
- * It attempts to fit the display widget into this space while
- * maintaining aspect ratio
- */
-static gboolean
-virt_viewer_display_vnc_resize_align(GtkWidget *widget,
-				     GtkAllocation *alloc,
-				     VirtViewer *viewer)
-{
-	double desktopAspect;
-	double scrollAspect;
-	int height, width;
-	GtkAllocation child;
-	int dx = 0, dy = 0;
-
-	if (!viewer->active) {
-		DEBUG_LOG("Skipping inactive resize");
-		return TRUE;
-	}
-
-	desktopAspect = (double)viewer->desktopWidth / (double)viewer->desktopHeight;
-	scrollAspect = (double)alloc->width / (double)alloc->height;
-
-	if (scrollAspect > desktopAspect) {
-		width = alloc->height * desktopAspect;
-		dx = (alloc->width - width) / 2;
-		height = alloc->height;
-	} else {
-		width = alloc->width;
-		height = alloc->width / desktopAspect;
-		dy = (alloc->height - height) / 2;
-	}
-
-	DEBUG_LOG("Align widget=%p is %dx%d, desktop is %dx%d, setting display to %dx%d",
-		  widget,
-		  alloc->width, alloc->height,
-		  viewer->desktopWidth, viewer->desktopHeight,
-		  width, height);
-
-	child.x = alloc->x + dx;
-	child.y = alloc->y + dy;
-	child.width = width;
-	child.height = height;
-	if (viewer->display && viewer->display->widget)
-		gtk_widget_size_allocate(viewer->display->widget, &child);
-
-	return FALSE;
-}
-
-VirtViewerDisplayVNC*
+GtkWidget *
 virt_viewer_display_vnc_new(VirtViewer *viewer)
 {
 	VirtViewerDisplayVNC *self;
@@ -289,10 +225,9 @@ virt_viewer_display_vnc_new(VirtViewer *viewer)
 	self = g_object_new(VIRT_VIEWER_TYPE_DISPLAY_VNC, NULL);
 	d = VIRT_VIEWER_DISPLAY(self);
 	d->viewer = viewer;
-	viewer->display = d;
 
-	d->widget = vnc_display_new();
-	self->vnc = VNC_DISPLAY(d->widget);
+	self->vnc = VNC_DISPLAY(vnc_display_new());
+	gtk_container_add(GTK_CONTAINER(self), GTK_WIDGET(self->vnc));
 	vnc_display_set_keyboard_grab(self->vnc, TRUE);
 	vnc_display_set_pointer_grab(self->vnc, TRUE);
 
@@ -339,12 +274,7 @@ virt_viewer_display_vnc_new(VirtViewer *viewer)
 	g_signal_connect(self->vnc, "vnc-auth-credential",
 			 G_CALLBACK(virt_viewer_auth_vnc_credentials), &viewer->pretty_address);
 
-	virt_viewer_add_display_and_realize(viewer);
-
-	g_signal_connect(viewer->align, "size-allocate",
-			 G_CALLBACK(virt_viewer_display_vnc_resize_align), viewer);
-
-	return self;
+	return GTK_WIDGET(self);
 }
 
 

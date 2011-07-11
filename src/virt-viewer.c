@@ -47,7 +47,6 @@
 
 #include "virt-viewer.h"
 #include "virt-viewer-priv.h"
-#include "virt-viewer-align.h"
 #include "virt-viewer-events.h"
 #include "virt-viewer-auth.h"
 #include "virt-viewer-display-vnc.h"
@@ -163,24 +162,6 @@ virt_viewer_simple_message_dialog(GtkWidget *window,
 }
 
 
-void
-virt_viewer_add_display_and_realize(VirtViewer *viewer)
-{
-	g_return_if_fail(viewer != NULL);
-	g_return_if_fail(viewer->display != NULL);
-	g_return_if_fail(viewer->display->widget != NULL);
-
-	gtk_container_add(GTK_CONTAINER(viewer->align), viewer->display->widget);
-
-	if (!viewer->window) {
-		gtk_container_add(GTK_CONTAINER(viewer->container), GTK_WIDGET(viewer->notebook));
-		gtk_widget_show_all(viewer->container);
-	}
-
-	gtk_widget_realize(viewer->display->widget);
-}
-
-
 /*
  * This code attempts to resize the top level window to be large enough
  * to contain the entire display desktop at 1:1 ratio. If the local desktop
@@ -195,6 +176,8 @@ virt_viewer_resize_main_window(VirtViewer *viewer)
 	int width, height;
 	double desktopAspect;
 	double screenAspect;
+	guint desktopWidth;
+	guint desktopHeight;
 
 	DEBUG_LOG("Preparing main window resize");
 	if (!viewer->active) {
@@ -202,7 +185,10 @@ virt_viewer_resize_main_window(VirtViewer *viewer)
 		return;
 	}
 
-	gtk_window_resize(GTK_WINDOW (viewer->window), 1, 1);
+	gtk_window_resize(GTK_WINDOW(viewer->window), 1, 1);
+
+	virt_viewer_display_get_desktop_size(VIRT_VIEWER_DISPLAY(viewer->display),
+					     &desktopWidth, &desktopHeight);
 
 	screen = gtk_widget_get_screen(viewer->window);
 	gdk_screen_get_monitor_geometry(screen,
@@ -210,30 +196,30 @@ virt_viewer_resize_main_window(VirtViewer *viewer)
 					(screen, gtk_widget_get_window(viewer->window)),
 					&fullscreen);
 
-	desktopAspect = (double)viewer->desktopWidth / (double)viewer->desktopHeight;
+	desktopAspect = (double)desktopWidth / (double)desktopHeight;
 	screenAspect = (double)(fullscreen.width - 128) / (double)(fullscreen.height - 128);
 
-	if ((viewer->desktopWidth > (fullscreen.width - 128)) ||
-	    (viewer->desktopHeight > (fullscreen.height - 128))) {
+	if ((desktopWidth > (fullscreen.width - 128)) ||
+	    (desktopHeight > (fullscreen.height - 128))) {
 		/* Doesn't fit native res, so go as large as possible
 		   maintaining aspect ratio */
 		if (screenAspect > desktopAspect) {
-			width = viewer->desktopHeight * desktopAspect;
-			height = viewer->desktopHeight;
+			width = desktopHeight * desktopAspect;
+			height = desktopHeight;
 		} else {
-			width = viewer->desktopWidth;
-			height = viewer->desktopWidth / desktopAspect;
+			width = desktopWidth;
+			height = desktopWidth / desktopAspect;
 		}
 	} else {
-		width = viewer->desktopWidth;
-		height = viewer->desktopHeight;
+		width = desktopWidth;
+		height = desktopHeight;
 	}
 
 	DEBUG_LOG("Decided todo %dx%d (desktop is %dx%d, fullscreen is %dx%d",
-		  width, height, viewer->desktopWidth, viewer->desktopHeight,
+		  width, height, desktopWidth, desktopHeight,
 		  fullscreen.width, fullscreen.height);
 
-	virt_viewer_align_set_preferred_size(VIRT_VIEWER_ALIGN(viewer->align),
+	virt_viewer_display_set_desktop_size(VIRT_VIEWER_DISPLAY(viewer->display),
 					     width, height);
 }
 
@@ -242,7 +228,11 @@ virt_viewer_menu_view_zoom_out(GtkWidget *menu G_GNUC_UNUSED,
 			       VirtViewer *viewer)
 {
 	gtk_window_resize(GTK_WINDOW(viewer->window), 1, 1);
-	virt_viewer_align_zoom_out(VIRT_VIEWER_ALIGN(viewer->align));
+	if (viewer->zoomlevel > 10)
+		viewer->zoomlevel -= 10;
+
+	if (viewer->display)
+		virt_viewer_display_set_zoom_level(VIRT_VIEWER_DISPLAY(viewer->display), viewer->zoomlevel);
 }
 
 void
@@ -250,7 +240,11 @@ virt_viewer_menu_view_zoom_in(GtkWidget *menu G_GNUC_UNUSED,
 			      VirtViewer *viewer)
 {
 	gtk_window_resize(GTK_WINDOW(viewer->window), 1, 1);
-	virt_viewer_align_zoom_in(VIRT_VIEWER_ALIGN(viewer->align));
+	if (viewer->zoomlevel < 400)
+		viewer->zoomlevel += 10;
+
+	if (viewer->display)
+		virt_viewer_display_set_zoom_level(VIRT_VIEWER_DISPLAY(viewer->display), viewer->zoomlevel);
 }
 
 void
@@ -258,7 +252,10 @@ virt_viewer_menu_view_zoom_reset(GtkWidget *menu G_GNUC_UNUSED,
 				 VirtViewer *viewer)
 {
 	gtk_window_resize(GTK_WINDOW(viewer->window), 1, 1);
-	virt_viewer_align_zoom_normal(VIRT_VIEWER_ALIGN(viewer->align));
+	viewer->zoomlevel = 100;
+
+	if (viewer->display)
+		virt_viewer_display_set_zoom_level(VIRT_VIEWER_DISPLAY(viewer->display), viewer->zoomlevel);
 }
 
 void
@@ -366,7 +363,7 @@ virt_viewer_quit(VirtViewer *viewer)
 	g_return_if_fail(viewer != NULL);
 
 	if (viewer->display)
-		virt_viewer_display_close(viewer->display);
+		virt_viewer_display_close(VIRT_VIEWER_DISPLAY(viewer->display));
 	gtk_main_quit();
 }
 
@@ -464,7 +461,7 @@ virt_viewer_menu_send(GtkWidget *menu G_GNUC_UNUSED,
 	for (i = 0 ; i < G_N_ELEMENTS(keyCombos) ; i++) {
 		if (!strcmp(text, keyCombos[i].label)) {
 			DEBUG_LOG("Sending key combo %s", gtk_label_get_text(GTK_LABEL(label)));
-			virt_viewer_display_send_keys(viewer->display,
+			virt_viewer_display_send_keys(VIRT_VIEWER_DISPLAY(viewer->display),
 						      keyCombos[i].keys,
 						      keyCombos[i].nkeys);
 			return;
@@ -478,7 +475,7 @@ static void
 virt_viewer_save_screenshot(VirtViewer *viewer,
 			    const char *file)
 {
-	GdkPixbuf *pix = virt_viewer_display_get_pixbuf(viewer->display);
+	GdkPixbuf *pix = virt_viewer_display_get_pixbuf(VIRT_VIEWER_DISPLAY(viewer->display));
 	gdk_pixbuf_save(pix, file, "png", NULL,
 			"tEXt::Generator App", PACKAGE, NULL);
 	gdk_pixbuf_unref(pix);
@@ -853,10 +850,8 @@ virt_viewer_show_display(VirtViewer *viewer)
 {
 	g_return_if_fail(viewer != NULL);
 	g_return_if_fail(viewer->display != NULL);
-	g_return_if_fail(viewer->display->widget != NULL);
 
-	gtk_widget_show(viewer->display->widget);
-	gtk_widget_grab_focus(viewer->display->widget);
+	gtk_widget_grab_focus(gtk_bin_get_child(GTK_BIN(viewer->display)));
 	gtk_notebook_set_current_page(GTK_NOTEBOOK(viewer->notebook), 1);
 }
 
@@ -899,12 +894,12 @@ virt_viewer_extract_connect_info(VirtViewer *viewer,
 	if (g_strcasecmp(type, "vnc") == 0) {
 		virt_viewer_trace(viewer, "Guest %s has a %s display\n",
 			     viewer->domkey, type);
-		viewer->display = VIRT_VIEWER_DISPLAY(virt_viewer_display_vnc_new(viewer));
+		viewer->display = virt_viewer_display_vnc_new(viewer);
 #ifdef HAVE_SPICE_GTK
 	} else if (g_strcasecmp(type, "spice") == 0) {
 		virt_viewer_trace(viewer, "Guest %s has a %s display\n",
 			     viewer->domkey, type);
-		viewer->display = VIRT_VIEWER_DISPLAY(virt_viewer_display_spice_new(viewer));
+		viewer->display = virt_viewer_display_spice_new(viewer);
 #endif
 	} else {
 		virt_viewer_trace(viewer, "Guest %s has unsupported %s display type\n",
@@ -913,6 +908,10 @@ virt_viewer_extract_connect_info(VirtViewer *viewer,
 					     viewer->domkey);
 		goto cleanup;
 	}
+	gtk_notebook_append_page(GTK_NOTEBOOK(viewer->notebook), viewer->display, NULL);
+	if (gtk_bin_get_child(GTK_BIN(viewer->display)))
+		gtk_widget_realize(GTK_WIDGET(gtk_bin_get_child(GTK_BIN(viewer->display))));
+	gtk_widget_show_all(viewer->display);
 
 	xpath = g_strdup_printf("string(/domain/devices/graphics[@type='%s']/@port)", type);
 	if ((viewer->gport = virt_viewer_extract_xpath_string(xmldesc, xpath)) == NULL) {
@@ -969,7 +968,7 @@ virt_viewer_channel_open_fd(VirtViewer *viewer,
 		virt_viewer_simple_message_dialog(viewer->window, _("Can't connect to channel, SSH only supported."));
 
 	if (fd >= 0)
-		virt_viewer_display_channel_open_fd(viewer->display, channel, fd);
+		virt_viewer_display_channel_open_fd(VIRT_VIEWER_DISPLAY(viewer->display), channel, fd);
 }
 #else
 void
@@ -1029,11 +1028,11 @@ virt_viewer_activate(VirtViewer *viewer,
 #endif
 
 	if (fd >= 0) {
-		ret = virt_viewer_display_open_fd(viewer->display, fd);
+		ret = virt_viewer_display_open_fd(VIRT_VIEWER_DISPLAY(viewer->display), fd);
 	} else {
 		virt_viewer_trace(viewer, "Opening direct TCP connection to display at %s:%s\n",
 			     viewer->ghost, viewer->gport);
-		ret = virt_viewer_display_open_host(viewer->display,
+		ret = virt_viewer_display_open_host(VIRT_VIEWER_DISPLAY(viewer->display),
 						    viewer->ghost, viewer->gport);
 	}
 
@@ -1107,7 +1106,7 @@ virt_viewer_deactivate(VirtViewer *viewer)
 		return;
 
 	if (viewer->display)
-		virt_viewer_display_close(viewer->display);
+		virt_viewer_display_close(VIRT_VIEWER_DISPLAY(viewer->display));
 	free(viewer->domtitle);
 	viewer->domtitle = NULL;
 
@@ -1346,8 +1345,6 @@ virt_viewer_start(const char *uri,
 	viewer->domkey = g_strdup(name);
 	viewer->uri = g_strdup(uri);
 
-	viewer->desktopWidth = viewer->desktopHeight = 400;
-
 	g_value_init(&viewer->accelSetting, G_TYPE_STRING);
 
 	virt_viewer_events_register();
@@ -1376,16 +1373,14 @@ virt_viewer_start(const char *uri,
 	}
 
 	viewer->status = gtk_label_new("");
-	viewer->align = virt_viewer_align_new();
 
-	virt_viewer_align_set_zoom_level(VIRT_VIEWER_ALIGN(viewer->align), zoom);
+	viewer->zoomlevel = zoom;
 
 	viewer->notebook = gtk_notebook_new();
 	gtk_notebook_set_show_tabs(GTK_NOTEBOOK(viewer->notebook), FALSE);
 	gtk_notebook_set_show_border(GTK_NOTEBOOK(viewer->notebook), FALSE);
 
 	gtk_notebook_append_page(GTK_NOTEBOOK(viewer->notebook), viewer->status, NULL);
-	gtk_notebook_append_page(GTK_NOTEBOOK(viewer->notebook), viewer->align, NULL);
 
 	if (container) {
 		viewer->container = container;
@@ -1396,10 +1391,7 @@ virt_viewer_start(const char *uri,
 		GtkWidget *vbox = GTK_WIDGET(gtk_builder_get_object(viewer->builder, "viewer-box"));
 		virt_viewer_toolbar_setup(viewer);
 
-		//gtk_box_pack_end(GTK_BOX(vbox), viewer->toolbar, TRUE, TRUE, 0);
-		//gtk_box_pack_end(GTK_BOX(vbox), viewer->notebook, TRUE, TRUE, 0);
 		gtk_box_pack_end(GTK_BOX(vbox), viewer->layout, TRUE, TRUE, 0);
-		gtk_widget_show_all(GTK_WIDGET(vbox));
 
 		GtkWidget *window = GTK_WIDGET(gtk_builder_get_object(viewer->builder, "viewer"));
 		GSList *accels;

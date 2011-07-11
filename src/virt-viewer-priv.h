@@ -57,7 +57,6 @@ struct _VirtViewer {
 	GtkWidget *container;
 
 	GtkWidget *notebook;
-	GtkWidget *align;
 	GtkWidget *status;
 
 	GtkWidget *toolbar;
@@ -65,8 +64,6 @@ struct _VirtViewer {
 
 	char *pretty_address;
 
-	int desktopWidth;
-	int desktopHeight;
 	gboolean autoResize;
 	gboolean fullscreen;
 	gboolean withEvents;
@@ -87,7 +84,9 @@ struct _VirtViewer {
 
 	gchar *clipboard;
 
-	VirtViewerDisplay *display;
+	GtkWidget *display;
+
+	gint zoomlevel;
 
 	char *unixsock;
 	char *ghost;
@@ -113,7 +112,6 @@ void virt_viewer_set_status(VirtViewer *viewer, const char *text);
 void virt_viewer_set_title(VirtViewer *viewer, gboolean grabbed);
 void virt_viewer_enable_modifiers(VirtViewer *viewer);
 void virt_viewer_disable_modifiers(VirtViewer *viewer);
-void virt_viewer_add_display_and_realize(VirtViewer *viewer);
 void virt_viewer_server_cut_text(VirtViewer *viewer, const gchar *text);
 void virt_viewer_resize_main_window(VirtViewer *viewer);
 void virt_viewer_channel_open_fd(VirtViewer *viewer, VirtViewerDisplayChannel *channel);

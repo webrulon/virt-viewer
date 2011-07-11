@@ -1568,7 +1568,7 @@ virt_viewer_start(const char *uri,
 		.cb = virt_viewer_auth_libvirt_credentials,
 		.cbdata = (void *)uri,
 	};
-
+	GdkColor color;
 	doDebug = debug;
 
 	viewer = g_new0(VirtViewer, 1);
@@ -1629,6 +1629,8 @@ virt_viewer_start(const char *uri,
 		virt_viewer_toolbar_setup(viewer);
 
 		gtk_box_pack_end(GTK_BOX(vbox), viewer->layout, TRUE, TRUE, 0);
+		gdk_color_parse("black", &color);
+		gtk_widget_modify_bg(viewer->layout, GTK_STATE_NORMAL, &color);
 
 		GtkWidget *window = GTK_WIDGET(gtk_builder_get_object(viewer->builder, "viewer"));
 		GSList *accels;

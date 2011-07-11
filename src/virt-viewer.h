@@ -37,6 +37,7 @@ extern int virt_viewer_start(const char *uri,
 			     gboolean reconnect,
 			     gboolean verbose,
 			     gboolean debug,
+			     gboolean fullscreen,
 			     GtkWidget *container);
 
 #endif /* VIRT_VIEWER_H */

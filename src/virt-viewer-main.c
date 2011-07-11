@@ -50,6 +50,7 @@ int main(int argc, char **argv)
 	gboolean direct = FALSE;
 	gboolean waitvm = FALSE;
 	gboolean reconnect = FALSE;
+	gboolean fullscreen = FALSE;
 	const char *help_msg = N_("Run '" PACKAGE " --help' to see a full list of available command line options");
 	const GOptionEntry options [] = {
 		{ "version", 'V', G_OPTION_FLAG_NO_ARG, G_OPTION_ARG_CALLBACK,
@@ -68,9 +69,11 @@ int main(int argc, char **argv)
 		  N_("Zoom level of window, in percentage"), "ZOOM" },
 		{ "debug", '\0', 0, G_OPTION_ARG_NONE, &debug,
 		  N_("display debugging information"), NULL },
-  	     	{ G_OPTION_REMAINING, '\0', 0, G_OPTION_ARG_STRING_ARRAY, &args,
+		{ "full-screen", 'f', 0, G_OPTION_ARG_NONE, &fullscreen,
+		  N_("Open in full screen mode"), NULL },
+		{ G_OPTION_REMAINING, '\0', 0, G_OPTION_ARG_STRING_ARRAY, &args,
 		  NULL, "DOMAIN-NAME|ID|UUID" },
-  		{ NULL, 0, 0, G_OPTION_ARG_NONE, NULL, NULL, NULL }
+		{ NULL, 0, 0, G_OPTION_ARG_NONE, NULL, NULL, NULL }
 	};
 
 	setlocale(LC_ALL, "");
@@ -104,7 +107,7 @@ int main(int argc, char **argv)
 		return 1;
 	}
 
-	ret = virt_viewer_start(uri, args[0], zoom, direct, waitvm, reconnect, verbose, debug, NULL);
+	ret = virt_viewer_start(uri, args[0], zoom, direct, waitvm, reconnect, verbose, debug, fullscreen, NULL);
 	if (ret != 0)
 		return ret;
 
@@ -118,5 +121,6 @@ int main(int argc, char **argv)
  *  c-indent-level: 8
  *  c-basic-offset: 8
  *  tab-width: 8
+ *  indent-tabs-mode: t
  * End:
  */

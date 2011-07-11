@@ -57,6 +57,10 @@ Zoom level of the display window in percentage. Range 10-200.
 Do not attempt to tunnel the console over SSH, even if the main connection URI
 used SSH.
 
+=item -f, --fullscreen
+
+Start with the window maximised to fullscreen
+
 =item --debug
 
 Print debugging information

@@ -520,6 +520,22 @@ virt_viewer_enter_fullscreen(VirtViewer *viewer)
 	ViewAutoDrawer_SetActive(VIEW_AUTODRAWER(viewer->layout), TRUE);
 }
 
+static gboolean
+window_state_cb(GtkWidget *widget G_GNUC_UNUSED, GdkEventWindowState *event,
+		gpointer data)
+{
+	VirtViewer *viewer = data;
+
+	if (!(event->changed_mask & GDK_WINDOW_STATE_FULLSCREEN))
+		return TRUE;
+
+	if (event->new_window_state & GDK_WINDOW_STATE_FULLSCREEN)
+		virt_viewer_enter_fullscreen(viewer);
+	else
+		virt_viewer_leave_fullscreen(viewer);
+
+	return TRUE;
+}
 
 static void
 virt_viewer_toolbar_leave_fullscreen(GtkWidget *button G_GNUC_UNUSED,
@@ -1539,6 +1555,7 @@ virt_viewer_start(const char *uri,
 		  gboolean reconnect,
 		  gboolean verbose,
 		  gboolean debug,
+		  gboolean fullscreen,
 		  GtkWidget *container)
 {
 	VirtViewer *viewer;
@@ -1627,6 +1644,9 @@ virt_viewer_start(const char *uri,
 			viewer->accelList = g_slist_append(viewer->accelList, accels->data);
 			g_object_ref(G_OBJECT(accels->data));
 		}
+		g_signal_connect(G_OBJECT(window), "window-state-event", G_CALLBACK(window_state_cb), viewer);
+		if (fullscreen)
+			gtk_window_fullscreen(GTK_WINDOW(window));
 		gtk_widget_show_all(viewer->window);
 	}
 
@@ -1658,5 +1678,6 @@ virt_viewer_start(const char *uri,
  *  c-indent-level: 8
  *  c-basic-offset: 8
  *  tab-width: 8
+ *  indent-tabs-mode: t
  * End:
  */

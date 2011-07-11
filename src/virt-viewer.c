@@ -1631,6 +1631,8 @@ virt_viewer_start(const char *uri,
 		gtk_box_pack_end(GTK_BOX(vbox), viewer->layout, TRUE, TRUE, 0);
 		gdk_color_parse("black", &color);
 		gtk_widget_modify_bg(viewer->layout, GTK_STATE_NORMAL, &color);
+		gdk_color_parse("white", &color);
+		gtk_widget_modify_fg(viewer->status, GTK_STATE_NORMAL, &color);
 
 		GtkWidget *window = GTK_WIDGET(gtk_builder_get_object(viewer->builder, "viewer"));
 		GSList *accels;

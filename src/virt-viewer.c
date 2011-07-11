@@ -382,8 +382,11 @@ virt_viewer_set_title(VirtViewer *viewer,
 	else
 		subtitle = "";
 
-	title = g_strdup_printf("%s%s - Virt Viewer",
-				subtitle, viewer->domtitle);
+	if (viewer->domtitle)
+		title = g_strdup_printf("%s%s - Virt Viewer",
+					subtitle, viewer->domtitle);
+	else
+		title = g_strdup("Virt Viewer");
 
 	gtk_window_set_title(GTK_WINDOW(viewer->window), title);
 
@@ -1224,9 +1227,6 @@ virt_viewer_activate(VirtViewer *viewer,
 
 	virt_viewer_set_status(viewer, "Connecting to graphic server");
 
-	free(viewer->domtitle);
-	viewer->domtitle = g_strdup(virDomainGetName(dom));
-
 	viewer->connected = FALSE;
 	viewer->active = TRUE;
 	virt_viewer_set_title(viewer, FALSE);
@@ -1302,8 +1302,6 @@ virt_viewer_deactivate(VirtViewer *viewer)
 
 	if (viewer->display)
 		virt_viewer_display_close(VIRT_VIEWER_DISPLAY(viewer->display));
-	free(viewer->domtitle);
-	viewer->domtitle = NULL;
 
 	viewer->connected = FALSE;
 	viewer->active = FALSE;
@@ -1449,6 +1447,9 @@ virt_viewer_initial_connect(VirtViewer *viewer)
 			goto cleanup;
 		}
 	}
+
+	free(viewer->domtitle);
+	viewer->domtitle = g_strdup(virDomainGetName(dom));
 
 	virt_viewer_set_status(viewer, "Checking guest domain status");
 	if (virDomainGetInfo(dom, &info) < 0) {
@@ -1638,6 +1639,7 @@ virt_viewer_start(const char *uri,
 		GSList *accels;
 		viewer->container = window;
 		viewer->window = window;
+		virt_viewer_set_title(viewer, FALSE);
 		gtk_window_set_resizable(GTK_WINDOW(window), TRUE);
 #if GTK_CHECK_VERSION(3, 0, 0)
 		gtk_window_set_has_resize_grip(GTK_WINDOW(window), FALSE);

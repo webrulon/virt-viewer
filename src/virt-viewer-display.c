@@ -75,14 +75,11 @@ enum {
 static void
 virt_viewer_display_class_init(VirtViewerDisplayClass *class)
 {
-	GObjectClass *gobject_class;
-	GtkWidgetClass *widget_class;
+	GObjectClass *object_class = G_OBJECT_CLASS(class);
+	GtkWidgetClass *widget_class = GTK_WIDGET_CLASS(class);
 
-	gobject_class = (GObjectClass*) class;
-	widget_class = (GtkWidgetClass*) class;
-
-	gobject_class->set_property = virt_viewer_display_set_property;
-	gobject_class->get_property = virt_viewer_display_get_property;
+	object_class->set_property = virt_viewer_display_set_property;
+	object_class->get_property = virt_viewer_display_get_property;
 
 #if GTK_CHECK_VERSION(3, 0, 0)
 	widget_class->get_preferred_width = virt_viewer_display_get_preferred_width;
@@ -92,7 +89,7 @@ virt_viewer_display_class_init(VirtViewerDisplayClass *class)
 #endif
 	widget_class->size_allocate = virt_viewer_display_size_allocate;
 
-	g_object_class_install_property(gobject_class,
+	g_object_class_install_property(object_class,
 					PROP_DESKTOP_WIDTH,
 					g_param_spec_int("desktop-width",
 							 "Width",
@@ -101,7 +98,7 @@ virt_viewer_display_class_init(VirtViewerDisplayClass *class)
 							 G_MAXINT32,
 							 100,
 							 G_PARAM_READWRITE));
-	g_object_class_install_property(gobject_class,
+	g_object_class_install_property(object_class,
 					PROP_DESKTOP_HEIGHT,
 					g_param_spec_int("desktop-height",
 							 "Height",
@@ -110,14 +107,14 @@ virt_viewer_display_class_init(VirtViewerDisplayClass *class)
 							 G_MAXINT32,
 							 100,
 							 G_PARAM_READWRITE));
-	g_object_class_install_property(gobject_class,
+	g_object_class_install_property(object_class,
 					PROP_ZOOM,
 					g_param_spec_boolean("zoom",
 							     "Zoom",
 							     "Zoom",
 							     TRUE,
 							     G_PARAM_READWRITE));
-	g_object_class_install_property(gobject_class,
+	g_object_class_install_property(object_class,
 					PROP_ZOOM_LEVEL,
 					g_param_spec_int("zoom-level",
 							 "Zoom",
@@ -127,7 +124,138 @@ virt_viewer_display_class_init(VirtViewerDisplayClass *class)
 							 100,
 							 G_PARAM_READWRITE));
 
-	g_type_class_add_private(gobject_class, sizeof(VirtViewerDisplayPrivate));
+	g_signal_new("display-connected",
+		     G_OBJECT_CLASS_TYPE(object_class),
+		     G_SIGNAL_RUN_FIRST,
+		     G_STRUCT_OFFSET(VirtViewerDisplayClass, display_connected),
+		     NULL, NULL,
+		     g_cclosure_marshal_VOID__VOID,
+		     G_TYPE_NONE,
+		     0);
+
+	g_signal_new("display-initialized",
+		     G_OBJECT_CLASS_TYPE(object_class),
+		     G_SIGNAL_RUN_FIRST,
+		     G_STRUCT_OFFSET(VirtViewerDisplayClass, display_initialized),
+		     NULL, NULL,
+		     g_cclosure_marshal_VOID__VOID,
+		     G_TYPE_NONE,
+		     0);
+
+	g_signal_new("display-disconnected",
+		     G_OBJECT_CLASS_TYPE(object_class),
+		     G_SIGNAL_RUN_FIRST,
+		     G_STRUCT_OFFSET(VirtViewerDisplayClass, display_disconnected),
+		     NULL, NULL,
+		     g_cclosure_marshal_VOID__VOID,
+		     G_TYPE_NONE,
+		     0);
+
+	g_signal_new("display-channel-open",
+		     G_OBJECT_CLASS_TYPE(object_class),
+		     G_SIGNAL_RUN_FIRST,
+		     G_STRUCT_OFFSET(VirtViewerDisplayClass, display_channel_open),
+		     NULL, NULL,
+		     g_cclosure_marshal_VOID__OBJECT,
+		     G_TYPE_NONE,
+		     1,
+		     G_TYPE_OBJECT);
+
+	g_signal_new("display-auth-refused",
+		     G_OBJECT_CLASS_TYPE(object_class),
+		     G_SIGNAL_RUN_LAST | G_SIGNAL_NO_HOOKS,
+		     G_STRUCT_OFFSET(VirtViewerDisplayClass, display_auth_refused),
+		     NULL,
+		     NULL,
+		     g_cclosure_marshal_VOID__STRING,
+		     G_TYPE_NONE,
+		     1,
+		     G_TYPE_STRING);
+
+	g_signal_new("display-auth-failed",
+		     G_OBJECT_CLASS_TYPE(object_class),
+		     G_SIGNAL_RUN_LAST | G_SIGNAL_NO_HOOKS,
+		     G_STRUCT_OFFSET(VirtViewerDisplayClass, display_auth_failed),
+		     NULL,
+		     NULL,
+		     g_cclosure_marshal_VOID__STRING,
+		     G_TYPE_NONE,
+		     1,
+		     G_TYPE_STRING);
+
+
+	g_signal_new("display-pointer-grab",
+		     G_OBJECT_CLASS_TYPE(object_class),
+		     G_SIGNAL_RUN_LAST | G_SIGNAL_NO_HOOKS,
+		     G_STRUCT_OFFSET(VirtViewerDisplayClass, display_pointer_grab),
+		     NULL,
+		     NULL,
+		     g_cclosure_marshal_VOID__VOID,
+		     G_TYPE_NONE,
+		     0);
+
+	g_signal_new("display-pointer-ungrab",
+		     G_OBJECT_CLASS_TYPE(object_class),
+		     G_SIGNAL_RUN_LAST | G_SIGNAL_NO_HOOKS,
+		     G_STRUCT_OFFSET(VirtViewerDisplayClass, display_pointer_ungrab),
+		     NULL,
+		     NULL,
+		     g_cclosure_marshal_VOID__VOID,
+		     G_TYPE_NONE,
+		     0);
+
+	g_signal_new("display-keyboard-grab",
+		     G_OBJECT_CLASS_TYPE(object_class),
+		     G_SIGNAL_RUN_LAST | G_SIGNAL_NO_HOOKS,
+		     G_STRUCT_OFFSET(VirtViewerDisplayClass, display_keyboard_grab),
+		     NULL,
+		     NULL,
+		     g_cclosure_marshal_VOID__VOID,
+		     G_TYPE_NONE,
+		     0);
+
+	g_signal_new("display-keyboard-ungrab",
+		     G_OBJECT_CLASS_TYPE(object_class),
+		     G_SIGNAL_RUN_LAST | G_SIGNAL_NO_HOOKS,
+		     G_STRUCT_OFFSET(VirtViewerDisplayClass, display_keyboard_ungrab),
+		     NULL,
+		     NULL,
+		     g_cclosure_marshal_VOID__VOID,
+		     G_TYPE_NONE,
+		     0);
+
+	g_signal_new("display-desktop-resize",
+		     G_OBJECT_CLASS_TYPE(object_class),
+		     G_SIGNAL_RUN_LAST | G_SIGNAL_NO_HOOKS,
+		     G_STRUCT_OFFSET(VirtViewerDisplayClass, display_desktop_resize),
+		     NULL,
+		     NULL,
+		     g_cclosure_marshal_VOID__VOID,
+		     G_TYPE_NONE,
+		     0);
+
+	g_signal_new("display-cut-text",
+		     G_OBJECT_CLASS_TYPE(object_class),
+		     G_SIGNAL_RUN_LAST | G_SIGNAL_NO_HOOKS,
+		     G_STRUCT_OFFSET(VirtViewerDisplayClass, display_cut_text),
+		     NULL,
+		     NULL,
+		     g_cclosure_marshal_VOID__STRING,
+		     G_TYPE_NONE,
+		     1,
+		     G_TYPE_STRING);
+
+	g_signal_new("display-bell",
+		     G_OBJECT_CLASS_TYPE(object_class),
+		     G_SIGNAL_RUN_LAST | G_SIGNAL_NO_HOOKS,
+		     G_STRUCT_OFFSET(VirtViewerDisplayClass, display_bell),
+		     NULL,
+		     NULL,
+		     g_cclosure_marshal_VOID__VOID,
+		     G_TYPE_NONE,
+		     0);
+
+	g_type_class_add_private(object_class, sizeof(VirtViewerDisplayPrivate));
 }
 
 static void
@@ -147,7 +275,7 @@ virt_viewer_display_init(VirtViewerDisplay *display)
 GtkWidget*
 virt_viewer_display_new(void)
 {
-	return g_object_new (VIRT_VIEWER_TYPE_DISPLAY, NULL);
+	return g_object_new(VIRT_VIEWER_TYPE_DISPLAY, NULL);
 }
 
 static void

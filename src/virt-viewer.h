@@ -25,6 +25,10 @@
 
 #include "virt-viewer-util.h"
 
+typedef struct _VirtViewerDisplay VirtViewerDisplay;
+typedef struct _VirtViewerDisplayClass VirtViewerDisplayClass;
+typedef struct _VirtViewer VirtViewer;
+
 extern int virt_viewer_start(const char *uri,
 			     const char *name,
 			     gint zoom,

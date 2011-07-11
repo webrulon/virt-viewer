@@ -34,10 +34,10 @@ G_BEGIN_DECLS
 #define VIRT_VIEWER_TYPE_DISPLAY_VNC virt_viewer_display_vnc_get_type()
 
 #define VIRT_VIEWER_DISPLAY_VNC(obj)					\
-	(G_TYPE_CHECK_INSTANCE_CAST ((obj), VIRT_VIEWER_TYPE_DISPLAY_VNC, VirtViewerDisplayVNC))
+	(G_TYPE_CHECK_INSTANCE_CAST ((obj), VIRT_VIEWER_TYPE_DISPLAY_VNC, VirtViewerDisplayVnc))
 
 #define VIRT_VIEWER_DISPLAY_VNC_CLASS(klass)				\
-	(G_TYPE_CHECK_CLASS_CAST ((klass), VIRT_VIEWER_TYPE_DISPLAY_VNC, VirtViewerDisplayVNCClass))
+	(G_TYPE_CHECK_CLASS_CAST ((klass), VIRT_VIEWER_TYPE_DISPLAY_VNC, VirtViewerDisplayVncClass))
 
 #define VIRT_IS_VIEWER_DISPLAY_VNC(obj)					\
 	(G_TYPE_CHECK_INSTANCE_TYPE ((obj), VIRT_VIEWER_TYPE_DISPLAY_VNC))
@@ -46,21 +46,21 @@ G_BEGIN_DECLS
 	(G_TYPE_CHECK_CLASS_TYPE ((klass), VIRT_VIEWER_TYPE_DISPLAY_VNC))
 
 #define VIRT_VIEWER_DISPLAY_VNC_GET_CLASS(obj)				\
-	(G_TYPE_INSTANCE_GET_CLASS ((obj), VIRT_VIEWER_TYPE_DISPLAY_VNC, VirtViewerDisplayVNCClass))
+	(G_TYPE_INSTANCE_GET_CLASS ((obj), VIRT_VIEWER_TYPE_DISPLAY_VNC, VirtViewerDisplayVncClass))
 
 typedef struct {
 	VirtViewerDisplay parent;
 
 	VncDisplay *vnc;
-} VirtViewerDisplayVNC;
+} VirtViewerDisplayVnc;
 
 typedef struct {
 	VirtViewerDisplayClass parent_class;
-} VirtViewerDisplayVNCClass;
+} VirtViewerDisplayVncClass;
 
 GType virt_viewer_display_vnc_get_type(void);
 
-GtkWidget* virt_viewer_display_vnc_new(VirtViewer *viewer);
+GtkWidget* virt_viewer_display_vnc_new(void);
 
 G_END_DECLS
 

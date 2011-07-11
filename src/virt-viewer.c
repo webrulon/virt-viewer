@@ -25,6 +25,7 @@
 #include <config.h>
 
 #include <gdk/gdkkeysyms.h>
+#include <gtk/gtk.h>
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <stdlib.h>
@@ -32,6 +33,13 @@
 #include <unistd.h>
 #include <locale.h>
 #include <glib/gprintf.h>
+#include <glib/gi18n.h>
+
+#include <libvirt/libvirt.h>
+#include <libvirt/virterror.h>
+#include <libxml/xpath.h>
+#include <libxml/uri.h>
+
 
 #ifdef HAVE_SYS_SOCKET_H
 #include <sys/socket.h>
@@ -46,7 +54,6 @@
 #endif
 
 #include "virt-viewer.h"
-#include "virt-viewer-priv.h"
 #include "virt-viewer-events.h"
 #include "virt-viewer-auth.h"
 #include "virt-viewer-display-vnc.h"
@@ -75,9 +82,38 @@ void virt_viewer_menu_file_screenshot(GtkWidget *menu, VirtViewer *viewer);
 void virt_viewer_about_close(GtkWidget *dialog, VirtViewer *viewer);
 void virt_viewer_about_delete(GtkWidget *dialog, void *dummy, VirtViewer *viewer);
 
-static const char * const menuNames[LAST_MENU] = {
-	"menu-file", "menu-view", "menu-send", "menu-help"
-};
+
+/* Internal methods */
+static void virt_viewer_connected(VirtViewerDisplay *display,
+				  VirtViewer *viewer);
+static void virt_viewer_initialized(VirtViewerDisplay *display,
+				  VirtViewer *viewer);
+static void virt_viewer_disconnected(VirtViewerDisplay *display,
+				  VirtViewer *viewer);
+static void virt_viewer_auth_refused(VirtViewerDisplay *display,
+				     const char *msg,
+				     VirtViewer *viewer);
+static void virt_viewer_auth_failed(VirtViewerDisplay *display,
+				    const char *msg,
+				    VirtViewer *viewer);
+
+static void virt_viewer_server_cut_text(VirtViewerDisplay *display,
+					const gchar *text,
+					VirtViewer *viewer);
+static void virt_viewer_bell(VirtViewerDisplay *display,
+			     VirtViewer *viewer);
+static void virt_viewer_enable_modifiers(VirtViewer *viewer);
+static void virt_viewer_disable_modifiers(VirtViewer *viewer);
+static void virt_viewer_resize_main_window(VirtViewer *viewer);
+
+static void virt_viewer_set_status(VirtViewer *viewer, const char *text);
+static void virt_viewer_set_title(VirtViewer *viewer, gboolean grabbed);
+static void virt_viewer_channel_open(VirtViewerDisplay *display,
+				     VirtViewerDisplayChannel *channel,
+				     VirtViewer *viewer);
+static void virt_viewer_quit(VirtViewer *viewer);
+
+static void virt_viewer_simple_message_dialog(GtkWidget *window, const char *fmt, ...);
 
 
 #if GTK_CHECK_VERSION(3, 0, 0)
@@ -99,6 +135,70 @@ static const char * const menuNames[LAST_MENU] = {
 #define GDK_F11 GDK_KEY_F11
 #define GDK_F12 GDK_KEY_F12
 #endif
+
+enum menuNums {
+	FILE_MENU,
+	VIEW_MENU,
+	SEND_KEY_MENU,
+	HELP_MENU,
+	LAST_MENU // sentinel
+};
+
+struct _VirtViewer {
+	char *uri;
+	virConnectPtr conn;
+	char *domkey;
+	char *domtitle;
+
+	GtkBuilder *builder;
+	GtkWidget *window;
+	GtkWidget *container;
+
+	GtkWidget *notebook;
+	GtkWidget *status;
+
+	GtkWidget *toolbar;
+	GtkWidget *layout;
+
+	char *pretty_address;
+
+	gboolean autoResize;
+	gboolean fullscreen;
+	gboolean withEvents;
+
+	gboolean active;
+
+	gboolean accelEnabled;
+	GValue accelSetting;
+	GSList *accelList;
+	int accelMenuSig[LAST_MENU];
+
+	gboolean waitvm;
+	gboolean reconnect;
+	gboolean direct;
+	gboolean verbose;
+	gboolean authretry;
+	gboolean connected;
+
+	gchar *clipboard;
+
+	GtkWidget *display;
+
+	gint zoomlevel;
+
+	char *unixsock;
+	char *ghost;
+	char *gport;
+	char *host;
+	char *transport;
+	char *user;
+        int port;
+};
+
+static const char * const menuNames[LAST_MENU] = {
+	"menu-file", "menu-view", "menu-send", "menu-help"
+};
+
 
 #define MAX_KEY_COMBO 3
 struct	keyComboDef {
@@ -168,7 +268,7 @@ virt_viewer_simple_message_dialog(GtkWidget *window,
  * isn't large enough that it goes as large as possible and lets the display
  * scale down to fit, maintaining aspect ratio
  */
-void
+static void
 virt_viewer_resize_main_window(VirtViewer *viewer)
 {
 	GdkRectangle fullscreen;
@@ -222,6 +322,15 @@ virt_viewer_resize_main_window(VirtViewer *viewer)
 	virt_viewer_display_set_desktop_size(VIRT_VIEWER_DISPLAY(viewer->display),
 					     width, height);
 }
+
+static void
+virt_viewer_desktop_resize(VirtViewerDisplay *display G_GNUC_UNUSED,
+			   VirtViewer *viewer)
+{
+	if (viewer->autoResize && viewer->window && !viewer->fullscreen)
+		virt_viewer_resize_main_window(viewer);
+}
+
 
 void
 virt_viewer_menu_view_zoom_out(GtkWidget *menu G_GNUC_UNUSED,
@@ -856,6 +965,35 @@ virt_viewer_show_display(VirtViewer *viewer)
 }
 
 static void
+virt_viewer_pointer_grab(VirtViewerDisplay *display G_GNUC_UNUSED,
+			 VirtViewer *viewer)
+{
+	virt_viewer_set_title(viewer, TRUE);
+}
+
+static void
+virt_viewer_pointer_ungrab(VirtViewerDisplay *display G_GNUC_UNUSED,
+			   VirtViewer *viewer)
+{
+	virt_viewer_set_title(viewer, FALSE);
+}
+
+static void
+virt_viewer_keyboard_grab(VirtViewerDisplay *display G_GNUC_UNUSED,
+			  VirtViewer *viewer)
+{
+	virt_viewer_disable_modifiers(viewer);
+}
+
+static void
+virt_viewer_keyboard_ungrab(VirtViewerDisplay *display G_GNUC_UNUSED,
+			    VirtViewer *viewer)
+{
+	virt_viewer_enable_modifiers(viewer);
+}
+
+
+static void
 virt_viewer_connect_info_free(VirtViewer *viewer)
 {
 	free(viewer->host);
@@ -894,12 +1032,12 @@ virt_viewer_extract_connect_info(VirtViewer *viewer,
 	if (g_strcasecmp(type, "vnc") == 0) {
 		virt_viewer_trace(viewer, "Guest %s has a %s display\n",
 			     viewer->domkey, type);
-		viewer->display = virt_viewer_display_vnc_new(viewer);
+		viewer->display = virt_viewer_display_vnc_new();
 #ifdef HAVE_SPICE_GTK
 	} else if (g_strcasecmp(type, "spice") == 0) {
 		virt_viewer_trace(viewer, "Guest %s has a %s display\n",
 			     viewer->domkey, type);
-		viewer->display = virt_viewer_display_spice_new(viewer);
+		viewer->display = virt_viewer_display_spice_new();
 #endif
 	} else {
 		virt_viewer_trace(viewer, "Guest %s has unsupported %s display type\n",
@@ -908,6 +1046,36 @@ virt_viewer_extract_connect_info(VirtViewer *viewer,
 					     viewer->domkey);
 		goto cleanup;
 	}
+
+	g_signal_connect(viewer->display, "display-initialized",
+			 G_CALLBACK(virt_viewer_initialized), viewer);
+	g_signal_connect(viewer->display, "display-connected",
+			 G_CALLBACK(virt_viewer_connected), viewer);
+	g_signal_connect(viewer->display, "display-disconnected",
+			 G_CALLBACK(virt_viewer_disconnected), viewer);
+	g_signal_connect(viewer->display, "display-channel-open",
+			 G_CALLBACK(virt_viewer_channel_open), viewer);
+	g_signal_connect(viewer->display, "display-auth-refused",
+			 G_CALLBACK(virt_viewer_auth_refused), viewer);
+	g_signal_connect(viewer->display, "display-auth-failed",
+			 G_CALLBACK(virt_viewer_auth_failed), viewer);
+
+	g_signal_connect(viewer->display, "display-pointer-grab",
+			 G_CALLBACK(virt_viewer_pointer_grab), viewer);
+	g_signal_connect(viewer->display, "display-pointer-ungrab",
+			 G_CALLBACK(virt_viewer_pointer_ungrab), viewer);
+	g_signal_connect(viewer->display, "display-keyboard-grab",
+			 G_CALLBACK(virt_viewer_keyboard_grab), viewer);
+	g_signal_connect(viewer->display, "display-keyboard-ungrab",
+			 G_CALLBACK(virt_viewer_keyboard_ungrab), viewer);
+
+	g_signal_connect(viewer->display, "display-desktop-resize",
+			 G_CALLBACK(virt_viewer_desktop_resize), viewer);
+	g_signal_connect(viewer->display, "display-cut-text",
+			 G_CALLBACK(virt_viewer_server_cut_text), viewer);
+	g_signal_connect(viewer->display, "display-bell",
+			 G_CALLBACK(virt_viewer_bell), viewer);
+
 	gtk_notebook_append_page(GTK_NOTEBOOK(viewer->notebook), viewer->display, NULL);
 	if (gtk_bin_get_child(GTK_BIN(viewer->display)))
 		gtk_widget_realize(GTK_WIDGET(gtk_bin_get_child(GTK_BIN(viewer->display))));
@@ -950,30 +1118,32 @@ cleanup:
 }
 
 #if defined(HAVE_SOCKETPAIR) && defined(HAVE_FORK)
-void
-virt_viewer_channel_open_fd(VirtViewer *viewer,
-			    VirtViewerDisplayChannel *channel)
+static void
+virt_viewer_channel_open(VirtViewerDisplay *display,
+			 VirtViewerDisplayChannel *channel,
+			 VirtViewer *viewer)
 {
 	int fd = -1;
 
 	g_return_if_fail(viewer != NULL);
-	g_return_if_fail(viewer->display != NULL);
 
 	if (viewer->transport && g_strcasecmp(viewer->transport, "ssh") == 0 &&
 	    !viewer->direct) {
 		if ((fd = virt_viewer_open_tunnel_ssh(viewer->host, viewer->port, viewer->user,
-						 viewer->ghost, viewer->gport, NULL)) < 0)
+						      viewer->ghost, viewer->gport, NULL)) < 0)
 			virt_viewer_simple_message_dialog(viewer->window, _("Connect to ssh failed."));
-	} else
+	} else {
 		virt_viewer_simple_message_dialog(viewer->window, _("Can't connect to channel, SSH only supported."));
+	}
 
 	if (fd >= 0)
-		virt_viewer_display_channel_open_fd(VIRT_VIEWER_DISPLAY(viewer->display), channel, fd);
+		virt_viewer_display_channel_open_fd(display, channel, fd);
 }
 #else
-void
-virt_viewer_channel_open_fd(VirtViewer *viewer G_GNUC_UNUSED,
-			    VirtViewerDisplayChannel *channel G_GNUC_UNUSED)
+static void
+virt_viewer_channel_open(VirtViewerDisplay *display,
+			 VirtViewerDisplayChannel *channel,
+			 VirtViewer *viewer)
 {
 	virt_viewer_simple_message_dialog(viewer->window, _("Connect to channel unsupported."));
 }
@@ -1059,9 +1229,10 @@ virt_viewer_clipboard_copy(GtkClipboard *clipboard G_GNUC_UNUSED,
 	gtk_selection_data_set_text(data, viewer->clipboard, -1);
 }
 
-void
-virt_viewer_server_cut_text(VirtViewer *viewer,
-			    const gchar *text)
+static void
+virt_viewer_server_cut_text(VirtViewerDisplay *display G_GNUC_UNUSED,
+			    const gchar *text,
+			    VirtViewer *viewer)
 {
 	GtkClipboard *cb;
 	gsize a, b;
@@ -1089,6 +1260,14 @@ virt_viewer_server_cut_text(VirtViewer *viewer,
 					      G_OBJECT (viewer));
 	}
 }
+
+
+static void virt_viewer_bell(VirtViewerDisplay *display G_GNUC_UNUSED,
+			     VirtViewer *viewer)
+{
+	gdk_window_beep(gtk_widget_get_window(GTK_WIDGET(viewer->window)));
+}
+
 
 static gboolean
 virt_viewer_retryauth(gpointer opaque)
@@ -1138,28 +1317,69 @@ virt_viewer_deactivate(VirtViewer *viewer)
 	}
 }
 
-void
-virt_viewer_connected(VirtViewer *viewer)
+static void
+virt_viewer_connected(VirtViewerDisplay *display G_GNUC_UNUSED,
+		      VirtViewer *viewer)
 {
 	viewer->connected = TRUE;
 	virt_viewer_set_status(viewer, "Connected to graphic server");
 }
 
-void
-virt_viewer_initialized(VirtViewer *viewer)
+static void
+virt_viewer_initialized(VirtViewerDisplay *display G_GNUC_UNUSED,
+			VirtViewer *viewer)
 {
 	virt_viewer_show_display(viewer);
 	virt_viewer_set_title(viewer, FALSE);
 }
 
-void
-virt_viewer_disconnected(VirtViewer *viewer)
+static void
+virt_viewer_disconnected(VirtViewerDisplay *display G_GNUC_UNUSED,
+			 VirtViewer *viewer)
 {
 	if (!viewer->connected) {
-		virt_viewer_simple_message_dialog(viewer->window, _("Unable to connect to the graphic server %s"),
-					     viewer->pretty_address);
+		virt_viewer_simple_message_dialog(viewer->window,
+						  _("Unable to connect to the graphic server %s"),
+						  viewer->pretty_address);
 	}
 	virt_viewer_deactivate(viewer);
+}
+
+
+static void virt_viewer_auth_refused(VirtViewerDisplay *display G_GNUC_UNUSED,
+				     const char *msg,
+				     VirtViewer *viewer)
+{
+	GtkWidget *dialog;
+	int ret;
+
+	dialog = gtk_message_dialog_new(GTK_WINDOW(viewer->window),
+					GTK_DIALOG_MODAL |
+					GTK_DIALOG_DESTROY_WITH_PARENT,
+					GTK_MESSAGE_ERROR,
+					GTK_BUTTONS_YES_NO,
+					_("Unable to authenticate with remote desktop server at %s: %s\n"
+					  "Retry connection again?"),
+					viewer->pretty_address, msg);
+
+	ret = gtk_dialog_run(GTK_DIALOG(dialog));
+
+	gtk_widget_destroy(dialog);
+
+	if (ret == GTK_RESPONSE_YES)
+		viewer->authretry = TRUE;
+	else
+		viewer->authretry = FALSE;
+}
+
+
+static void virt_viewer_auth_failed(VirtViewerDisplay *display G_GNUC_UNUSED,
+				    const char *msg,
+				    VirtViewer *viewer)
+{
+	virt_viewer_simple_message_dialog(viewer->window,
+					  _("Unable to authenticate with remote desktop server at %s"),
+					  viewer->pretty_address, msg);
 }
 
 

@@ -24,6 +24,8 @@
 
 #include <spice-audio.h>
 
+#include <glib/gi18n.h>
+
 #include "virt-viewer-util.h"
 #include "virt-viewer-display-spice.h"
 #include "virt-viewer-auth.h"
@@ -148,11 +150,7 @@ virt_viewer_display_spice_channel_open_fd_request(SpiceChannel *channel,
 						  gint tls G_GNUC_UNUSED,
 						  VirtViewerDisplay *display)
 {
-	VirtViewerDisplaySpice *self = VIRT_VIEWER_DISPLAY_SPICE(display);
-
-	g_return_if_fail(self != NULL);
-
-	virt_viewer_channel_open_fd(display->viewer, (VirtViewerDisplayChannel *)channel);
+	g_signal_emit_by_name(display, "display-channel-open", channel);
 }
 
 static void
@@ -164,7 +162,6 @@ virt_viewer_display_spice_main_channel_event(SpiceChannel *channel G_GNUC_UNUSED
 	char *password = NULL;
 
 	g_return_if_fail(self != NULL);
-	g_return_if_fail(display->viewer != NULL);
 
 	switch (event) {
 	case SPICE_CHANNEL_OPENED:
@@ -172,19 +169,20 @@ virt_viewer_display_spice_main_channel_event(SpiceChannel *channel G_GNUC_UNUSED
 		break;
 	case SPICE_CHANNEL_CLOSED:
 		DEBUG_LOG("main channel: closed");
-		virt_viewer_quit(display->viewer);
+		g_signal_emit_by_name(display, "display-disconnected");
 		break;
 	case SPICE_CHANNEL_ERROR_CONNECT:
 		DEBUG_LOG("main channel: failed to connect");
-		virt_viewer_disconnected(display->viewer);
+		g_signal_emit_by_name(display, "display-disconnected");
 		break;
 	case SPICE_CHANNEL_ERROR_AUTH:
 		DEBUG_LOG("main channel: auth failure (wrong password?)");
 		int ret = virt_viewer_auth_collect_credentials("SPICE",
-							       display->viewer->pretty_address,
+							       NULL,
 							       NULL, &password);
 		if (ret < 0) {
-			virt_viewer_quit(display->viewer);
+			g_signal_emit_by_name(display, "display-auth-refused",
+					      _("Unable to collect credentials"));
 		} else {
 			g_object_set(self->session, "password", password, NULL);
 			spice_session_connect(self->session);
@@ -192,7 +190,7 @@ virt_viewer_display_spice_main_channel_event(SpiceChannel *channel G_GNUC_UNUSED
 		break;
 	default:
 		g_warning("unknown main channel event: %d", event);
-		virt_viewer_disconnected(display->viewer);
+		g_signal_emit_by_name(display, "display-disconnected");
 		break;
 	}
 
@@ -207,21 +205,20 @@ virt_viewer_display_spice_main_channel_event(SpiceChannel *channel G_GNUC_UNUSED
  * recalculation of the display within existing window size
  */
 static void
-virt_viewer_display_spice_resize_desktop(SpiceChannel *channel G_GNUC_UNUSED,
+virt_viewer_display_spice_primary_create(SpiceChannel *channel G_GNUC_UNUSED,
 					 gint format G_GNUC_UNUSED,
 					 gint width,
 					 gint height,
 					 gint stride G_GNUC_UNUSED,
 					 gint shmid G_GNUC_UNUSED,
 					 gpointer imgdata G_GNUC_UNUSED,
-					 VirtViewer *viewer)
+					 VirtViewerDisplay *display)
 {
 	DEBUG_LOG("desktop resize %dx%d", width, height);
 
-	virt_viewer_display_set_desktop_size(VIRT_VIEWER_DISPLAY(viewer->display), width, height);
-
-	if (viewer->autoResize && viewer->window && !viewer->fullscreen)
-		virt_viewer_resize_main_window(viewer);
+	virt_viewer_display_set_desktop_size(display, width, height);
+	g_signal_emit_by_name(display, "display-initialized");
+	g_signal_emit_by_name(display, "display-desktop-resize");
 }
 
 
@@ -248,7 +245,7 @@ virt_viewer_display_spice_channel_new(SpiceSession *s,
 	if (SPICE_IS_DISPLAY_CHANNEL(channel)) {
 		DEBUG_LOG("new display channel (#%d)", id);
 		g_signal_connect(channel, "display-primary-create",
-				 G_CALLBACK(virt_viewer_display_spice_resize_desktop), display->viewer);
+				 G_CALLBACK(virt_viewer_display_spice_primary_create), display);
 
 		self->display = spice_display_new(s, id);
 		gtk_container_add(GTK_CONTAINER(self), GTK_WIDGET(self->display));
@@ -261,7 +258,7 @@ virt_viewer_display_spice_channel_new(SpiceSession *s,
 			     "auto-clipboard", TRUE,
 			     NULL);
 
-		virt_viewer_initialized(display->viewer);
+		g_signal_emit_by_name(display, "display-connected");
 	}
 
 	if (SPICE_IS_INPUTS_CHANNEL(channel)) {
@@ -303,16 +300,11 @@ virt_viewer_display_spice_channel_destroy(G_GNUC_UNUSED SpiceSession *s,
 }
 
 GtkWidget *
-virt_viewer_display_spice_new(VirtViewer *viewer)
+virt_viewer_display_spice_new(void)
 {
 	VirtViewerDisplaySpice *self;
-	VirtViewerDisplay *d;
-
-	g_return_val_if_fail(viewer != NULL, NULL);
 
 	self = g_object_new(VIRT_VIEWER_TYPE_DISPLAY_SPICE, NULL);
-	d = VIRT_VIEWER_DISPLAY(self);
-	d->viewer = viewer;
 
 	self->session = spice_session_new();
 	g_signal_connect(self->session, "channel-new",

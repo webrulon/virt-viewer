@@ -26,8 +26,6 @@
 
 #include <gtk/gtk.h>
 
-#include "virt-viewer-priv.h"
-
 G_BEGIN_DECLS
 
 #define VIRT_VIEWER_TYPE_DISPLAY virt_viewer_display_get_type()
@@ -51,12 +49,12 @@ typedef struct _VirtViewerDisplay       VirtViewerDisplay;
 typedef struct _VirtViewerDisplayClass  VirtViewerDisplayClass;
 typedef struct _VirtViewerDisplayPrivate VirtViewerDisplayPrivate;
 
+typedef struct _VirtViewerDisplayChannel VirtViewerDisplayChannel;
+
 
 /* perhaps this become an interface, and be pushed in gtkvnc and spice? */
 struct _VirtViewerDisplay {
 	GtkBin parent;
-
-	VirtViewer *viewer;
 
 	VirtViewerDisplayPrivate *priv;
 };
@@ -71,8 +69,26 @@ struct _VirtViewerDisplayClass {
 	GdkPixbuf* (* get_pixbuf) (VirtViewerDisplay* display);
 	gboolean (* open_fd) (VirtViewerDisplay* display, int fd);
 	gboolean (* open_host) (VirtViewerDisplay* display, char *host, char *port);
-	gboolean (* channel_open_fd) (VirtViewerDisplay* display,
-                                      VirtViewerDisplayChannel* channel, int fd);
+	gboolean (* channel_open_fd) (VirtViewerDisplay* display, VirtViewerDisplayChannel *channel, int fd);
+
+	/* signals */
+	void (*display_connected)(VirtViewerDisplay *display);
+	void (*display_initialized)(VirtViewerDisplay *display);
+	void (*display_disconnected)(VirtViewerDisplay *display);
+	void (*display_auth_refused)(VirtViewerDisplay *display, const char *msg);
+	void (*display_auth_failed)(VirtViewerDisplay *display, const char *msg);
+
+	void (*display_channel_open)(VirtViewerDisplay *display, VirtViewerDisplayChannel *channel);
+
+	void (*display_pointer_grab)(VirtViewerDisplay *display);
+	void (*display_pointer_ungrab)(VirtViewerDisplay *display);
+	void (*display_keyboard_grab)(VirtViewerDisplay *display);
+	void (*display_keyboard_ungrab)(VirtViewerDisplay *display);
+
+	void (*display_desktop_resize)(VirtViewerDisplay *display);
+
+	void (*display_cut_text)(VirtViewerDisplay *display, const char *str);
+	void (*display_bell)(VirtViewerDisplay *display);
 };
 
 GType virt_viewer_display_get_type(void);

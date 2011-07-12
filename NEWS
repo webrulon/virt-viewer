@@ -1,6 +1,23 @@
   Virt Viewer News
   ================
 
+0.4.0: Jul 12, 2011
+-------------------
+
+  - Require SPICE-GTK >= 0.6
+  - Hide menu bar when going fullscreen
+  - Support building against GTK2 or GTK3
+  - Convert from Glade to GtkBuilder
+  - Honour 'listen' attribute from <graphics> XML when connecting
+  - Fix reconnection after authentication failure
+  - Make --verbose flag actually do something
+  - Enable scaling with SPICE to match VNC behaviour
+  - Rewrite widget resizing code to (try to) be more reliable
+  - Fill extra space outside guest display with black
+  - Fix (null) in title bar while not connected
+  - Fix multiple memory leaks
+  - Fix reconnecting to display with SPICE
+
 0.3.1: Feb 21, 2011
 -------------------
 

@@ -1192,8 +1192,8 @@ virt_viewer_channel_open(VirtViewerSession *session,
 }
 #else
 static void
-virt_viewer_channel_open(VirtViewerSession *session,
-			 VirtViewerSessionChannel *channel,
+virt_viewer_channel_open(VirtViewerSession *session G_GNUC_UNUSED,
+			 VirtViewerSessionChannel *channel G_GNUC_UNUSED,
 			 VirtViewer *viewer)
 {
 	virt_viewer_simple_message_dialog(viewer->window, _("Connect to channel unsupported."));

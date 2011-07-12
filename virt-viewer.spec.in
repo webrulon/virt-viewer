@@ -37,9 +37,17 @@ BuildRequires: gtk2-devel >= 2.12.0
 %endif
 BuildRequires: libvirt-devel >= 0.6.0
 BuildRequires: libxml2-devel
+%if %{with_gtk3}
+BuildRequires: gtk-vnc2-devel >= 0.4.3
+%else
 BuildRequires: gtk-vnc-devel >= 0.3.8
+%endif
 %if %{with_spice}
+%if %{with_gtk3}
+BuildRequires: spice-gtk3-devel >= 0.6
+%else
 BuildRequires: spice-gtk-devel >= 0.6
+%endif
 %endif
 BuildRequires: /usr/bin/pod2man
 BuildRequires: intltool

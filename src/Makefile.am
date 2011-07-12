@@ -15,7 +15,6 @@ virt_viewer_SOURCES = \
 	virt-viewer-auth.h virt-viewer-auth.c \
 	virt-viewer-events.h virt-viewer-events.c \
 	virt-viewer.h virt-viewer.c \
-	virt-viewer-priv.h \
 	virt-viewer-session.h virt-viewer-session.c \
 	virt-viewer-session-vnc.h virt-viewer-session-vnc.c \
 	virt-viewer-display.h virt-viewer-display.c \

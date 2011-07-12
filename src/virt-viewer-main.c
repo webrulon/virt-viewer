@@ -41,7 +41,7 @@ int main(int argc, char **argv)
 {
 	GOptionContext *context;
 	GError *error = NULL;
-	int ret;
+	int ret = 1;
 	char *uri = NULL;
 	int zoom = 100;
 	gchar **args = NULL;
@@ -92,19 +92,19 @@ int main(int argc, char **argv)
 			   error->message,
 			   gettext(help_msg));
 		g_error_free(error);
-		return 1;
+		goto cleanup;
 	}
 
 	g_option_context_free(context);
 
 	if (!args || (g_strv_length(args) != 1)) {
 		fprintf(stderr, _("\nUsage: %s [OPTIONS] DOMAIN-NAME|ID|UUID\n\n%s\n\n"), argv[0], help_msg);
-		return 1;
+		goto cleanup;
 	}
 
 	if (zoom < 10 || zoom > 200) {
 		fprintf(stderr, "Zoom level must be within 10-200\n");
-		return 1;
+		goto cleanup;
 	}
 
 	ret = virt_viewer_start(uri, args[0], zoom, direct, waitvm, reconnect, verbose, debug, fullscreen, NULL);
@@ -113,7 +113,11 @@ int main(int argc, char **argv)
 
 	gtk_main();
 
-	return 0;
+ cleanup:
+	g_free(uri);
+	g_strfreev(args);
+
+	return ret;
 }
 
 /*

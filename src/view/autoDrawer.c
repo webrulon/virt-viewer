@@ -250,10 +250,16 @@ ViewAutoDrawerUpdate(ViewAutoDrawer *that, // IN
    if (!priv->inputUngrabbed) {
       GtkWidget *grabbed = NULL;
 
+#if GTK_CHECK_VERSION(3, 0, 0)
       if (gtk_window_has_group (window)) {
         GtkWindowGroup *group = gtk_window_get_group (window);
         grabbed = gtk_window_group_get_current_grab (group);
       }
+#else
+      if (window->group && window->group->grabs) {
+	grabbed = GTK_WIDGET(window->group->grabs->data);
+      }
+#endif
       if (!grabbed) {
          grabbed = gtk_grab_get_current();
       }

@@ -75,6 +75,12 @@
 
 #include "ovBox.h"
 
+#if ! GTK_CHECK_VERSION(3, 0, 0)
+#define gtk_widget_set_realized(widget, val)	\
+  GTK_WIDGET_SET_FLAGS(widget, GTK_REALIZED)
+#define gtk_widget_get_realized(widget)		\
+  GTK_WIDGET_REALIZED(widget)
+#endif
 
 struct _ViewOvBoxPrivate
 {

@@ -14,6 +14,11 @@
 %define with_spice 1
 %endif
 
+# spice-gtk is x86 x86_64 only currently:
+%ifnarch %{ix86} x86_64
+%define with_spice 0
+%endif
+
 Name: @PACKAGE@
 Version: @VERSION@
 Release: 1%{?dist}%{?extra_release}

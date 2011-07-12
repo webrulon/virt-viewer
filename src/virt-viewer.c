@@ -1162,8 +1162,9 @@ virt_viewer_extract_connect_info(VirtViewer *viewer,
 	retval = TRUE;
 
 cleanup:
-	free(xpath);
-	free(xmldesc);
+	g_free(type);
+	g_free(xpath);
+	g_free(xmldesc);
 	return retval;
 }
 

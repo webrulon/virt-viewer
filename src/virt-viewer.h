@@ -23,19 +23,50 @@
 #ifndef VIRT_VIEWER_H
 #define VIRT_VIEWER_H
 
+#include <glib-object.h>
 #include "virt-viewer-util.h"
 
-typedef struct _VirtViewer VirtViewer;
+G_BEGIN_DECLS
 
-extern int virt_viewer_start(const char *uri,
-			     const char *name,
-			     gint zoom,
-			     gboolean direct,
-			     gboolean waitvm,
-			     gboolean reconnect,
-			     gboolean verbose,
-			     gboolean debug,
-			     gboolean fullscreen,
-			     GtkWidget *container);
+#define VIRT_TYPE_VIEWER_APP virt_viewer_app_get_type()
+#define VIRT_VIEWER_APP(obj) (G_TYPE_CHECK_INSTANCE_CAST ((obj), VIRT_TYPE_VIEWER_APP, VirtViewerApp))
+#define VIRT_VIEWER_APP_CLASS(klass) (G_TYPE_CHECK_CLASS_CAST ((klass), VIRT_TYPE_VIEWER_APP, VirtViewerAppClass))
+#define VIRT_IS_VIEWER_APP(obj) (G_TYPE_CHECK_INSTANCE_TYPE ((obj), VIRT_TYPE_VIEWER_APP))
+#define VIRT_IS_VIEWER_APP_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), VIRT_TYPE_VIEWER_APP))
+#define VIRT_VIEWER_APP_GET_CLASS(obj) (G_TYPE_INSTANCE_GET_CLASS ((obj), VIRT_TYPE_VIEWER_APP, VirtViewerAppClass))
+
+typedef struct _VirtViewerAppPrivate VirtViewerAppPrivate;
+
+typedef struct {
+        GObject parent;
+        VirtViewerAppPrivate *priv;
+} VirtViewerApp;
+
+typedef struct {
+        GObjectClass parent_class;
+} VirtViewerAppClass;
+
+GType virt_viewer_app_get_type (void);
+
+VirtViewerApp *
+virt_viewer_app_new(gint zoom,
+                    gboolean direct,
+                    gboolean verbose,
+                    gboolean fullscreen,
+                    GtkWidget *container);
+
+VirtViewerApp *
+virt_viewer_start(const char *uri,
+		  const char *name,
+		  gint zoom,
+		  gboolean direct,
+		  gboolean waitvm,
+		  gboolean reconnect,
+		  gboolean verbose,
+		  gboolean debug,
+		  gboolean fullscreen,
+		  GtkWidget *container);
+
+G_END_DECLS
 
 #endif /* VIRT_VIEWER_H */

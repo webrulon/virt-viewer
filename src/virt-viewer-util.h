@@ -33,5 +33,11 @@ extern gboolean doDebug;
 
 
 GtkBuilder *virt_viewer_util_load_ui(const char *name);
+int virt_viewer_util_extract_host(const char *uristr,
+                                  char **scheme,
+                                  char **host,
+                                  char **transport,
+                                  char **user,
+                                  int *port);
 
 #endif

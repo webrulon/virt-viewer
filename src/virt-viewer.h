@@ -24,48 +24,39 @@
 #define VIRT_VIEWER_H
 
 #include <glib-object.h>
-#include "virt-viewer-util.h"
+#include "virt-viewer-app.h"
 
 G_BEGIN_DECLS
 
-#define VIRT_TYPE_VIEWER_APP virt_viewer_app_get_type()
-#define VIRT_VIEWER_APP(obj) (G_TYPE_CHECK_INSTANCE_CAST ((obj), VIRT_TYPE_VIEWER_APP, VirtViewerApp))
-#define VIRT_VIEWER_APP_CLASS(klass) (G_TYPE_CHECK_CLASS_CAST ((klass), VIRT_TYPE_VIEWER_APP, VirtViewerAppClass))
-#define VIRT_IS_VIEWER_APP(obj) (G_TYPE_CHECK_INSTANCE_TYPE ((obj), VIRT_TYPE_VIEWER_APP))
-#define VIRT_IS_VIEWER_APP_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), VIRT_TYPE_VIEWER_APP))
-#define VIRT_VIEWER_APP_GET_CLASS(obj) (G_TYPE_INSTANCE_GET_CLASS ((obj), VIRT_TYPE_VIEWER_APP, VirtViewerAppClass))
+#define VIRT_VIEWER_TYPE virt_viewer_get_type()
+#define VIRT_VIEWER(obj) (G_TYPE_CHECK_INSTANCE_CAST ((obj), VIRT_VIEWER_TYPE, VirtViewer))
+#define VIRT_VIEWER_CLASS(klass) (G_TYPE_CHECK_CLASS_CAST ((klass), VIRT_VIEWER_TYPE, VirtViewerClass))
+#define VIRT_VIEWER_IS(obj) (G_TYPE_CHECK_INSTANCE_TYPE ((obj), VIRT_VIEWER_TYPE))
+#define VIRT_VIEWER_IS_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), VIRT_VIEWER_TYPE))
+#define VIRT_VIEWER_GET_CLASS(obj) (G_TYPE_INSTANCE_GET_CLASS ((obj), VIRT_VIEWER_TYPE, VirtViewerClass))
 
-typedef struct _VirtViewerAppPrivate VirtViewerAppPrivate;
-
-typedef struct {
-        GObject parent;
-        VirtViewerAppPrivate *priv;
-} VirtViewerApp;
+typedef struct _VirtViewerPrivate VirtViewerPrivate;
 
 typedef struct {
-        GObjectClass parent_class;
-} VirtViewerAppClass;
+        VirtViewerApp parent;
+        VirtViewerPrivate *priv;
+} VirtViewer;
 
-GType virt_viewer_app_get_type (void);
+typedef struct {
+        VirtViewerAppClass parent_class;
+} VirtViewerClass;
 
-VirtViewerApp *
-virt_viewer_app_new(gint zoom,
-                    gboolean direct,
-                    gboolean verbose,
-                    gboolean fullscreen,
-                    GtkWidget *container);
+GType virt_viewer_get_type (void);
 
-VirtViewerApp *
-virt_viewer_start(const char *uri,
-		  const char *name,
-		  gint zoom,
-		  gboolean direct,
-		  gboolean waitvm,
-		  gboolean reconnect,
-		  gboolean verbose,
-		  gboolean debug,
-		  gboolean fullscreen,
-		  GtkWidget *container);
+VirtViewer *
+virt_viewer_new(const char *uri,
+		const char *name,
+		gint zoom,
+		gboolean direct,
+		gboolean waitvm,
+		gboolean reconnect,
+		gboolean verbose,
+		GtkWidget *container);
 
 G_END_DECLS
 

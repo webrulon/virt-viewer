@@ -26,6 +26,9 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <unistd.h>
+#include <string.h>
+#include <libxml/xpath.h>
+#include <libxml/uri.h>
 
 #include "virt-viewer-util.h"
 
@@ -51,6 +54,58 @@ GtkBuilder *virt_viewer_util_load_ui(const char *name)
 	return builder;
 }
 
+int
+virt_viewer_util_extract_host(const char *uristr,
+                              char **scheme,
+                              char **host,
+                              char **transport,
+                              char **user,
+                              int *port)
+{
+	xmlURIPtr uri;
+	char *offset;
+
+	if (uristr == NULL ||
+	    !g_strcasecmp(uristr, "xen"))
+		uristr = "xen:///";
+
+	uri = xmlParseURI(uristr);
+        if (host) {
+                if (!uri || !uri->server)
+                        *host = g_strdup("localhost");
+                else
+                        *host = g_strdup(uri->server);
+        }
+
+        if (user) {
+                if (uri->user)
+                        *user = g_strdup(uri->user);
+                else
+                        *user = NULL;
+        }
+
+	if (port)
+		*port = uri->port;
+
+	offset = strchr(uri->scheme, '+');
+
+        if (transport) {
+                if (offset)
+                        *transport = g_strdup(offset+1);
+                else
+                        *transport = NULL;
+        }
+
+	if (scheme) {
+		if (offset)
+			*scheme = g_strndup(uri->scheme, offset - uri->scheme);
+		else
+			*scheme = g_strdup(uri->scheme);
+	}
+
+	xmlFreeURI(uri);
+	return 0;
+}
 
 /*
  * Local variables:

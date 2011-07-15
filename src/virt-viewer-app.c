@@ -553,7 +553,7 @@ virt_viewer_app_activate(VirtViewerApp *self)
 						    priv->ghost, priv->gport);
 	}
 
-	virt_viewer_app_set_status(self, "Connecting to graphic server");
+	virt_viewer_app_set_status(self, _("Connecting to graphic server"));
 
 	priv->connected = FALSE;
 	priv->active = TRUE;
@@ -683,7 +683,7 @@ virt_viewer_app_default_deactivated(VirtViewerApp *self)
 {
 	VirtViewerAppPrivate *priv = self->priv;
 
-	virt_viewer_app_set_status(self, "Guest domain has shutdown");
+	virt_viewer_app_set_status(self, _("Guest domain has shutdown"));
 	virt_viewer_app_trace(self, "Guest %s display has disconnected, shutting down",
 			      priv->guest_name);
 	gtk_main_quit();
@@ -733,8 +733,10 @@ virt_viewer_app_connected(VirtViewerSession *session G_GNUC_UNUSED,
 	VirtViewerAppPrivate *priv = self->priv;
 
 	priv->connected = TRUE;
-	virt_viewer_app_set_status(self, "Connected to graphic server");
+	virt_viewer_app_set_status(self, _("Connected to graphic server"));
 }
+
+
 
 static void
 virt_viewer_app_initialized(VirtViewerSession *session G_GNUC_UNUSED,

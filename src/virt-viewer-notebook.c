@@ -91,17 +91,24 @@ virt_viewer_notebook_init (VirtViewerNotebook *self)
 }
 
 void
-virt_viewer_notebook_show_status(VirtViewerNotebook *self, const gchar *text)
+virt_viewer_notebook_show_status(VirtViewerNotebook *self, const gchar *fmt, ...)
 {
 	VirtViewerNotebookPrivate *priv;
+	gchar *text;
+	va_list args;
 
 	DEBUG_LOG("notebook show status %p", self);
 	g_return_if_fail(VIRT_VIEWER_IS_NOTEBOOK(self));
+
+	va_start(args, fmt);
+	text = g_strdup_vprintf(fmt, args);
+	va_end(args);
 
 	priv = self->priv;
 	gtk_label_set_text(GTK_LABEL(priv->status), text);
 	gtk_notebook_set_current_page(GTK_NOTEBOOK(self), 0);
 	gtk_widget_show_all(GTK_WIDGET(self));
+	g_free(text);
 }
 
 void

@@ -5,7 +5,7 @@
   <object class="GtkWindow" id="viewer">
     <property name="default_width">400</property>
     <property name="default_height">400</property>
-    <signal name="delete_event" handler="virt_viewer_app_delete"/>
+    <signal name="delete_event" handler="virt_viewer_window_delete"/>
     <child>
       <object class="GtkVBox" id="viewer-box">
         <property name="visible">True</property>
@@ -26,7 +26,7 @@
                         <property name="visible">True</property>
                         <property name="label" translatable="yes">Screenshot</property>
                         <property name="use_underline">True</property>
-                        <signal name="activate" handler="virt_viewer_app_menu_file_screenshot"/>
+                        <signal name="activate" handler="virt_viewer_window_menu_file_screenshot"/>
                       </object>
                     </child>
                     <child>
@@ -40,7 +40,7 @@
                         <property name="visible">True</property>
                         <property name="use_underline">True</property>
                         <property name="use_stock">True</property>
-                        <signal name="activate" handler="virt_viewer_app_menu_file_quit"/>
+                        <signal name="activate" handler="virt_viewer_window_menu_file_quit"/>
                         <accelerator key="q" signal="activate" modifiers="GDK_CONTROL_MASK|GDK_SHIFT_MASK"/>
                       </object>
                     </child>
@@ -62,7 +62,7 @@
                         <property name="label" translatable="yes">Full screen</property>
                         <property name="use_underline">True</property>
                         <accelerator key="F11" signal="activate"/>
-                        <signal name="toggled" handler="virt_viewer_app_menu_view_fullscreen"/>
+                        <signal name="toggled" handler="virt_viewer_window_menu_view_fullscreen"/>
                       </object>
                     </child>
                     <child>
@@ -80,7 +80,7 @@
                                 <property name="use_underline">True</property>
                                 <property name="use_stock">True</property>
                                 <accelerator key="plus" signal="activate" modifiers="GDK_CONTROL_MASK"/>
-                                <signal name="activate" handler="virt_viewer_app_menu_view_zoom_in"/>
+                                <signal name="activate" handler="virt_viewer_window_menu_view_zoom_in"/>
                               </object>
                             </child>
                             <child>
@@ -90,7 +90,7 @@
                                 <property name="use_underline">True</property>
                                 <property name="use_stock">True</property>
                                 <accelerator key="minus" signal="activate" modifiers="GDK_CONTROL_MASK"/>
-                                <signal name="activate" handler="virt_viewer_app_menu_view_zoom_out"/>
+                                <signal name="activate" handler="virt_viewer_window_menu_view_zoom_out"/>
                               </object>
                             </child>
                             <child>
@@ -105,7 +105,7 @@
                                 <property name="use_underline">True</property>
                                 <property name="use_stock">True</property>
                                 <accelerator key="0" signal="activate" modifiers="GDK_CONTROL_MASK"/>
-                                <signal name="activate" handler="virt_viewer_app_menu_view_zoom_reset"/>
+                                <signal name="activate" handler="virt_viewer_window_menu_view_zoom_reset"/>
                               </object>
                             </child>
                           </object>
@@ -117,7 +117,7 @@
                         <property name="visible">True</property>
                         <property name="label" translatable="yes">Automatically resize</property>
                         <property name="use_underline">True</property>
-                        <signal name="toggled" handler="virt_viewer_app_menu_view_resize"/>
+                        <signal name="toggled" handler="virt_viewer_window_menu_view_resize"/>
                       </object>
                     </child>
                   </object>
@@ -137,7 +137,7 @@
                         <property name="visible">True</property>
                         <property name="label" translatable="yes">Ctrl+Alt+_Del</property>
                         <property name="use_underline">True</property>
-                        <signal name="activate" handler="virt_viewer_app_menu_send"/>
+                        <signal name="activate" handler="virt_viewer_window_menu_send"/>
                       </object>
                     </child>
                     <child>
@@ -145,7 +145,7 @@
                         <property name="visible">True</property>
                         <property name="label" translatable="yes">Ctrl+Alt+_Backspace</property>
                         <property name="use_underline">True</property>
-                        <signal name="activate" handler="virt_viewer_app_menu_send"/>
+                        <signal name="activate" handler="virt_viewer_window_menu_send"/>
                       </object>
                     </child>
                     <child>
@@ -158,7 +158,7 @@
                         <property name="visible">True</property>
                         <property name="label" translatable="yes">Ctrl+Alt+F_1</property>
                         <property name="use_underline">True</property>
-                        <signal name="activate" handler="virt_viewer_app_menu_send"/>
+                        <signal name="activate" handler="virt_viewer_window_menu_send"/>
                       </object>
                     </child>
                     <child>
@@ -166,7 +166,7 @@
                         <property name="visible">True</property>
                         <property name="label" translatable="yes">Ctrl+Alt+F_2</property>
                         <property name="use_underline">True</property>
-                        <signal name="activate" handler="virt_viewer_app_menu_send"/>
+                        <signal name="activate" handler="virt_viewer_window_menu_send"/>
                       </object>
                     </child>
                     <child>
@@ -174,7 +174,7 @@
                         <property name="visible">True</property>
                         <property name="label" translatable="yes">Ctrl+Alt+F_3</property>
                         <property name="use_underline">True</property>
-                        <signal name="activate" handler="virt_viewer_app_menu_send"/>
+                        <signal name="activate" handler="virt_viewer_window_menu_send"/>
                       </object>
                     </child>
                     <child>
@@ -182,7 +182,7 @@
                         <property name="visible">True</property>
                         <property name="label" translatable="yes">Ctrl+Alt+F_4</property>
                         <property name="use_underline">True</property>
-                        <signal name="activate" handler="virt_viewer_app_menu_send"/>
+                        <signal name="activate" handler="virt_viewer_window_menu_send"/>
                       </object>
                     </child>
                     <child>
@@ -190,7 +190,7 @@
                         <property name="visible">True</property>
                         <property name="label" translatable="yes">Ctrl+Alt+F_5</property>
                         <property name="use_underline">True</property>
-                        <signal name="activate" handler="virt_viewer_app_menu_send"/>
+                        <signal name="activate" handler="virt_viewer_window_menu_send"/>
                       </object>
                     </child>
                     <child>
@@ -198,7 +198,7 @@
                         <property name="visible">True</property>
                         <property name="label" translatable="yes">Ctrl+Alt+F_6</property>
                         <property name="use_underline">True</property>
-                        <signal name="activate" handler="virt_viewer_app_menu_send"/>
+                        <signal name="activate" handler="virt_viewer_window_menu_send"/>
                       </object>
                     </child>
                     <child>
@@ -206,7 +206,7 @@
                         <property name="visible">True</property>
                         <property name="label" translatable="yes">Ctrl+Alt+F_7</property>
                         <property name="use_underline">True</property>
-                        <signal name="activate" handler="virt_viewer_app_menu_send"/>
+                        <signal name="activate" handler="virt_viewer_window_menu_send"/>
                       </object>
                     </child>
                     <child>
@@ -214,7 +214,7 @@
                         <property name="visible">True</property>
                         <property name="label" translatable="yes">Ctrl+Alt+F_8</property>
                         <property name="use_underline">True</property>
-                        <signal name="activate" handler="virt_viewer_app_menu_send"/>
+                        <signal name="activate" handler="virt_viewer_window_menu_send"/>
                       </object>
                     </child>
                     <child>
@@ -222,7 +222,7 @@
                         <property name="visible">True</property>
                         <property name="label" translatable="yes">Ctrl+Alt+F_9</property>
                         <property name="use_underline">True</property>
-                        <signal name="activate" handler="virt_viewer_app_menu_send"/>
+                        <signal name="activate" handler="virt_viewer_window_menu_send"/>
                       </object>
                     </child>
                     <child>
@@ -230,7 +230,7 @@
                         <property name="visible">True</property>
                         <property name="label" translatable="yes">Ctrl+Alt+F1_0</property>
                         <property name="use_underline">True</property>
-                        <signal name="activate" handler="virt_viewer_app_menu_send"/>
+                        <signal name="activate" handler="virt_viewer_window_menu_send"/>
                       </object>
                     </child>
                     <child>
@@ -238,7 +238,7 @@
                         <property name="visible">True</property>
                         <property name="label" translatable="yes">Ctrl+Alt+F11</property>
                         <property name="use_underline">True</property>
-                        <signal name="activate" handler="virt_viewer_app_menu_send"/>
+                        <signal name="activate" handler="virt_viewer_window_menu_send"/>
                       </object>
                     </child>
                     <child>
@@ -246,7 +246,7 @@
                         <property name="visible">True</property>
                         <property name="label" translatable="yes">Ctrl+Alt+F12</property>
                         <property name="use_underline">True</property>
-                        <signal name="activate" handler="virt_viewer_app_menu_send"/>
+                        <signal name="activate" handler="virt_viewer_window_menu_send"/>
                       </object>
                     </child>
                     <child>
@@ -259,7 +259,7 @@
                         <property name="visible">True</property>
                         <property name="label" translatable="yes">_PrintScreen</property>
                         <property name="use_underline">True</property>
-                        <signal name="activate" handler="virt_viewer_app_menu_send"/>
+                        <signal name="activate" handler="virt_viewer_window_menu_send"/>
                       </object>
                     </child>
                   </object>
@@ -280,7 +280,7 @@
                         <property name="visible">True</property>
                         <property name="use_underline">True</property>
                         <property name="use_stock">True</property>
-                        <signal name="activate" handler="virt_viewer_app_menu_help_about"/>
+                        <signal name="activate" handler="virt_viewer_window_menu_help_about"/>
                       </object>
                     </child>
                   </object>

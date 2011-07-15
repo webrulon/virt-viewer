@@ -25,6 +25,7 @@
 
 #include <glib-object.h>
 #include "virt-viewer-util.h"
+#include "virt-viewer-window.h"
 
 G_BEGIN_DECLS
 
@@ -52,6 +53,8 @@ typedef struct {
 
 GType virt_viewer_app_get_type (void);
 
+void virt_viewer_app_quit(VirtViewerApp *self);
+VirtViewerWindow* virt_viewer_app_get_main_window(VirtViewerApp *self);
 void virt_viewer_app_set_debug(gboolean debug);
 gboolean virt_viewer_app_start(VirtViewerApp *app, gboolean fullscreen);
 void virt_viewer_app_trace(VirtViewerApp *self, const char *fmt, ...);

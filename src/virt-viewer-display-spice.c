@@ -121,14 +121,18 @@ virt_viewer_display_spice_new(SpiceChannel *channel,
 			      SpiceDisplay *display)
 {
 	VirtViewerDisplaySpice *self;
+	gint channelid;
 
-	self = g_object_new(VIRT_VIEWER_TYPE_DISPLAY_SPICE, NULL);
+	g_return_val_if_fail(SPICE_IS_DISPLAY_CHANNEL(channel), NULL);
+	g_return_val_if_fail(SPICE_IS_DISPLAY(display), NULL);
 
-	self->priv->channel = channel;
-	self->priv->display = display;
+	g_object_get(channel, "channel-id", &channelid, NULL);
 
-	g_object_ref(channel);
-	g_object_ref(display);
+	self = g_object_new(VIRT_VIEWER_TYPE_DISPLAY_SPICE,
+			    "nth-display", channelid,
+			    NULL);
+	self->priv->channel = g_object_ref(channel);
+	self->priv->display = g_object_ref(display);
 
 	g_signal_connect(channel, "display-primary-create",
 			 G_CALLBACK(virt_viewer_display_spice_primary_create), self);

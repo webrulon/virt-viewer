@@ -532,7 +532,7 @@ virt_viewer_new(const char *uri,
 	app = VIRT_VIEWER_APP(self);
 	priv = self->priv;
 
-	virt_viewer_app_set_zoom_level(app, zoom);
+	virt_viewer_window_set_zoom_level(virt_viewer_app_get_main_window(app), zoom);
 	virt_viewer_app_set_direct(app, direct);
 
 	/* should probably be properties instead */

@@ -38,6 +38,7 @@ struct _VirtViewerDisplayPrivate
 	guint desktopHeight;
 	guint zoom_level;
 	gboolean zoom;
+        gint nth_display;
 };
 
 static void virt_viewer_display_size_request(GtkWidget *widget,
@@ -68,6 +69,7 @@ enum {
 
 	PROP_DESKTOP_WIDTH,
 	PROP_DESKTOP_HEIGHT,
+	PROP_NTH_DISPLAY,
 	PROP_ZOOM,
 	PROP_ZOOM_LEVEL,
 };
@@ -123,6 +125,17 @@ virt_viewer_display_class_init(VirtViewerDisplayClass *class)
 							 400,
 							 100,
 							 G_PARAM_READWRITE));
+
+	g_object_class_install_property(object_class,
+					PROP_NTH_DISPLAY,
+					g_param_spec_int("nth-display",
+							 "Nth display",
+							 "Nth display",
+							 0,
+							 G_MAXINT32,
+							 0,
+							 G_PARAM_READWRITE |
+                                                         G_PARAM_CONSTRUCT_ONLY));
 
 
 	g_signal_new("display-pointer-grab",
@@ -218,7 +231,9 @@ virt_viewer_display_set_property(GObject *object,
 						     priv->desktopWidth,
 						     g_value_get_int(value));
 		break;
-    
+        case PROP_NTH_DISPLAY:
+                priv->nth_display = g_value_get_int(value);
+                break;
 	default:
 		G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
 		break;
@@ -240,6 +255,9 @@ virt_viewer_display_get_property(GObject *object,
 		break;
 	case PROP_DESKTOP_HEIGHT:
 		g_value_set_int(value, priv->desktopHeight);
+		break;
+	case PROP_NTH_DISPLAY:
+		g_value_set_int(value, priv->nth_display);
 		break;
       
 	default:

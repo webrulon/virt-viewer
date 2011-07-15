@@ -51,6 +51,10 @@ typedef struct _VirtViewerDisplayPrivate VirtViewerDisplayPrivate;
 
 typedef struct _VirtViewerDisplayChannel VirtViewerDisplayChannel;
 
+enum {
+        VIRT_VIEWER_DISPLAY_SHOW_HINT_HIDE = 0,
+        VIRT_VIEWER_DISPLAY_SHOW_HINT_READY,
+};
 
 /* perhaps this become an interface, and be pushed in gtkvnc and spice? */
 struct _VirtViewerDisplay {
@@ -93,9 +97,10 @@ void virt_viewer_display_set_zoom_level(VirtViewerDisplay *display,
 void virt_viewer_display_set_zoom(VirtViewerDisplay *display,
 				  gboolean zoom);
 
-void virt_viewer_display_send_keys(VirtViewerDisplay* display,
+void virt_viewer_display_send_keys(VirtViewerDisplay *display,
 				   const guint *keyvals, int nkeyvals);
-GdkPixbuf* virt_viewer_display_get_pixbuf(VirtViewerDisplay* display);
+GdkPixbuf* virt_viewer_display_get_pixbuf(VirtViewerDisplay *display);
+void virt_viewer_display_set_show_hint(VirtViewerDisplay *display, gint hint);
 
 G_END_DECLS
 

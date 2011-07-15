@@ -39,6 +39,7 @@ struct _VirtViewerDisplayPrivate
 	guint zoom_level;
 	gboolean zoom;
         gint nth_display;
+        gint show_hint;
 };
 
 static void virt_viewer_display_size_request(GtkWidget *widget,
@@ -72,6 +73,7 @@ enum {
 	PROP_NTH_DISPLAY,
 	PROP_ZOOM,
 	PROP_ZOOM_LEVEL,
+	PROP_SHOW_HINT,
 };
 
 static void
@@ -100,6 +102,7 @@ virt_viewer_display_class_init(VirtViewerDisplayClass *class)
 							 G_MAXINT32,
 							 100,
 							 G_PARAM_READWRITE));
+
 	g_object_class_install_property(object_class,
 					PROP_DESKTOP_HEIGHT,
 					g_param_spec_int("desktop-height",
@@ -109,6 +112,7 @@ virt_viewer_display_class_init(VirtViewerDisplayClass *class)
 							 G_MAXINT32,
 							 100,
 							 G_PARAM_READWRITE));
+
 	g_object_class_install_property(object_class,
 					PROP_ZOOM,
 					g_param_spec_boolean("zoom",
@@ -116,6 +120,7 @@ virt_viewer_display_class_init(VirtViewerDisplayClass *class)
 							     "Zoom",
 							     TRUE,
 							     G_PARAM_READWRITE));
+
 	g_object_class_install_property(object_class,
 					PROP_ZOOM_LEVEL,
 					g_param_spec_int("zoom-level",
@@ -136,6 +141,16 @@ virt_viewer_display_class_init(VirtViewerDisplayClass *class)
 							 0,
 							 G_PARAM_READWRITE |
                                                          G_PARAM_CONSTRUCT_ONLY));
+
+	g_object_class_install_property(object_class,
+					PROP_SHOW_HINT,
+					g_param_spec_int("show-hint",
+							 "Show hint",
+							 "Show state hint",
+							 0,
+							 G_MAXINT32,
+							 0,
+							 G_PARAM_READABLE));
 
 
 	g_signal_new("display-pointer-grab",
@@ -219,7 +234,7 @@ virt_viewer_display_set_property(GObject *object,
 {
 	VirtViewerDisplay *display = VIRT_VIEWER_DISPLAY(object);
 	VirtViewerDisplayPrivate *priv = display->priv;
-   
+
 	switch (prop_id) {
 	case PROP_DESKTOP_WIDTH:
 		virt_viewer_display_set_desktop_size(display,
@@ -248,7 +263,7 @@ virt_viewer_display_get_property(GObject *object,
 {
 	VirtViewerDisplay *display = VIRT_VIEWER_DISPLAY(object);
 	VirtViewerDisplayPrivate *priv = display->priv;
-   
+
 	switch (prop_id) {
 	case PROP_DESKTOP_WIDTH:
 		g_value_set_int(value, priv->desktopWidth);
@@ -259,7 +274,10 @@ virt_viewer_display_get_property(GObject *object,
 	case PROP_NTH_DISPLAY:
 		g_value_set_int(value, priv->nth_display);
 		break;
-      
+	case PROP_SHOW_HINT:
+		g_value_set_int(value, priv->show_hint);
+		break;
+
 	default:
 		G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
 		break;
@@ -460,6 +478,19 @@ GdkPixbuf* virt_viewer_display_get_pixbuf(VirtViewerDisplay *display)
 	g_return_val_if_fail(VIRT_VIEWER_IS_DISPLAY(display), NULL);
 
 	return VIRT_VIEWER_DISPLAY_GET_CLASS(display)->get_pixbuf(display);
+}
+
+void virt_viewer_display_set_show_hint(VirtViewerDisplay *self, gint hint)
+{
+	VirtViewerDisplayPrivate *priv;
+	g_return_if_fail(VIRT_VIEWER_IS_DISPLAY(self));
+
+        priv = self->priv;
+        if (priv->show_hint == hint)
+                return;
+
+        priv->show_hint = hint;
+        g_object_notify(G_OBJECT(self), "show-hint");
 }
 
 /*

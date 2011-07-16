@@ -91,6 +91,7 @@ static void virt_viewer_app_channel_open(VirtViewerSession *session,
 					 VirtViewerApp *self);
 static void virt_viewer_app_update_pretty_address(VirtViewerApp *self);
 static void virt_viewer_app_set_fullscreen(VirtViewerApp *self, gboolean fullscreen);
+static void virt_viewer_app_update_menu_displays(VirtViewerApp *self);
 
 
 struct _VirtViewerAppPrivate {
@@ -176,12 +177,81 @@ virt_viewer_app_simple_message_dialog(VirtViewerApp *self,
 void
 virt_viewer_app_quit(VirtViewerApp *self)
 {
-	g_return_if_fail(self != NULL);
+	g_return_if_fail(VIRT_VIEWER_IS_APP(self));
 	VirtViewerAppPrivate *priv = self->priv;
 
 	if (priv->session)
 		virt_viewer_session_close(VIRT_VIEWER_SESSION(priv->session));
 	gtk_main_quit();
+}
+
+static void count_window_visible(gpointer key G_GNUC_UNUSED,
+				 gpointer value,
+				 gpointer user_data)
+{
+	GtkWindow *win = virt_viewer_window_get_window(VIRT_VIEWER_WINDOW(value));
+	guint *n = (guint*)user_data;
+
+	if (gtk_widget_get_visible(GTK_WIDGET(win)))
+		*n += 1;
+}
+
+static guint
+virt_viewer_app_get_n_windows_visible(VirtViewerApp *self)
+{
+	guint n = 0;
+	g_hash_table_foreach(self->priv->windows, count_window_visible, &n);
+	return n;
+}
+
+static guint
+virt_viewer_app_get_n_windows(VirtViewerApp *self)
+{
+	return g_hash_table_size(self->priv->windows);
+}
+
+gboolean
+virt_viewer_app_window_set_visible(VirtViewerApp *self,
+				   VirtViewerWindow *vwin,
+				   gboolean visible)
+{
+	GtkWidget *window;
+	g_return_val_if_fail(VIRT_VIEWER_IS_APP(self), FALSE);
+	g_return_val_if_fail(VIRT_VIEWER_IS_WINDOW(vwin), FALSE);
+
+	window = GTK_WIDGET(virt_viewer_window_get_window(vwin));
+	if (visible) {
+		gtk_widget_show(window);
+		return TRUE;
+	} else {
+		if (virt_viewer_app_get_n_windows_visible(self) > 1) {
+			gtk_widget_hide(window);
+			return FALSE;
+		} else if (virt_viewer_app_get_n_windows(self) > 1) {
+			GtkWidget *dialog =
+				gtk_message_dialog_new (GTK_WINDOW(window),
+							GTK_DIALOG_DESTROY_WITH_PARENT,
+							GTK_MESSAGE_QUESTION,
+							GTK_BUTTONS_OK_CANCEL,
+							_("This is the last visible display. Do you want to quit?"));
+			gint result = gtk_dialog_run (GTK_DIALOG (dialog));
+			switch (result) {
+			case GTK_RESPONSE_OK:
+				virt_viewer_app_quit(self);
+				break;
+			default:
+				break;
+			}
+			gtk_widget_destroy(dialog);
+			return FALSE;
+		} else {
+			virt_viewer_app_quit(self);
+			return FALSE;
+		}
+	}
+
+	g_warn_if_reached();
+	return FALSE;
 }
 
 void
@@ -369,20 +439,31 @@ virt_viewer_app_set_nth_window(VirtViewerApp *self, gint nth, VirtViewerWindow *
 	g_hash_table_insert(self->priv->windows, key, win);
 }
 
+static void
+viewer_window_visible_cb(GtkWidget *widget G_GNUC_UNUSED,
+			 gpointer user_data)
+{
+	virt_viewer_app_update_menu_displays(VIRT_VIEWER_APP(user_data));
+}
+
+
 static VirtViewerWindow*
 virt_viewer_app_window_new(VirtViewerApp *self, GtkWidget *container, gint nth)
 {
 	VirtViewerWindow* window;
+	GtkWindow *w;
 
 	window = g_object_new(VIRT_VIEWER_TYPE_WINDOW,
 			      "app", self,
 			      "container", container,
 			      NULL);
 	virt_viewer_app_set_nth_window(self, nth, window);
+	w = virt_viewer_window_get_window(window);
 
 	/* this will set new window to fullscreen if necessary */
 	virt_viewer_app_set_fullscreen(self, self->priv->fullscreen);
-
+	g_signal_connect(w, "hide", G_CALLBACK(viewer_window_visible_cb), self);
+	g_signal_connect(w, "show", G_CALLBACK(viewer_window_visible_cb), self);
 	return window;
 }
 
@@ -1126,6 +1207,66 @@ virt_viewer_app_set_fullscreen(VirtViewerApp *self, gboolean fullscreen)
 	/* we iterate unconditionnaly, even if it was set before to update new windows */
 	priv->fullscreen = fullscreen;
 	g_hash_table_foreach(priv->windows, fullscreen_cb, GINT_TO_POINTER(fullscreen));
+}
+
+static void
+menu_display_visible_toggled_cb(GtkCheckMenuItem *checkmenuitem,
+				VirtViewerWindow *vwin)
+{
+	VirtViewerApp *self;
+	gboolean visible;
+	static gboolean reentering = FALSE;
+
+	if (reentering) /* do not reenter if I switch you back */
+		return;
+
+	reentering = TRUE;
+	g_object_get(vwin, "app", &self, NULL);
+	visible = virt_viewer_app_window_set_visible(self, vwin,
+						     gtk_check_menu_item_get_active(checkmenuitem));
+	gtk_check_menu_item_set_active(checkmenuitem, /* will be toggled again */ !visible);
+	g_object_unref(self);
+	reentering = FALSE;
+}
+
+static void update_menu_displays_cb(gpointer key,
+				    gpointer value,
+				    gpointer user_data)
+{
+	gint nth = *(gint*)key;
+	VirtViewerWindow *vwin = VIRT_VIEWER_WINDOW(value);
+	GtkMenuShell *submenu = GTK_MENU_SHELL(user_data);
+	GtkWidget *item;
+	gboolean visible;
+
+	item = gtk_check_menu_item_new_with_label(g_strdup_printf("Display %d", nth));
+	visible = gtk_widget_get_visible(GTK_WIDGET(virt_viewer_window_get_window(vwin)));
+	gtk_check_menu_item_set_active(GTK_CHECK_MENU_ITEM(item), visible);
+	g_signal_connect(G_OBJECT(item),
+			 "toggled", G_CALLBACK(menu_display_visible_toggled_cb), vwin);
+	gtk_menu_shell_append(submenu, item);
+}
+
+static void
+window_update_menu_displays_cb(gpointer key G_GNUC_UNUSED,
+			       gpointer value,
+			       gpointer user_data)
+{
+	VirtViewerApp *self = VIRT_VIEWER_APP(user_data);
+	VirtViewerWindow *window = VIRT_VIEWER_WINDOW(value);
+	GtkWidget *submenu = gtk_menu_new();
+	GtkMenuItem *menu = virt_viewer_window_get_menu_displays(window);
+
+	g_hash_table_foreach(self->priv->windows, update_menu_displays_cb, submenu);
+
+	gtk_widget_show_all(submenu);
+	gtk_menu_item_set_submenu(menu, submenu);
+}
+
+static void
+virt_viewer_app_update_menu_displays(VirtViewerApp *self)
+{
+	g_hash_table_foreach(self->priv->windows, window_update_menu_displays_cb, self);
 }
 
 void

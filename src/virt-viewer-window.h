@@ -67,6 +67,7 @@ void virt_viewer_window_update_title(VirtViewerWindow *self);
 void virt_viewer_window_set_zoom_level(VirtViewerWindow *self, gint zoom_level);
 void virt_viewer_window_leave_fullscreen(VirtViewerWindow *self);
 void virt_viewer_window_enter_fullscreen(VirtViewerWindow *self, gint x, gint y);
+GtkMenuItem *virt_viewer_window_get_menu_displays(VirtViewerWindow *self);
 
 G_END_DECLS
 

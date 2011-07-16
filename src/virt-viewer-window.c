@@ -44,7 +44,7 @@
 void virt_viewer_window_menu_view_zoom_out(GtkWidget *menu, VirtViewerWindow *self);
 void virt_viewer_window_menu_view_zoom_in(GtkWidget *menu, VirtViewerWindow *self);
 void virt_viewer_window_menu_view_zoom_reset(GtkWidget *menu, VirtViewerWindow *self);
-void virt_viewer_window_delete(GtkWidget *src, void *dummy, VirtViewerWindow *self);
+gboolean virt_viewer_window_delete(GtkWidget *src, void *dummy, VirtViewerWindow *self);
 void virt_viewer_window_menu_file_quit(GtkWidget *src, VirtViewerWindow *self);
 void virt_viewer_window_menu_help_about(GtkWidget *menu, VirtViewerWindow *self);
 void virt_viewer_window_menu_view_fullscreen(GtkWidget *menu, VirtViewerWindow *self);
@@ -611,13 +611,13 @@ virt_viewer_window_enable_modifiers(VirtViewerWindow *self)
 }
 
 
-void
+gboolean
 virt_viewer_window_delete(GtkWidget *src G_GNUC_UNUSED,
 			  void *dummy G_GNUC_UNUSED,
 			  VirtViewerWindow *self)
 {
-	g_warning("TODO: we might want some other behaviour");
-	virt_viewer_app_quit(self->priv->app);
+	virt_viewer_app_window_set_visible(self->priv->app, self, FALSE);
+	return TRUE;
 }
 
 
@@ -874,6 +874,12 @@ virt_viewer_window_set_zoom_level(VirtViewerWindow *self, gint zoom_level)
 	self->priv->zoomlevel = zoom_level;
 }
 
+GtkMenuItem*
+virt_viewer_window_get_menu_displays(VirtViewerWindow *self)
+{
+	g_return_val_if_fail(VIRT_VIEWER_IS_WINDOW(self), NULL);
+	return GTK_MENU_ITEM(gtk_builder_get_object(self->priv->builder, "menu-displays"));
+}
 
 /*
  * Local variables:

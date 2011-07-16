@@ -77,6 +77,7 @@ void virt_viewer_app_set_connect_info(VirtViewerApp *self,
                                       const gchar *unixsock,
                                       const gchar *user,
                                       gint port);
+gboolean virt_viewer_app_window_set_visible(VirtViewerApp *self, VirtViewerWindow *window, gboolean visible);
 
 G_END_DECLS
 

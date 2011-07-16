@@ -22,10 +22,13 @@
 
 #include <config.h>
 #include <locale.h>
-#include <vncdisplay.h>
 #include <gtk/gtk.h>
 #include <glib/gi18n.h>
 #include <stdlib.h>
+
+#ifdef HAVE_GTK_VNC
+#include <vncdisplay.h>
+#endif
 
 #include "virt-viewer.h"
 
@@ -88,7 +91,9 @@ int main(int argc, char **argv)
 	context = g_option_context_new (_("- Virtual machine graphical console"));
 	g_option_context_add_main_entries (context, options, NULL);
 	g_option_context_add_group (context, gtk_get_option_group (TRUE));
+#ifdef HAVE_GTK_VNC
 	g_option_context_add_group (context, vnc_display_get_option_group ());
+#endif
 	g_option_context_parse (context, &argc, &argv, &error);
 	if (error) {
 		g_printerr("%s\n%s\n",

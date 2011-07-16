@@ -54,7 +54,9 @@
 #include "virt-viewer-auth.h"
 #include "virt-viewer-window.h"
 #include "virt-viewer-session.h"
+#ifdef HAVE_GTK_VNC
 #include "virt-viewer-session-vnc.h"
+#endif
 #ifdef HAVE_SPICE_GTK
 #include "virt-viewer-session-spice.h"
 #endif
@@ -574,11 +576,13 @@ virt_viewer_app_create_session(VirtViewerApp *self, const gchar *type)
 	VirtViewerAppPrivate *priv = self->priv;
 	g_return_val_if_fail(priv->session == NULL, -1);
 
+#ifdef HAVE_GTK_VNC
 	if (g_strcasecmp(type, "vnc") == 0) {
 		virt_viewer_app_trace(self, "Guest %s has a %s display\n",
 				      priv->guest_name, type);
 		priv->session = virt_viewer_session_vnc_new();
 	} else
+#endif
 #ifdef HAVE_SPICE_GTK
 	if (g_strcasecmp(type, "spice") == 0) {
 		virt_viewer_app_trace(self, "Guest %s has a %s display\n",

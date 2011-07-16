@@ -15,14 +15,18 @@ with:
    ./configure --with-gtk=3.0  (or =2.0)
 
 Virt Viewer uses the GTK-VNC (>= 0.4.3) widget to provide a
-display of the VNC protocol. This is available from
+display of the VNC protocol, which is available from
 
   http://gtk-vnc.sourceforge.net/
 
-Optionally Virt Viewer can also provide a SPICE client
-using the SPICE-GTK widget (>= 0.6) available from
+Virt Viewer uses the SPICE-GTK (>= 0.6) widget to provide a
+display of the SPICE protocol, which is available from:
 
   http://spice-space.org/page/Spice-Gtk
+
+Use of either SPICE-GTK or GTK-VNC can be disabled at time
+of configure, with --without-gtk-vnc or --without-spice-gtk
+respectively.
 
 Virt Viewer uses libvirt to lookup information about the
 guest OS display. This is available from

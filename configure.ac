@@ -70,7 +70,22 @@ AM_CONDITIONAL([HAVE_GTK_3],[test "$with_gtk" = "3.0"])
 
 PKG_CHECK_MODULES(GTK, gtk+-$GTK_API_VERSION >= $GTK_REQUIRED)
 
-PKG_CHECK_MODULES(GTK_VNC, gtk-vnc-$GTK_VNC_API_VERSION >= $GTK_VNC_REQUIRED)
+AC_ARG_WITH([gtk-vnc],
+    AS_HELP_STRING([--without-gtk-vnc], [Ignore presence of gtk-vnc and disable it]))
+
+AS_IF([test "x$with_gtk_vnc" != "xno"],
+      [PKG_CHECK_MODULES(GTK_VNC,
+                         gtk-vnc-$GTK_VNC_API_VERSION >= $GTK_VNC_REQUIRED,
+                         [have_gtk_vnc=yes], [have_gtk_vnc=no])],
+      [have_gtk_vnc=no])
+
+AS_IF([test "x$have_gtk_vnc" = "xyes"],
+      [AC_DEFINE([HAVE_GTK_VNC], 1, [Have gtk-vnc?])],
+      [AS_IF([test "x$with_gtk_vnc" = "xyes"],
+             [AC_MSG_ERROR([gtk-vnc requested but not found])
+      ])
+])
+AM_CONDITIONAL([HAVE_GTK_VNC], [test "x$have_gtk_vnc" = "xyes"])
 
 AC_ARG_WITH([spice-gtk],
     AS_HELP_STRING([--without-spice-gtk], [Ignore presence of spice-gtk and disable it]))

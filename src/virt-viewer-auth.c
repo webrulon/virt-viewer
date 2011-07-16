@@ -22,9 +22,12 @@
 
 #include <config.h>
 
-#include <vncdisplay.h>
 #include <gtk/gtk.h>
 #include <string.h>
+
+#ifdef HAVE_GTK_VNC
+#include <vncdisplay.h>
+#endif
 
 #include "virt-viewer-auth.h"
 
@@ -88,6 +91,7 @@ virt_viewer_auth_collect_credentials(const char *type,
 	return response == GTK_RESPONSE_OK ? 0 : -1;
 }
 
+#ifdef HAVE_GTK_VNC
 void
 virt_viewer_auth_vnc_credentials(GtkWidget *vnc,
 				 GValueArray *credList,
@@ -167,7 +171,7 @@ virt_viewer_auth_vnc_credentials(GtkWidget *vnc,
         g_free(username);
 	g_free(password);
 }
-
+#endif
 
 
 int

@@ -65,7 +65,6 @@ int virt_viewer_app_create_session(VirtViewerApp *self, const gchar *type);
 int virt_viewer_app_activate(VirtViewerApp *self);
 int virt_viewer_app_initial_connect(VirtViewerApp *self);
 void virt_viewer_app_start_reconnect_poll(VirtViewerApp *self);
-void virt_viewer_app_set_status(VirtViewerApp *self, const char *text);
 void virt_viewer_app_set_zoom_level(VirtViewerApp *self, gint zoom_level);
 void virt_viewer_app_set_direct(VirtViewerApp *self, gboolean direct);
 gboolean virt_viewer_app_has_session(VirtViewerApp *self);
@@ -78,6 +77,7 @@ void virt_viewer_app_set_connect_info(VirtViewerApp *self,
                                       const gchar *user,
                                       gint port);
 gboolean virt_viewer_app_window_set_visible(VirtViewerApp *self, VirtViewerWindow *window, gboolean visible);
+void virt_viewer_app_show_status(VirtViewerApp *self, const gchar *fmt, ...);
 
 G_END_DECLS
 

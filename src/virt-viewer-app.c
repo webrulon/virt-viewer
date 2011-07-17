@@ -388,15 +388,6 @@ virt_viewer_app_trace(VirtViewerApp *self,
 	}
 }
 
-void
-virt_viewer_app_set_status(VirtViewerApp *self,
-			   const char *text)
-{
-	g_return_if_fail(VIRT_VIEWER_IS_APP(self));
-
-	virt_viewer_notebook_show_status(VIRT_VIEWER_NOTEBOOK(self->priv->main_notebook), text);
-}
-
 static void update_title(gpointer key G_GNUC_UNUSED,
 			 gpointer value,
 			 gpointer user_data G_GNUC_UNUSED)
@@ -677,7 +668,7 @@ virt_viewer_app_activate(VirtViewerApp *self)
 						    priv->ghost, priv->gport);
 	}
 
-	virt_viewer_app_set_status(self, _("Connecting to graphic server"));
+	virt_viewer_app_show_status(self, _("Connecting to graphic server"));
 
 	priv->connected = FALSE;
 	priv->active = TRUE;
@@ -807,7 +798,7 @@ virt_viewer_app_default_deactivated(VirtViewerApp *self)
 {
 	VirtViewerAppPrivate *priv = self->priv;
 
-	virt_viewer_app_set_status(self, _("Guest domain has shutdown"));
+	virt_viewer_app_show_status(self, _("Guest domain has shutdown"));
 	virt_viewer_app_trace(self, "Guest %s display has disconnected, shutting down",
 			      priv->guest_name);
 	gtk_main_quit();
@@ -857,7 +848,7 @@ virt_viewer_app_connected(VirtViewerSession *session G_GNUC_UNUSED,
 	VirtViewerAppPrivate *priv = self->priv;
 
 	priv->connected = TRUE;
-	virt_viewer_app_set_status(self, _("Connected to graphic server"));
+	virt_viewer_app_show_status(self, _("Connected to graphic server"));
 }
 
 
@@ -1306,13 +1297,44 @@ virt_viewer_app_set_connect_info(VirtViewerApp *self,
 void
 virt_viewer_app_free_connect_info(VirtViewerApp *self)
 {
+	g_return_if_fail(VIRT_VIEWER_IS_APP(self));
+
 	virt_viewer_app_set_connect_info(self, NULL, NULL, NULL, NULL, NULL, NULL, 0);
 }
 
 VirtViewerWindow*
 virt_viewer_app_get_main_window(VirtViewerApp *self)
 {
+	g_return_val_if_fail(VIRT_VIEWER_IS_APP(self), NULL);
+
 	return self->priv->main_window;
+}
+
+static void
+show_status_cb(gpointer key G_GNUC_UNUSED,
+	       gpointer value,
+	       gpointer user_data)
+{
+	VirtViewerNotebook *nb = virt_viewer_window_get_notebook(VIRT_VIEWER_WINDOW(value));
+	gchar *text = (gchar*)user_data;
+
+	virt_viewer_notebook_show_status(nb, text);
+}
+
+void
+virt_viewer_app_show_status(VirtViewerApp *self, const gchar *fmt, ...)
+{
+	va_list args;
+	gchar *text;
+
+	g_return_if_fail(VIRT_VIEWER_IS_APP(self));
+
+	va_start(args, fmt);
+	text = g_strdup_vprintf(fmt, args);
+	va_end(args);
+
+	g_hash_table_foreach(self->priv->windows, show_status_cb, text);
+	g_free(text);
 }
 
 /*

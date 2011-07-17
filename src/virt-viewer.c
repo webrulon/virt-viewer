@@ -124,9 +124,8 @@ virt_viewer_deactivated(VirtViewerApp *app)
 			virt_viewer_app_start_reconnect_poll(app);
 		}
 
-		virt_viewer_app_set_status(app, _("Waiting for guest domain to re-start"));
-		virt_viewer_app_trace(app, "Guest %s display has disconnected, waiting to reconnect",
-				      priv->domkey);
+		virt_viewer_app_show_status(app, _("Waiting for guest domain to re-start"));
+		virt_viewer_app_trace(app, "Guest %s display has disconnected, waiting to reconnect", priv->domkey);
 	} else {
 		VIRT_VIEWER_APP_CLASS(virt_viewer_parent_class)->deactivated(app);
 	}
@@ -399,11 +398,11 @@ virt_viewer_initial_connect(VirtViewerApp *app)
 	VirtViewer *self = VIRT_VIEWER(app);
 	VirtViewerPrivate *priv = self->priv;
 
-	virt_viewer_app_set_status(app, _("Finding guest domain"));
+	virt_viewer_app_show_status(app, _("Finding guest domain"));
 	dom = virt_viewer_lookup_domain(self);
 	if (!dom) {
 		if (priv->waitvm) {
-			virt_viewer_app_set_status(app, _("Waiting for guest domain to be created"));
+			virt_viewer_app_show_status(app, _("Waiting for guest domain to be created"));
 			virt_viewer_app_trace(app, "Guest %s does not yet exist, waiting for it to be created\n",
 					      priv->domkey);
 			goto done;
@@ -418,21 +417,21 @@ virt_viewer_initial_connect(VirtViewerApp *app)
 	free(priv->domtitle);
 	priv->domtitle = g_strdup(virDomainGetName(dom));
 
-	virt_viewer_app_set_status(app, _("Checking guest domain status"));
+	virt_viewer_app_show_status(app, _("Checking guest domain status"));
 	if (virDomainGetInfo(dom, &info) < 0) {
 		DEBUG_LOG("Cannot get guest state");
 		goto cleanup;
 	}
 
 	if (info.state == VIR_DOMAIN_SHUTOFF) {
-		virt_viewer_app_set_status(app, _("Waiting for guest domain to start"));
+		virt_viewer_app_show_status(app, _("Waiting for guest domain to start"));
 	} else {
 		ret = virt_viewer_update_display(self, dom);
 		if (ret >= 0)
 			ret = VIRT_VIEWER_APP_CLASS(virt_viewer_parent_class)->initial_connect(app);
 		if (ret < 0) {
 			if (priv->waitvm) {
-				virt_viewer_app_set_status(app, _("Waiting for guest domain to start server"));
+				virt_viewer_app_show_status(app, _("Waiting for guest domain to start server"));
 				virt_viewer_app_trace(app, "Guest %s has not activated its display yet, waiting for it to start\n",
 						      priv->domkey);
 			} else {

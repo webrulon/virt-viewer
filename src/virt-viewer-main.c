@@ -82,6 +82,8 @@ int main(int argc, char **argv)
 	bind_textdomain_codeset(GETTEXT_PACKAGE, "UTF-8");
 	textdomain(GETTEXT_PACKAGE);
 
+	g_set_application_name(_("Virt Viewer"));
+
 	/* Setup command line options */
 	context = g_option_context_new (_("- Virtual machine graphical console"));
 	g_option_context_add_main_entries (context, options, NULL);

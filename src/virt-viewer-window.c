@@ -829,18 +829,25 @@ virt_viewer_window_update_title(VirtViewerWindow *self)
 {
 	VirtViewerWindowPrivate *priv = self->priv;
 	char *title;
-	const char *subtitle;
+	const char *ungrab = NULL;
 
 	if (priv->grabbed)
-		subtitle = "(Press Ctrl+Alt to release pointer) ";
-	else
-		subtitle = "";
+		ungrab = _("(Press Ctrl+Alt to release pointer)");
 
-	if (priv->subtitle)
-		title = g_strdup_printf("%s%s - Virt Viewer",
-					subtitle, priv->subtitle);
+	if (!ungrab && !priv->subtitle)
+		title = g_strdup(g_get_application_name());
 	else
-		title = g_strdup("Virt Viewer");
+		/* translators:
+		 * This is "<ungrab (or empty)><space (or empty)><subtitle (or empty)> - <appname>"
+		 * Such as: "(Press Ctrl+Alt to release pointer) BigCorpTycoon MOTD - Virt Viewer"
+		 */
+		title = g_strdup_printf(_("%s%s%s - %s"),
+					/* translators: <ungrab empty> */
+					ungrab ? ungrab : _(""),
+					/* translators: <space> */
+					ungrab && priv->subtitle ? _(" ") : _(""),
+					priv->subtitle,
+					g_get_application_name());
 
 	gtk_window_set_title(GTK_WINDOW(priv->window), title);
 

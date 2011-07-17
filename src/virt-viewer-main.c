@@ -99,12 +99,12 @@ int main(int argc, char **argv)
 	g_option_context_free(context);
 
 	if (!args || (g_strv_length(args) != 1)) {
-		fprintf(stderr, _("\nUsage: %s [OPTIONS] DOMAIN-NAME|ID|UUID\n\n%s\n\n"), argv[0], help_msg);
+		g_printerr(_("\nUsage: %s [OPTIONS] DOMAIN-NAME|ID|UUID\n\n%s\n\n"), argv[0], help_msg);
 		goto cleanup;
 	}
 
 	if (zoom < 10 || zoom > 200) {
-		fprintf(stderr, "Zoom level must be within 10-200\n");
+		g_printerr(_("Zoom level must be within 10-200\n"));
 		goto cleanup;
 	}
 

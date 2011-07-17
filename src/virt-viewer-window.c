@@ -96,6 +96,7 @@ struct _VirtViewerWindowPrivate {
 	GSList *accel_list;
 	int accel_menu_sig[LAST_MENU];
 	gboolean grabbed;
+	gboolean before_saved;
 	GdkRectangle before_fullscreen;
 
 	gint zoomlevel;
@@ -446,39 +447,46 @@ virt_viewer_window_leave_fullscreen(VirtViewerWindow *self)
 	gtk_widget_hide(priv->toolbar);
 	gtk_window_unfullscreen(GTK_WINDOW(priv->window));
 
-	gtk_window_move(GTK_WINDOW(priv->window),
-			priv->before_fullscreen.x,
-			priv->before_fullscreen.y);
-	gtk_window_resize(GTK_WINDOW(priv->window),
-			  priv->before_fullscreen.width,
-			  priv->before_fullscreen.height);
+	if (priv->before_saved) {
+		gtk_window_move(GTK_WINDOW(priv->window),
+				priv->before_fullscreen.x,
+				priv->before_fullscreen.y);
+		gtk_window_resize(GTK_WINDOW(priv->window),
+				  priv->before_fullscreen.width,
+				  priv->before_fullscreen.height);
+		priv->before_saved = FALSE;
+	}
 }
 
 void
-virt_viewer_window_enter_fullscreen(VirtViewerWindow *self, gint x, gint y)
+virt_viewer_window_enter_fullscreen(VirtViewerWindow *self, gboolean move, gint x, gint y)
 {
 	VirtViewerWindowPrivate *priv = self->priv;
 	GtkWidget *menu = GTK_WIDGET(gtk_builder_get_object(priv->builder, "top-menu"));
 	GtkCheckMenuItem *check = GTK_CHECK_MENU_ITEM(gtk_builder_get_object(priv->builder, "menu-view-fullscreen"));
 
-	if (priv->fullscreen)
-		return;
+	if (!priv->before_saved) {
+		gtk_window_get_position(GTK_WINDOW(priv->window),
+					&priv->before_fullscreen.x,
+					&priv->before_fullscreen.y);
+		gtk_window_get_size(GTK_WINDOW(priv->window),
+				    &priv->before_fullscreen.width,
+				    &priv->before_fullscreen.height);
+		priv->before_saved = TRUE;
+	}
 
-	gtk_window_get_position(GTK_WINDOW(priv->window),
-				&priv->before_fullscreen.x,
-				&priv->before_fullscreen.y);
-	gtk_window_get_size(GTK_WINDOW(priv->window),
-			    &priv->before_fullscreen.width,
-			    &priv->before_fullscreen.height);
+	if (!priv->fullscreen) {
+		gtk_check_menu_item_set_active(check, TRUE);
+		priv->fullscreen = TRUE;
+		gtk_widget_hide(menu);
+		gtk_widget_show(priv->toolbar);
+		ViewAutoDrawer_SetActive(VIEW_AUTODRAWER(priv->layout), TRUE);
+		ViewAutoDrawer_Close(VIEW_AUTODRAWER(priv->layout));
+	}
 
-	gtk_check_menu_item_set_active(check, TRUE);
-	priv->fullscreen = TRUE;
-	gtk_widget_hide(menu);
-	gtk_widget_show(priv->toolbar);
-	ViewAutoDrawer_SetActive(VIEW_AUTODRAWER(priv->layout), TRUE);
-	ViewAutoDrawer_Close(VIEW_AUTODRAWER(priv->layout));
+	if (move)
+		gtk_window_move(GTK_WINDOW(priv->window), x, y);
 
-	gtk_window_move(GTK_WINDOW(priv->window), x, y);
 	gtk_window_fullscreen(GTK_WINDOW(priv->window));
 }
 

@@ -1359,6 +1359,23 @@ virt_viewer_app_show_status(VirtViewerApp *self, const gchar *fmt, ...)
 	g_free(text);
 }
 
+static void
+show_display_cb(gpointer key G_GNUC_UNUSED,
+		gpointer value,
+		gpointer user_data G_GNUC_UNUSED)
+{
+	VirtViewerNotebook *nb = virt_viewer_window_get_notebook(VIRT_VIEWER_WINDOW(value));
+
+	virt_viewer_notebook_show_display(nb);
+}
+
+void
+virt_viewer_app_show_display(VirtViewerApp *self)
+{
+	g_return_if_fail(VIRT_VIEWER_IS_APP(self));
+	g_hash_table_foreach(self->priv->windows, show_display_cb, self);
+}
+
 /*
  * Local variables:
  *  c-indent-level: 8

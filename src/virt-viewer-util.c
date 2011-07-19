@@ -88,6 +88,8 @@ virt_viewer_util_extract_host(const char *uristr,
 		uristr = "xen:///";
 
 	uri = xmlParseURI(uristr);
+        g_return_val_if_fail(uri != NULL, 1);
+
         if (host) {
                 if (!uri || !uri->server)
                         *host = g_strdup("localhost");

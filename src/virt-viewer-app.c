@@ -254,7 +254,7 @@ virt_viewer_app_window_set_visible(VirtViewerApp *self,
 	return FALSE;
 }
 
-void
+G_MODULE_EXPORT void
 virt_viewer_app_about_close(GtkWidget *dialog,
 			    VirtViewerApp *self G_GNUC_UNUSED)
 {
@@ -262,7 +262,7 @@ virt_viewer_app_about_close(GtkWidget *dialog,
 	gtk_widget_destroy(dialog);
 }
 
-void
+G_MODULE_EXPORT void
 virt_viewer_app_about_delete(GtkWidget *dialog,
 			     void *dummy G_GNUC_UNUSED,
 			     VirtViewerApp *self G_GNUC_UNUSED)

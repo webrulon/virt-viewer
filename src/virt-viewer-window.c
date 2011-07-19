@@ -322,7 +322,7 @@ virt_viewer_window_desktop_resize(VirtViewerDisplay *display G_GNUC_UNUSED,
 }
 
 
-void
+G_MODULE_EXPORT void
 virt_viewer_window_menu_view_zoom_out(GtkWidget *menu G_GNUC_UNUSED,
 				      VirtViewerWindow *self)
 {
@@ -339,7 +339,7 @@ virt_viewer_window_menu_view_zoom_out(GtkWidget *menu G_GNUC_UNUSED,
 		virt_viewer_display_set_zoom_level(VIRT_VIEWER_DISPLAY(priv->display), priv->zoomlevel);
 }
 
-void
+G_MODULE_EXPORT void
 virt_viewer_window_menu_view_zoom_in(GtkWidget *menu G_GNUC_UNUSED,
 				     VirtViewerWindow *self)
 {
@@ -356,7 +356,7 @@ virt_viewer_window_menu_view_zoom_in(GtkWidget *menu G_GNUC_UNUSED,
 		virt_viewer_display_set_zoom_level(VIRT_VIEWER_DISPLAY(priv->display), priv->zoomlevel);
 }
 
-void
+G_MODULE_EXPORT void
 virt_viewer_window_menu_view_zoom_reset(GtkWidget *menu G_GNUC_UNUSED,
 					VirtViewerWindow *self)
 {
@@ -527,7 +527,7 @@ static const struct keyComboDef keyCombos[] = {
 	{ { GDK_Print }, 1, "_PrintScreen"},
 };
 
-void
+G_MODULE_EXPORT void
 virt_viewer_window_menu_send(GtkWidget *menu G_GNUC_UNUSED,
 			     VirtViewerWindow *self)
 {
@@ -629,7 +629,7 @@ virt_viewer_window_enable_modifiers(VirtViewerWindow *self)
 }
 
 
-gboolean
+G_MODULE_EXPORT gboolean
 virt_viewer_window_delete(GtkWidget *src G_GNUC_UNUSED,
 			  void *dummy G_GNUC_UNUSED,
 			  VirtViewerWindow *self)
@@ -639,7 +639,7 @@ virt_viewer_window_delete(GtkWidget *src G_GNUC_UNUSED,
 }
 
 
-void
+G_MODULE_EXPORT void
 virt_viewer_window_menu_file_quit(GtkWidget *src G_GNUC_UNUSED,
 				  VirtViewerWindow *self)
 {
@@ -655,7 +655,7 @@ virt_viewer_window_toolbar_leave_fullscreen(GtkWidget *button G_GNUC_UNUSED,
 }
 
 
-void
+G_MODULE_EXPORT void
 virt_viewer_window_menu_view_fullscreen(GtkWidget *menu,
 					VirtViewerWindow *self)
 {
@@ -664,7 +664,7 @@ virt_viewer_window_menu_view_fullscreen(GtkWidget *menu,
 	g_object_set(self->priv->app, "fullscreen", fullscreen, NULL);
 }
 
-void
+G_MODULE_EXPORT void
 virt_viewer_window_menu_view_resize(GtkWidget *menu,
 				    VirtViewerWindow *self)
 {
@@ -691,7 +691,7 @@ virt_viewer_window_save_screenshot(VirtViewerWindow *self,
 	gdk_pixbuf_unref(pix);
 }
 
-void
+G_MODULE_EXPORT void
 virt_viewer_window_menu_file_screenshot(GtkWidget *menu G_GNUC_UNUSED,
 					VirtViewerWindow *self)
 {
@@ -722,7 +722,7 @@ virt_viewer_window_menu_file_screenshot(GtkWidget *menu G_GNUC_UNUSED,
 	gtk_widget_destroy (dialog);
 }
 
-void
+G_MODULE_EXPORT void
 virt_viewer_window_menu_help_about(GtkWidget *menu G_GNUC_UNUSED,
 				   VirtViewerWindow *self)
 {

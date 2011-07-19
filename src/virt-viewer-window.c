@@ -445,6 +445,9 @@ virt_viewer_window_leave_fullscreen(VirtViewerWindow *self)
 	ViewAutoDrawer_SetActive(VIEW_AUTODRAWER(priv->layout), FALSE);
 	gtk_widget_show(menu);
 	gtk_widget_hide(priv->toolbar);
+#ifdef G_OS_WIN32
+	gtk_widget_set_size_request(GTK_WIDGET(priv->window), -1, -1);
+#endif
 	gtk_window_unfullscreen(GTK_WINDOW(priv->window));
 
 	if (priv->before_saved) {
@@ -488,6 +491,13 @@ virt_viewer_window_enter_fullscreen(VirtViewerWindow *self, gboolean move, gint 
 		gtk_window_move(GTK_WINDOW(priv->window), x, y);
 
 	gtk_window_fullscreen(GTK_WINDOW(priv->window));
+#ifdef G_OS_WIN32
+	/* on windows, fullscreen doesn't always hide the taskbar
+	   See https://bugzilla.gnome.org/show_bug.cgi?id=652049 */
+	gtk_widget_set_size_request(GTK_WIDGET(priv->window),
+				    gdk_screen_width(),
+				    gdk_screen_height());
+#endif
 }
 
 #define MAX_KEY_COMBO 3

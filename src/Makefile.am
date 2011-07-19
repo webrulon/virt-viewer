@@ -52,5 +52,4 @@ virt_viewer_CFLAGS = \
 	@LIBXML2_CFLAGS@ \
 	@LIBVIRT_CFLAGS@ \
 	@WARN_CFLAGS@ \
-	-DBUILDER_XML_DIR="\"$(builderxmldir)\"" \
 	-DLOCALE_DIR=\""$(datadir)/locale"\"

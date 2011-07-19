@@ -42,16 +42,34 @@ GtkBuilder *virt_viewer_util_load_ui(const char *name)
 	if (stat(name, &sb) >= 0) {
 		gtk_builder_add_from_file(builder, name, &error);
 	} else {
-		gchar *path = g_strdup_printf("%s/%s", BUILDER_XML_DIR, name);
-		gtk_builder_add_from_file(builder, path, &error);
-		g_free(path);
+                const gchar * const * dirs = g_get_system_data_dirs();
+                g_return_val_if_fail(dirs != NULL, NULL);
+
+                while (dirs[0] != NULL) {
+                        gchar *path = g_build_filename(dirs[0], PACKAGE, "ui", name, NULL);
+                        if (gtk_builder_add_from_file(builder, path, NULL) != 0) {
+                                g_free(path);
+                                break;
+                        }
+                        g_free(path);
+                        dirs++;
+                }
+                if (dirs[0] == NULL)
+                        goto failed;
 	}
 
-	if (error)
+	if (error) {
 		g_error("Cannot load UI description %s: %s", name,
 			error->message);
+                g_clear_error(&error);
+                goto failed;
+        }
 
 	return builder;
+failed:
+        g_error("failed to find UI description file");
+        g_object_unref(builder);
+        return NULL;
 }
 
 int

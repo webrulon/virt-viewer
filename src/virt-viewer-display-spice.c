@@ -100,19 +100,29 @@ virt_viewer_display_spice_get_pixbuf(VirtViewerDisplay *display)
 }
 
 static void
-virt_viewer_display_spice_primary_create(SpiceChannel *channel G_GNUC_UNUSED,
-					 gint format G_GNUC_UNUSED,
-					 gint width,
-					 gint height,
-					 gint stride G_GNUC_UNUSED,
-					 gint shmid G_GNUC_UNUSED,
-					 gpointer imgdata G_GNUC_UNUSED,
-					 VirtViewerDisplay *display)
+display_mark(SpiceChannel *channel G_GNUC_UNUSED,
+	     gint mark,
+	     VirtViewerDisplay *display)
 {
-       DEBUG_LOG("desktop resize %dx%d", width, height);
+	DEBUG_LOG("display mark %d", mark);
 
-       virt_viewer_display_set_desktop_size(display, width, height);
-       g_signal_emit_by_name(display, "display-desktop-resize");
+	virt_viewer_display_set_show_hint(display, mark);
+}
+
+static void
+primary_create(SpiceChannel *channel G_GNUC_UNUSED,
+	       gint format G_GNUC_UNUSED,
+	       gint width,
+	       gint height,
+	       gint stride G_GNUC_UNUSED,
+	       gint shmid G_GNUC_UNUSED,
+	       gpointer imgdata G_GNUC_UNUSED,
+	       VirtViewerDisplay *display)
+{
+	DEBUG_LOG("spice desktop resize %dx%d", width, height);
+
+	virt_viewer_display_set_desktop_size(display, width, height);
+	g_signal_emit_by_name(display, "display-desktop-resize");
 }
 
 
@@ -135,7 +145,9 @@ virt_viewer_display_spice_new(SpiceChannel *channel,
 	self->priv->display = g_object_ref(display);
 
 	g_signal_connect(channel, "display-primary-create",
-			 G_CALLBACK(virt_viewer_display_spice_primary_create), self);
+			 G_CALLBACK(primary_create), self);
+	g_signal_connect(channel, "display-mark",
+			 G_CALLBACK(display_mark), self);
 
 	gtk_container_add(GTK_CONTAINER(self), GTK_WIDGET(self->priv->display));
 	gtk_widget_show(GTK_WIDGET(self->priv->display));

@@ -387,6 +387,38 @@ virt_viewer_app_window_new(VirtViewerApp *self, GtkWidget *container, gint nth)
 }
 
 static void
+display_show_hint(VirtViewerDisplay *display,
+		  GParamSpec *pspec G_GNUC_UNUSED,
+		  VirtViewerWindow *win)
+{
+	VirtViewerApp *self;
+	VirtViewerNotebook *nb = virt_viewer_window_get_notebook(win);
+	GtkWindow *w = virt_viewer_window_get_window(win);
+	gint nth, hint;
+
+	g_object_get(win,
+		     "app", &self,
+		     NULL);
+	g_object_get(display,
+		     "nth-display", &nth,
+		     "show-hint", &hint,
+		     NULL);
+
+	if (hint == VIRT_VIEWER_DISPLAY_SHOW_HINT_HIDE) {
+		if (win != self->priv->main_window &&
+		    g_getenv("VIRT_VIEWER_HIDE"))
+			gtk_widget_hide(GTK_WIDGET(w));
+		virt_viewer_notebook_show_status(nb, _("Waiting for display %d..."), nth + 1);
+	} else {
+		virt_viewer_notebook_show_display(nb);
+		gtk_widget_show(GTK_WIDGET(w));
+		gtk_window_present(w);
+	}
+
+	g_object_unref(self);
+}
+
+static void
 virt_viewer_app_display_added(VirtViewerSession *session G_GNUC_UNUSED,
 			      VirtViewerDisplay *display,
 			      VirtViewerApp *self)
@@ -409,6 +441,9 @@ virt_viewer_app_display_added(VirtViewerSession *session G_GNUC_UNUSED,
 	}
 
 	virt_viewer_window_set_display(window, display);
+	g_signal_connect(display, "notify::show-hint",
+			 G_CALLBACK(display_show_hint), window);
+	g_object_notify(G_OBJECT(display), "show-hint"); /* call display_show_hint */
 }
 
 
@@ -750,7 +785,6 @@ static void
 virt_viewer_app_initialized(VirtViewerSession *session G_GNUC_UNUSED,
 			    VirtViewerApp *self)
 {
-	virt_viewer_notebook_show_display(VIRT_VIEWER_NOTEBOOK(self->priv->main_notebook));
 	virt_viewer_app_update_title(self);
 }
 

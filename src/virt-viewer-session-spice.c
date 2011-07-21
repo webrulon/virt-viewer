@@ -202,7 +202,7 @@ virt_viewer_session_spice_main_channel_event(SpiceChannel *channel G_GNUC_UNUSED
 		}
 		break;
 	default:
-		g_warning("unknown main channel event: %d", event);
+		g_message("unhandled spice main channel event: %d", event);
 		g_signal_emit_by_name(session, "session-disconnected");
 		break;
 	}

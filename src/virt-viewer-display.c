@@ -218,6 +218,7 @@ virt_viewer_display_init(VirtViewerDisplay *display)
 	display->priv->desktopHeight = 100;
 	display->priv->zoom_level = 100;
 	display->priv->zoom = TRUE;
+	display->priv->dirty = TRUE;
 }
 
 GtkWidget*
@@ -414,11 +415,15 @@ void virt_viewer_display_set_desktop_size(VirtViewerDisplay *display,
 {
 	VirtViewerDisplayPrivate *priv = display->priv;
 
+        if (width == priv->desktopWidth && height == priv->desktopHeight)
+                return;
+
 	priv->desktopWidth = width;
 	priv->desktopHeight = height;
 	priv->dirty = TRUE;
 
 	gtk_widget_queue_resize(GTK_WIDGET(display));
+	g_signal_emit_by_name(display, "display-desktop-resize");
 }
 
 

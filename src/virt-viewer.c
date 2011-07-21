@@ -1076,22 +1076,10 @@ virt_viewer_connect_info_free(VirtViewer *viewer)
 	viewer->port = 0;
 }
 
-static gboolean
-virt_viewer_extract_connect_info(VirtViewer *viewer,
-				 virDomainPtr dom)
+static int
+virt_viewer_create_session(VirtViewer *viewer, const gchar *type)
 {
-	char *type = NULL;
-	char *xpath = NULL;
-	gboolean retval = FALSE;
-	char *xmldesc = virDomainGetXMLDesc(dom, 0);
-
-	virt_viewer_connect_info_free(viewer);
-
-	if ((type = virt_viewer_extract_xpath_string(xmldesc, "string(/domain/devices/graphics/@type)")) == NULL) {
-		virt_viewer_simple_message_dialog(viewer->window, _("Cannot determine the graphic type for the guest %s"),
-					     viewer->domkey);
-		goto cleanup;
-	}
+	g_return_val_if_fail(viewer->session == NULL, -1);
 
 	if (g_strcasecmp(type, "vnc") == 0) {
 		virt_viewer_trace(viewer, "Guest %s has a %s display\n",
@@ -1108,7 +1096,7 @@ virt_viewer_extract_connect_info(VirtViewer *viewer,
 			     viewer->domkey, type);
 		virt_viewer_simple_message_dialog(viewer->window, _("Unknown graphic type for the guest %s"),
 					     viewer->domkey);
-		goto cleanup;
+		return -1;
 	}
 
 	g_signal_connect(viewer->session, "session-initialized",
@@ -1132,6 +1120,29 @@ virt_viewer_extract_connect_info(VirtViewer *viewer,
 			 G_CALLBACK(virt_viewer_server_cut_text), viewer);
 	g_signal_connect(viewer->session, "session-bell",
 			 G_CALLBACK(virt_viewer_bell), viewer);
+
+	return 0;
+}
+
+static gboolean
+virt_viewer_extract_connect_info(VirtViewer *viewer,
+				 virDomainPtr dom)
+{
+	char *type = NULL;
+	char *xpath = NULL;
+	gboolean retval = FALSE;
+	char *xmldesc = virDomainGetXMLDesc(dom, 0);
+
+	virt_viewer_connect_info_free(viewer);
+
+	if ((type = virt_viewer_extract_xpath_string(xmldesc, "string(/domain/devices/graphics/@type)")) == NULL) {
+		virt_viewer_simple_message_dialog(viewer->window, _("Cannot determine the graphic type for the guest %s"),
+					     viewer->domkey);
+		goto cleanup;
+	}
+
+	if (virt_viewer_create_session(viewer, type) < 0)
+		goto cleanup;
 
 	xpath = g_strdup_printf("string(/domain/devices/graphics[@type='%s']/@port)", type);
 	if ((viewer->gport = virt_viewer_extract_xpath_string(xmldesc, xpath)) == NULL) {

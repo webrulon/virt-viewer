@@ -145,53 +145,46 @@ enum menuNums {
 };
 
 struct _VirtViewer {
-	char *uri;
-	virConnectPtr conn;
-	char *domkey;
-	char *domtitle;
-
 	GtkBuilder *builder;
 	GtkWidget *window;
 	GtkWidget *container;
-
 	GtkWidget *notebook;
 	GtkWidget *status;
-
 	GtkWidget *toolbar;
 	GtkWidget *layout;
-
-	char *pretty_address;
-
-	gboolean autoResize;
-	gboolean fullscreen;
-	gboolean withEvents;
-
-	gboolean active;
+	GtkWidget *display;
 
 	gboolean accelEnabled;
 	GValue accelSetting;
 	GSList *accelList;
 	int accelMenuSig[LAST_MENU];
+	gchar *clipboard;
 
-	gboolean waitvm;
-	gboolean reconnect;
+	gint zoomlevel;
+	gboolean autoResize;
+	gboolean fullscreen;
 	gboolean direct;
 	gboolean verbose;
 	gboolean authretry;
-	gboolean connected;
 
-	gchar *clipboard;
-
-	GtkWidget *display;
 	VirtViewerSession *session;
-
-	gint zoomlevel;
-
+	gboolean active;
+	gboolean connected;
 	char *unixsock;
 	char *ghost;
 	char *gport;
 	char *host;
 	char *transport;
+	char *pretty_address;
+
+	/* virt-viewer */
+	char *uri;
+	virConnectPtr conn;
+	char *domkey;
+	char *domtitle;
+	gboolean withEvents;
+	gboolean waitvm;
+	gboolean reconnect;
 	char *user;
         int port;
 };

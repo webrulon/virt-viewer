@@ -814,6 +814,7 @@ virt_viewer_extract_xpath_string(const gchar *xmldesc,
 
 static int
 virt_viewer_extract_host(const char *uristr,
+			 char **scheme,
 			 char **host,
 			 char **transport,
 			 char **user,
@@ -839,11 +840,19 @@ virt_viewer_extract_host(const char *uristr,
 
 	if (uri->user)
 		*user = g_strdup(uri->user);
-	*port = uri->port;
+	if (port)
+		*port = uri->port;
 
 	offset = strchr(uri->scheme, '+');
 	if (offset)
 		*transport = g_strdup(offset+1);
+
+	if (scheme) {
+		if (offset)
+			*scheme = g_strndup(uri->scheme, offset - uri->scheme);
+		else
+			*scheme = g_strdup(uri->scheme);
+	}
 
 	xmlFreeURI(uri);
 	return 0;
@@ -1153,7 +1162,7 @@ virt_viewer_extract_connect_info(VirtViewer *viewer,
 	else
 		DEBUG_LOG("Guest graphics address is %s", viewer->unixsock);
 
-	if (virt_viewer_extract_host(viewer->uri, &viewer->host, &viewer->transport, &viewer->user, &viewer->port) < 0) {
+	if (virt_viewer_extract_host(viewer->uri, NULL, &viewer->host, &viewer->transport, &viewer->user, &viewer->port) < 0) {
 		virt_viewer_simple_message_dialog(viewer->window, _("Cannot determine the host for the guest %s"),
 					     viewer->domkey);
 		goto cleanup;

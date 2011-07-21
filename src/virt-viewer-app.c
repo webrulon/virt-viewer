@@ -173,15 +173,6 @@ virt_viewer_app_simple_message_dialog(VirtViewerApp *self,
 	g_free(msg);
 }
 
-static VirtViewerWindow*
-virt_viewer_app_window_new(VirtViewerApp *self, GtkWidget *container)
-{
-	return g_object_new(VIRT_VIEWER_TYPE_WINDOW,
-			    "app", self,
-			    "container", container,
-			    NULL);
-}
-
 void
 virt_viewer_app_quit(VirtViewerApp *self)
 {
@@ -378,6 +369,23 @@ virt_viewer_app_set_nth_window(VirtViewerApp *self, gint nth, VirtViewerWindow *
 	g_hash_table_insert(self->priv->windows, key, win);
 }
 
+static VirtViewerWindow*
+virt_viewer_app_window_new(VirtViewerApp *self, GtkWidget *container, gint nth)
+{
+	VirtViewerWindow* window;
+
+	window = g_object_new(VIRT_VIEWER_TYPE_WINDOW,
+			      "app", self,
+			      "container", container,
+			      NULL);
+	virt_viewer_app_set_nth_window(self, nth, window);
+
+	/* this will set new window to fullscreen if necessary */
+	virt_viewer_app_set_fullscreen(self, self->priv->fullscreen);
+
+	return window;
+}
+
 static void
 virt_viewer_app_display_added(VirtViewerSession *session G_GNUC_UNUSED,
 			      VirtViewerDisplay *display,
@@ -397,10 +405,7 @@ virt_viewer_app_display_added(VirtViewerSession *session G_GNUC_UNUSED,
 		}
 
 		g_return_if_fail(virt_viewer_app_get_nth_window(self, nth) == NULL);
-		window = virt_viewer_app_window_new(self, NULL);
-		/* TODO: track fullscreen state */
-		gtk_widget_show_all(GTK_WIDGET(virt_viewer_window_get_window(window)));
-		virt_viewer_app_set_nth_window(self, nth, window);
+		window = virt_viewer_app_window_new(self, NULL, nth);
 	}
 
 	virt_viewer_window_set_display(window, display);
@@ -948,9 +953,8 @@ virt_viewer_app_constructor (GType gtype,
 	self = VIRT_VIEWER_APP(obj);
 	priv = self->priv;
 
-	priv->main_window = virt_viewer_app_window_new(self, priv->container);
+	priv->main_window = virt_viewer_app_window_new(self, priv->container, 0);
 	priv->main_notebook = GTK_WIDGET(virt_viewer_window_get_notebook(priv->main_window));
-	virt_viewer_app_set_nth_window(self, 0, priv->main_window);
 
 	return obj;
 }

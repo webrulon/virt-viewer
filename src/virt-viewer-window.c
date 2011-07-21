@@ -764,6 +764,7 @@ virt_viewer_window_toolbar_setup(VirtViewerWindow *self)
 	ViewAutoDrawer_SetFill(VIEW_AUTODRAWER(priv->layout), FALSE);
 	ViewAutoDrawer_SetOverlapPixels(VIEW_AUTODRAWER(priv->layout), 1);
 	ViewAutoDrawer_SetNoOverlapPixels(VIEW_AUTODRAWER(priv->layout), 0);
+	gtk_widget_show(priv->layout);
 }
 
 VirtViewerNotebook*

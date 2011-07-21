@@ -233,8 +233,6 @@ virt_viewer_session_spice_channel_new(SpiceSession *s,
 
 	if (SPICE_IS_DISPLAY_CHANNEL(channel)) {
 		GtkWidget *display;
-		if (id != 0)
-			return;
 
 		g_signal_emit_by_name(session, "session-connected");
 

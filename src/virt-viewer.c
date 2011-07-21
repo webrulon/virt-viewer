@@ -1214,26 +1214,33 @@ virt_viewer_channel_open(VirtViewerSession *session G_GNUC_UNUSED,
 #endif
 
 static int
-virt_viewer_activate(VirtViewer *viewer,
-		     virDomainPtr dom)
+virt_viewer_set_domain(VirtViewer *viewer,
+		       virDomainPtr dom)
 {
-	int fd = -1;
-	int ret = -1;
-
-	if (viewer->active)
-		goto cleanup;
-
 	virt_viewer_trace(viewer, "Guest %s is running, determining display\n",
 			  viewer->domkey);
+
 	if (viewer->session == NULL) {
 		if (!virt_viewer_extract_connect_info(viewer, dom))
-			goto cleanup;
+			return -1;
 
 		if (viewer->gport)
 			viewer->pretty_address = g_strdup_printf("%s:%s", viewer->ghost, viewer->gport);
 		else
 			viewer->pretty_address = g_strdup_printf("%s:%s", viewer->host, viewer->unixsock);
 	}
+
+	return 0;
+}
+
+static int
+virt_viewer_activate(VirtViewer *viewer)
+{
+	int fd = -1;
+	int ret = -1;
+
+	if (viewer->active)
+		goto cleanup;
 
 #if defined(HAVE_SOCKETPAIR) && defined(HAVE_FORK)
 	if (viewer->transport &&
@@ -1464,7 +1471,8 @@ virt_viewer_domain_event(virConnectPtr conn G_GNUC_UNUSED,
 		break;
 
 	case VIR_DOMAIN_EVENT_STARTED:
-		virt_viewer_activate(viewer, dom);
+		virt_viewer_set_domain(viewer, dom);
+		virt_viewer_activate(viewer);
 		break;
 	}
 
@@ -1507,7 +1515,9 @@ virt_viewer_initial_connect(VirtViewer *viewer)
 	if (info.state == VIR_DOMAIN_SHUTOFF) {
 		virt_viewer_set_status(viewer, "Waiting for guest domain to start");
 	} else {
-		ret = virt_viewer_activate(viewer, dom);
+		ret = virt_viewer_set_domain(viewer, dom);
+		if (ret >= 0)
+			ret = virt_viewer_activate(viewer);
 		if (ret < 0) {
 			if (viewer->waitvm) {
 				virt_viewer_set_status(viewer, "Waiting for guest domain to start server");

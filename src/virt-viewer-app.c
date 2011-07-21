@@ -90,6 +90,7 @@ static void virt_viewer_app_channel_open(VirtViewerSession *session,
 					 VirtViewerSessionChannel *channel,
 					 VirtViewerApp *self);
 static void virt_viewer_app_update_pretty_address(VirtViewerApp *self);
+static void virt_viewer_app_set_fullscreen(VirtViewerApp *self, gboolean fullscreen);
 
 
 struct _VirtViewerAppPrivate {
@@ -103,6 +104,7 @@ struct _VirtViewerAppPrivate {
 	gboolean verbose;
 	gboolean authretry;
 	gboolean started;
+	gboolean fullscreen;
 
 	VirtViewerSession *session;
 	gboolean active;
@@ -131,6 +133,7 @@ enum {
 	PROP_CONTAINER,
 	PROP_SESSION,
 	PROP_GUEST_NAME,
+	PROP_FULLSCREEN,
 };
 
 void
@@ -825,6 +828,10 @@ virt_viewer_app_get_property (GObject *object, guint property_id,
 		g_value_set_string(value, priv->guest_name);
 		break;
 
+	case PROP_FULLSCREEN:
+		g_value_set_boolean(value, priv->fullscreen);
+		break;
+
         default:
 		G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
         }
@@ -851,6 +858,10 @@ virt_viewer_app_set_property (GObject *object, guint property_id,
 	case PROP_GUEST_NAME:
 		g_free(priv->guest_name);
 		priv->guest_name = g_value_dup_string(value);
+		break;
+
+	case PROP_FULLSCREEN:
+		virt_viewer_app_set_fullscreen(self, g_value_get_boolean(value));
 		break;
 
         default:
@@ -1000,6 +1011,15 @@ virt_viewer_app_class_init (VirtViewerAppClass *klass)
 							    G_PARAM_WRITABLE |
 							    G_PARAM_STATIC_STRINGS));
 
+	g_object_class_install_property(object_class,
+					PROP_FULLSCREEN,
+					g_param_spec_boolean("fullscreen",
+							     "Fullscreen",
+							     "Fullscreen",
+							     FALSE,
+							     G_PARAM_READABLE |
+							     G_PARAM_WRITABLE |
+							     G_PARAM_STATIC_STRINGS));
 }
 
 void
@@ -1037,6 +1057,14 @@ virt_viewer_app_update_pretty_address(VirtViewerApp *self)
 		priv->pretty_address = g_strdup_printf("%s:%s", priv->ghost, priv->gport);
 	else
 		priv->pretty_address = g_strdup_printf("%s:%s", priv->host, priv->unixsock);
+}
+
+static void
+virt_viewer_app_set_fullscreen(VirtViewerApp *self, gboolean fullscreen)
+{
+	VirtViewerAppPrivate *priv = self->priv;
+
+	priv->fullscreen = fullscreen;
 }
 
 void

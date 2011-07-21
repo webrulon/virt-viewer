@@ -1604,59 +1604,25 @@ virt_viewer_error_func (void *data G_GNUC_UNUSED,
 	/* nada */
 }
 
-int
-virt_viewer_start(const char *uri,
-		  const char *name,
-		  gint zoom,
-		  gboolean direct,
-		  gboolean waitvm,
-		  gboolean reconnect,
-		  gboolean verbose,
-		  gboolean debug,
-		  gboolean fullscreen,
-		  GtkWidget *container)
+
+static VirtViewer *virt_viewer_new(gint zoom,
+				   gboolean direct,
+				   gboolean verbose,
+				   gboolean fullscreen,
+				   GtkWidget *container)
 {
 	VirtViewer *viewer;
-	GtkWidget *menu;
-	int cred_types[] =
-		{ VIR_CRED_AUTHNAME, VIR_CRED_PASSPHRASE };
-	virConnectAuth auth_libvirt = {
-		.credtype = cred_types,
-		.ncredtype = ARRAY_CARDINALITY(cred_types),
-		.cb = virt_viewer_auth_libvirt_credentials,
-		.cbdata = (void *)uri,
-	};
 	GdkColor color;
-	doDebug = debug;
+	GtkWidget *menu;
 
 	viewer = g_new0(VirtViewer, 1);
 
 	viewer->active = FALSE;
 	viewer->autoResize = TRUE;
 	viewer->direct = direct;
-	viewer->waitvm = waitvm;
-	viewer->reconnect = reconnect;
 	viewer->verbose = verbose;
-	viewer->domkey = g_strdup(name);
-	viewer->uri = g_strdup(uri);
 
 	g_value_init(&viewer->accelSetting, G_TYPE_STRING);
-
-	virt_viewer_events_register();
-
-	virSetErrorFunc(NULL, virt_viewer_error_func);
-
-	virt_viewer_trace(viewer, "Opening connection to libvirt with URI %s\n",
-		     uri ? uri : "<null>");
-	viewer->conn = virConnectOpenAuth(uri,
-					  //virConnectAuthPtrDefault,
-					  &auth_libvirt,
-					  VIR_CONNECT_RO);
-	if (!viewer->conn) {
-		virt_viewer_simple_message_dialog(NULL, _("Unable to connect to libvirt with URI %s"),
-					     uri ? uri : _("[none]"));
-		return -1;
-	}
 
 	if (!container) {
 		viewer->builder = virt_viewer_util_load_ui("virt-viewer.xml");
@@ -1711,6 +1677,53 @@ virt_viewer_start(const char *uri,
 		if (fullscreen)
 			gtk_window_fullscreen(GTK_WINDOW(window));
 		gtk_widget_show_all(viewer->window);
+	}
+
+	return viewer;
+}
+
+int
+virt_viewer_start(const char *uri,
+		  const char *name,
+		  gint zoom,
+		  gboolean direct,
+		  gboolean waitvm,
+		  gboolean reconnect,
+		  gboolean verbose,
+		  gboolean debug,
+		  gboolean fullscreen,
+		  GtkWidget *container)
+{
+	int cred_types[] =
+		{ VIR_CRED_AUTHNAME, VIR_CRED_PASSPHRASE };
+	virConnectAuth auth_libvirt = {
+		.credtype = cred_types,
+		.ncredtype = ARRAY_CARDINALITY(cred_types),
+		.cb = virt_viewer_auth_libvirt_credentials,
+		.cbdata = (void *)uri,
+	};
+	doDebug = debug;
+	VirtViewer *viewer = virt_viewer_new(zoom, direct, verbose, fullscreen, container);
+
+	viewer->uri = g_strdup(uri);
+	viewer->domkey = g_strdup(name);
+	viewer->waitvm = waitvm;
+	viewer->reconnect = reconnect;
+
+	virt_viewer_events_register();
+
+	virSetErrorFunc(NULL, virt_viewer_error_func);
+
+	virt_viewer_trace(viewer, "Opening connection to libvirt with URI %s\n",
+		     uri ? uri : "<null>");
+	viewer->conn = virConnectOpenAuth(uri,
+					  //virConnectAuthPtrDefault,
+					  &auth_libvirt,
+					  VIR_CONNECT_RO);
+	if (!viewer->conn) {
+		virt_viewer_simple_message_dialog(NULL, _("Unable to connect to libvirt with URI %s"),
+					     uri ? uri : _("[none]"));
+		return -1;
 	}
 
 	if (virt_viewer_initial_connect(viewer) < 0)

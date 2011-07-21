@@ -935,26 +935,24 @@ virt_viewer_app_dispose (GObject *object)
 }
 
 static gboolean
-virt_viewer_app_default_start(VirtViewerApp *self, gboolean fullscreen)
+virt_viewer_app_default_start(VirtViewerApp *self)
 {
 	VirtViewerAppPrivate *priv;
 	GtkWindow *win;
 	priv = self->priv;
 
 	win = virt_viewer_window_get_window(priv->main_window);
-	if (win) {
-		if (fullscreen)
-			gtk_window_fullscreen(win);
-		gtk_widget_show_all(GTK_WIDGET(win));
-	} else {
+	if (win)
+		gtk_widget_show(GTK_WIDGET(win));
+	else {
 		gtk_box_pack_end(GTK_BOX(priv->container), priv->main_notebook, TRUE, TRUE, 0);
-		gtk_widget_show_all(GTK_WIDGET(priv->main_notebook));
+		gtk_widget_show(GTK_WIDGET(priv->main_notebook));
 	}
 
 	return TRUE;
 }
 
-gboolean virt_viewer_app_start(VirtViewerApp *self, gboolean fullscreen)
+gboolean virt_viewer_app_start(VirtViewerApp *self)
 {
 	VirtViewerAppClass *klass;
 
@@ -963,7 +961,7 @@ gboolean virt_viewer_app_start(VirtViewerApp *self, gboolean fullscreen)
 
 	g_return_val_if_fail(!self->priv->started, TRUE);
 
-	self->priv->started = klass->start(self, fullscreen);
+	self->priv->started = klass->start(self);
 	return self->priv->started;
 }
 

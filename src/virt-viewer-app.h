@@ -46,17 +46,17 @@ typedef struct {
 typedef struct {
         GObjectClass parent_class;
 
-        gboolean (*start) (VirtViewerApp *self, gboolean fullscreen);
+        gboolean (*start) (VirtViewerApp *self);
         int (*initial_connect) (VirtViewerApp *self);
         void (*deactivated) (VirtViewerApp *self);
 } VirtViewerAppClass;
 
 GType virt_viewer_app_get_type (void);
 
+void virt_viewer_app_set_debug(gboolean debug);
+gboolean virt_viewer_app_start(VirtViewerApp *app);
 void virt_viewer_app_quit(VirtViewerApp *self);
 VirtViewerWindow* virt_viewer_app_get_main_window(VirtViewerApp *self);
-void virt_viewer_app_set_debug(gboolean debug);
-gboolean virt_viewer_app_start(VirtViewerApp *app, gboolean fullscreen);
 void virt_viewer_app_trace(VirtViewerApp *self, const char *fmt, ...);
 void virt_viewer_app_simple_message_dialog(VirtViewerApp *self, const char *fmt, ...);
 gboolean virt_viewer_app_is_active(VirtViewerApp *app);

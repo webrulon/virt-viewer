@@ -61,7 +61,7 @@ G_DEFINE_TYPE (VirtViewer, virt_viewer, VIRT_VIEWER_TYPE_APP)
 
 static int virt_viewer_initial_connect(VirtViewerApp *self);
 static void virt_viewer_deactivated(VirtViewerApp *self);
-static gboolean virt_viewer_start(VirtViewerApp *self, gboolean fullscreen);
+static gboolean virt_viewer_start(VirtViewerApp *self);
 
 static void
 virt_viewer_get_property (GObject *object, guint property_id,
@@ -462,7 +462,7 @@ virt_viewer_error_func (void *data G_GNUC_UNUSED,
 }
 
 static gboolean
-virt_viewer_start(VirtViewerApp *app, gboolean fullscreen)
+virt_viewer_start(VirtViewerApp *app)
 {
 	VirtViewer *self = VIRT_VIEWER(app);
 	VirtViewerPrivate *priv = self->priv;
@@ -508,7 +508,7 @@ virt_viewer_start(VirtViewerApp *app, gboolean fullscreen)
 		virt_viewer_app_start_reconnect_poll(app);
 	}
 
-	return VIRT_VIEWER_APP_CLASS(virt_viewer_parent_class)->start(app, fullscreen);
+	return VIRT_VIEWER_APP_CLASS(virt_viewer_parent_class)->start(app);
 }
 
 VirtViewer *

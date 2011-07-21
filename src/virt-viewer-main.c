@@ -114,7 +114,8 @@ int main(int argc, char **argv)
 	if (viewer == NULL)
 		goto cleanup;
 
-	if (!virt_viewer_app_start(VIRT_VIEWER_APP(viewer), fullscreen))
+	g_object_set(viewer, "fullscreen", fullscreen, NULL);
+	if (!virt_viewer_app_start(VIRT_VIEWER_APP(viewer)))
 		goto cleanup;
 
 	gtk_main();

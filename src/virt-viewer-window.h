@@ -65,6 +65,8 @@ VirtViewerNotebook* virt_viewer_window_get_notebook (VirtViewerWindow* window);
 void virt_viewer_window_set_display(VirtViewerWindow *self, VirtViewerDisplay *display);
 void virt_viewer_window_update_title(VirtViewerWindow *self);
 void virt_viewer_window_set_zoom_level(VirtViewerWindow *self, gint zoom_level);
+void virt_viewer_window_leave_fullscreen(VirtViewerWindow *self);
+void virt_viewer_window_enter_fullscreen(VirtViewerWindow *self, gint x, gint y);
 
 G_END_DECLS
 

@@ -1097,12 +1097,37 @@ virt_viewer_app_update_pretty_address(VirtViewerApp *self)
 		priv->pretty_address = g_strdup_printf("%s:%s", priv->host, priv->unixsock);
 }
 
+static void fullscreen_cb(gpointer key,
+			  gpointer value,
+			  gpointer user_data)
+{
+	gint nth = *(gint*)key;
+	gboolean fullscreen = GPOINTER_TO_INT(user_data);
+	VirtViewerWindow *vwin = VIRT_VIEWER_WINDOW(value);
+
+	DEBUG_LOG("fullscreen display %d: %d", nth, fullscreen);
+	if (fullscreen) {
+		GdkScreen *screen = gdk_screen_get_default ();
+		GdkRectangle mon;
+
+		if (nth >= gdk_screen_get_n_monitors(screen)) {
+			DEBUG_LOG("skipping display %d", nth);
+			return;
+		}
+		gdk_screen_get_monitor_geometry(screen, nth, &mon);
+		virt_viewer_window_enter_fullscreen(vwin, mon.x, mon.y);
+	} else
+		virt_viewer_window_leave_fullscreen(vwin);
+}
+
 static void
 virt_viewer_app_set_fullscreen(VirtViewerApp *self, gboolean fullscreen)
 {
 	VirtViewerAppPrivate *priv = self->priv;
 
+	/* we iterate unconditionnaly, even if it was set before to update new windows */
 	priv->fullscreen = fullscreen;
+	g_hash_table_foreach(priv->windows, fullscreen_cb, GINT_TO_POINTER(fullscreen));
 }
 
 void

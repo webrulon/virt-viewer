@@ -29,8 +29,6 @@ G_DEFINE_TYPE (VirtViewerNotebook, virt_viewer_notebook, GTK_TYPE_NOTEBOOK)
 #define GET_PRIVATE(o)							\
 	(G_TYPE_INSTANCE_GET_PRIVATE ((o), VIRT_VIEWER_TYPE_NOTEBOOK, VirtViewerNotebookPrivate))
 
-typedef struct _VirtViewerNotebookPrivate VirtViewerNotebookPrivate;
-
 struct _VirtViewerNotebookPrivate {
 	GtkWidget *status;
 };

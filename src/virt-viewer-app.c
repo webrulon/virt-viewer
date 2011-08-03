@@ -318,14 +318,12 @@ virt_viewer_app_open_tunnel_ssh(const char *sshhost,
 	char portstr[50];
 	int n = 0;
 
-	if (!sshport)
-		sshport = 22;
-
-	sprintf(portstr, "%d", sshport);
-
 	cmd[n++] = "ssh";
-	cmd[n++] = "-p";
-	cmd[n++] = portstr;
+	if (!sshport) {
+		cmd[n++] = "-p";
+		sprintf(portstr, "%d", sshport);
+		cmd[n++] = portstr;
+	}
 	if (sshuser) {
 		cmd[n++] = "-l";
 		cmd[n++] = sshuser;

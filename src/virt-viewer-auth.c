@@ -63,7 +63,7 @@ virt_viewer_auth_collect_credentials(const char *type,
 		message = g_strdup_printf("Authentication is required for the %s connection to:\n\n"
 					  "<b>%s</b>\n\n",
 					  type,
-					  address ? address : "[unknown]");
+					  address);
 	} else {
 		message = g_strdup_printf("Authentication is required for the %s connection:\n",
 					  type);

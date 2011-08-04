@@ -1,6 +1,14 @@
   Virt Viewer News
   ================
 
+0.4.1: Aug  4, 2011
+-------------------
+
+  - Remove bogus use of AM_GLIB_GNU_GETTEXT macro to try to
+    facilitate BSD builds
+  - Support multiple monitors with SPICE and QXL drivers
+  - Don't hardcode SSH port to 22 when tunnelling
+
 0.4.0: Jul 12, 2011
 -------------------
 

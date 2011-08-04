@@ -1227,22 +1227,18 @@ menu_display_visible_toggled_cb(GtkCheckMenuItem *checkmenuitem,
 	reentering = FALSE;
 }
 
-static void update_menu_displays_cb(gpointer key,
-				    gpointer value,
-				    gpointer user_data)
+static gint
+update_menu_displays_sort(gconstpointer a, gconstpointer b)
 {
-	gint nth = *(gint*)key;
-	VirtViewerWindow *vwin = VIRT_VIEWER_WINDOW(value);
-	GtkMenuShell *submenu = GTK_MENU_SHELL(user_data);
-	GtkWidget *item;
-	gboolean visible;
+	const int *ai = a;
+	const int *bi = b;
 
-	item = gtk_check_menu_item_new_with_label(g_strdup_printf("Display %d", nth));
-	visible = gtk_widget_get_visible(GTK_WIDGET(virt_viewer_window_get_window(vwin)));
-	gtk_check_menu_item_set_active(GTK_CHECK_MENU_ITEM(item), visible);
-	g_signal_connect(G_OBJECT(item),
-			 "toggled", G_CALLBACK(menu_display_visible_toggled_cb), vwin);
-	gtk_menu_shell_append(submenu, item);
+	if (*ai > *bi)
+		return 1;
+	else if (*ai < *bi)
+		return -1;
+	else
+		return 0;
 }
 
 static void
@@ -1252,13 +1248,32 @@ window_update_menu_displays_cb(gpointer key G_GNUC_UNUSED,
 {
 	VirtViewerApp *self = VIRT_VIEWER_APP(user_data);
 	VirtViewerWindow *window = VIRT_VIEWER_WINDOW(value);
-	GtkWidget *submenu = gtk_menu_new();
+	GtkMenuShell *submenu = GTK_MENU_SHELL(gtk_menu_new());
 	GtkMenuItem *menu = virt_viewer_window_get_menu_displays(window);
+	GList *keys = g_hash_table_get_keys(self->priv->windows);
+	GList *tmp;
 
-	g_hash_table_foreach(self->priv->windows, update_menu_displays_cb, submenu);
+	keys = g_list_sort(keys, update_menu_displays_sort);
 
-	gtk_widget_show_all(submenu);
-	gtk_menu_item_set_submenu(menu, submenu);
+	tmp = keys;
+	while (tmp) {
+		int *nth = tmp->data;
+		VirtViewerWindow *vwin = VIRT_VIEWER_WINDOW(g_hash_table_lookup(self->priv->windows, nth));
+		GtkWidget *item;
+		gboolean visible;
+
+		item = gtk_check_menu_item_new_with_label(g_strdup_printf("Display %d", *nth));
+		visible = gtk_widget_get_visible(GTK_WIDGET(virt_viewer_window_get_window(vwin)));
+		gtk_check_menu_item_set_active(GTK_CHECK_MENU_ITEM(item), visible);
+		g_signal_connect(G_OBJECT(item),
+				 "toggled", G_CALLBACK(menu_display_visible_toggled_cb), vwin);
+		gtk_menu_shell_append(submenu, item);
+		tmp = tmp->next;
+	}
+
+	gtk_widget_show_all(GTK_WIDGET(submenu));
+	gtk_menu_item_set_submenu(menu, GTK_WIDGET(submenu));
+	g_list_free(keys);
 }
 
 static void

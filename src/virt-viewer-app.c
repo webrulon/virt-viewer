@@ -635,6 +635,8 @@ virt_viewer_app_activate(VirtViewerApp *self)
 	if (priv->transport &&
 	    g_strcasecmp(priv->transport, "ssh") == 0 &&
 	    !priv->direct) {
+		gchar *p = NULL;
+
 		if (priv->gport) {
 			virt_viewer_app_trace(self, "Opening indirect TCP connection to display at %s:%s\n",
 					      priv->ghost, priv->gport);
@@ -642,8 +644,12 @@ virt_viewer_app_activate(VirtViewerApp *self)
 			virt_viewer_app_trace(self, "Opening indirect UNIX connection to display at %s\n",
 					      priv->unixsock);
 		}
-		virt_viewer_app_trace(self, "Setting up SSH tunnel via %s@%s:%d\n",
-				      priv->user, priv->host, priv->port ? priv->port : 22);
+		if (priv->port)
+			p = g_strdup_printf(":%d", priv->port);
+
+		virt_viewer_app_trace(self, "Setting up SSH tunnel via %s@%s%s\n",
+				      priv->user, priv->host, p ? p : "");
+		g_free(p);
 
 		if ((fd = virt_viewer_app_open_tunnel_ssh(priv->host, priv->port,
 							  priv->user, priv->ghost,

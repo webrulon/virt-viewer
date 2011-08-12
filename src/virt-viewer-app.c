@@ -319,7 +319,7 @@ virt_viewer_app_open_tunnel_ssh(const char *sshhost,
 	int n = 0;
 
 	cmd[n++] = "ssh";
-	if (!sshport) {
+	if (sshport) {
 		cmd[n++] = "-p";
 		sprintf(portstr, "%d", sshport);
 		cmd[n++] = portstr;

@@ -1311,7 +1311,7 @@ virt_viewer_app_set_connect_info(VirtViewerApp *self,
 	priv->transport = g_strdup(transport);
 	priv->unixsock = g_strdup(unixsock);
 	priv->user = g_strdup(user);
-	priv->port = 0;
+	priv->port = port;
 
 	virt_viewer_app_update_pretty_address(self);
 }

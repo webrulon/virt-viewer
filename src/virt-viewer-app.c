@@ -647,8 +647,10 @@ virt_viewer_app_activate(VirtViewerApp *self)
 		if (priv->port)
 			p = g_strdup_printf(":%d", priv->port);
 
-		virt_viewer_app_trace(self, "Setting up SSH tunnel via %s@%s%s\n",
-				      priv->user, priv->host, p ? p : "");
+		virt_viewer_app_trace(self, "Setting up SSH tunnel via %s%s%s%s\n",
+				      priv->user ? priv->user : "",
+				      priv->user ? "@" : "",
+				      priv->host, p ? p : "");
 		g_free(p);
 
 		if ((fd = virt_viewer_app_open_tunnel_ssh(priv->host, priv->port,

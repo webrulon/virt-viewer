@@ -872,6 +872,8 @@ virt_viewer_window_set_display(VirtViewerWindow *self, VirtViewerDisplay *displa
 	if (display != NULL) {
 		priv->display = g_object_ref(display);
 
+		virt_viewer_display_set_zoom_level(VIRT_VIEWER_DISPLAY(priv->display), priv->zoomlevel);
+
 		gtk_notebook_append_page(GTK_NOTEBOOK(priv->notebook), GTK_WIDGET(display), NULL);
 		if (gtk_bin_get_child(GTK_BIN(display)))
 			gtk_widget_realize(GTK_WIDGET(gtk_bin_get_child(GTK_BIN(display))));

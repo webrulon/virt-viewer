@@ -160,6 +160,23 @@ virt_viewer_events_update_handle(int watch,
     }
 }
 
+
+static gboolean
+virt_viewer_events_cleanup_handle(gpointer user_data)
+{
+    struct virt_viewer_events_handle *data = user_data;
+
+    DEBUG_LOG("Cleanup of handle %p", data);
+    g_return_val_if_fail(data != NULL, FALSE);
+
+    if (data->ff)
+        (data->ff)(data->opaque);
+
+    free(data);
+    return FALSE;
+}
+
+
 static int
 virt_viewer_events_remove_handle(int watch)
 {
@@ -172,13 +189,14 @@ virt_viewer_events_remove_handle(int watch)
 
     DEBUG_LOG("Remove handle %d %d", watch, data->fd);
 
+    if (!data->source)
+        return -1;
+
     g_source_remove(data->source);
     data->source = 0;
     data->events = 0;
-    if (data->ff)
-        (data->ff)(data->opaque);
-    free(data);
 
+    g_idle_add(virt_viewer_events_cleanup_handle, data);
     return 0;
 }
 
@@ -279,6 +297,23 @@ virt_viewer_events_update_timeout(int timer,
     }
 }
 
+
+static gboolean
+virt_viewer_events_cleanup_timeout(gpointer user_data)
+{
+    struct virt_viewer_events_timeout *data = user_data;
+
+    DEBUG_LOG("Cleanup of timeout %p", data);
+    g_return_val_if_fail(data != NULL, FALSE);
+
+    if (data->ff)
+        (data->ff)(data->opaque);
+
+    free(data);
+    return FALSE;
+}
+
+
 static int
 virt_viewer_events_remove_timeout(int timer)
 {
@@ -297,11 +332,7 @@ virt_viewer_events_remove_timeout(int timer)
     g_source_remove(data->source);
     data->source = 0;
 
-    if (data->ff)
-        (data->ff)(data->opaque);
-
-    free(data);
-
+    g_idle_add(virt_viewer_events_cleanup_timeout, data);
     return 0;
 }
 

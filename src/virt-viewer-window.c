@@ -310,6 +310,8 @@ virt_viewer_window_init (VirtViewerWindow *self)
 		priv->accel_list = g_slist_append(priv->accel_list, accels->data);
 		g_object_ref(G_OBJECT(accels->data));
 	}
+
+	priv->zoomlevel = 100;
 }
 
 static void
@@ -899,6 +901,12 @@ virt_viewer_window_set_zoom_level(VirtViewerWindow *self, gint zoom_level)
 
 	/* FIXME: turn into a dynamic property */
 	self->priv->zoomlevel = zoom_level;
+}
+
+gint virt_viewer_window_get_zoom_level(VirtViewerWindow *self)
+{
+	g_return_val_if_fail(VIRT_VIEWER_IS_WINDOW(self), 100);
+	return self->priv->zoomlevel;
 }
 
 GtkMenuItem*

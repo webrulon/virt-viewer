@@ -477,6 +477,8 @@ virt_viewer_app_window_new(VirtViewerApp *self, GtkWidget *container, gint nth)
 			      "app", self,
 			      "container", container,
 			      NULL);
+	if (self->priv->main_window)
+		virt_viewer_window_set_zoom_level(window, virt_viewer_window_get_zoom_level(self->priv->main_window));
 	virt_viewer_app_set_nth_window(self, nth, window);
 	w = virt_viewer_window_get_window(window);
 

@@ -49,7 +49,6 @@ struct _VirtViewerPrivate {
 	char *uri;
 	virConnectPtr conn;
 	char *domkey;
-	char *domtitle;
 	gboolean withEvents;
 	gboolean waitvm;
 	gboolean reconnect;
@@ -414,8 +413,7 @@ virt_viewer_initial_connect(VirtViewerApp *app)
 		}
 	}
 
-	free(priv->domtitle);
-	priv->domtitle = g_strdup(virDomainGetName(dom));
+	g_object_set(app, "title", virDomainGetName(dom), NULL);
 
 	virt_viewer_app_show_status(app, _("Checking guest domain status"));
 	if (virDomainGetInfo(dom, &info) < 0) {

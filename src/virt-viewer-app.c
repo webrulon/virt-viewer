@@ -121,6 +121,7 @@ struct _VirtViewerAppPrivate {
 	char *pretty_address;
 	gchar *guest_name;
 	gboolean grabbed;
+	char *title;
 };
 
 
@@ -135,6 +136,7 @@ enum {
 	PROP_SESSION,
 	PROP_GUEST_NAME,
 	PROP_FULLSCREEN,
+	PROP_TITLE,
 };
 
 void
@@ -386,6 +388,34 @@ virt_viewer_app_trace(VirtViewerApp *self,
 	}
 }
 
+static void
+virt_viewer_app_set_window_subtitle(VirtViewerApp *app,
+				    VirtViewerWindow *window,
+				    int nth)
+{
+	gchar *subtitle = app->priv->title ? g_strdup_printf("%s (%d)", app->priv->title, nth + 1) : NULL;
+	g_object_set(window, "subtitle", subtitle, NULL);
+	g_free(subtitle);
+}
+
+static void
+set_title(gpointer key,
+	  gpointer value,
+	  gpointer user_data)
+{
+	gint *nth = key;
+	VirtViewerApp *app = user_data;
+	VirtViewerWindow *window = value;
+	virt_viewer_app_set_window_subtitle(app, window, *nth);
+}
+
+static void
+virt_viewer_app_set_all_window_subtitles(VirtViewerApp *app)
+{
+	virt_viewer_app_set_window_subtitle(app, app->priv->main_window, 0);
+	g_hash_table_foreach(app->priv->windows, set_title, app);
+}
+
 static void update_title(gpointer key G_GNUC_UNUSED,
 			 gpointer value,
 			 gpointer user_data G_GNUC_UNUSED)
@@ -426,6 +456,7 @@ virt_viewer_app_set_nth_window(VirtViewerApp *self, gint nth, VirtViewerWindow *
 	key = g_malloc(sizeof(gint));
 	*key = nth;
 	g_hash_table_insert(self->priv->windows, key, win);
+	virt_viewer_app_set_window_subtitle(self, win, nth);
 }
 
 static void
@@ -949,6 +980,10 @@ virt_viewer_app_get_property (GObject *object, guint property_id,
 		g_value_set_boolean(value, priv->fullscreen);
 		break;
 
+	case PROP_TITLE:
+		g_value_set_string(value, priv->title);
+		break;
+
         default:
 		G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
         }
@@ -981,6 +1016,12 @@ virt_viewer_app_set_property (GObject *object, guint property_id,
 		virt_viewer_app_set_fullscreen(self, g_value_get_boolean(value));
 		break;
 
+	case PROP_TITLE:
+		g_free(priv->title);
+		priv->title = g_value_dup_string(value);
+		virt_viewer_app_set_all_window_subtitles(self);
+		break;
+
         default:
 		G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
         }
@@ -1006,6 +1047,7 @@ virt_viewer_app_dispose (GObject *object)
 		g_object_unref(priv->container);
 		priv->container = NULL;
 	}
+	g_free(priv->title);
 
 	virt_viewer_app_free_connect_info(self);
 
@@ -1134,6 +1176,16 @@ virt_viewer_app_class_init (VirtViewerAppClass *klass)
 							     G_PARAM_READABLE |
 							     G_PARAM_WRITABLE |
 							     G_PARAM_STATIC_STRINGS));
+	g_object_class_install_property(object_class,
+					PROP_TITLE,
+					g_param_spec_string("title",
+							    "Title",
+							    "Title",
+							    "",
+							    G_PARAM_READABLE |
+							    G_PARAM_WRITABLE |
+							    G_PARAM_STATIC_STRINGS));
+
 }
 
 void

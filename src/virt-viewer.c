@@ -325,6 +325,19 @@ virt_viewer_extract_connect_info(VirtViewer *self,
 		goto cleanup;
 	}
 
+	/* If the XML listen attribute shows a wildcard address, we need to
+	 * throw that away since you obviously can't 'connect(2)' to that
+	 * from a remote host. Instead we fallback to the hostname used in
+	 * the libvirt URI. This isn't perfect but it is better than nothing
+	 */
+	if (strcmp(ghost, "0.0.0.0") == 0 ||
+	    strcmp(ghost, "::") == 0) {
+		DEBUG_LOG("Guest graphics listen '%s' is a wildcard, replacing with '%s'",
+			  ghost, host);
+		g_free(ghost);
+		ghost = g_strdup(host);
+	}
+
 	virt_viewer_app_set_connect_info(app, host, ghost, gport, transport, unixsock, user, port);
 
 	retval = TRUE;

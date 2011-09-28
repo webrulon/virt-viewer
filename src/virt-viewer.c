@@ -314,9 +314,9 @@ virt_viewer_extract_connect_info(VirtViewer *self,
 			ghost = g_strdup("localhost");
 	}
 
-	if (gport)
+	if (ghost && gport)
 		DEBUG_LOG("Guest graphics address is %s:%s", ghost, gport);
-	else
+	else if (unixsock)
 		DEBUG_LOG("Guest graphics address is %s", unixsock);
 
 	if (virt_viewer_util_extract_host(priv->uri, NULL, &host, &transport, &user, &port) < 0) {
@@ -330,8 +330,9 @@ virt_viewer_extract_connect_info(VirtViewer *self,
 	 * from a remote host. Instead we fallback to the hostname used in
 	 * the libvirt URI. This isn't perfect but it is better than nothing
 	 */
-	if (strcmp(ghost, "0.0.0.0") == 0 ||
-	    strcmp(ghost, "::") == 0) {
+	if (ghost &&
+	    (strcmp(ghost, "0.0.0.0") == 0 ||
+	     strcmp(ghost, "::") == 0)) {
 		DEBUG_LOG("Guest graphics listen '%s' is a wildcard, replacing with '%s'",
 			  ghost, host);
 		g_free(ghost);
@@ -538,6 +539,7 @@ virt_viewer_new(const char *uri,
 	self = g_object_new(VIRT_VIEWER_TYPE,
 			    "container", container,
 			    "verbose", verbose,
+			    "guest-name", name,
 			    NULL);
 	app = VIRT_VIEWER_APP(self);
 	priv = self->priv;

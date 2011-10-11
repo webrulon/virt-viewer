@@ -365,6 +365,8 @@ virt_viewer_update_display(VirtViewer *self, virDomainPtr dom)
 	virt_viewer_app_trace(app, "Guest %s is running, determining display\n",
 			      priv->domkey);
 
+	g_object_set(app, "title", virDomainGetName(dom), NULL);
+
 	if (!virt_viewer_app_has_session(app)) {
 		if (!virt_viewer_extract_connect_info(self, dom))
 			return -1;
@@ -426,8 +428,6 @@ virt_viewer_initial_connect(VirtViewerApp *app)
 			goto cleanup;
 		}
 	}
-
-	g_object_set(app, "title", virDomainGetName(dom), NULL);
 
 	virt_viewer_app_show_status(app, _("Checking guest domain status"));
 	if (virDomainGetInfo(dom, &info) < 0) {
@@ -544,6 +544,10 @@ virt_viewer_new(const char *uri,
 	app = VIRT_VIEWER_APP(self);
 	priv = self->priv;
 
+	/* Set initial title based on guest name arg, which can be a ID,
+	 * UUID, or NAME string. To be replaced with the real guest name later
+	 */
+	g_object_set(app, "title", name, NULL);
 	virt_viewer_window_set_zoom_level(virt_viewer_app_get_main_window(app), zoom);
 	virt_viewer_app_set_direct(app, direct);
 

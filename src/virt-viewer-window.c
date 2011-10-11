@@ -167,6 +167,7 @@ virt_viewer_window_set_property (GObject *object, guint property_id,
 	case PROP_SUBTITLE:
 		g_free(priv->subtitle);
 		priv->subtitle = g_value_dup_string(value);
+		virt_viewer_window_update_title(VIRT_VIEWER_WINDOW(object));
 		break;
 
 	case PROP_CONTAINER:

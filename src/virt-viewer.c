@@ -40,6 +40,10 @@
 #include <libxml/xpath.h>
 #include <libxml/uri.h>
 
+#if defined(HAVE_SOCKETPAIR)
+#include <sys/socket.h>
+#endif
+
 #include "virt-viewer.h"
 #include "virt-viewer-app.h"
 #include "virt-viewer-events.h"
@@ -48,6 +52,7 @@
 struct _VirtViewerPrivate {
 	char *uri;
 	virConnectPtr conn;
+	virDomainPtr dom;
 	char *domkey;
 	gboolean withEvents;
 	gboolean waitvm;
@@ -59,6 +64,7 @@ G_DEFINE_TYPE (VirtViewer, virt_viewer, VIRT_VIEWER_TYPE_APP)
         (G_TYPE_INSTANCE_GET_PRIVATE ((o), VIRT_VIEWER_TYPE, VirtViewerPrivate))
 
 static int virt_viewer_initial_connect(VirtViewerApp *self);
+static gboolean virt_viewer_open_connection(VirtViewerApp *self, int *fd);
 static void virt_viewer_deactivated(VirtViewerApp *self);
 static gboolean virt_viewer_start(VirtViewerApp *self);
 
@@ -85,6 +91,12 @@ virt_viewer_set_property (GObject *object, guint property_id,
 static void
 virt_viewer_dispose (GObject *object)
 {
+	VirtViewer *self = VIRT_VIEWER(object);
+	VirtViewerPrivate *priv = self->priv;
+	if (priv->dom)
+		virDomainFree(priv->dom);
+	if (priv->conn)
+		virConnectClose(priv->conn);
 	G_OBJECT_CLASS(virt_viewer_parent_class)->dispose (object);
 }
 
@@ -102,6 +114,7 @@ virt_viewer_class_init (VirtViewerClass *klass)
 
 	app_class->initial_connect = virt_viewer_initial_connect;
 	app_class->deactivated = virt_viewer_deactivated;
+	app_class->open_connection = virt_viewer_open_connection;
 	app_class->start = virt_viewer_start;
 }
 
@@ -116,6 +129,11 @@ virt_viewer_deactivated(VirtViewerApp *app)
 {
 	VirtViewer *self = VIRT_VIEWER(app);
 	VirtViewerPrivate *priv = self->priv;
+
+	if (priv->dom) {
+		virDomainFree(priv->dom);
+		priv->dom = NULL;
+	}
 
 	if (priv->reconnect) {
 		if (!priv->withEvents) {
@@ -365,6 +383,11 @@ virt_viewer_update_display(VirtViewer *self, virDomainPtr dom)
 	VirtViewerPrivate *priv = self->priv;
 	VirtViewerApp *app = VIRT_VIEWER_APP(self);
 
+	if (priv->dom)
+		virDomainFree(priv->dom);
+	priv->dom = dom;
+	virDomainRef(priv->dom);
+
 	virt_viewer_app_trace(app, "Guest %s is running, determining display\n",
 			      priv->domkey);
 
@@ -376,6 +399,36 @@ virt_viewer_update_display(VirtViewer *self, virDomainPtr dom)
 	}
 
 	return 0;
+}
+
+static gboolean
+virt_viewer_open_connection(VirtViewerApp *self G_GNUC_UNUSED, int *fd)
+{
+#if defined(HAVE_SOCKETPAIR)
+	VirtViewer *viewer = VIRT_VIEWER(self);
+	VirtViewerPrivate *priv = viewer->priv;
+	int pair[2];
+#endif
+	*fd = -1;
+#if defined(HAVE_SOCKETPAIR)
+	if (!priv->dom)
+		return TRUE;
+
+	if (socketpair(PF_UNIX, SOCK_STREAM, 0, pair) < 0)
+		return FALSE;
+
+	if (virDomainOpenGraphics(priv->dom, 0, pair[0],
+				  VIR_DOMAIN_OPEN_GRAPHICS_SKIPAUTH) < 0) {
+		virErrorPtr err = virGetLastError();
+		DEBUG_LOG("Error %s", err && err->message ? err->message : "Unknown");
+		close(pair[0]);
+		close(pair[1]);
+		return TRUE;
+	}
+	close(pair[0]);
+	*fd = pair[1];
+#endif
+	return TRUE;
 }
 
 static int
@@ -488,6 +541,10 @@ virt_viewer_start(VirtViewerApp *app)
 		.cb = virt_viewer_auth_libvirt_credentials,
 		.cbdata = (void *)priv->uri,
 	};
+	int oflags = 0;
+
+	if (!virt_viewer_app_get_attach(app))
+		oflags |= VIR_CONNECT_RO;
 
 	virt_viewer_events_register();
 
@@ -498,7 +555,7 @@ virt_viewer_start(VirtViewerApp *app)
 	priv->conn = virConnectOpenAuth(priv->uri,
 					//virConnectAuthPtrDefault,
 					&auth_libvirt,
-					VIR_CONNECT_RO);
+					oflags);
 	if (!priv->conn) {
 		virt_viewer_app_simple_message_dialog(app, _("Unable to connect to libvirt with URI %s"),
 						      priv->uri ? priv->uri : _("[none]"));
@@ -530,6 +587,7 @@ virt_viewer_new(const char *uri,
 		const char *name,
 		gint zoom,
 		gboolean direct,
+		gboolean attach,
 		gboolean waitvm,
 		gboolean reconnect,
 		gboolean verbose,
@@ -553,6 +611,7 @@ virt_viewer_new(const char *uri,
 	g_object_set(app, "title", name, NULL);
 	virt_viewer_window_set_zoom_level(virt_viewer_app_get_main_window(app), zoom);
 	virt_viewer_app_set_direct(app, direct);
+	virt_viewer_app_set_attach(app, attach);
 
 	/* should probably be properties instead */
 	priv->uri = g_strdup(uri);

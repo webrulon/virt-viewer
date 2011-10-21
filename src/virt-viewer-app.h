@@ -55,6 +55,7 @@ typedef struct {
         int (*initial_connect) (VirtViewerApp *self);
         int (*activate) (VirtViewerApp *self);
         void (*deactivated) (VirtViewerApp *self);
+        gboolean (*open_connection)(VirtViewerApp *self, int *fd);
 } VirtViewerAppClass;
 
 GType virt_viewer_app_get_type (void);
@@ -73,6 +74,8 @@ int virt_viewer_app_initial_connect(VirtViewerApp *self);
 void virt_viewer_app_start_reconnect_poll(VirtViewerApp *self);
 void virt_viewer_app_set_zoom_level(VirtViewerApp *self, gint zoom_level);
 void virt_viewer_app_set_direct(VirtViewerApp *self, gboolean direct);
+void virt_viewer_app_set_attach(VirtViewerApp *self, gboolean attach);
+gboolean virt_viewer_app_get_attach(VirtViewerApp *self);
 gboolean virt_viewer_app_has_session(VirtViewerApp *self);
 void virt_viewer_app_set_connect_info(VirtViewerApp *self,
                                       const gchar *host,

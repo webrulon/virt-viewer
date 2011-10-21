@@ -52,6 +52,7 @@ int main(int argc, char **argv)
 	gboolean verbose = FALSE;
 	gboolean debug = FALSE;
 	gboolean direct = FALSE;
+	gboolean attach = FALSE;
 	gboolean waitvm = FALSE;
 	gboolean reconnect = FALSE;
 	gboolean fullscreen = FALSE;
@@ -64,6 +65,8 @@ int main(int argc, char **argv)
 		  N_("Display verbose information"), NULL },
 		{ "direct", 'd', 0, G_OPTION_ARG_NONE, &direct,
 		  N_("Direct connection with no automatic tunnels"), NULL },
+		{ "attach", 'a', 0, G_OPTION_ARG_NONE, &attach,
+		  N_("Attach to the local display using libvirt"), NULL },
 		{ "connect", 'c', 0, G_OPTION_ARG_STRING, &uri,
 		  N_("Connect to hypervisor"), "URI"},
 		{ "wait", 'w', 0, G_OPTION_ARG_NONE, &waitvm,
@@ -121,7 +124,7 @@ int main(int argc, char **argv)
 
 	virt_viewer_app_set_debug(debug);
 
-	viewer = virt_viewer_new(uri, args[0], zoom, direct, waitvm, reconnect, verbose, NULL);
+	viewer = virt_viewer_new(uri, args[0], zoom, direct, attach, waitvm, reconnect, verbose, NULL);
 	if (viewer == NULL)
 		goto cleanup;
 

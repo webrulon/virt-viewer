@@ -111,6 +111,7 @@ struct _VirtViewerAppPrivate {
 	gboolean authretry;
 	gboolean started;
 	gboolean fullscreen;
+	gboolean attach;
 
 	VirtViewerSession *session;
 	gboolean active;
@@ -650,6 +651,26 @@ virt_viewer_app_create_session(VirtViewerApp *self, const gchar *type)
 	return 0;
 }
 
+static gboolean
+virt_viewer_app_default_open_connection(VirtViewerApp *self G_GNUC_UNUSED, int *fd)
+{
+	*fd = -1;
+	return TRUE;
+}
+
+
+static int
+virt_viewer_app_open_connection(VirtViewerApp *self, int *fd)
+{
+	VirtViewerAppClass *klass;
+
+	g_return_val_if_fail(VIRT_VIEWER_IS_APP(self), -1);
+	klass = VIRT_VIEWER_APP_GET_CLASS(self);
+
+	return klass->open_connection(self, fd);
+}
+
+
 #if defined(HAVE_SOCKETPAIR) && defined(HAVE_FORK)
 static void
 virt_viewer_app_channel_open(VirtViewerSession *session,
@@ -661,13 +682,18 @@ virt_viewer_app_channel_open(VirtViewerSession *session,
 
 	g_return_if_fail(self != NULL);
 
+	if (!virt_viewer_app_open_connection(self, &fd))
+		return;
+
+	DEBUG_LOG("After open connection callback fd=%d", fd);
+
 	priv = self->priv;
 	if (priv->transport && g_ascii_strcasecmp(priv->transport, "ssh") == 0 &&
-	    !priv->direct) {
+	    !priv->direct && fd == -1) {
 		if ((fd = virt_viewer_app_open_tunnel_ssh(priv->host, priv->port, priv->user,
 							  priv->ghost, priv->gport, NULL)) < 0)
 			virt_viewer_app_simple_message_dialog(self, _("Connect to ssh failed."));
-	} else {
+	} else if (fd == -1) {
 		virt_viewer_app_simple_message_dialog(self, _("Can't connect to channel, SSH only supported."));
 	}
 
@@ -690,10 +716,16 @@ virt_viewer_app_default_activate(VirtViewerApp *self)
 	VirtViewerAppPrivate *priv = self->priv;
 	int fd = -1;
 
+	if (!virt_viewer_app_open_connection(self, &fd))
+		return -1;
+
+	DEBUG_LOG("After open connection callback fd=%d", fd);
+
 #if defined(HAVE_SOCKETPAIR) && defined(HAVE_FORK)
 	if (priv->transport &&
 	    g_ascii_strcasecmp(priv->transport, "ssh") == 0 &&
-	    !priv->direct) {
+	    !priv->direct &&
+	    fd == -1) {
 		gchar *p = NULL;
 
 		if (priv->gport) {
@@ -716,7 +748,7 @@ virt_viewer_app_default_activate(VirtViewerApp *self)
 							  priv->user, priv->ghost,
 							  priv->gport, priv->unixsock)) < 0)
 			return -1;
-	} else if (priv->unixsock) {
+	} else if (priv->unixsock && fd == -1) {
 		virt_viewer_app_trace(self, "Opening direct UNIX connection to display at %s",
 				      priv->unixsock);
 		if ((fd = virt_viewer_app_open_unix_sock(priv->unixsock)) < 0)
@@ -1190,6 +1222,7 @@ virt_viewer_app_class_init (VirtViewerAppClass *klass)
 	klass->initial_connect = virt_viewer_app_default_initial_connect;
 	klass->activate = virt_viewer_app_default_activate;
 	klass->deactivated = virt_viewer_app_default_deactivated;
+	klass->open_connection = virt_viewer_app_default_open_connection;
 
 	g_object_class_install_property(object_class,
 					PROP_VERBOSE,
@@ -1290,6 +1323,22 @@ virt_viewer_app_set_direct(VirtViewerApp *self, gboolean direct)
 	g_return_if_fail(VIRT_VIEWER_IS_APP(self));
 
 	self->priv->direct = direct;
+}
+
+void
+virt_viewer_app_set_attach(VirtViewerApp *self, gboolean attach)
+{
+	g_return_if_fail(VIRT_VIEWER_IS_APP(self));
+
+	self->priv->attach = attach;
+}
+
+gboolean
+virt_viewer_app_get_attach(VirtViewerApp *self)
+{
+	g_return_val_if_fail(VIRT_VIEWER_IS_APP(self), FALSE);
+
+	return self->priv->attach;
 }
 
 gboolean

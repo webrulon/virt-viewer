@@ -91,9 +91,9 @@ browsers.
 %endif
 
 %if %{with_spice}
-%define spice_arg --enable-spice
+%define spice_arg --with-spice-gtk
 %else
-%define spice_arg --disable-spice
+%define spice_arg --without-spice-gtk
 %endif
 
 %if %{with_gtk3}

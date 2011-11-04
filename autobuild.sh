@@ -12,10 +12,23 @@ cd build
 
 ../autogen.sh --prefix=$AUTOBUILD_INSTALL_ROOT \
     --enable-compile-warnings=error \
-    --disable-plugin
+    --disable-plugin \
+    --with-gtk=2.0
 
 make
 make install
+
+# Test GTK3 build too if available
+pkg-config gtk+-3.0 1>/dev/null 2>&1
+if test $? = 0 ; then
+  make distclean
+  ../configure --prefix=$AUTOBUILD_INSTALL_ROOT \
+    --enable-compile-warnings=error \
+    --disable-plugin \
+    --with-gtk=3.0
+  make
+  make install
+fi
 
 rm -f *.tar.gz
 make dist
@@ -43,9 +56,27 @@ if [ -x /usr/bin/i686-pc-mingw32-gcc ]; then
     --build=$(uname -m)-pc-linux \
     --host=i686-pc-mingw32 \
     --prefix="$AUTOBUILD_INSTALL_ROOT/i686-pc-mingw32/sys-root/mingw" \
+    --disable-plugin \
+    --with-gtk=2.0
 
   make
   make install
+
+  # Test GTK3 build too if available
+  PKG_CONFIG_LIBDIR=/usr/i686-pc-mingw32/sys-root/mingw/lib/pkgconfig pkg-config gtk+-3.0 1>/dev/null 2>&1
+  if test $? = 0 ; then
+    make distclean
+    PKG_CONFIG_PATH="$AUTOBUILD_INSTALL_ROOT/i686-pc-mingw32/sys-root/mingw/lib/pkgconfig:/usr/i686-pc-mingw32/sys-root/mingw/lib/pkgconfig" \
+    CC="i686-pc-mingw32-gcc" \
+    ../configure --prefix=$AUTOBUILD_INSTALL_ROOT \
+      --build=$(uname -m)-pc-linux \
+      --host=i686-pc-mingw32 \
+      --prefix="$AUTOBUILD_INSTALL_ROOT/i686-pc-mingw32/sys-root/mingw" \
+      --disable-plugin \
+      --with-gtk=3.0
+    make
+    make install
+  fi
 
   #set -o pipefail
   #make check 2>&1 | tee "$RESULTS"

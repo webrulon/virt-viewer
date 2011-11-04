@@ -39,7 +39,6 @@ endif
 virt_viewer_LDADD = \
 	@GTK_VNC_LIBS@ \
 	@SPICE_GTK_LIBS@ \
-	@GLIB2_LIBS@ \
 	@GTK_LIBS@ \
 	@LIBXML2_LIBS@ \
 	@LIBVIRT_LIBS@
@@ -47,7 +46,6 @@ virt_viewer_LDADD = \
 virt_viewer_CFLAGS = \
 	@GTK_VNC_CFLAGS@ \
 	@SPICE_GTK_CFLAGS@ \
-	@GLIB2_CFLAGS@ \
 	@GTK_CFLAGS@ \
 	@LIBXML2_CFLAGS@ \
 	@LIBVIRT_CFLAGS@ \

@@ -4,6 +4,11 @@
 %define __find_requires %{_mingw32_findrequires}
 %define __find_provides %{_mingw32_findprovides}
 
+%define with_gtk3 0
+%if 0%{?fedora} >= 15
+%define with_gtk3 1
+%endif
+
 Name:           mingw32-virt-viewer
 Version:        @VERSION@
 Release:        1%{?dist}%{?extra_release}
@@ -16,10 +21,18 @@ Source0:        ftp://virt-manager.org/downloads/virt-viewer/virt-viewer-%{versi
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 BuildRequires:  mingw32-filesystem >= 23
+%if %{with_gtk3}
+BuildRequires:  mingw32-gtk3 >= 3.0.0
+%else
 BuildRequires:  mingw32-gtk2 >= 2.12.0
+%endif
 BuildRequires:  mingw32-libvirt >= 0.6.0
 BuildRequires:  mingw32-libxml2
+%if %{with_gtk3}
 BuildRequires:  mingw32-gtk-vnc >= 0.3.8
+%else
+BuildRequires:  mingw32-gtk-vnc2 >= 0.4.0
+%endif
 BuildRequires:  pkgconfig
 
 BuildArch:      noarch
@@ -34,7 +47,11 @@ MinGW Windows virt-viewer console application
 
 
 %build
-%{_mingw32_configure}
+%if %{with_gtk3}
+%{_mingw32_configure} --with-gtk=3.0
+%else
+%{_mingw32_configure} --with-gtk=2.0
+%endif
 make
 
 
@@ -62,6 +79,3 @@ rm -rf $RPM_BUILD_ROOT
 %{_mingw32_mandir}/man1/virt-viewer.1*
 
 %changelog
-* Fri Nov 28 2008 Daniel P. Berrange <berrange@redhat.com> - 0.0.4-1
-- Initial release
-

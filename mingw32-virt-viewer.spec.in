@@ -29,9 +29,9 @@ BuildRequires:  mingw32-gtk2 >= 2.12.0
 BuildRequires:  mingw32-libvirt >= 0.6.0
 BuildRequires:  mingw32-libxml2
 %if %{with_gtk3}
-BuildRequires:  mingw32-gtk-vnc >= 0.3.8
+BuildRequires:  mingw32-gtk-vnc >= 0.4.3
 %else
-BuildRequires:  mingw32-gtk-vnc2 >= 0.4.0
+BuildRequires:  mingw32-gtk-vnc2 >= 0.4.3
 %endif
 BuildRequires:  pkgconfig
 

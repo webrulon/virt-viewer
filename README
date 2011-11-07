@@ -14,8 +14,8 @@ with:
 
    ./configure --with-gtk=3.0  (or =2.0)
 
-Virt Viewer uses the GTK-VNC widget to provide a display
-of the VNC protocol. This is available from
+Virt Viewer uses the GTK-VNC (>= 0.4.3) widget to provide a
+display of the VNC protocol. This is available from
 
   http://gtk-vnc.sourceforge.net/
 

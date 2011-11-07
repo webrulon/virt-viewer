@@ -40,7 +40,7 @@ BuildRequires: libxml2-devel
 %if %{with_gtk3}
 BuildRequires: gtk-vnc2-devel >= 0.4.3
 %else
-BuildRequires: gtk-vnc-devel >= 0.3.8
+BuildRequires: gtk-vnc-devel >= 0.4.3
 %endif
 %if %{with_spice}
 %if %{with_gtk3}

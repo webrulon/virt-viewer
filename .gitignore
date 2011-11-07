@@ -27,5 +27,9 @@ src/virt-viewer
 po/POTFILES
 po/stamp-it
 *.o
+*.lo
+*.orig
+*/.#*
+*/#*#
 stamp-h1
 INSTALL

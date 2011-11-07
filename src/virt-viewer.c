@@ -285,6 +285,7 @@ virt_viewer_extract_connect_info(VirtViewer *self,
 	gchar *transport = NULL;
 	gchar *user = NULL;
 	gint port = 0;
+	gchar *uri = NULL;
 
 	virt_viewer_app_free_connect_info(app);
 
@@ -319,7 +320,8 @@ virt_viewer_extract_connect_info(VirtViewer *self,
 	else if (unixsock)
 		DEBUG_LOG("Guest graphics address is %s", unixsock);
 
-	if (virt_viewer_util_extract_host(priv->uri, NULL, &host, &transport, &user, &port) < 0) {
+	uri = virConnectGetURI(priv->conn);
+	if (virt_viewer_util_extract_host(uri, NULL, &host, &transport, &user, &port) < 0) {
 		virt_viewer_app_simple_message_dialog(app, _("Cannot determine the host for the guest %s"),
 						      priv->domkey);
 		goto cleanup;
@@ -353,6 +355,7 @@ virt_viewer_extract_connect_info(VirtViewer *self,
 	g_free(type);
 	g_free(xpath);
 	g_free(xmldesc);
+	g_free(uri);
 	return retval;
 }
 

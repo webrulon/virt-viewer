@@ -28,3 +28,4 @@ po/POTFILES
 po/stamp-it
 *.o
 stamp-h1
+INSTALL

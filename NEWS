@@ -1,6 +1,25 @@
   Virt Viewer News
   ================
 
+0.4.2: Nov  9, 2011
+-------------------
+
+  - Fix exports of signal functions for GTK UI builder on Windows
+  - Avoid crash if xmlParseURI fails
+  - Fix inverted test for SSH port that broke tunnelling
+  - Don't hardcode port numbers for SSH if not requested by user
+  - Fix deadlock in event handling
+  - Fix initial zoom level for all windows
+  - Fix window title to include domain name
+  - Fix hostname used when XML gives a wildcard IP address
+  - Fix window title when waiting for domain to appear
+  - Fix key shortcust for F9-F12 menus
+  - Always ask libvirt for its canonical URI
+  - Allow build without GTK-VNC (ie spice only)
+  - Require GTK-VNC >= 0.4.3
+  - Require SPICE-GTK >= 0.6.0
+
+
 0.4.1: Aug  4, 2011
 -------------------
 

@@ -44,6 +44,7 @@ struct _VirtViewerSessionSpicePrivate {
 static void virt_viewer_session_spice_close(VirtViewerSession *session);
 static gboolean virt_viewer_session_spice_open_fd(VirtViewerSession *session, int fd);
 static gboolean virt_viewer_session_spice_open_host(VirtViewerSession *session, char *host, char *port);
+static gboolean virt_viewer_session_spice_open_uri(VirtViewerSession *session, char *uri);
 static gboolean virt_viewer_session_spice_channel_open_fd(VirtViewerSession *session, VirtViewerSessionChannel *channel, int fd);
 static void virt_viewer_session_spice_channel_new(SpiceSession *s,
 						  SpiceChannel *channel,
@@ -80,6 +81,7 @@ virt_viewer_session_spice_class_init(VirtViewerSessionSpiceClass *klass)
 	dclass->close = virt_viewer_session_spice_close;
 	dclass->open_fd = virt_viewer_session_spice_open_fd;
 	dclass->open_host = virt_viewer_session_spice_open_host;
+	dclass->open_uri = virt_viewer_session_spice_open_uri;
 	dclass->channel_open_fd = virt_viewer_session_spice_channel_open_fd;
 
 	g_type_class_add_private(oclass, sizeof(VirtViewerSessionSpicePrivate));
@@ -131,6 +133,20 @@ virt_viewer_session_spice_open_host(VirtViewerSession *session,
 		     "host", host,
 		     "port", port,
 		     NULL);
+
+	return spice_session_connect(self->priv->session);
+}
+
+static gboolean
+virt_viewer_session_spice_open_uri(VirtViewerSession *session,
+				   char *uri)
+{
+	VirtViewerSessionSpice *self = VIRT_VIEWER_SESSION_SPICE(session);
+
+	g_return_val_if_fail(self != NULL, FALSE);
+	g_return_val_if_fail(self->priv->session != NULL, FALSE);
+
+	g_object_set(self->priv->session, "uri", uri, NULL);
 
 	return spice_session_connect(self->priv->session);
 }

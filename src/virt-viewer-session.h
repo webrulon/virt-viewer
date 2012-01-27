@@ -68,6 +68,7 @@ struct _VirtViewerSessionClass {
 	void (* close) (VirtViewerSession* session);
 	gboolean (* open_fd) (VirtViewerSession* session, int fd);
 	gboolean (* open_host) (VirtViewerSession* session, char *host, char *port);
+	gboolean (* open_uri) (VirtViewerSession* session, char *uri);
 	gboolean (* channel_open_fd) (VirtViewerSession* session, VirtViewerSessionChannel *channel, int fd);
 
 	/* signals */
@@ -104,6 +105,7 @@ gboolean virt_viewer_session_open_host(VirtViewerSession* session, char *host, c
 GObject* virt_viewer_session_get(VirtViewerSession* session);
 gboolean virt_viewer_session_channel_open_fd(VirtViewerSession* session,
 					     VirtViewerSessionChannel* channel, int fd);
+gboolean virt_viewer_session_open_uri(VirtViewerSession *session, gchar *uri);
 
 G_END_DECLS
 

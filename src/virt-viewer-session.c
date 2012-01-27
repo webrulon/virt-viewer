@@ -239,6 +239,18 @@ gboolean virt_viewer_session_open_host(VirtViewerSession *session, char *host, c
         return klass->open_host(session, host, port);
 }
 
+gboolean virt_viewer_session_open_uri(VirtViewerSession *session, gchar *uri)
+{
+        VirtViewerSessionClass *klass;
+
+        g_return_val_if_fail(VIRT_VIEWER_IS_SESSION(session), FALSE);
+
+        klass = VIRT_VIEWER_SESSION_GET_CLASS(session);
+        g_return_val_if_fail(klass->open_uri != NULL, FALSE);
+
+        return klass->open_uri(session, uri);
+}
+
 gboolean virt_viewer_session_channel_open_fd(VirtViewerSession *session,
 					     VirtViewerSessionChannel *channel, int fd)
 {

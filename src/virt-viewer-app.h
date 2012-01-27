@@ -46,6 +46,11 @@ typedef struct {
 typedef struct {
         GObjectClass parent_class;
 
+        /* signals */
+       void (*window_added) (VirtViewerApp *self, VirtViewerWindow *window);
+       void (*window_removed) (VirtViewerApp *self, VirtViewerWindow *window);
+
+        /*< private >*/
         gboolean (*start) (VirtViewerApp *self);
         int (*initial_connect) (VirtViewerApp *self);
         void (*deactivated) (VirtViewerApp *self);

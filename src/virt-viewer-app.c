@@ -143,6 +143,14 @@ enum {
 	PROP_TITLE,
 };
 
+enum {
+	SIGNAL_WINDOW_ADDED,
+	SIGNAL_WINDOW_REMOVED,
+	SIGNAL_LAST,
+};
+
+static guint signals[SIGNAL_LAST];
+
 void
 virt_viewer_app_set_debug(gboolean debug)
 {
@@ -442,11 +450,21 @@ virt_viewer_app_get_nth_window(VirtViewerApp *self, gint nth)
 static gboolean
 virt_viewer_app_remove_nth_window(VirtViewerApp *self, gint nth)
 {
+	VirtViewerWindow *win;
 	gboolean removed;
 
 	g_return_val_if_fail(nth != 0, FALSE);
-	removed = g_hash_table_remove(self->priv->windows, &nth);
+
+	win = virt_viewer_app_get_nth_window(self, nth);
+	g_return_val_if_fail(win != NULL, FALSE);
+
+	removed = g_hash_table_steal(self->priv->windows, &nth);
 	g_warn_if_fail(removed);
+
+	if (removed)
+		g_signal_emit(self, signals[SIGNAL_WINDOW_REMOVED], 0, win);
+
+	g_object_unref(win);
 
 	return removed;
 }
@@ -461,6 +479,8 @@ virt_viewer_app_set_nth_window(VirtViewerApp *self, gint nth, VirtViewerWindow *
 	*key = nth;
 	g_hash_table_insert(self->priv->windows, key, win);
 	virt_viewer_app_set_window_subtitle(self, win, nth);
+
+	g_signal_emit(self, signals[SIGNAL_WINDOW_ADDED], 0, win);
 }
 
 static void
@@ -1218,6 +1238,27 @@ virt_viewer_app_class_init (VirtViewerAppClass *klass)
 							    G_PARAM_WRITABLE |
 							    G_PARAM_STATIC_STRINGS));
 
+	signals[SIGNAL_WINDOW_ADDED] =
+		g_signal_new("window-added",
+			     G_OBJECT_CLASS_TYPE(object_class),
+			     G_SIGNAL_RUN_LAST,
+			     G_STRUCT_OFFSET(VirtViewerAppClass, window_added),
+			     NULL, NULL,
+			     g_cclosure_marshal_VOID__OBJECT,
+			     G_TYPE_NONE,
+			     1,
+			     G_TYPE_OBJECT);
+
+	signals[SIGNAL_WINDOW_REMOVED] =
+		g_signal_new("window-removed",
+			     G_OBJECT_CLASS_TYPE(object_class),
+			     G_SIGNAL_RUN_LAST,
+			     G_STRUCT_OFFSET(VirtViewerAppClass, window_removed),
+			     NULL, NULL,
+			     g_cclosure_marshal_VOID__OBJECT,
+			     G_TYPE_NONE,
+			     1,
+			     G_TYPE_OBJECT);
 }
 
 void
@@ -1447,6 +1488,7 @@ virt_viewer_app_show_status(VirtViewerApp *self, const gchar *fmt, ...)
 	gchar *text;
 
 	g_return_if_fail(VIRT_VIEWER_IS_APP(self));
+	g_return_if_fail(fmt != NULL);
 
 	va_start(args, fmt);
 	text = g_strdup_vprintf(fmt, args);

@@ -91,6 +91,9 @@ main(int argc, char **argv)
 #ifdef HAVE_GTK_VNC
 	g_option_context_add_group (context, vnc_display_get_option_group ());
 #endif
+#ifdef HAVE_SPICE_GTK
+	g_option_context_add_group (context, spice_get_option_group ());
+#endif
 	g_option_context_parse (context, &argc, &argv, &error);
 	if (error) {
 		g_printerr("%s\n%s\n",

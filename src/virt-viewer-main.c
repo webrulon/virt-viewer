@@ -25,11 +25,12 @@
 #include <gtk/gtk.h>
 #include <glib/gi18n.h>
 #include <stdlib.h>
-
 #ifdef HAVE_GTK_VNC
 #include <vncdisplay.h>
 #endif
-
+#ifdef HAVE_SPICE_GTK
+#include <spice-option.h>
+#endif
 #include "virt-viewer.h"
 
 static void virt_viewer_version(void)
@@ -93,6 +94,9 @@ int main(int argc, char **argv)
 	g_option_context_add_group (context, gtk_get_option_group (TRUE));
 #ifdef HAVE_GTK_VNC
 	g_option_context_add_group (context, vnc_display_get_option_group ());
+#endif
+#ifdef HAVE_SPICE_GTK
+	g_option_context_add_group (context, spice_get_option_group ());
 #endif
 	g_option_context_parse (context, &argc, &argv, &error);
 	if (error) {

@@ -23,9 +23,9 @@
  */
 
 #include <spice-audio.h>
-
 #include <glib/gi18n.h>
 
+#include <spice-option.h>
 #include "virt-viewer-util.h"
 #include "virt-viewer-session-spice.h"
 #include "virt-viewer-display-spice.h"
@@ -154,7 +154,9 @@ virt_viewer_session_spice_close(VirtViewerSession *session)
 		self->priv->audio = NULL;
 	}
 
+	/* FIXME: version 0.7 of spice-gtk allows reuse of session */
 	self->priv->session = spice_session_new();
+	spice_set_session_option(self->priv->session);
 	g_signal_connect(self->priv->session, "channel-new",
 			 G_CALLBACK(virt_viewer_session_spice_channel_new), self);
 	g_signal_connect(self->priv->session, "channel-destroy",
@@ -351,6 +353,8 @@ virt_viewer_session_spice_new(void)
 	self = g_object_new(VIRT_VIEWER_TYPE_SESSION_SPICE, NULL);
 
 	self->priv->session = spice_session_new();
+	spice_set_session_option(self->priv->session);
+
 	g_signal_connect(self->priv->session, "channel-new",
 			 G_CALLBACK(virt_viewer_session_spice_channel_new), self);
 	g_signal_connect(self->priv->session, "channel-destroy",

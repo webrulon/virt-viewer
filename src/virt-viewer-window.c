@@ -691,7 +691,7 @@ virt_viewer_window_save_screenshot(VirtViewerWindow *self,
 
 	gdk_pixbuf_save(pix, file, "png", NULL,
 			"tEXt::Generator App", PACKAGE, NULL);
-	gdk_pixbuf_unref(pix);
+	g_object_unref(pix);
 }
 
 G_MODULE_EXPORT void

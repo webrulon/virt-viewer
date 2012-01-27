@@ -577,14 +577,14 @@ virt_viewer_app_create_session(VirtViewerApp *self, const gchar *type)
 	g_return_val_if_fail(priv->session == NULL, -1);
 
 #ifdef HAVE_GTK_VNC
-	if (g_strcasecmp(type, "vnc") == 0) {
+	if (g_ascii_strcasecmp(type, "vnc") == 0) {
 		virt_viewer_app_trace(self, "Guest %s has a %s display\n",
 				      priv->guest_name, type);
 		priv->session = virt_viewer_session_vnc_new();
 	} else
 #endif
 #ifdef HAVE_SPICE_GTK
-	if (g_strcasecmp(type, "spice") == 0) {
+	if (g_ascii_strcasecmp(type, "spice") == 0) {
 		virt_viewer_app_trace(self, "Guest %s has a %s display\n",
 				      priv->guest_name, type);
 		priv->session = virt_viewer_session_spice_new();
@@ -635,7 +635,7 @@ virt_viewer_app_channel_open(VirtViewerSession *session,
 	g_return_if_fail(self != NULL);
 
 	priv = self->priv;
-	if (priv->transport && g_strcasecmp(priv->transport, "ssh") == 0 &&
+	if (priv->transport && g_ascii_strcasecmp(priv->transport, "ssh") == 0 &&
 	    !priv->direct) {
 		if ((fd = virt_viewer_app_open_tunnel_ssh(priv->host, priv->port, priv->user,
 							  priv->ghost, priv->gport, NULL)) < 0)
@@ -670,7 +670,7 @@ virt_viewer_app_activate(VirtViewerApp *self)
 
 #if defined(HAVE_SOCKETPAIR) && defined(HAVE_FORK)
 	if (priv->transport &&
-	    g_strcasecmp(priv->transport, "ssh") == 0 &&
+	    g_ascii_strcasecmp(priv->transport, "ssh") == 0 &&
 	    !priv->direct) {
 		gchar *p = NULL;
 

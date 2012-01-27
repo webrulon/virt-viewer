@@ -84,7 +84,7 @@ virt_viewer_util_extract_host(const char *uristr,
 	char *offset;
 
 	if (uristr == NULL ||
-	    !g_strcasecmp(uristr, "xen"))
+	    !g_ascii_strcasecmp(uristr, "xen"))
 		uristr = "xen:///";
 
 	uri = xmlParseURI(uristr);

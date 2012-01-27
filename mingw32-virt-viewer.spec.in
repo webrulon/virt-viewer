@@ -69,6 +69,7 @@ rm -rf $RPM_BUILD_ROOT
 %files -f virt-viewer.lang
 %defattr(-,root,root)
 %{_mingw32_bindir}/virt-viewer.exe
+%{_mingw32_bindir}/remote-viewer.exe
 
 %dir %{_mingw32_datadir}/virt-viewer/
 %dir %{_mingw32_datadir}/virt-viewer/ui/

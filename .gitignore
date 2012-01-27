@@ -23,6 +23,7 @@ man/*.1
 missing
 .deps/
 .libs
+src/remote-viewer
 src/virt-viewer
 po/POTFILES
 po/stamp-it
@@ -33,3 +34,5 @@ po/stamp-it
 */#*#
 stamp-h1
 INSTALL
+*.lo
+*.la

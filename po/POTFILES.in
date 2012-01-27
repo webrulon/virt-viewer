@@ -1,3 +1,5 @@
+src/remote-viewer-main.c
+src/remote-viewer.c
 src/virt-viewer-about.xml
 src/virt-viewer-app.c
 src/virt-viewer-auth.c

@@ -122,6 +122,7 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(-,root,root,-)
 %doc README COPYING AUTHORS ChangeLog NEWS
 %{_bindir}/%{name}
+%{_bindir}/remote-viewer
 %dir %{_datadir}/%{name}
 %dir %{_datadir}/%{name}/ui/
 %{_datadir}/%{name}/ui/virt-viewer.xml

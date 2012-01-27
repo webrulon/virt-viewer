@@ -84,6 +84,8 @@ GType virt_viewer_display_get_type(void);
 
 GtkWidget *virt_viewer_display_new(void);
 
+void virt_viewer_display_set_maintain_aspect_ratio(VirtViewerDisplay *display,
+                                                   gboolean maintain);
 void virt_viewer_display_set_desktop_size(VirtViewerDisplay *display,
 					  guint width,
 					  guint height);

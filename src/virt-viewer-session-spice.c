@@ -41,6 +41,12 @@ struct _VirtViewerSessionSpicePrivate {
 
 #define VIRT_VIEWER_SESSION_SPICE_GET_PRIVATE(o) (G_TYPE_INSTANCE_GET_PRIVATE((o), VIRT_VIEWER_TYPE_SESSION_SPICE, VirtViewerSessionSpicePrivate))
 
+enum {
+	PROP_0,
+	PROP_SPICE_SESSION,
+};
+
+
 static void virt_viewer_session_spice_close(VirtViewerSession *session);
 static gboolean virt_viewer_session_spice_open_fd(VirtViewerSession *session, int fd);
 static gboolean virt_viewer_session_spice_open_host(VirtViewerSession *session, char *host, char *port);
@@ -55,7 +61,33 @@ static void virt_viewer_session_spice_channel_destroy(SpiceSession *s,
 
 
 static void
-virt_viewer_session_spice_finalize(GObject *obj)
+virt_viewer_session_spice_get_property(GObject *object, guint property_id,
+				       GValue *value, GParamSpec *pspec)
+{
+	VirtViewerSessionSpice *self = VIRT_VIEWER_SESSION_SPICE(object);
+	VirtViewerSessionSpicePrivate *priv = self->priv;
+
+	switch (property_id) {
+	case PROP_SPICE_SESSION:
+		g_value_set_object(value, priv->session);
+		break;
+	default:
+		G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
+	}
+}
+
+static void
+virt_viewer_session_spice_set_property(GObject *object, guint property_id,
+				       const GValue *value G_GNUC_UNUSED, GParamSpec *pspec)
+{
+	switch (property_id) {
+	default:
+		G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
+	}
+}
+
+static void
+virt_viewer_session_spice_dispose(GObject *obj)
 {
 	VirtViewerSessionSpice *spice = VIRT_VIEWER_SESSION_SPICE(obj);
 
@@ -76,7 +108,9 @@ virt_viewer_session_spice_class_init(VirtViewerSessionSpiceClass *klass)
 	VirtViewerSessionClass *dclass = VIRT_VIEWER_SESSION_CLASS(klass);
 	GObjectClass *oclass = G_OBJECT_CLASS(klass);
 
-	oclass->finalize = virt_viewer_session_spice_finalize;
+	oclass->get_property = virt_viewer_session_spice_get_property;
+	oclass->set_property = virt_viewer_session_spice_set_property;
+	oclass->dispose = virt_viewer_session_spice_dispose;
 
 	dclass->close = virt_viewer_session_spice_close;
 	dclass->open_fd = virt_viewer_session_spice_open_fd;
@@ -85,6 +119,15 @@ virt_viewer_session_spice_class_init(VirtViewerSessionSpiceClass *klass)
 	dclass->channel_open_fd = virt_viewer_session_spice_channel_open_fd;
 
 	g_type_class_add_private(oclass, sizeof(VirtViewerSessionSpicePrivate));
+
+	g_object_class_install_property(oclass,
+					PROP_SPICE_SESSION,
+					g_param_spec_object("spice-session",
+							    "Spice session",
+							    "Spice session",
+							    SPICE_TYPE_SESSION,
+							    G_PARAM_READABLE |
+							    G_PARAM_STATIC_STRINGS));
 }
 
 static void

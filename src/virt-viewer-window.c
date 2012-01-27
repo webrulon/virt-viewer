@@ -912,7 +912,16 @@ GtkMenuItem*
 virt_viewer_window_get_menu_displays(VirtViewerWindow *self)
 {
 	g_return_val_if_fail(VIRT_VIEWER_IS_WINDOW(self), NULL);
+
 	return GTK_MENU_ITEM(gtk_builder_get_object(self->priv->builder, "menu-displays"));
+}
+
+GtkBuilder*
+virt_viewer_window_get_builder(VirtViewerWindow *self)
+{
+	g_return_val_if_fail(VIRT_VIEWER_IS_WINDOW(self), NULL);
+
+	return self->priv->builder;
 }
 
 /*

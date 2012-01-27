@@ -1528,6 +1528,13 @@ virt_viewer_app_show_display(VirtViewerApp *self)
 	g_hash_table_foreach(self->priv->windows, show_display_cb, self);
 }
 
+GHashTable*
+virt_viewer_app_get_windows(VirtViewerApp *self)
+{
+	g_return_val_if_fail(VIRT_VIEWER_IS_APP(self), NULL);
+	return self->priv->windows;
+}
+
 /*
  * Local variables:
  *  c-indent-level: 8

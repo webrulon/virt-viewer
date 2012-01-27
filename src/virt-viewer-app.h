@@ -86,6 +86,7 @@ void virt_viewer_app_set_connect_info(VirtViewerApp *self,
 gboolean virt_viewer_app_window_set_visible(VirtViewerApp *self, VirtViewerWindow *window, gboolean visible);
 void virt_viewer_app_show_status(VirtViewerApp *self, const gchar *fmt, ...);
 void virt_viewer_app_show_display(VirtViewerApp *self);
+GHashTable* virt_viewer_app_get_windows(VirtViewerApp *self);
 
 G_END_DECLS
 

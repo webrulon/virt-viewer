@@ -120,6 +120,16 @@ virt_viewer_session_class_init(VirtViewerSessionClass *class)
 		     1,
 		     G_TYPE_STRING);
 
+	g_signal_new("session-usb-failed",
+		     G_OBJECT_CLASS_TYPE(object_class),
+		     G_SIGNAL_RUN_LAST | G_SIGNAL_NO_HOOKS,
+		     G_STRUCT_OFFSET(VirtViewerSessionClass, session_usb_failed),
+		     NULL,
+		     NULL,
+		     g_cclosure_marshal_VOID__STRING,
+		     G_TYPE_NONE,
+		     1,
+		     G_TYPE_STRING);
 
 	g_signal_new("session-display-added",
 		     G_OBJECT_CLASS_TYPE(object_class),

@@ -137,6 +137,39 @@ virt_viewer_session_spice_init(VirtViewerSessionSpice *self G_GNUC_UNUSED)
 }
 
 static void
+usb_auto_connect_failed(SpiceUsbDeviceManager *manager G_GNUC_UNUSED,
+			SpiceUsbDevice *device G_GNUC_UNUSED,
+			GError *error, VirtViewerSessionSpice *self)
+{
+	if (g_error_matches(error, G_IO_ERROR, G_IO_ERROR_CANCELLED))
+		return;
+
+	g_signal_emit_by_name(self, "session-usb-failed", error->message);
+}
+
+static void
+create_spice_session(VirtViewerSessionSpice *self)
+{
+	SpiceUsbDeviceManager *manager;
+
+	g_return_if_fail(self != NULL);
+	g_return_if_fail(self->priv->session == NULL);
+
+	self->priv->session = spice_session_new();
+	spice_set_session_option(self->priv->session);
+
+	g_signal_connect(self->priv->session, "channel-new",
+			 G_CALLBACK(virt_viewer_session_spice_channel_new), self);
+	g_signal_connect(self->priv->session, "channel-destroy",
+			 G_CALLBACK(virt_viewer_session_spice_channel_destroy), self);
+
+	manager = spice_usb_device_manager_get(self->priv->session, NULL);
+	if (manager)
+		g_signal_connect(manager, "auto-connect-failed",
+				 G_CALLBACK(usb_auto_connect_failed), self);
+}
+
+static void
 virt_viewer_session_spice_close(VirtViewerSession *session)
 {
 	VirtViewerSessionSpice *self = VIRT_VIEWER_SESSION_SPICE(session);
@@ -148,6 +181,7 @@ virt_viewer_session_spice_close(VirtViewerSession *session)
 	if (self->priv->session) {
 		spice_session_disconnect(self->priv->session);
 		g_object_unref(self->priv->session);
+		self->priv->session = NULL;
 
 		if (self->priv->audio)
 			g_object_unref(self->priv->audio);
@@ -155,13 +189,7 @@ virt_viewer_session_spice_close(VirtViewerSession *session)
 	}
 
 	/* FIXME: version 0.7 of spice-gtk allows reuse of session */
-	self->priv->session = spice_session_new();
-	spice_set_session_option(self->priv->session);
-	g_signal_connect(self->priv->session, "channel-new",
-			 G_CALLBACK(virt_viewer_session_spice_channel_new), self);
-	g_signal_connect(self->priv->session, "channel-destroy",
-			 G_CALLBACK(virt_viewer_session_spice_channel_destroy), self);
-
+	create_spice_session(self);
 }
 
 static gboolean
@@ -352,13 +380,7 @@ virt_viewer_session_spice_new(void)
 
 	self = g_object_new(VIRT_VIEWER_TYPE_SESSION_SPICE, NULL);
 
-	self->priv->session = spice_session_new();
-	spice_set_session_option(self->priv->session);
-
-	g_signal_connect(self->priv->session, "channel-new",
-			 G_CALLBACK(virt_viewer_session_spice_channel_new), self);
-	g_signal_connect(self->priv->session, "channel-destroy",
-			 G_CALLBACK(virt_viewer_session_spice_channel_destroy), self);
+	create_spice_session(self);
 
 	return VIRT_VIEWER_SESSION(self);
 }

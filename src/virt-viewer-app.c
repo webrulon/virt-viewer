@@ -81,6 +81,9 @@ static void virt_viewer_app_auth_refused(VirtViewerSession *session,
 static void virt_viewer_app_auth_failed(VirtViewerSession *session,
 					const char *msg,
 					VirtViewerApp *self);
+static void virt_viewer_app_usb_failed(VirtViewerSession *session,
+				       const char *msg,
+				       VirtViewerApp *self);
 
 static void virt_viewer_app_server_cut_text(VirtViewerSession *session,
 					    const gchar *text,
@@ -632,6 +635,8 @@ virt_viewer_app_create_session(VirtViewerApp *self, const gchar *type)
 			 G_CALLBACK(virt_viewer_app_auth_refused), self);
 	g_signal_connect(priv->session, "session-auth-failed",
 			 G_CALLBACK(virt_viewer_app_auth_failed), self);
+	g_signal_connect(priv->session, "session-usb-failed",
+			 G_CALLBACK(virt_viewer_app_usb_failed), self);
 	g_signal_connect(priv->session, "session-display-added",
 			 G_CALLBACK(virt_viewer_app_display_added), self);
 	g_signal_connect(priv->session, "session-display-removed",
@@ -987,11 +992,16 @@ static void virt_viewer_app_auth_failed(VirtViewerSession *session G_GNUC_UNUSED
 					const char *msg,
 					VirtViewerApp *self)
 {
-	VirtViewerAppPrivate *priv = self->priv;
-
 	virt_viewer_app_simple_message_dialog(self,
-					      _("Unable to authenticate with remote desktop server at %s"),
-					      priv->pretty_address, msg);
+					      _("Unable to authenticate with remote desktop server: %s"),
+					      msg);
+}
+
+static void virt_viewer_app_usb_failed(VirtViewerSession *session G_GNUC_UNUSED,
+				       const gchar *msg,
+				       VirtViewerApp *self)
+{
+	virt_viewer_app_simple_message_dialog(self, _("USB redirection error: %s"), msg);
 }
 
 static void

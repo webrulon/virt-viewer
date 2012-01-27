@@ -679,16 +679,11 @@ virt_viewer_app_channel_open(VirtViewerSession *session G_GNUC_UNUSED,
 }
 #endif
 
-int
-virt_viewer_app_activate(VirtViewerApp *self)
+static int
+virt_viewer_app_default_activate(VirtViewerApp *self)
 {
-	g_return_val_if_fail(VIRT_VIEWER_IS_APP(self), -1);
 	VirtViewerAppPrivate *priv = self->priv;
 	int fd = -1;
-	int ret = -1;
-
-	if (priv->active)
-		goto cleanup;
 
 #if defined(HAVE_SOCKETPAIR) && defined(HAVE_FORK)
 	if (priv->transport &&
@@ -725,25 +720,42 @@ virt_viewer_app_activate(VirtViewerApp *self)
 #endif
 
 	if (fd >= 0) {
-		ret = virt_viewer_session_open_fd(VIRT_VIEWER_SESSION(priv->session), fd);
-       } else if (priv->guri) {
+		return virt_viewer_session_open_fd(VIRT_VIEWER_SESSION(priv->session), fd);
+	} else if (priv->guri) {
 		virt_viewer_app_trace(self, "Opening connection to display at %s\n", priv->guri);
-		ret = virt_viewer_session_open_uri(VIRT_VIEWER_SESSION(priv->session), priv->guri);
+		return virt_viewer_session_open_uri(VIRT_VIEWER_SESSION(priv->session), priv->guri);
 	} else {
 		virt_viewer_app_trace(self, "Opening direct TCP connection to display at %s:%s\n",
 				      priv->ghost, priv->gport);
-		ret = virt_viewer_session_open_host(VIRT_VIEWER_SESSION(priv->session),
-						    priv->ghost, priv->gport);
+		return virt_viewer_session_open_host(VIRT_VIEWER_SESSION(priv->session),
+						     priv->ghost, priv->gport);
 	}
 
-	virt_viewer_app_show_status(self, _("Connecting to graphic server"));
+	return -1;
+}
 
-	priv->connected = FALSE;
-	priv->active = TRUE;
-	priv->grabbed = FALSE;
-	virt_viewer_app_update_title(self);
+int
+virt_viewer_app_activate(VirtViewerApp *self)
+{
+	VirtViewerAppPrivate *priv;
+	int ret;
 
- cleanup:
+	g_return_val_if_fail(VIRT_VIEWER_IS_APP(self), -1);
+
+	priv = self->priv;
+	if (priv->active)
+		return -1;
+
+	ret = VIRT_VIEWER_APP_GET_CLASS(self)->activate(self);
+
+	if (ret != -1) {
+		virt_viewer_app_show_status(self, _("Connecting to graphic server"));
+		priv->connected = FALSE;
+		priv->active = TRUE;
+		priv->grabbed = FALSE;
+		virt_viewer_app_update_title(self);
+	}
+
 	return ret;
 }
 
@@ -1166,6 +1178,7 @@ virt_viewer_app_class_init (VirtViewerAppClass *klass)
 
 	klass->start = virt_viewer_app_default_start;
 	klass->initial_connect = virt_viewer_app_default_initial_connect;
+	klass->activate = virt_viewer_app_default_activate;
 	klass->deactivated = virt_viewer_app_default_deactivated;
 
 	g_object_class_install_property(object_class,

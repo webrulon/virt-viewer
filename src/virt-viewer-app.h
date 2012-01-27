@@ -53,6 +53,7 @@ typedef struct {
         /*< private >*/
         gboolean (*start) (VirtViewerApp *self);
         int (*initial_connect) (VirtViewerApp *self);
+        int (*activate) (VirtViewerApp *self);
         void (*deactivated) (VirtViewerApp *self);
 } VirtViewerAppClass;
 

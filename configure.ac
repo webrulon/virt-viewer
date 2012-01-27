@@ -93,7 +93,8 @@ AC_ARG_WITH([spice-gtk],
 
 AS_IF([test "x$with_spice_gtk" != "xno"],
       [PKG_CHECK_MODULES(SPICE_GTK,
-                         spice-client-gtk-$SPICE_GTK_API_VERSION >= $SPICE_GTK_REQUIRED,
+                         [spice-client-gtk-$SPICE_GTK_API_VERSION >= $SPICE_GTK_REQUIRED
+                          spice-controller],
                          [have_spice_gtk=yes], [have_spice_gtk=no])],
       [have_spice_gtk=no])
 

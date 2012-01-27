@@ -48,8 +48,8 @@ typedef struct {
 
 GType remote_viewer_get_type (void);
 
-RemoteViewer *
-remote_viewer_new(const gchar *uri, gboolean verbose);
+RemoteViewer* remote_viewer_new(const gchar *uri, gboolean verbose);
+RemoteViewer* remote_viewer_new_with_controller(gboolean verbose);
 
 G_END_DECLS
 

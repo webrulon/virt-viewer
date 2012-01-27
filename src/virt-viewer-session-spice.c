@@ -36,6 +36,7 @@ G_DEFINE_TYPE (VirtViewerSessionSpice, virt_viewer_session_spice, VIRT_VIEWER_TY
 
 struct _VirtViewerSessionSpicePrivate {
 	SpiceSession *session;
+	SpiceGtkSession *gtk_session;
 	SpiceAudio *audio;
 };
 
@@ -158,6 +159,9 @@ create_spice_session(VirtViewerSessionSpice *self)
 	self->priv->session = spice_session_new();
 	spice_set_session_option(self->priv->session);
 
+	self->priv->gtk_session = spice_gtk_session_get(self->priv->session);
+	g_object_set(self->priv->gtk_session, "auto-clipboard", TRUE, NULL);
+
 	g_signal_connect(self->priv->session, "channel-new",
 			 G_CALLBACK(virt_viewer_session_spice_channel_new), self);
 	g_signal_connect(self->priv->session, "channel-destroy",
@@ -182,6 +186,7 @@ virt_viewer_session_spice_close(VirtViewerSession *session)
 		spice_session_disconnect(self->priv->session);
 		g_object_unref(self->priv->session);
 		self->priv->session = NULL;
+		self->priv->gtk_session = NULL;
 
 		if (self->priv->audio)
 			g_object_unref(self->priv->audio);

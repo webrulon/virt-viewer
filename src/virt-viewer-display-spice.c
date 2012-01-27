@@ -180,7 +180,6 @@ virt_viewer_display_spice_new(SpiceChannel *channel,
 		     "grab-keyboard", TRUE,
 		     "grab-mouse", TRUE,
 		     "scaling", TRUE,
-		     "auto-clipboard", TRUE,
 		     "resize-guest", TRUE,
 		     NULL);
 

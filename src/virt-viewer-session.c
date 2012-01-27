@@ -35,9 +35,17 @@
 struct _VirtViewerSessionPrivate
 {
 	GList *displays;
+
+	gboolean auto_usbredir;
 };
 
 G_DEFINE_ABSTRACT_TYPE(VirtViewerSession, virt_viewer_session, G_TYPE_OBJECT)
+
+enum {
+	PROP_0,
+
+	PROP_AUTO_USBREDIR,
+};
 
 static void
 virt_viewer_session_finalize(GObject *obj)
@@ -55,11 +63,59 @@ virt_viewer_session_finalize(GObject *obj)
 }
 
 static void
+virt_viewer_session_set_property(GObject *object,
+				 guint prop_id,
+				 const GValue *value,
+				 GParamSpec *pspec)
+{
+	VirtViewerSession *self = VIRT_VIEWER_SESSION(object);
+
+	switch (prop_id) {
+	case PROP_AUTO_USBREDIR:
+		virt_viewer_session_set_auto_usbredir(self, g_value_get_boolean(value));
+		break;
+	default:
+		G_OBJECT_WARN_INVALID_PROPERTY_ID(object, prop_id, pspec);
+		break;
+	}
+}
+
+static void
+virt_viewer_session_get_property(GObject *object,
+				 guint prop_id,
+				 GValue *value,
+				 GParamSpec *pspec)
+{
+	VirtViewerSession *self = VIRT_VIEWER_SESSION(object);
+
+	switch (prop_id) {
+	case PROP_AUTO_USBREDIR:
+		g_value_set_boolean(value, virt_viewer_session_get_auto_usbredir(self));
+		break;
+	default:
+		G_OBJECT_WARN_INVALID_PROPERTY_ID(object, prop_id, pspec);
+		break;
+	}
+}
+
+static void
 virt_viewer_session_class_init(VirtViewerSessionClass *class)
 {
 	GObjectClass *object_class = G_OBJECT_CLASS(class);
 
+	object_class->set_property = virt_viewer_session_set_property;
+	object_class->get_property = virt_viewer_session_get_property;
 	object_class->finalize = virt_viewer_session_finalize;
+
+	g_object_class_install_property(object_class,
+					PROP_AUTO_USBREDIR,
+					g_param_spec_boolean("auto-usbredir",
+							     "USB redirection",
+							     "USB redirection",
+							     TRUE,
+							     G_PARAM_READWRITE |
+							     G_PARAM_CONSTRUCT |
+                                                             G_PARAM_STATIC_STRINGS));
 
 	g_signal_new("session-connected",
 		     G_OBJECT_CLASS_TYPE(object_class),
@@ -241,24 +297,24 @@ gboolean virt_viewer_session_open_fd(VirtViewerSession *session, int fd)
 
 gboolean virt_viewer_session_open_host(VirtViewerSession *session, char *host, char *port)
 {
-        VirtViewerSessionClass *klass;
+	VirtViewerSessionClass *klass;
 
 	g_return_val_if_fail(VIRT_VIEWER_IS_SESSION(session), FALSE);
 
 	klass = VIRT_VIEWER_SESSION_GET_CLASS(session);
-        return klass->open_host(session, host, port);
+	return klass->open_host(session, host, port);
 }
 
 gboolean virt_viewer_session_open_uri(VirtViewerSession *session, gchar *uri)
 {
-        VirtViewerSessionClass *klass;
+	VirtViewerSessionClass *klass;
 
-        g_return_val_if_fail(VIRT_VIEWER_IS_SESSION(session), FALSE);
+	g_return_val_if_fail(VIRT_VIEWER_IS_SESSION(session), FALSE);
 
-        klass = VIRT_VIEWER_SESSION_GET_CLASS(session);
-        g_return_val_if_fail(klass->open_uri != NULL, FALSE);
+	klass = VIRT_VIEWER_SESSION_GET_CLASS(session);
+	g_return_val_if_fail(klass->open_uri != NULL, FALSE);
 
-        return klass->open_uri(session, uri);
+	return klass->open_uri(session, uri);
 }
 
 gboolean virt_viewer_session_channel_open_fd(VirtViewerSession *session,
@@ -269,10 +325,29 @@ gboolean virt_viewer_session_channel_open_fd(VirtViewerSession *session,
 	return VIRT_VIEWER_SESSION_GET_CLASS(session)->channel_open_fd(session, channel, fd);
 }
 
+void virt_viewer_session_set_auto_usbredir(VirtViewerSession *self, gboolean auto_usbredir)
+{
+	g_return_if_fail(VIRT_VIEWER_IS_SESSION(self));
+
+	if (self->priv->auto_usbredir == auto_usbredir)
+		return;
+
+	self->priv->auto_usbredir = auto_usbredir;
+	g_object_notify(G_OBJECT(self), "auto-usbredir");
+}
+
+gboolean virt_viewer_session_get_auto_usbredir(VirtViewerSession *self)
+{
+	g_return_val_if_fail(VIRT_VIEWER_IS_SESSION(self), FALSE);
+
+	return self->priv->auto_usbredir;
+}
+
 /*
  * Local variables:
  *  c-indent-level: 8
  *  c-basic-offset: 8
+ *  indent-tabs-mode: t
  *  tab-width: 8
  * End:
  */

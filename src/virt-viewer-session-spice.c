@@ -171,6 +171,10 @@ create_spice_session(VirtViewerSessionSpice *self)
 	if (manager)
 		g_signal_connect(manager, "auto-connect-failed",
 				 G_CALLBACK(usb_auto_connect_failed), self);
+
+	g_object_bind_property(self, "auto-usbredir",
+			       self->priv->gtk_session, "auto-usbredir",
+			       G_BINDING_BIDIRECTIONAL | G_BINDING_SYNC_CREATE);
 }
 
 static void

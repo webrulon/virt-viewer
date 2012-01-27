@@ -108,6 +108,9 @@ gboolean virt_viewer_session_channel_open_fd(VirtViewerSession* session,
 					     VirtViewerSessionChannel* channel, int fd);
 gboolean virt_viewer_session_open_uri(VirtViewerSession *session, gchar *uri);
 
+void virt_viewer_session_set_auto_usbredir(VirtViewerSession* session, gboolean auto_usbredir);
+gboolean virt_viewer_session_get_auto_usbredir(VirtViewerSession* session);
+
 G_END_DECLS
 
 #endif /* _VIRT_VIEWER_SESSION_H */

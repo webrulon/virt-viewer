@@ -341,7 +341,7 @@ virt_viewer_extract_connect_info(VirtViewer *self,
 		ghost = g_strdup(host);
 	}
 
-	virt_viewer_app_set_connect_info(app, host, ghost, gport, transport, unixsock, user, port);
+	virt_viewer_app_set_connect_info(app, host, ghost, gport, transport, unixsock, user, port, NULL);
 
 	retval = TRUE;
 

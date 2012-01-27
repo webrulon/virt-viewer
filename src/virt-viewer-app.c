@@ -114,6 +114,7 @@ struct _VirtViewerAppPrivate {
 	gboolean connected;
 	guint reconnect_poll; /* source id */
 	char *unixsock;
+	char *guri; /* prefered over ghost:gport */
 	char *ghost;
 	char *gport;
 	char *host; /* ssh */
@@ -137,6 +138,7 @@ enum {
 	PROP_CONTAINER,
 	PROP_SESSION,
 	PROP_GUEST_NAME,
+	PROP_GURI,
 	PROP_FULLSCREEN,
 	PROP_TITLE,
 };
@@ -704,6 +706,9 @@ virt_viewer_app_activate(VirtViewerApp *self)
 
 	if (fd >= 0) {
 		ret = virt_viewer_session_open_fd(VIRT_VIEWER_SESSION(priv->session), fd);
+       } else if (priv->guri) {
+		virt_viewer_app_trace(self, "Opening connection to display at %s\n", priv->guri);
+		ret = virt_viewer_session_open_uri(VIRT_VIEWER_SESSION(priv->session), priv->guri);
 	} else {
 		virt_viewer_app_trace(self, "Opening direct TCP connection to display at %s:%s\n",
 				      priv->ghost, priv->gport);
@@ -982,6 +987,10 @@ virt_viewer_app_get_property (GObject *object, guint property_id,
 		g_value_set_string(value, priv->guest_name);
 		break;
 
+	case PROP_GURI:
+		g_value_set_string(value, priv->guri);
+		break;
+
 	case PROP_FULLSCREEN:
 		g_value_set_boolean(value, priv->fullscreen);
 		break;
@@ -1016,6 +1025,12 @@ virt_viewer_app_set_property (GObject *object, guint property_id,
 	case PROP_GUEST_NAME:
 		g_free(priv->guest_name);
 		priv->guest_name = g_value_dup_string(value);
+		break;
+
+	case PROP_GURI:
+		g_free(priv->guri);
+		priv->guri = g_value_dup_string(value);
+		virt_viewer_app_update_pretty_address(self);
 		break;
 
 	case PROP_FULLSCREEN:
@@ -1174,6 +1189,17 @@ virt_viewer_app_class_init (VirtViewerAppClass *klass)
 							    G_PARAM_STATIC_STRINGS));
 
 	g_object_class_install_property(object_class,
+					PROP_GURI,
+					g_param_spec_string("guri",
+							    "guri",
+							    "Remote graphical URI",
+							    "",
+							    G_PARAM_READABLE |
+							    G_PARAM_WRITABLE |
+							    G_PARAM_CONSTRUCT_ONLY |
+							    G_PARAM_STATIC_STRINGS));
+
+	g_object_class_install_property(object_class,
 					PROP_FULLSCREEN,
 					g_param_spec_boolean("fullscreen",
 							     "Fullscreen",
@@ -1225,7 +1251,9 @@ virt_viewer_app_update_pretty_address(VirtViewerApp *self)
 
 	priv = self->priv;
 	g_free(priv->pretty_address);
-	if (priv->gport)
+	if (priv->guri)
+		priv->pretty_address = g_strdup(priv->guri);
+	else if (priv->gport)
 		priv->pretty_address = g_strdup_printf("%s:%s", priv->ghost, priv->gport);
 	else
 		priv->pretty_address = g_strdup_printf("%s:%s", priv->host, priv->unixsock);
@@ -1356,7 +1384,8 @@ virt_viewer_app_set_connect_info(VirtViewerApp *self,
 				 const gchar *transport,
 				 const gchar *unixsock,
 				 const gchar *user,
-				 gint port)
+				 gint port,
+				 const gchar *guri)
 {
 	g_return_if_fail(VIRT_VIEWER_IS_APP(self));
 	VirtViewerAppPrivate *priv = self->priv;
@@ -1370,6 +1399,7 @@ virt_viewer_app_set_connect_info(VirtViewerApp *self,
 	g_free(priv->transport);
 	g_free(priv->unixsock);
 	g_free(priv->user);
+	g_free(priv->guri);
 
 	priv->host = g_strdup(host);
 	priv->ghost = g_strdup(ghost);
@@ -1377,6 +1407,7 @@ virt_viewer_app_set_connect_info(VirtViewerApp *self,
 	priv->transport = g_strdup(transport);
 	priv->unixsock = g_strdup(unixsock);
 	priv->user = g_strdup(user);
+	priv->guri = g_strdup(guri);
 	priv->port = port;
 
 	virt_viewer_app_update_pretty_address(self);
@@ -1387,7 +1418,7 @@ virt_viewer_app_free_connect_info(VirtViewerApp *self)
 {
 	g_return_if_fail(VIRT_VIEWER_IS_APP(self));
 
-	virt_viewer_app_set_connect_info(self, NULL, NULL, NULL, NULL, NULL, NULL, 0);
+	virt_viewer_app_set_connect_info(self, NULL, NULL, NULL, NULL, NULL, NULL, 0, NULL);
 }
 
 VirtViewerWindow*

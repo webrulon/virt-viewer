@@ -149,13 +149,17 @@ if test "x$enable_plugin" = "xyes"; then
 fi
 AM_CONDITIONAL(ENABLE_PLUGIN, [test "x$enable_plugin" = "xyes"])
 
-AC_OUTPUT(Makefile
-          src/Makefile
-          man/Makefile
-	  po/Makefile.in
-	  plugin/Makefile
-          virt-viewer.spec
-          mingw32-virt-viewer.spec)
+AC_OUTPUT([
+    Makefile
+    data/Makefile
+    data/virt-viewer.nsis
+    man/Makefile
+    mingw32-virt-viewer.spec
+    plugin/Makefile
+    po/Makefile.in
+    src/Makefile
+    virt-viewer.spec
+])
 
 AC_MSG_NOTICE([])
 AC_MSG_NOTICE([Configuration summary])

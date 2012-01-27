@@ -2,7 +2,7 @@ NULL =
 # we are forced to use a shared library,
 # because libtool reordred .a after .la libs, and it fails to link
 noinst_LTLIBRARIES = libvirt-viewer.la
-bin_PROGRAMS = virt-viewer
+bin_PROGRAMS =
 
 builderxmldir = $(pkgdatadir)/ui
 builderxml_DATA =				\
@@ -13,6 +13,8 @@ builderxml_DATA =				\
 
 EXTRA_DIST = $(builderxml_DATA)
 
+if HAVE_LIBVIRT
+bin_PROGRAMS += virt-viewer
 virt_viewer_SOURCES =					\
 	virt-viewer-events.h virt-viewer-events.c	\
 	virt-viewer.h virt-viewer.c			\
@@ -24,6 +26,7 @@ virt_viewer_LDFLAGS = 				\
 	@GMODULE2_LIBS@				\
 	$(NULL)
 virt_viewer_CFLAGS = $(AM_CFLAGS) @LIBVIRT_CFLAGS@
+endif
 
 if HAVE_SPICE_GTK
 bin_PROGRAMS += remote-viewer

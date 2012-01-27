@@ -174,6 +174,7 @@ virt_viewer_auth_vnc_credentials(GtkWidget *vnc,
 #endif
 
 
+#ifdef HAVE_LIBVIRT
 int
 virt_viewer_auth_libvirt_credentials(virConnectCredentialPtr cred,
 				     unsigned int ncred,
@@ -228,7 +229,7 @@ virt_viewer_auth_libvirt_credentials(virConnectCredentialPtr cred,
 	DEBUG_LOG("Return %d", ret);
 	return ret;
 }
-
+#endif
 
 
 

@@ -38,7 +38,23 @@ IT_PROG_INTLTOOL([0.35.0])
 
 PKG_CHECK_MODULES(GMODULE2, gmodule-export-2.0 >= $GMODULE2_REQUIRED)
 PKG_CHECK_MODULES(LIBXML2, libxml-2.0 >= $LIBXML2_REQUIRED)
-PKG_CHECK_MODULES(LIBVIRT, libvirt >= $LIBVIRT_REQUIRED)
+
+AC_ARG_WITH([libvirt],
+    AS_HELP_STRING([--without-libvirt], [Ignore presence of libvirt and disable it]))
+
+AS_IF([test "x$with_libvirt" != "xno"],
+      [PKG_CHECK_MODULES(LIBVIRT,
+                         [libvirt],
+                         [have_libvirt=yes], [have_libvirt=no])],
+      [have_libvirt=no])
+
+AS_IF([test "x$have_libvirt" = "xyes"],
+      [AC_DEFINE([HAVE_LIBVIRT], 1, [Have libvirt?])],
+      [AS_IF([test "x$with_libvirt" = "xyes"],
+             [AC_MSG_ERROR([libvirt requested but not found])
+      ])
+])
+AM_CONDITIONAL([HAVE_LIBVIRT], [test "x$have_libvirt" = "xyes"])
 
 AC_MSG_CHECKING([which gtk+ version to compile against])
 AC_ARG_WITH([gtk],

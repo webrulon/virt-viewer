@@ -23,7 +23,11 @@
 #ifndef VIRT_VIEWER_AUTH_H
 #define VIRT_VIEWER_AUTH_H
 
+#include "config.h"
+
+#ifdef HAVE_LIBVIRT
 #include <libvirt/libvirt.h>
+#endif
 
 #include "virt-viewer-util.h"
 
@@ -36,8 +40,10 @@ int virt_viewer_auth_collect_credentials(const char *type,
 					 char **username,
 					 char **password);
 
+#ifdef HAVE_LIBVIRT
 int virt_viewer_auth_libvirt_credentials(virConnectCredentialPtr cred,
 					 unsigned int ncred,
 					 void *cbdata);
+#endif
 
 #endif

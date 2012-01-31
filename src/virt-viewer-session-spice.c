@@ -292,8 +292,7 @@ virt_viewer_session_spice_main_channel_event(SpiceChannel *channel G_GNUC_UNUSED
 							       NULL,
 							       NULL, &password);
 		if (ret < 0) {
-			g_signal_emit_by_name(session, "session-auth-refused",
-					      _("Unable to collect credentials"));
+			g_signal_emit_by_name(session, "session-cancelled");
 		} else {
 			g_object_set(self->priv->session, "password", password, NULL);
 			spice_session_connect(self->priv->session);

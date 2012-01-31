@@ -88,6 +88,7 @@ struct _VirtViewerSessionClass {
 
 	void (*session_cut_text)(VirtViewerSession *session, const char *str);
 	void (*session_bell)(VirtViewerSession *session);
+	void (*session_cancelled)(VirtViewerSession *session);
 };
 
 GType virt_viewer_session_get_type(void);

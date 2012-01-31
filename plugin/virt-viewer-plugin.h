@@ -39,7 +39,7 @@
 #include <npapi.h>
 #include <gtk/gtk.h>
 #include <X11/Xlib.h>
-#include "viewer.h"
+#include "virt-viewer-app.h"
 
 #define PLUGIN_NAME         "Virt-viewer browser plugin"
 #define MIME_TYPES_HANDLED  "application/x-virt-viewer:virt-viewer:Virt viewer"
@@ -77,7 +77,7 @@ debug (const char *msg, ...)
   fflush (stderr);
 }
 #else
-static void debug (const char *msg G_GNUC_UNUSED, ...) { }
+#define debug(msg...)
 #endif
 
 #endif /* VIRT_VIEWER_PLUGIN_H */

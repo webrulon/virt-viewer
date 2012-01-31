@@ -21,6 +21,9 @@
  *
  * Author: Daniel P. Berrange <berrange@redhat.com>
  */
+
+#include <config.h>
+
 #include "virt-viewer-notebook.h"
 #include "virt-viewer-util.h"
 

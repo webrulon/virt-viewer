@@ -28,6 +28,7 @@
  *      sliding smoothly, at constant speed, over another one.
  */
 
+#include <config.h>
 
 #include "drawer.h"
 

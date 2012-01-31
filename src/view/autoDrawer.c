@@ -29,6 +29,7 @@
  *    moused-over and auto-closes when the mouse leaves.
  */
 
+#include <config.h>
 
 #include "autoDrawer.h"
 

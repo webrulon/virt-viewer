@@ -22,6 +22,8 @@
  * Author: Daniel P. Berrange <berrange@redhat.com>
  */
 
+#include <config.h>
+
 #include <spice-audio.h>
 #include <glib/gi18n.h>
 

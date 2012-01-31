@@ -22,6 +22,8 @@
  * Author: Daniel P. Berrange <berrange@redhat.com>
  */
 
+#include <config.h>
+
 #include "virt-viewer-auth.h"
 #include "virt-viewer-display-vnc.h"
 

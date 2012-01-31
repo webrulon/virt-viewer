@@ -72,6 +72,7 @@
  *  --hpreg
  */
 
+#include <config.h>
 
 #include "ovBox.h"
 

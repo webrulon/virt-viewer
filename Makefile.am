@@ -5,14 +5,14 @@ ACLOCAL_AMFLAGS = -I m4
 SUBDIRS = src man plugin po data
 
 EXTRA_DIST =					\
-	@PACKAGE@.spec				\
+	$(PACKAGE).spec				\
 	intltool-extract.in			\
 	intltool-merge.in			\
 	intltool-update.in			\
 	$(NULL)
 
 DISTCLEAN_FILES =				\
-	@PACKAGE@.spec				\
+	$(PACKAGE).spec				\
 	intltool-extract			\
 	intltool-merge				\
 	intltool-update				\

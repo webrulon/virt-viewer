@@ -27,6 +27,7 @@
 #include "virt-viewer-display-vnc.h"
 
 #include <glib/gi18n.h>
+#include <libxml/uri.h>
 
 G_DEFINE_TYPE(VirtViewerSessionVnc, virt_viewer_session_vnc, VIRT_VIEWER_TYPE_SESSION)
 
@@ -40,6 +41,7 @@ struct _VirtViewerSessionVncPrivate {
 static void virt_viewer_session_vnc_close(VirtViewerSession* session);
 static gboolean virt_viewer_session_vnc_open_fd(VirtViewerSession* session, int fd);
 static gboolean virt_viewer_session_vnc_open_host(VirtViewerSession* session, char *host, char *port);
+static gboolean virt_viewer_session_vnc_open_uri(VirtViewerSession* session, char *uri);
 static gboolean virt_viewer_session_vnc_channel_open_fd(VirtViewerSession* session,
 							VirtViewerSessionChannel* channel, int fd);
 
@@ -69,6 +71,7 @@ virt_viewer_session_vnc_class_init(VirtViewerSessionVncClass *klass)
 	dclass->close = virt_viewer_session_vnc_close;
 	dclass->open_fd = virt_viewer_session_vnc_open_fd;
 	dclass->open_host = virt_viewer_session_vnc_open_host;
+	dclass->open_uri = virt_viewer_session_vnc_open_uri;
 	dclass->channel_open_fd = virt_viewer_session_vnc_channel_open_fd;
 
 	g_type_class_add_private(oclass, sizeof(VirtViewerSessionVncPrivate));
@@ -178,6 +181,29 @@ virt_viewer_session_vnc_open_host(VirtViewerSession* session,
 	g_return_val_if_fail(self->priv->vnc != NULL, FALSE);
 
 	return vnc_display_open_host(self->priv->vnc, host, port);
+}
+
+static gboolean
+virt_viewer_session_vnc_open_uri(VirtViewerSession* session,
+				 char *uristr)
+{
+	VirtViewerSessionVnc *self = VIRT_VIEWER_SESSION_VNC(session);
+	xmlURIPtr uri = NULL;
+	gchar *portstr;
+	gboolean ret;
+
+	g_return_val_if_fail(self != NULL, FALSE);
+	g_return_val_if_fail(self->priv->vnc != NULL, FALSE);
+
+	if (!(uri = xmlParseURI(uristr)))
+		return FALSE;
+
+	portstr = g_strdup_printf("%d", uri->port);
+
+	ret = vnc_display_open_host(self->priv->vnc, uri->server, portstr);
+	g_free(portstr);
+	xmlFreeURI(uri);
+	return ret;
 }
 
 static void

@@ -111,4 +111,3 @@ permitted by law.
 C<virsh(1)>, C<virt-manager(1)>, the project website C<http://virt-manager.org>
 
 =cut
-

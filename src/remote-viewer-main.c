@@ -56,7 +56,9 @@ main(int argc, char **argv)
 	gboolean direct = FALSE;
 	gboolean fullscreen = FALSE;
 	RemoteViewer *viewer = NULL;
+#if HAVE_SPICE_GTK
 	gboolean controller = FALSE;
+#endif
 	VirtViewerApp *app;
 	const char *help_msg = N_("Run '" PACKAGE " --help' to see a full list of available command line options");
 	const GOptionEntry options [] = {
@@ -72,8 +74,10 @@ main(int argc, char **argv)
 		  N_("Display debugging information"), NULL },
 		{ "full-screen", 'f', 0, G_OPTION_ARG_NONE, &fullscreen,
 		  N_("Open in full screen mode"), NULL },
+#if HAVE_SPICE_GTK
 		{ "spice-controller", '\0', 0, G_OPTION_ARG_NONE, &controller,
 		  N_("Open connection using Spice controller communication"), NULL },
+#endif
 		{ G_OPTION_REMAINING, '\0', 0, G_OPTION_ARG_STRING_ARRAY, &args,
 		  NULL, "URI" },
 		{ NULL, 0, 0, G_OPTION_ARG_NONE, NULL, NULL, NULL }
@@ -105,8 +109,11 @@ main(int argc, char **argv)
 
 	g_option_context_free(context);
 
-	if ((!args || (g_strv_length(args) != 1)) &&
-	    !controller) {
+	if ((!args || (g_strv_length(args) != 1))
+#if HAVE_SPICE_GTK
+	    && !controller
+#endif
+	    ) {
 		g_printerr(_("\nUsage: %s [OPTIONS] URI\n\n%s\n\n"), argv[0], help_msg);
 		goto cleanup;
 	}
@@ -118,14 +125,17 @@ main(int argc, char **argv)
 
 	virt_viewer_app_set_debug(debug);
 
+#if HAVE_SPICE_GTK
 	if (controller) {
 		viewer = remote_viewer_new_with_controller(verbose);
 		g_object_set(viewer, "guest-name", "defined by Spice controller", NULL);
 	} else {
+#endif
 		viewer = remote_viewer_new(args[0], verbose);
 		g_object_set(viewer, "guest-name", args[0], NULL);
-
+#if HAVE_SPICE_GTK
 	}
+#endif
 	if (viewer == NULL)
 		goto cleanup;
 

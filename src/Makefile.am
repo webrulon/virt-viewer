@@ -28,7 +28,6 @@ virt_viewer_LDFLAGS = 				\
 virt_viewer_CFLAGS = $(AM_CFLAGS) @LIBVIRT_CFLAGS@
 endif
 
-if HAVE_SPICE_GTK
 bin_PROGRAMS += remote-viewer
 remote_viewer_SOURCES =				\
 	remote-viewer.h remote-viewer.c		\
@@ -38,7 +37,6 @@ remote_viewer_LDADD = libvirt-viewer.la
 remote_viewer_LDFLAGS = 			\
 	@GMODULE2_LIBS@				\
 	$(NULL)
-endif
 
 libvirt_viewer_la_SOURCES =				\
 	virt-viewer-util.h virt-viewer-util.c		\

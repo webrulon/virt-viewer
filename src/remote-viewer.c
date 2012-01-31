@@ -27,14 +27,20 @@
 #include <glib/gprintf.h>
 #include <glib/gi18n.h>
 
+#ifdef HAVE_SPICE_GTK
 #include <spice-controller/spice-controller.h>
+#endif
 
+#ifdef HAVE_SPICE_GTK
 #include "virt-viewer-session-spice.h"
+#endif
 #include "virt-viewer-app.h"
 #include "remote-viewer.h"
 
 struct _RemoteViewerPrivate {
+#ifdef HAVE_SPICE_GTK
 	SpiceCtrlController *controller;
+#endif
 	GtkWidget *controller_menu;
 };
 
@@ -42,15 +48,20 @@ G_DEFINE_TYPE (RemoteViewer, remote_viewer, VIRT_VIEWER_TYPE_APP)
 #define GET_PRIVATE(o)							\
         (G_TYPE_INSTANCE_GET_PRIVATE ((o), REMOTE_VIEWER_TYPE, RemoteViewerPrivate))
 
+#if HAVE_SPICE_GTK
 enum {
 	PROP_0,
 	PROP_CONTROLLER,
 };
+#endif
 
 static gboolean remote_viewer_start(VirtViewerApp *self);
+#if HAVE_SPICE_GTK
 static int remote_viewer_activate(VirtViewerApp *self);
+#endif
 static void remote_viewer_window_added(VirtViewerApp *self, VirtViewerWindow *win);
 
+#if HAVE_SPICE_GTK
 static void
 remote_viewer_get_property (GObject *object, guint property_id,
 			   GValue *value, GParamSpec *pspec)
@@ -97,23 +108,32 @@ remote_viewer_dispose (GObject *object)
 
 	G_OBJECT_CLASS(remote_viewer_parent_class)->dispose (object);
 }
+#endif
+
 
 static void
 remote_viewer_class_init (RemoteViewerClass *klass)
 {
+#if HAVE_SPICE_GTK
 	GObjectClass *object_class = G_OBJECT_CLASS (klass);
+#endif
 	VirtViewerAppClass *app_class = VIRT_VIEWER_APP_CLASS (klass);
 
 	g_type_class_add_private (klass, sizeof (RemoteViewerPrivate));
 
+#if HAVE_SPICE_GTK
 	object_class->get_property = remote_viewer_get_property;
 	object_class->set_property = remote_viewer_set_property;
 	object_class->dispose = remote_viewer_dispose;
+#endif
 
 	app_class->start = remote_viewer_start;
+#if HAVE_SPICE_GTK
 	app_class->activate = remote_viewer_activate;
+#endif
 	app_class->window_added = remote_viewer_window_added;
 
+#if HAVE_SPICE_GTK
 	g_object_class_install_property(object_class,
 					PROP_CONTROLLER,
 					g_param_spec_object("controller",
@@ -123,6 +143,7 @@ remote_viewer_class_init (RemoteViewerClass *klass)
 							    G_PARAM_READWRITE |
 							    G_PARAM_CONSTRUCT_ONLY |
 							    G_PARAM_STATIC_STRINGS));
+#endif
 }
 
 static void
@@ -140,6 +161,7 @@ remote_viewer_new(const gchar *uri, gboolean verbose)
 			    NULL);
 }
 
+#if HAVE_SPICE_GTK
 RemoteViewer *
 remote_viewer_new_with_controller(gboolean verbose)
 {
@@ -380,6 +402,7 @@ spice_ctrl_listen_async_cb(GObject *object,
 	}
 }
 
+
 static int
 remote_viewer_activate(VirtViewerApp *app)
 {
@@ -397,6 +420,7 @@ remote_viewer_activate(VirtViewerApp *app)
 
 	return ret;
 }
+#endif
 
 static void
 remote_viewer_window_added(VirtViewerApp *self G_GNUC_UNUSED,
@@ -414,12 +438,15 @@ remote_viewer_start(VirtViewerApp *app)
 {
 	g_return_val_if_fail(REMOTE_VIEWER_IS(app), FALSE);
 
+#if HAVE_SPICE_GTK
 	RemoteViewer *self = REMOTE_VIEWER(app);
 	RemoteViewerPrivate *priv = self->priv;
+#endif
 	gboolean ret = FALSE;
 	gchar *guri = NULL;
 	gchar *type = NULL;
 
+#if HAVE_SPICE_GTK
 	if (priv->controller) {
 		if (virt_viewer_app_create_session(app, "spice") < 0) {
 			virt_viewer_app_simple_message_dialog(app, _("Couldn't create a Spice session"));
@@ -434,6 +461,7 @@ remote_viewer_start(VirtViewerApp *app)
 		spice_ctrl_controller_listen(priv->controller, NULL, spice_ctrl_listen_async_cb, self);
 		virt_viewer_app_show_status(VIRT_VIEWER_APP(self), _("Setting up Spice session..."));
 	} else {
+#endif
 		g_object_get(app, "guri", &guri, NULL);
 		g_return_val_if_fail(guri != NULL, FALSE);
 
@@ -454,8 +482,9 @@ remote_viewer_start(VirtViewerApp *app)
 			virt_viewer_app_simple_message_dialog(app, _("Failed to initiate connection"));
 			goto cleanup;
 		}
-
+#if HAVE_SPICE_GTK
 	}
+#endif
 
 	ret = VIRT_VIEWER_APP_CLASS(remote_viewer_parent_class)->start(app);
 

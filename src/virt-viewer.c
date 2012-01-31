@@ -275,14 +275,10 @@ virt_viewer_extract_xpath_string(const gchar *xmldesc,
     obj = NULL;
 
  error:
-    if (obj)
-        xmlXPathFreeObject(obj);
-    if (ctxt)
-        xmlXPathFreeContext(ctxt);
-    if (xml)
-        xmlFreeDoc(xml);
-    if (pctxt)
-        xmlFreeParserCtxt(pctxt);
+    xmlXPathFreeObject(obj);
+    xmlXPathFreeContext(ctxt);
+    xmlFreeDoc(xml);
+    xmlFreeParserCtxt(pctxt);
     return port;
 }
 

@@ -235,8 +235,8 @@ NPP_Destroy(NPP instance, NPSavedData** save G_GNUC_UNUSED)
   if (This != NULL)
     {
       (void) VirtViewerDestroyWindow (instance);
-      if (This->uri) free (This->uri);
-      if (This->name) free (This->name);
+      free (This->uri);
+      free (This->name);
       NPN_MemFree(instance->pdata);
       instance->pdata = NULL;
     }

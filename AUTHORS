@@ -3,22 +3,64 @@
 
 The Virt Viewer application is written by
 
-    Daniel P. Berrange <berrange-at-redhat-dot-com>
+    Daniel P. Berrange <berrange@redhat.com>
 
 With additional patches from:
 
-    Chris Lalancette <clalance-at-redhat-dot-com>
-    Atsushi SAKAI <sakaia-at-jp-dot-fujitsu-dot-com>
-    Richard W.M. Jones <rjones-at-redhat-dot-com>
-    Guido G\374nther <agx-at-sigxcpu-dot-org>
-    Hiroyuki Kaguchi <fj7025cf-at-aa-dot-jp-dot-fujitsu-dot-com>
+    Atsushi SAKAI <sakaia@jp.fujitsu.com>
+    Chris Lalancette <clalance@redhat.com>
+    Guannan Ren <gren@redhat.com>
+    Guido G\374nther <agx@sigxcpu.org>
+    Hans de Goede <hdegoede@redhat.com>
+    Hiroyuki Kaguchi <fj7025cf@aa.jp.fujitsu.com>
+    Jiri Denemark <Jiri.Denemark@gmail.com>
+    Marc-André Lureau <marcandre.lureau@redhat.com>
+    Pavel Raiskup <praiskup@redhat.com>
+    Richard W.M. Jones <rjones@redhat.com>
     Ronnie Sahlberg <ronniesahlberg@gmail.com>
-    Marc-André Lureau <marcandre.lureau-at-redhat-dot-com>
+    Yann E. MORIN <yann.morin.1998@anciens.enib.fr>
 
    ...send patches to get your name here...
 
-The Translation team are listed in the .po files for their
-languages under the po/ directory.
+Translations have been provided by
 
+    <amitakhya@fedoraproject.org>
+    <andreyjktl@fedoraproject.org>
+    <anipeter@fedoraproject.org>
+    <ankit@fedoraproject.org>
+    <aron@fedoraproject.org>
+    <bozzo@fedoraproject.org>
+    <elsupergomez@fedoraproject.org>
+    <enshahar@fedoraproject.org>
+    <fdaluisio@fedoraproject.org>
+    <gcintra@fedoraproject.org>
+    <giallu@fedoraproject.org>
+    <hedda@fedoraproject.org>
+    <htaira@fedoraproject.org>
+    <ifelix@fedoraproject.org>
+    <jassy@fedoraproject.org>
+    <khasida@fedoraproject.org>
+    <kkrothap@fedoraproject.org>
+    <leahliu@fedoraproject.org>
+    <mgiri@fedoraproject.org>
+    <mospina@fedoraproject.org>
+    <mvdz@fedoraproject.org>
+    <rajesh@fedoraproject.org>
+    <raven@fedoraproject.org>
+    <renault@fedoraproject.org>
+    <runab@fedoraproject.org>
+    <samfreemanz@fedoraproject.org>
+    <sandeeps@fedoraproject.org>
+    <shanky@fedoraproject.org>
+    <snicore@fedoraproject.org>
+    <swkothar@fedoraproject.org>
+    <tchuang@fedoraproject.org>
+    <tombo@fedoraproject.org>
+    <tomspur@fedoraproject.org>
+    <warrink@fedoraproject.org>
+    <webappz@fedoraproject.org>
+    <ypoyarko@fedoraproject.org>
+    <yurchor@fedoraproject.org>
+    <zoltanh721@fedoraproject.org>
 
 -- End

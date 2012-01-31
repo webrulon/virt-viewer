@@ -1,7 +1,7 @@
 /*
  * events.h: event loop integration
  *
- * Copyright (C) 2008-2009 Daniel P. Berrange
+ * Copyright (C) 2008-2012 Daniel P. Berrange
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public

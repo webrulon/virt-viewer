@@ -101,7 +101,7 @@ Report bugs to the mailing list C<http://www.redhat.com/mailman/listinfo/et-mgmt
 
 =head1 COPYRIGHT
 
-Copyright (C) 2007-2008 Red Hat, Inc, and various contributors.
+Copyright (C) 2007-2008 Red Hat, Inc., and various contributors.
 This is free software. You may redistribute copies of it under the terms of the GNU General
 Public License C<http://www.gnu.org/licenses/gpl.html>. There is NO WARRANTY, to the extent
 permitted by law.

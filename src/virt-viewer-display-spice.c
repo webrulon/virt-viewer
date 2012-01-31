@@ -1,8 +1,8 @@
 /*
  * Virt Viewer: A virtual machine console viewer
  *
- * Copyright (C) 2007-2009 Red Hat,
- * Copyright (C) 2009 Daniel P. Berrange
+ * Copyright (C) 2007-2009 Red Hat, Inc.
+ * Copyright (C) 2009-2012 Daniel P. Berrange
  * Copyright (C) 2010 Marc-André Lureau
  *
  * This program is free software; you can redistribute it and/or modify

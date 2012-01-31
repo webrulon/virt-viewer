@@ -2,7 +2,7 @@
   VIRT-VIEWER-PLUGIN
 
   By Richard W.M. Jones <rjones@redhat.com>
-  Copyright (C) 2008 Red Hat Inc.
+  Copyright (C) 2008-2012 Red Hat, Inc.
 
   Largely based on DiamondX (http://multimedia.cx/diamondx/), which itself
   is based on Mozilla sources.

@@ -9,8 +9,8 @@
     <property name="window_position">center-on-parent</property>
     <property name="type_hint">dialog</property>
     <property name="program_name">Virtual Machine Viewer</property>
-    <property name="copyright" translatable="yes">Copyright 2007-2011 Daniel P. Berrange
-Copyright 2007-2011 Red Hat, Inc.</property>
+    <property name="copyright" translatable="yes">Copyright (C) 2007-2012 Daniel P. Berrange
+Copyright (C) 2007-2012 Red Hat, Inc.</property>
     <property name="comments" translatable="yes">A remote desktop client built with GTK-VNC, SPICE-GTK and libvirt</property>
     <property name="website">http://virt-manager.org/</property>
     <property name="website_label" translatable="yes">virt-manager.org</property>

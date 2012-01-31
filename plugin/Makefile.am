@@ -12,20 +12,18 @@ virt_viewer_plugin_la_SOURCES = \
 	npshell.c npunix.c
 virt_viewer_plugin_la_LIBADD = \
 	@FIREFOX_PLUGIN_LIBS@ \
-	@GTKVNC_LIBS@ \
-	@GTK2_LIBS@ \
+	@GTK_VNC_LIBS@ \
+	@GTK_LIBS@ \
 	@LIBXML2_LIBS@ \
-	@LIBGLADE2_LIBS@ \
 	@LIBVIRT_LIBS@
 virt_viewer_plugin_la_LDFLAGS = \
 	-module -avoid-version
 virt_viewer_plugin_la_CFLAGS = \
 	-DPLUGIN=1 -DENABLE_DEBUG=1 \
 	@FIREFOX_PLUGIN_CFLAGS@ \
-	@GTKVNC_CFLAGS@ \
-	@GTK2_CFLAGS@ \
+	@GTK_VNC_CFLAGS@ \
+	@GTK_CFLAGS@ \
 	@LIBXML2_CFLAGS@ \
-	@LIBGLADE2_CFLAGS@ \
 	@LIBVIRT_CFLAGS@ \
 	-DGLADE_DIR="\"$(gladedir)\"" \
 	-I$(top_srcdir)/src

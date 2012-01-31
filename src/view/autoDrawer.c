@@ -653,7 +653,7 @@ ViewAutoDrawerClassInit(gpointer klass) // IN
 
    ovBoxClass->set_over = ViewAutoDrawerSetOver;
 
-   g_type_class_add_private(objectClass, sizeof(ViewAutoDrawerPrivate));
+   g_type_class_add_private(klass, sizeof(ViewAutoDrawerPrivate));
 }
 
 

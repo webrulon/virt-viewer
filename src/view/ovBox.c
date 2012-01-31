@@ -706,10 +706,8 @@ ViewOvBoxSetOver(ViewOvBox *that,   // IN
 static void
 ViewOvBoxClassInit(ViewOvBoxClass *klass) // IN
 {
-   GObjectClass *objectClass;
    GtkWidgetClass *widgetClass;
 
-   objectClass = G_OBJECT_CLASS(klass);
    widgetClass = GTK_WIDGET_CLASS(klass);
 
    widgetClass->map = ViewOvBoxMap;
@@ -729,7 +727,7 @@ ViewOvBoxClassInit(ViewOvBoxClass *klass) // IN
 
    parentClass = g_type_class_peek_parent(klass);
 
-   g_type_class_add_private(objectClass, sizeof(ViewOvBoxPrivate));
+   g_type_class_add_private(klass, sizeof(ViewOvBoxPrivate));
 }
 
 

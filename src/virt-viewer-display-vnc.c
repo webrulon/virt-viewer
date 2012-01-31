@@ -60,7 +60,7 @@ virt_viewer_display_vnc_class_init(VirtViewerDisplayVncClass *klass)
 	dclass->send_keys = virt_viewer_display_vnc_send_keys;
 	dclass->get_pixbuf = virt_viewer_display_vnc_get_pixbuf;
 
-	g_type_class_add_private(oclass, sizeof(VirtViewerDisplayVncPrivate));
+	g_type_class_add_private(klass, sizeof(VirtViewerDisplayVncPrivate));
 }
 
 static void

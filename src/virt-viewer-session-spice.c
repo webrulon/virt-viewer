@@ -119,7 +119,7 @@ virt_viewer_session_spice_class_init(VirtViewerSessionSpiceClass *klass)
 	dclass->open_uri = virt_viewer_session_spice_open_uri;
 	dclass->channel_open_fd = virt_viewer_session_spice_channel_open_fd;
 
-	g_type_class_add_private(oclass, sizeof(VirtViewerSessionSpicePrivate));
+	g_type_class_add_private(klass, sizeof(VirtViewerSessionSpicePrivate));
 
 	g_object_class_install_property(oclass,
 					PROP_SPICE_SESSION,

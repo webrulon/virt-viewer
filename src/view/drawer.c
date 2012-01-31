@@ -139,7 +139,7 @@ ViewDrawerClassInit(gpointer klass) // IN
 
    objectClass->finalize = ViewDrawerFinalize;
 
-   g_type_class_add_private(objectClass, sizeof(ViewDrawerPrivate));
+   g_type_class_add_private(klass, sizeof(ViewDrawerPrivate));
 }
 
 

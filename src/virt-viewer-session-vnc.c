@@ -74,7 +74,7 @@ virt_viewer_session_vnc_class_init(VirtViewerSessionVncClass *klass)
 	dclass->open_uri = virt_viewer_session_vnc_open_uri;
 	dclass->channel_open_fd = virt_viewer_session_vnc_channel_open_fd;
 
-	g_type_class_add_private(oclass, sizeof(VirtViewerSessionVncPrivate));
+	g_type_class_add_private(klass, sizeof(VirtViewerSessionVncPrivate));
 }
 
 static void

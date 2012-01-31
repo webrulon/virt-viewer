@@ -66,7 +66,7 @@ virt_viewer_display_spice_class_init(VirtViewerDisplaySpiceClass *klass)
 	dclass->send_keys = virt_viewer_display_spice_send_keys;
 	dclass->get_pixbuf = virt_viewer_display_spice_get_pixbuf;
 
-	g_type_class_add_private(oclass, sizeof(VirtViewerDisplaySpicePrivate));
+	g_type_class_add_private(klass, sizeof(VirtViewerDisplaySpicePrivate));
 }
 
 static void

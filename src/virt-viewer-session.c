@@ -230,7 +230,7 @@ virt_viewer_session_class_init(VirtViewerSessionClass *class)
 		     G_TYPE_NONE,
 		     0);
 
-	g_type_class_add_private(object_class, sizeof(VirtViewerSessionPrivate));
+	g_type_class_add_private(class, sizeof(VirtViewerSessionPrivate));
 }
 
 static void

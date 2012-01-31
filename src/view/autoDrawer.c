@@ -257,7 +257,7 @@ ViewAutoDrawerUpdate(ViewAutoDrawer *that, // IN
       }
 #else
       if (window->group && window->group->grabs) {
-	grabbed = GTK_WIDGET(window->group->grabs->data);
+        grabbed = GTK_WIDGET(window->group->grabs->data);
       }
 #endif
       if (!grabbed) {
@@ -440,7 +440,7 @@ ViewAutoDrawerOnSetFocus(GtkWindow *window G_GNUC_UNUSED,    // IN
 
 static void
 ViewAutoDrawerOnHierarchyChanged(ViewAutoDrawer *that,   // IN
-				 GtkWidget *oldToplevel) // IN
+                                 GtkWidget *oldToplevel) // IN
 {
    GtkWidget *newToplevel = gtk_widget_get_toplevel(GTK_WIDGET(that));
 
@@ -689,7 +689,7 @@ ViewAutoDrawer_GetType(void)
          sizeof (ViewAutoDrawer),
          0, /* n_preallocs */
          (GInstanceInitFunc)ViewAutoDrawerInit,
-	 NULL,
+         NULL,
       };
 
       type = g_type_register_static(VIEW_TYPE_DRAWER, "ViewAutoDrawer", &info, 0);

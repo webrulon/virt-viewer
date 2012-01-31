@@ -34,42 +34,42 @@
 
 GtkBuilder *virt_viewer_util_load_ui(const char *name)
 {
-	struct stat sb;
-	GtkBuilder *builder;
-	GError *error = NULL;
+    struct stat sb;
+    GtkBuilder *builder;
+    GError *error = NULL;
 
-	builder = gtk_builder_new();
-	if (stat(name, &sb) >= 0) {
-		gtk_builder_add_from_file(builder, name, &error);
-	} else {
-                const gchar * const * dirs = g_get_system_data_dirs();
-                g_return_val_if_fail(dirs != NULL, NULL);
+    builder = gtk_builder_new();
+    if (stat(name, &sb) >= 0) {
+        gtk_builder_add_from_file(builder, name, &error);
+    } else {
+        const gchar * const * dirs = g_get_system_data_dirs();
+        g_return_val_if_fail(dirs != NULL, NULL);
 
-                while (dirs[0] != NULL) {
-                        gchar *path = g_build_filename(dirs[0], PACKAGE, "ui", name, NULL);
-                        if (gtk_builder_add_from_file(builder, path, NULL) != 0) {
-                                g_free(path);
-                                break;
-                        }
-                        g_free(path);
-                        dirs++;
-                }
-                if (dirs[0] == NULL)
-                        goto failed;
-	}
-
-	if (error) {
-		g_error("Cannot load UI description %s: %s", name,
-			error->message);
-                g_clear_error(&error);
-                goto failed;
+        while (dirs[0] != NULL) {
+            gchar *path = g_build_filename(dirs[0], PACKAGE, "ui", name, NULL);
+            if (gtk_builder_add_from_file(builder, path, NULL) != 0) {
+                g_free(path);
+                break;
+            }
+            g_free(path);
+            dirs++;
         }
+        if (dirs[0] == NULL)
+            goto failed;
+    }
 
-	return builder;
-failed:
-        g_error("failed to find UI description file");
-        g_object_unref(builder);
-        return NULL;
+    if (error) {
+        g_error("Cannot load UI description %s: %s", name,
+                error->message);
+        g_clear_error(&error);
+        goto failed;
+    }
+
+    return builder;
+ failed:
+    g_error("failed to find UI description file");
+    g_object_unref(builder);
+    return NULL;
 }
 
 int
@@ -80,57 +80,57 @@ virt_viewer_util_extract_host(const char *uristr,
                               char **user,
                               int *port)
 {
-	xmlURIPtr uri;
-	char *offset;
+    xmlURIPtr uri;
+    char *offset;
 
-	if (uristr == NULL ||
-	    !g_ascii_strcasecmp(uristr, "xen"))
-		uristr = "xen:///";
+    if (uristr == NULL ||
+        !g_ascii_strcasecmp(uristr, "xen"))
+        uristr = "xen:///";
 
-	uri = xmlParseURI(uristr);
-        g_return_val_if_fail(uri != NULL, 1);
+    uri = xmlParseURI(uristr);
+    g_return_val_if_fail(uri != NULL, 1);
 
-        if (host) {
-                if (!uri || !uri->server)
-                        *host = g_strdup("localhost");
-                else
-                        *host = g_strdup(uri->server);
-        }
+    if (host) {
+        if (!uri || !uri->server)
+            *host = g_strdup("localhost");
+        else
+            *host = g_strdup(uri->server);
+    }
 
-        if (user) {
-                if (uri->user)
-                        *user = g_strdup(uri->user);
-                else
-                        *user = NULL;
-        }
+    if (user) {
+        if (uri->user)
+            *user = g_strdup(uri->user);
+        else
+            *user = NULL;
+    }
 
-	if (port)
-		*port = uri->port;
+    if (port)
+        *port = uri->port;
 
-	offset = strchr(uri->scheme, '+');
+    offset = strchr(uri->scheme, '+');
 
-        if (transport) {
-                if (offset)
-                        *transport = g_strdup(offset+1);
-                else
-                        *transport = NULL;
-        }
+    if (transport) {
+        if (offset)
+            *transport = g_strdup(offset+1);
+        else
+            *transport = NULL;
+    }
 
-	if (scheme) {
-		if (offset)
-			*scheme = g_strndup(uri->scheme, offset - uri->scheme);
-		else
-			*scheme = g_strdup(uri->scheme);
-	}
+    if (scheme) {
+        if (offset)
+            *scheme = g_strndup(uri->scheme, offset - uri->scheme);
+        else
+            *scheme = g_strdup(uri->scheme);
+    }
 
-	xmlFreeURI(uri);
-	return 0;
+    xmlFreeURI(uri);
+    return 0;
 }
 
 /*
  * Local variables:
- *  c-indent-level: 8
- *  c-basic-offset: 8
- *  tab-width: 8
+ *  c-indent-level: 4
+ *  c-basic-offset: 4
+ *  indent-tabs-mode: nil
  * End:
  */

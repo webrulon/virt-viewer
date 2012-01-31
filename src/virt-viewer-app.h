@@ -39,23 +39,23 @@ G_BEGIN_DECLS
 typedef struct _VirtViewerAppPrivate VirtViewerAppPrivate;
 
 typedef struct {
-        GObject parent;
-        VirtViewerAppPrivate *priv;
+    GObject parent;
+    VirtViewerAppPrivate *priv;
 } VirtViewerApp;
 
 typedef struct {
-        GObjectClass parent_class;
+    GObjectClass parent_class;
 
-        /* signals */
-       void (*window_added) (VirtViewerApp *self, VirtViewerWindow *window);
-       void (*window_removed) (VirtViewerApp *self, VirtViewerWindow *window);
+    /* signals */
+    void (*window_added) (VirtViewerApp *self, VirtViewerWindow *window);
+    void (*window_removed) (VirtViewerApp *self, VirtViewerWindow *window);
 
-        /*< private >*/
-        gboolean (*start) (VirtViewerApp *self);
-        int (*initial_connect) (VirtViewerApp *self);
-        int (*activate) (VirtViewerApp *self);
-        void (*deactivated) (VirtViewerApp *self);
-        gboolean (*open_connection)(VirtViewerApp *self, int *fd);
+    /*< private >*/
+    gboolean (*start) (VirtViewerApp *self);
+    int (*initial_connect) (VirtViewerApp *self);
+    int (*activate) (VirtViewerApp *self);
+    void (*deactivated) (VirtViewerApp *self);
+    gboolean (*open_connection)(VirtViewerApp *self, int *fd);
 } VirtViewerAppClass;
 
 GType virt_viewer_app_get_type (void);
@@ -92,8 +92,15 @@ void virt_viewer_app_show_display(VirtViewerApp *self);
 GHashTable* virt_viewer_app_get_windows(VirtViewerApp *self);
 
 void virt_viewer_app_usb_device_selection(VirtViewerApp   *self,
-					  GtkWindow       *parent);
+                                          GtkWindow       *parent);
 
 G_END_DECLS
 
 #endif /* VIRT_VIEWER_APP_H */
+/*
+ * Local variables:
+ *  c-indent-level: 4
+ *  c-basic-offset: 4
+ *  indent-tabs-mode: nil
+ * End:
+ */

@@ -46,8 +46,8 @@
  * This file defines a "shell" plugin that plugin developers can use
  * as the basis for a real plugin.  This shell just provides empty
  * implementations of all functions that the plugin can implement
- * that will be called by Netscape (the NPP_xxx methods defined in 
- * npapi.h). 
+ * that will be called by Netscape (the NPP_xxx methods defined in
+ * npapi.h).
  *
  * dp Suresh <dp@netscape.com>
  * updated 5/1998 <pollmann@netscape.com>
@@ -59,11 +59,11 @@
 /*
 The contents of this file are subject to the Mozilla Public License
 
-Version 1.1 (the "License"); you may not use this file except in compliance 
+Version 1.1 (the "License"); you may not use this file except in compliance
 with the License. You may obtain a copy of the License at http://www.mozilla.org/MPL/
 
-Software distributed under the License is distributed on an "AS IS" basis, 
-WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License for 
+Software distributed under the License is distributed on an "AS IS" basis,
+WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License for
 the specific language governing rights and limitations under the License.
 
 The Original Code is stub code that defines the binary interface to a Mozilla
@@ -147,7 +147,7 @@ NPP_Shutdown(void)
   debug ("NPP_Shutdown");
 }
 
-NPError 
+NPError
 NPP_New(NPMIMEType pluginType G_GNUC_UNUSED,
         NPP instance,
         uint16 mode,
@@ -220,7 +220,7 @@ NPP_New(NPMIMEType pluginType G_GNUC_UNUSED,
   return NPERR_NO_ERROR;
 }
 
-NPError 
+NPError
 NPP_Destroy(NPP instance, NPSavedData** save G_GNUC_UNUSED)
 {
   PluginInstance* This;
@@ -245,7 +245,7 @@ NPP_Destroy(NPP instance, NPSavedData** save G_GNUC_UNUSED)
 }
 
 
-NPError 
+NPError
 NPP_SetWindow(NPP instance, NPWindow* window)
 {
   debug ("NPP_SetWindow");
@@ -253,7 +253,7 @@ NPP_SetWindow(NPP instance, NPWindow* window)
   return VirtViewerXSetWindow(instance, window);
 }
 
-int32 
+int32
 NPP_WriteReady(NPP instance, NPStream *stream)
 {
   /*printf("NPP_WriteReady()\n");*/
@@ -267,7 +267,7 @@ NPP_WriteReady(NPP instance, NPStream *stream)
   return -1L;   /* don't accept any bytes in NPP_Write() */
 }
 
-int32 
+int32
 NPP_Write(NPP instance, NPStream *stream,
           int32 offset G_GNUC_UNUSED, int32 len G_GNUC_UNUSED,
           void *buffer G_GNUC_UNUSED)
@@ -282,7 +282,7 @@ NPP_Write(NPP instance, NPStream *stream,
   return -1L;   /* don't accept any bytes in NPP_Write() */
 }
 
-NPError 
+NPError
 NPP_DestroyStream(NPP instance, NPStream *stream G_GNUC_UNUSED,
                   NPError reason G_GNUC_UNUSED)
 {
@@ -298,7 +298,7 @@ NPP_DestroyStream(NPP instance, NPStream *stream G_GNUC_UNUSED,
     return NPERR_NO_ERROR;
 }
 
-void 
+void
 NPP_StreamAsFile(NPP instance G_GNUC_UNUSED, NPStream *stream G_GNUC_UNUSED,
                  const char* fname G_GNUC_UNUSED)
 {
@@ -323,7 +323,7 @@ NPP_URLNotify(NPP instance G_GNUC_UNUSED, const char* url G_GNUC_UNUSED,
 }
 
 
-void 
+void
 NPP_Print(NPP instance, NPPrint* printInfo)
 {
     /*printf("NPP_Print()\n");*/
@@ -334,7 +334,7 @@ NPP_Print(NPP instance, NPPrint* printInfo)
     /***** Insert NPP_Print code here *****\
         PluginInstance* This = (PluginInstance*) instance->pdata;
     \**************************************/
-    
+
         if (printInfo->mode == NP_FULL) {
             /*
              * PLUGIN DEVELOPERS:
@@ -359,7 +359,7 @@ NPP_Print(NPP instance, NPPrint* printInfo)
             NPBool printOne =
                 printInfo->print.fullPrint.printOne;
     \**************************************/
-            
+
             /* Do the default*/
             printInfo->print.fullPrint.pluginPrinted = FALSE;
         }

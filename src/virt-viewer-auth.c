@@ -34,142 +34,142 @@
 
 int
 virt_viewer_auth_collect_credentials(const char *type,
-				     const char *address,
-				     char **username,
-				     char **password)
+                                     const char *address,
+                                     char **username,
+                                     char **password)
 {
-	GtkWidget *dialog = NULL;
-	GtkBuilder *creds = virt_viewer_util_load_ui("virt-viewer-auth.xml");
-	GtkWidget *credUsername;
-	GtkWidget *credPassword;
-	GtkWidget *promptUsername;
-	GtkWidget *promptPassword;
-	GtkWidget *labelMessage;
-	int response;
-	char *message;
+    GtkWidget *dialog = NULL;
+    GtkBuilder *creds = virt_viewer_util_load_ui("virt-viewer-auth.xml");
+    GtkWidget *credUsername;
+    GtkWidget *credPassword;
+    GtkWidget *promptUsername;
+    GtkWidget *promptPassword;
+    GtkWidget *labelMessage;
+    int response;
+    char *message;
 
-	dialog = GTK_WIDGET(gtk_builder_get_object(creds, "auth"));
-	gtk_dialog_set_default_response(GTK_DIALOG(dialog), GTK_RESPONSE_OK);
+    dialog = GTK_WIDGET(gtk_builder_get_object(creds, "auth"));
+    gtk_dialog_set_default_response(GTK_DIALOG(dialog), GTK_RESPONSE_OK);
 
-	labelMessage = GTK_WIDGET(gtk_builder_get_object(creds, "message"));
-	credUsername = GTK_WIDGET(gtk_builder_get_object(creds, "cred-username"));
-	promptUsername = GTK_WIDGET(gtk_builder_get_object(creds, "prompt-username"));
-	credPassword = GTK_WIDGET(gtk_builder_get_object(creds, "cred-password"));
-	promptPassword = GTK_WIDGET(gtk_builder_get_object(creds, "prompt-password"));
+    labelMessage = GTK_WIDGET(gtk_builder_get_object(creds, "message"));
+    credUsername = GTK_WIDGET(gtk_builder_get_object(creds, "cred-username"));
+    promptUsername = GTK_WIDGET(gtk_builder_get_object(creds, "prompt-username"));
+    credPassword = GTK_WIDGET(gtk_builder_get_object(creds, "cred-password"));
+    promptPassword = GTK_WIDGET(gtk_builder_get_object(creds, "prompt-password"));
 
-	gtk_widget_set_sensitive(credUsername, username != NULL);
-	gtk_widget_set_sensitive(promptUsername, username != NULL);
-	gtk_widget_set_sensitive(credPassword, password != NULL);
-	gtk_widget_set_sensitive(promptPassword, password != NULL);
+    gtk_widget_set_sensitive(credUsername, username != NULL);
+    gtk_widget_set_sensitive(promptUsername, username != NULL);
+    gtk_widget_set_sensitive(credPassword, password != NULL);
+    gtk_widget_set_sensitive(promptPassword, password != NULL);
 
-	if (address) {
-		message = g_strdup_printf("Authentication is required for the %s connection to:\n\n"
-					  "<b>%s</b>\n\n",
-					  type,
-					  address);
-	} else {
-		message = g_strdup_printf("Authentication is required for the %s connection:\n",
-					  type);
-	}
+    if (address) {
+        message = g_strdup_printf("Authentication is required for the %s connection to:\n\n"
+                                  "<b>%s</b>\n\n",
+                                  type,
+                                  address);
+    } else {
+        message = g_strdup_printf("Authentication is required for the %s connection:\n",
+                                  type);
+    }
 
-	gtk_label_set_markup(GTK_LABEL(labelMessage), message);
-	g_free(message);
+    gtk_label_set_markup(GTK_LABEL(labelMessage), message);
+    g_free(message);
 
-	gtk_widget_show_all(dialog);
-	response = gtk_dialog_run(GTK_DIALOG(dialog));
-	gtk_widget_hide(dialog);
+    gtk_widget_show_all(dialog);
+    response = gtk_dialog_run(GTK_DIALOG(dialog));
+    gtk_widget_hide(dialog);
 
-	if (response == GTK_RESPONSE_OK) {
-		if (username)
-			*username = g_strdup(gtk_entry_get_text(GTK_ENTRY(credUsername)));
-		if (password)
-			*password = g_strdup(gtk_entry_get_text(GTK_ENTRY(credPassword)));
-	}
+    if (response == GTK_RESPONSE_OK) {
+        if (username)
+            *username = g_strdup(gtk_entry_get_text(GTK_ENTRY(credUsername)));
+        if (password)
+            *password = g_strdup(gtk_entry_get_text(GTK_ENTRY(credPassword)));
+    }
 
-	gtk_widget_destroy(GTK_WIDGET(dialog));
+    gtk_widget_destroy(GTK_WIDGET(dialog));
 
-	return response == GTK_RESPONSE_OK ? 0 : -1;
+    return response == GTK_RESPONSE_OK ? 0 : -1;
 }
 
 #ifdef HAVE_GTK_VNC
 void
 virt_viewer_auth_vnc_credentials(GtkWidget *vnc,
-				 GValueArray *credList,
-				 char **vncAddress)
+                                 GValueArray *credList,
+                                 char **vncAddress)
 {
-	char *username = NULL, *password = NULL;
-	gboolean wantPassword = FALSE, wantUsername = FALSE;
-	int i;
+    char *username = NULL, *password = NULL;
+    gboolean wantPassword = FALSE, wantUsername = FALSE;
+    int i;
 
-        DEBUG_LOG("Got VNC credential request for %d credential(s)", credList->n_values);
+    DEBUG_LOG("Got VNC credential request for %d credential(s)", credList->n_values);
 
-        for (i = 0 ; i < credList->n_values ; i++) {
-                GValue *cred = g_value_array_get_nth(credList, i);
-                switch (g_value_get_enum(cred)) {
-                case VNC_DISPLAY_CREDENTIAL_USERNAME:
-			wantUsername = TRUE;
-			break;
-                case VNC_DISPLAY_CREDENTIAL_PASSWORD:
-			wantPassword = TRUE;
-                        break;
-                case VNC_DISPLAY_CREDENTIAL_CLIENTNAME:
-			break;
-                default:
-                        DEBUG_LOG("Unsupported credential type %d", g_value_get_enum(cred));
-			vnc_display_close(VNC_DISPLAY(vnc));
-			goto cleanup;
-                }
+    for (i = 0 ; i < credList->n_values ; i++) {
+        GValue *cred = g_value_array_get_nth(credList, i);
+        switch (g_value_get_enum(cred)) {
+        case VNC_DISPLAY_CREDENTIAL_USERNAME:
+            wantUsername = TRUE;
+            break;
+        case VNC_DISPLAY_CREDENTIAL_PASSWORD:
+            wantPassword = TRUE;
+            break;
+        case VNC_DISPLAY_CREDENTIAL_CLIENTNAME:
+            break;
+        default:
+            DEBUG_LOG("Unsupported credential type %d", g_value_get_enum(cred));
+            vnc_display_close(VNC_DISPLAY(vnc));
+            goto cleanup;
         }
+    }
 
-        if (wantUsername || wantPassword) {
-		int ret = virt_viewer_auth_collect_credentials("VNC", vncAddress ? *vncAddress : NULL,
-							       wantUsername ? &username : NULL,
-							       wantPassword ? &password : NULL);
+    if (wantUsername || wantPassword) {
+        int ret = virt_viewer_auth_collect_credentials("VNC", vncAddress ? *vncAddress : NULL,
+                                                       wantUsername ? &username : NULL,
+                                                       wantPassword ? &password : NULL);
 
-		if (ret < 0) {
-			vnc_display_close(VNC_DISPLAY(vnc));
-			goto cleanup;
-		}
+        if (ret < 0) {
+            vnc_display_close(VNC_DISPLAY(vnc));
+            goto cleanup;
         }
+    }
 
-        for (i = 0 ; i < credList->n_values ; i++) {
-                GValue *cred = g_value_array_get_nth(credList, i);
-                switch (g_value_get_enum(cred)) {
-                case VNC_DISPLAY_CREDENTIAL_USERNAME:
-                        if (!username ||
-			    vnc_display_set_credential(VNC_DISPLAY(vnc),
-                                                       g_value_get_enum(cred),
-                                                       username)) {
-                                DEBUG_LOG("Failed to set credential type %d", g_value_get_enum(cred));
-                                vnc_display_close(VNC_DISPLAY(vnc));
-                        }
-			break;
-                case VNC_DISPLAY_CREDENTIAL_PASSWORD:
-                        if (!password ||
-			    vnc_display_set_credential(VNC_DISPLAY(vnc),
-                                                       g_value_get_enum(cred),
-                                                       password)) {
-                                DEBUG_LOG("Failed to set credential type %d", g_value_get_enum(cred));
-                                vnc_display_close(VNC_DISPLAY(vnc));
-                        }
-                        break;
-                case VNC_DISPLAY_CREDENTIAL_CLIENTNAME:
-                        if (vnc_display_set_credential(VNC_DISPLAY(vnc),
-                                                       g_value_get_enum(cred),
-                                                       "libvirt")) {
-                                DEBUG_LOG("Failed to set credential type %d", g_value_get_enum(cred));
-                                vnc_display_close(VNC_DISPLAY(vnc));
-                        }
-			break;
-		default:
-                        DEBUG_LOG("Unsupported credential type %d", g_value_get_enum(cred));
-                        vnc_display_close(VNC_DISPLAY(vnc));
-                }
+    for (i = 0 ; i < credList->n_values ; i++) {
+        GValue *cred = g_value_array_get_nth(credList, i);
+        switch (g_value_get_enum(cred)) {
+        case VNC_DISPLAY_CREDENTIAL_USERNAME:
+            if (!username ||
+                vnc_display_set_credential(VNC_DISPLAY(vnc),
+                                           g_value_get_enum(cred),
+                                           username)) {
+                DEBUG_LOG("Failed to set credential type %d", g_value_get_enum(cred));
+                vnc_display_close(VNC_DISPLAY(vnc));
+            }
+            break;
+        case VNC_DISPLAY_CREDENTIAL_PASSWORD:
+            if (!password ||
+                vnc_display_set_credential(VNC_DISPLAY(vnc),
+                                           g_value_get_enum(cred),
+                                           password)) {
+                DEBUG_LOG("Failed to set credential type %d", g_value_get_enum(cred));
+                vnc_display_close(VNC_DISPLAY(vnc));
+            }
+            break;
+        case VNC_DISPLAY_CREDENTIAL_CLIENTNAME:
+            if (vnc_display_set_credential(VNC_DISPLAY(vnc),
+                                           g_value_get_enum(cred),
+                                           "libvirt")) {
+                DEBUG_LOG("Failed to set credential type %d", g_value_get_enum(cred));
+                vnc_display_close(VNC_DISPLAY(vnc));
+            }
+            break;
+        default:
+            DEBUG_LOG("Unsupported credential type %d", g_value_get_enum(cred));
+            vnc_display_close(VNC_DISPLAY(vnc));
         }
+    }
 
  cleanup:
-        g_free(username);
-	g_free(password);
+    g_free(username);
+    g_free(password);
 }
 #endif
 
@@ -177,66 +177,64 @@ virt_viewer_auth_vnc_credentials(GtkWidget *vnc,
 #ifdef HAVE_LIBVIRT
 int
 virt_viewer_auth_libvirt_credentials(virConnectCredentialPtr cred,
-				     unsigned int ncred,
-				     void *cbdata)
+                                     unsigned int ncred,
+                                     void *cbdata)
 {
-	char **username = NULL, **password = NULL;
-	const char *uri = cbdata;
-	int i;
-	int ret = -1;
+    char **username = NULL, **password = NULL;
+    const char *uri = cbdata;
+    int i;
+    int ret = -1;
 
-        DEBUG_LOG("Got libvirt credential request for %d credential(s)", ncred);
+    DEBUG_LOG("Got libvirt credential request for %d credential(s)", ncred);
 
-        for (i = 0 ; i < ncred ; i++) {
-		switch (cred[i].type) {
-		case VIR_CRED_USERNAME:
-		case VIR_CRED_AUTHNAME:
-			username = &cred[i].result;
-			break;
-                case VIR_CRED_PASSPHRASE:
-			password = &cred[i].result;
-                        break;
-                default:
-			DEBUG_LOG("Unsupported libvirt credential %d", cred[i].type);
-			return -1;
-                }
+    for (i = 0 ; i < ncred ; i++) {
+        switch (cred[i].type) {
+        case VIR_CRED_USERNAME:
+        case VIR_CRED_AUTHNAME:
+            username = &cred[i].result;
+            break;
+        case VIR_CRED_PASSPHRASE:
+            password = &cred[i].result;
+            break;
+        default:
+            DEBUG_LOG("Unsupported libvirt credential %d", cred[i].type);
+            return -1;
         }
+    }
 
-        if (username || password) {
-		ret = virt_viewer_auth_collect_credentials("libvirt", uri,
-							   username, password);
-		if (ret < 0)
-			goto cleanup;
-        } else {
-		ret = 0;
-	}
+    if (username || password) {
+        ret = virt_viewer_auth_collect_credentials("libvirt", uri,
+                                                   username, password);
+        if (ret < 0)
+            goto cleanup;
+    } else {
+        ret = 0;
+    }
 
-        for (i = 0 ; i < ncred ; i++) {
-		switch (cred[i].type) {
-		case VIR_CRED_AUTHNAME:
-		case VIR_CRED_USERNAME:
-                case VIR_CRED_PASSPHRASE:
-			if (cred[i].result)
-				cred[i].resultlen = strlen(cred[i].result);
-			else
-				cred[i].resultlen = 0;
-			DEBUG_LOG("Got '%s' %d %d", cred[i].result, cred[i].resultlen, cred[i].type);
-			break;
-		}
+    for (i = 0 ; i < ncred ; i++) {
+        switch (cred[i].type) {
+        case VIR_CRED_AUTHNAME:
+        case VIR_CRED_USERNAME:
+        case VIR_CRED_PASSPHRASE:
+            if (cred[i].result)
+                cred[i].resultlen = strlen(cred[i].result);
+            else
+                cred[i].resultlen = 0;
+            DEBUG_LOG("Got '%s' %d %d", cred[i].result, cred[i].resultlen, cred[i].type);
+            break;
         }
+    }
 
  cleanup:
-	DEBUG_LOG("Return %d", ret);
-	return ret;
+    DEBUG_LOG("Return %d", ret);
+    return ret;
 }
 #endif
 
-
-
 /*
  * Local variables:
- *  c-indent-level: 8
- *  c-basic-offset: 8
- *  tab-width: 8
+ *  c-indent-level: 4
+ *  c-basic-offset: 4
+ *  indent-tabs-mode: nil
  * End:
  */

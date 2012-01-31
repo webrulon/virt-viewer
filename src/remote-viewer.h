@@ -38,12 +38,12 @@ G_BEGIN_DECLS
 typedef struct _RemoteViewerPrivate RemoteViewerPrivate;
 
 typedef struct {
-        VirtViewerApp parent;
-        RemoteViewerPrivate *priv;
+    VirtViewerApp parent;
+    RemoteViewerPrivate *priv;
 } RemoteViewer;
 
 typedef struct {
-        VirtViewerAppClass parent_class;
+    VirtViewerAppClass parent_class;
 } RemoteViewerClass;
 
 GType remote_viewer_get_type (void);
@@ -54,3 +54,10 @@ RemoteViewer* remote_viewer_new_with_controller(gboolean verbose);
 G_END_DECLS
 
 #endif /* REMOTE_VIEWER_H */
+/*
+ * Local variables:
+ *  c-indent-level: 4
+ *  c-basic-offset: 4
+ *  indent-tabs-mode: nil
+ * End:
+ */

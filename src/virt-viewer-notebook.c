@@ -26,124 +26,123 @@
 
 G_DEFINE_TYPE (VirtViewerNotebook, virt_viewer_notebook, GTK_TYPE_NOTEBOOK)
 
-#define GET_PRIVATE(o)							\
-	(G_TYPE_INSTANCE_GET_PRIVATE ((o), VIRT_VIEWER_TYPE_NOTEBOOK, VirtViewerNotebookPrivate))
+#define GET_PRIVATE(o)                                                        \
+    (G_TYPE_INSTANCE_GET_PRIVATE ((o), VIRT_VIEWER_TYPE_NOTEBOOK, VirtViewerNotebookPrivate))
 
 struct _VirtViewerNotebookPrivate {
-	GtkWidget *status;
+    GtkWidget *status;
 };
 
 static void
 virt_viewer_notebook_get_property (GObject *object, guint property_id,
-				   GValue *value G_GNUC_UNUSED, GParamSpec *pspec)
+                                   GValue *value G_GNUC_UNUSED, GParamSpec *pspec)
 {
-	switch (property_id) {
-	default:
-		G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
-	}
+    switch (property_id) {
+    default:
+        G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
+    }
 }
 
 static void
 virt_viewer_notebook_set_property (GObject *object, guint property_id,
-				   const GValue *value G_GNUC_UNUSED, GParamSpec *pspec)
+                                   const GValue *value G_GNUC_UNUSED, GParamSpec *pspec)
 {
-	switch (property_id) {
-	default:
-		G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
-	}
+    switch (property_id) {
+    default:
+        G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
+    }
 }
 
 static void
 virt_viewer_notebook_dispose (GObject *object)
 {
-	G_OBJECT_CLASS (virt_viewer_notebook_parent_class)->dispose (object);
+    G_OBJECT_CLASS (virt_viewer_notebook_parent_class)->dispose (object);
 }
 
 static void
 virt_viewer_notebook_class_init (VirtViewerNotebookClass *klass)
 {
-	GObjectClass *object_class = G_OBJECT_CLASS (klass);
+    GObjectClass *object_class = G_OBJECT_CLASS (klass);
 
-	g_type_class_add_private (klass, sizeof (VirtViewerNotebookPrivate));
+    g_type_class_add_private (klass, sizeof (VirtViewerNotebookPrivate));
 
-	object_class->get_property = virt_viewer_notebook_get_property;
-	object_class->set_property = virt_viewer_notebook_set_property;
-	object_class->dispose = virt_viewer_notebook_dispose;
+    object_class->get_property = virt_viewer_notebook_get_property;
+    object_class->set_property = virt_viewer_notebook_set_property;
+    object_class->dispose = virt_viewer_notebook_dispose;
 }
 
 static void
 virt_viewer_notebook_init (VirtViewerNotebook *self)
 {
-	VirtViewerNotebookPrivate *priv;
-	GdkColor color;
+    VirtViewerNotebookPrivate *priv;
+    GdkColor color;
 
-	self->priv = GET_PRIVATE(self);
-	priv = self->priv;
+    self->priv = GET_PRIVATE(self);
+    priv = self->priv;
 
-	priv->status = gtk_label_new("");
-	gtk_notebook_set_show_tabs(GTK_NOTEBOOK(self), FALSE);
-	gtk_notebook_set_show_border(GTK_NOTEBOOK(self), FALSE);
-	gtk_notebook_append_page(GTK_NOTEBOOK(self), priv->status, NULL);
-	gdk_color_parse("white", &color);
-	gtk_widget_modify_fg(priv->status, GTK_STATE_NORMAL, &color);
+    priv->status = gtk_label_new("");
+    gtk_notebook_set_show_tabs(GTK_NOTEBOOK(self), FALSE);
+    gtk_notebook_set_show_border(GTK_NOTEBOOK(self), FALSE);
+    gtk_notebook_append_page(GTK_NOTEBOOK(self), priv->status, NULL);
+    gdk_color_parse("white", &color);
+    gtk_widget_modify_fg(priv->status, GTK_STATE_NORMAL, &color);
 }
 
 void
 virt_viewer_notebook_show_status_va(VirtViewerNotebook *self, const gchar *fmt, va_list args)
 {
-	VirtViewerNotebookPrivate *priv;
-	gchar *text;
+    VirtViewerNotebookPrivate *priv;
+    gchar *text;
 
-	DEBUG_LOG("notebook show status %p", self);
-	g_return_if_fail(VIRT_VIEWER_IS_NOTEBOOK(self));
+    DEBUG_LOG("notebook show status %p", self);
+    g_return_if_fail(VIRT_VIEWER_IS_NOTEBOOK(self));
 
-	text = g_strdup_vprintf(fmt, args);
-	priv = self->priv;
-	gtk_label_set_text(GTK_LABEL(priv->status), text);
-	gtk_notebook_set_current_page(GTK_NOTEBOOK(self), 0);
-	gtk_widget_show_all(GTK_WIDGET(self));
-	g_free(text);
+    text = g_strdup_vprintf(fmt, args);
+    priv = self->priv;
+    gtk_label_set_text(GTK_LABEL(priv->status), text);
+    gtk_notebook_set_current_page(GTK_NOTEBOOK(self), 0);
+    gtk_widget_show_all(GTK_WIDGET(self));
+    g_free(text);
 }
 
 void
 virt_viewer_notebook_show_status(VirtViewerNotebook *self, const gchar *fmt, ...)
 {
-	va_list args;
+    va_list args;
 
-	g_return_if_fail(VIRT_VIEWER_IS_NOTEBOOK(self));
+    g_return_if_fail(VIRT_VIEWER_IS_NOTEBOOK(self));
 
-	va_start(args, fmt);
-	virt_viewer_notebook_show_status_va(self, fmt, args);
-	va_end(args);
+    va_start(args, fmt);
+    virt_viewer_notebook_show_status_va(self, fmt, args);
+    va_end(args);
 }
 
 void
 virt_viewer_notebook_show_display(VirtViewerNotebook *self)
 {
-	GtkWidget *display;
+    GtkWidget *display;
 
-	DEBUG_LOG("notebook show display %p", self);
-	g_return_if_fail(VIRT_VIEWER_IS_NOTEBOOK(self));
+    DEBUG_LOG("notebook show display %p", self);
+    g_return_if_fail(VIRT_VIEWER_IS_NOTEBOOK(self));
 
-	display = gtk_notebook_get_nth_page(GTK_NOTEBOOK(self), 1);
-	g_warn_if_fail(display != NULL);
-	gtk_widget_grab_focus(display);
+    display = gtk_notebook_get_nth_page(GTK_NOTEBOOK(self), 1);
+    g_warn_if_fail(display != NULL);
+    gtk_widget_grab_focus(display);
 
-	gtk_notebook_set_current_page(GTK_NOTEBOOK(self), 1);
-	gtk_widget_show_all(GTK_WIDGET(self));
+    gtk_notebook_set_current_page(GTK_NOTEBOOK(self), 1);
+    gtk_widget_show_all(GTK_WIDGET(self));
 }
 
 VirtViewerNotebook*
 virt_viewer_notebook_new (void)
 {
-	return g_object_new (VIRT_VIEWER_TYPE_NOTEBOOK, NULL);
+    return g_object_new (VIRT_VIEWER_TYPE_NOTEBOOK, NULL);
 }
 
 /*
  * Local variables:
- *  c-indent-level: 8
- *  c-basic-offset: 8
- *  tab-width: 8
- *  indent-tabs-mode: t
+ *  c-indent-level: 4
+ *  c-basic-offset: 4
+ *  indent-tabs-mode: nil
  * End:
  */

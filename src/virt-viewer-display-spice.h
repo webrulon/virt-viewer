@@ -34,48 +34,47 @@ G_BEGIN_DECLS
 
 #define VIRT_VIEWER_TYPE_DISPLAY_SPICE virt_viewer_display_spice_get_type()
 
-#define VIRT_VIEWER_DISPLAY_SPICE(obj)					\
-	(G_TYPE_CHECK_INSTANCE_CAST ((obj), VIRT_VIEWER_TYPE_DISPLAY_SPICE, VirtViewerDisplaySpice))
+#define VIRT_VIEWER_DISPLAY_SPICE(obj)                                  \
+    (G_TYPE_CHECK_INSTANCE_CAST ((obj), VIRT_VIEWER_TYPE_DISPLAY_SPICE, VirtViewerDisplaySpice))
 
-#define VIRT_VIEWER_DISPLAY_SPICE_CLASS(klass)				\
-	(G_TYPE_CHECK_CLASS_CAST ((klass), VIRT_VIEWER_TYPE_DISPLAY_SPICE, VirtViewerDisplaySpiceClass))
+#define VIRT_VIEWER_DISPLAY_SPICE_CLASS(klass)                          \
+    (G_TYPE_CHECK_CLASS_CAST ((klass), VIRT_VIEWER_TYPE_DISPLAY_SPICE, VirtViewerDisplaySpiceClass))
 
-#define VIRT_VIEWER_IS_DISPLAY_SPICE(obj)				\
-	(G_TYPE_CHECK_INSTANCE_TYPE ((obj), VIRT_VIEWER_TYPE_DISPLAY_SPICE))
+#define VIRT_VIEWER_IS_DISPLAY_SPICE(obj)                               \
+    (G_TYPE_CHECK_INSTANCE_TYPE ((obj), VIRT_VIEWER_TYPE_DISPLAY_SPICE))
 
-#define VIRT_VIEWER_IS_DISPLAY_SPICE_CLASS(klass)			\
-	(G_TYPE_CHECK_CLASS_TYPE ((klass), VIRT_VIEWER_TYPE_DISPLAY_SPICE))
+#define VIRT_VIEWER_IS_DISPLAY_SPICE_CLASS(klass)                       \
+    (G_TYPE_CHECK_CLASS_TYPE ((klass), VIRT_VIEWER_TYPE_DISPLAY_SPICE))
 
-#define VIRT_VIEWER_DISPLAY_SPICE_GET_CLASS(obj)			\
-	(G_TYPE_INSTANCE_GET_CLASS ((obj), VIRT_VIEWER_TYPE_DISPLAY_SPICE, VirtViewerDisplaySpiceClass))
+#define VIRT_VIEWER_DISPLAY_SPICE_GET_CLASS(obj)                        \
+    (G_TYPE_INSTANCE_GET_CLASS ((obj), VIRT_VIEWER_TYPE_DISPLAY_SPICE, VirtViewerDisplaySpiceClass))
 
 typedef struct _VirtViewerDisplaySpice VirtViewerDisplaySpice;
 typedef struct _VirtViewerDisplaySpiceClass VirtViewerDisplaySpiceClass;
 typedef struct _VirtViewerDisplaySpicePrivate VirtViewerDisplaySpicePrivate;
 
 struct _VirtViewerDisplaySpice {
-	VirtViewerDisplay parent;
+    VirtViewerDisplay parent;
 
-	VirtViewerDisplaySpicePrivate *priv;
+    VirtViewerDisplaySpicePrivate *priv;
 };
 
 struct _VirtViewerDisplaySpiceClass {
-	VirtViewerDisplayClass parent_class;
+    VirtViewerDisplayClass parent_class;
 };
 
 GType virt_viewer_display_spice_get_type(void);
 
 GtkWidget* virt_viewer_display_spice_new(SpiceChannel *channel,
-					 SpiceDisplay *display);
+                                         SpiceDisplay *display);
 
 G_END_DECLS
 
 #endif /* _VIRT_VIEWER_DISPLAY_SPICE_H */
-
 /*
  * Local variables:
- *  c-indent-level: 8
- *  c-basic-offset: 8
- *  tab-width: 8
+ *  c-indent-level: 4
+ *  c-basic-offset: 4
+ *  indent-tabs-mode: nil
  * End:
  */

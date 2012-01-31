@@ -38,27 +38,35 @@ G_BEGIN_DECLS
 typedef struct _VirtViewerPrivate VirtViewerPrivate;
 
 typedef struct {
-        VirtViewerApp parent;
-        VirtViewerPrivate *priv;
+    VirtViewerApp parent;
+    VirtViewerPrivate *priv;
 } VirtViewer;
 
 typedef struct {
-        VirtViewerAppClass parent_class;
+    VirtViewerAppClass parent_class;
 } VirtViewerClass;
 
 GType virt_viewer_get_type (void);
 
 VirtViewer *
 virt_viewer_new(const char *uri,
-		const char *name,
-		gint zoom,
-		gboolean direct,
-		gboolean attach,
-		gboolean waitvm,
-		gboolean reconnect,
-		gboolean verbose,
-		GtkWidget *container);
+                const char *name,
+                gint zoom,
+                gboolean direct,
+                gboolean attach,
+                gboolean waitvm,
+                gboolean reconnect,
+                gboolean verbose,
+                GtkWidget *container);
 
 G_END_DECLS
 
 #endif /* VIRT_VIEWER_H */
+
+/*
+ * Local variables:
+ *  c-indent-level: 4
+ *  c-basic-offset: 4
+ *  indent-tabs-mode: nil
+ * End:
+ */

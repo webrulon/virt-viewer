@@ -41,3 +41,11 @@ int virt_viewer_util_extract_host(const char *uristr,
                                   int *port);
 
 #endif
+
+/*
+ * Local variables:
+ *  c-indent-level: 4
+ *  c-basic-offset: 4
+ *  indent-tabs-mode: nil
+ * End:
+ */

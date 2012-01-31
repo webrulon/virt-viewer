@@ -32,18 +32,25 @@
 #include "virt-viewer-util.h"
 
 void virt_viewer_auth_vnc_credentials(GtkWidget *vnc,
-				      GValueArray *credList,
-				      char **message);
+                                      GValueArray *credList,
+                                      char **message);
 
 int virt_viewer_auth_collect_credentials(const char *type,
-					 const char *address,
-					 char **username,
-					 char **password);
+                                         const char *address,
+                                         char **username,
+                                         char **password);
 
 #ifdef HAVE_LIBVIRT
 int virt_viewer_auth_libvirt_credentials(virConnectCredentialPtr cred,
-					 unsigned int ncred,
-					 void *cbdata);
+                                         unsigned int ncred,
+                                         void *cbdata);
 #endif
 
 #endif
+/*
+ * Local variables:
+ *  c-indent-level: 4
+ *  c-basic-offset: 4
+ *  indent-tabs-mode: nil
+ * End:
+ */

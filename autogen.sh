@@ -3,7 +3,7 @@
 
 set -e
 srcdir=`dirname $0`
-test -z "$srcdir" && srcdir=. 
+test -z "$srcdir" && srcdir=.
 
 THEDIR=`pwd`
 cd $srcdir
@@ -11,23 +11,23 @@ cd $srcdir
 DIE=0
 
 (autoconf --version) < /dev/null > /dev/null 2>&1 || {
-	echo
-	echo "You must have autoconf installed to compile virt-viewer."
-	echo "Download the appropriate package for your distribution,"
-	echo "or see http://www.gnu.org/software/autoconf"
-	DIE=1
+    echo
+    echo "You must have autoconf installed to compile virt-viewer."
+    echo "Download the appropriate package for your distribution,"
+    echo "or see http://www.gnu.org/software/autoconf"
+    DIE=1
 }
 
 (automake --version) < /dev/null > /dev/null 2>&1 || {
-	echo
-	DIE=1
-	echo "You must have automake installed to compile virt-viewer."
-	echo "Download the appropriate package for your distribution,"
-	echo "or see http://www.gnu.org/software/automake"
+    echo
+    DIE=1
+    echo "You must have automake installed to compile virt-viewer."
+    echo "Download the appropriate package for your distribution,"
+    echo "or see http://www.gnu.org/software/automake"
 }
 
 if test "$DIE" -eq 1; then
-	exit 1
+    exit 1
 fi
 
 EXTRA_ARGS=""
@@ -38,7 +38,7 @@ if test "x$1" = "x--system"; then
     sysconfdir=/etc
     localstatedir=/var
     if [ -d /usr/lib64 ]; then
-      libdir=$prefix/lib64
+        libdir=$prefix/lib64
     fi
     EXTRA_ARGS="--prefix=$prefix --sysconfdir=$sysconfdir --localstatedir=$localstatedir --libdir=$libdir"
     echo "Running ./configure with $EXTRA_ARGS $@"
@@ -59,6 +59,6 @@ autoconf
 cd $THEDIR
 
 $srcdir/configure $EXTRA_ARGS "$@" && {
-    echo 
+    echo
     echo "Now type 'make' to compile virt-viewer."
 }

@@ -175,7 +175,7 @@ ViewDrawer_GetType(void)
          sizeof (ViewDrawer),
          0, /* n_preallocs */
          (GInstanceInitFunc)ViewDrawerInit,
-	 NULL
+         NULL
       };
 
       type = g_type_register_static(VIEW_TYPE_OV_BOX, "ViewDrawer", &info, 0);

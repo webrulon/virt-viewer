@@ -91,6 +91,9 @@ static void virt_viewer_app_server_cut_text(VirtViewerSession *session,
 static void virt_viewer_app_bell(VirtViewerSession *session,
 				 VirtViewerApp *self);
 
+static void virt_viewer_app_cancelled(VirtViewerSession *session,
+				 VirtViewerApp *self);
+
 static void virt_viewer_app_channel_open(VirtViewerSession *session,
 					 VirtViewerSessionChannel *channel,
 					 VirtViewerApp *self);
@@ -116,6 +119,7 @@ struct _VirtViewerAppPrivate {
 	VirtViewerSession *session;
 	gboolean active;
 	gboolean connected;
+	gboolean cancelled;
 	guint reconnect_poll; /* source id */
 	char *unixsock;
 	char *guri; /* prefered over ghost:gport */
@@ -647,6 +651,8 @@ virt_viewer_app_create_session(VirtViewerApp *self, const gchar *type)
 			 G_CALLBACK(virt_viewer_app_server_cut_text), self);
 	g_signal_connect(priv->session, "session-bell",
 			 G_CALLBACK(virt_viewer_app_bell), self);
+	g_signal_connect(priv->session, "session-cancelled",
+			 G_CALLBACK(virt_viewer_app_cancelled), self);
 
 	return 0;
 }
@@ -788,6 +794,7 @@ virt_viewer_app_activate(VirtViewerApp *self)
 	if (ret != -1) {
 		virt_viewer_app_show_status(self, _("Connecting to graphic server"));
 		priv->connected = FALSE;
+		priv->cancelled = FALSE;
 		priv->active = TRUE;
 		priv->grabbed = FALSE;
 		virt_viewer_app_update_title(self);
@@ -983,12 +990,20 @@ virt_viewer_app_disconnected(VirtViewerSession *session G_GNUC_UNUSED,
 {
 	VirtViewerAppPrivate *priv = self->priv;
 
-	if (!priv->connected) {
+	if (!priv->connected && !priv->cancelled) {
 		virt_viewer_app_simple_message_dialog(self,
 						      _("Unable to connect to the graphic server %s"),
 						      priv->pretty_address);
 	}
 	virt_viewer_app_deactivate(self);
+}
+
+static void virt_viewer_app_cancelled(VirtViewerSession *session,
+                                 VirtViewerApp *self)
+{
+	VirtViewerAppPrivate *priv = self->priv;
+	priv->cancelled = TRUE;
+	virt_viewer_app_disconnected(session, self);
 }
 
 

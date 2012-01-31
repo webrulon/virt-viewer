@@ -1,4 +1,4 @@
-'/*
+/*
  * Virt Viewer: A virtual machine console viewer
  *
  * Copyright (C) 2007-2012 Red Hat, Inc.

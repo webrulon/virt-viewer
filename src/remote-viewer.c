@@ -398,7 +398,7 @@ spice_ctrl_listen_async_cb(GObject *object,
                                               _("Controller connection failed: %s"),
                                               error->message);
         g_clear_error(&error);
-        exit(1); /* TODO: make start async? */
+        exit(EXIT_FAILURE); /* TODO: make start async? */
     }
 }
 

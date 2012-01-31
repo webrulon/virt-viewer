@@ -40,7 +40,7 @@ static void
 remote_viewer_version(void)
 {
     g_print(_("remote-viewer version %s\n"), VERSION);
-    exit(0);
+    exit(EXIT_SUCCESS);
 }
 
 int

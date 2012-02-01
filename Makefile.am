@@ -9,6 +9,12 @@ EXTRA_DIST =					\
 	intltool-extract.in			\
 	intltool-merge.in			\
 	intltool-update.in			\
+	GNUmakefile				\
+	maint.mk				\
+	cfg.mk					\
+	build-aux/gitlog-to-changelog		\
+	build-aux/useless-if-before-free	\
+	build-aux/vc-list-files			\
 	$(NULL)
 
 DISTCLEAN_FILES =				\

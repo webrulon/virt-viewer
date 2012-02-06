@@ -91,6 +91,9 @@ void virt_viewer_app_show_status(VirtViewerApp *self, const gchar *fmt, ...);
 void virt_viewer_app_show_display(VirtViewerApp *self);
 GHashTable* virt_viewer_app_get_windows(VirtViewerApp *self);
 
+void virt_viewer_app_usb_device_selection(VirtViewerApp   *self,
+					  GtkWindow       *parent);
+
 G_END_DECLS
 
 #endif /* VIRT_VIEWER_APP_H */

@@ -26,6 +26,7 @@
 #include <glib/gi18n.h>
 
 #include <spice-option.h>
+#include <usb-device-widget.h>
 #include "virt-viewer-util.h"
 #include "virt-viewer-session-spice.h"
 #include "virt-viewer-display-spice.h"
@@ -53,6 +54,7 @@ static gboolean virt_viewer_session_spice_open_fd(VirtViewerSession *session, in
 static gboolean virt_viewer_session_spice_open_host(VirtViewerSession *session, char *host, char *port);
 static gboolean virt_viewer_session_spice_open_uri(VirtViewerSession *session, char *uri);
 static gboolean virt_viewer_session_spice_channel_open_fd(VirtViewerSession *session, VirtViewerSessionChannel *channel, int fd);
+static void virt_viewer_session_spice_usb_device_selection(VirtViewerSession *session, GtkWindow *parent);
 static void virt_viewer_session_spice_channel_new(SpiceSession *s,
 						  SpiceChannel *channel,
 						  VirtViewerSession *session);
@@ -118,6 +120,7 @@ virt_viewer_session_spice_class_init(VirtViewerSessionSpiceClass *klass)
 	dclass->open_host = virt_viewer_session_spice_open_host;
 	dclass->open_uri = virt_viewer_session_spice_open_uri;
 	dclass->channel_open_fd = virt_viewer_session_spice_channel_open_fd;
+	dclass->usb_device_selection = virt_viewer_session_spice_usb_device_selection;
 
 	g_type_class_add_private(klass, sizeof(VirtViewerSessionSpicePrivate));
 
@@ -138,9 +141,9 @@ virt_viewer_session_spice_init(VirtViewerSessionSpice *self G_GNUC_UNUSED)
 }
 
 static void
-usb_auto_connect_failed(SpiceUsbDeviceManager *manager G_GNUC_UNUSED,
-			SpiceUsbDevice *device G_GNUC_UNUSED,
-			GError *error, VirtViewerSessionSpice *self)
+usb_connect_failed(GObject *object G_GNUC_UNUSED,
+		   SpiceUsbDevice *device G_GNUC_UNUSED,
+		   GError *error, VirtViewerSessionSpice *self)
 {
 	if (g_error_matches(error, G_IO_ERROR, G_IO_ERROR_CANCELLED))
 		return;
@@ -170,7 +173,7 @@ create_spice_session(VirtViewerSessionSpice *self)
 	manager = spice_usb_device_manager_get(self->priv->session, NULL);
 	if (manager)
 		g_signal_connect(manager, "auto-connect-failed",
-				 G_CALLBACK(usb_auto_connect_failed), self);
+				 G_CALLBACK(usb_connect_failed), self);
 
 	g_object_bind_property(self, "auto-usbredir",
 			       self->priv->gtk_session, "auto-usbredir",
@@ -307,6 +310,34 @@ virt_viewer_session_spice_main_channel_event(SpiceChannel *channel G_GNUC_UNUSED
 	g_free(password);
 }
 
+static void
+virt_viewer_session_spice_usb_device_selection(VirtViewerSession *session,
+					       GtkWindow *parent)
+{
+	VirtViewerSessionSpice *self = VIRT_VIEWER_SESSION_SPICE(session);
+	VirtViewerSessionSpicePrivate *priv = self->priv;
+	GtkWidget *dialog, *area, *usb_device_widget;
+
+	/* Create the widgets */
+	dialog = gtk_dialog_new_with_buttons(
+		    _("Select USB devices for redirection"), parent,
+		    GTK_DIALOG_MODAL | GTK_DIALOG_DESTROY_WITH_PARENT,
+		    GTK_STOCK_OK, GTK_RESPONSE_ACCEPT,
+		    NULL);
+	gtk_dialog_set_default_response(GTK_DIALOG(dialog), GTK_RESPONSE_ACCEPT);
+	area = gtk_dialog_get_content_area(GTK_DIALOG(dialog));
+
+	usb_device_widget = spice_usb_device_widget_new(priv->session,
+							"%s %s");
+	g_signal_connect(usb_device_widget, "connect-failed",
+			 G_CALLBACK(usb_connect_failed), self);
+	gtk_box_pack_start(GTK_BOX(area), usb_device_widget, TRUE, TRUE, 5);
+
+	/* show and run */
+	gtk_widget_show_all(dialog);
+	gtk_dialog_run(GTK_DIALOG(dialog));
+	gtk_widget_destroy(dialog);
+}
 
 static void
 virt_viewer_session_spice_channel_new(SpiceSession *s,

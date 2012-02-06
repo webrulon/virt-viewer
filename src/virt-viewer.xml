@@ -36,6 +36,16 @@
                       </object>
                     </child>
                     <child>
+                      <object class="GtkMenuItem" id="menu-file-usb-device-selection">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="use_action_appearance">False</property>
+                        <property name="label" translatable="yes">USB device selection</property>
+                        <property name="use_underline">True</property>
+                        <signal name="activate" handler="virt_viewer_window_menu_file_usb_device_selection" swapped="no"/>
+                      </object>
+                    </child>
+                    <child>
                       <object class="GtkSeparatorMenuItem" id="separatormenuitem1">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>

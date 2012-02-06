@@ -51,6 +51,7 @@ void virt_viewer_window_menu_view_fullscreen(GtkWidget *menu, VirtViewerWindow *
 void virt_viewer_window_menu_view_resize(GtkWidget *menu, VirtViewerWindow *self);
 void virt_viewer_window_menu_send(GtkWidget *menu, VirtViewerWindow *self);
 void virt_viewer_window_menu_file_screenshot(GtkWidget *menu, VirtViewerWindow *self);
+void virt_viewer_window_menu_file_usb_device_selection(GtkWidget *menu, VirtViewerWindow *self);
 
 /* Internal methods */
 static void virt_viewer_window_enable_modifiers(VirtViewerWindow *self);
@@ -723,6 +724,14 @@ virt_viewer_window_menu_file_screenshot(GtkWidget *menu G_GNUC_UNUSED,
 	}
 
 	gtk_widget_destroy (dialog);
+}
+
+G_MODULE_EXPORT void
+virt_viewer_window_menu_file_usb_device_selection(GtkWidget *menu G_GNUC_UNUSED,
+						  VirtViewerWindow *self)
+{
+	virt_viewer_app_usb_device_selection(self->priv->app,
+					     GTK_WINDOW(self->priv->window));
 }
 
 G_MODULE_EXPORT void

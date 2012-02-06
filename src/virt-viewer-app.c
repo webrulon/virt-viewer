@@ -1609,6 +1609,15 @@ virt_viewer_app_get_windows(VirtViewerApp *self)
 	return self->priv->windows;
 }
 
+void virt_viewer_app_usb_device_selection(VirtViewerApp   *self,
+					  GtkWindow       *parent)
+{
+	g_return_if_fail(VIRT_VIEWER_IS_APP(self));
+	g_return_if_fail(self->priv->session != NULL);
+
+	virt_viewer_session_usb_device_selection(self->priv->session, parent);
+}
+
 /*
  * Local variables:
  *  c-indent-level: 8

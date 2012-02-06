@@ -352,6 +352,19 @@ gboolean virt_viewer_session_get_auto_usbredir(VirtViewerSession *self)
 	return self->priv->auto_usbredir;
 }
 
+void virt_viewer_session_usb_device_selection(VirtViewerSession   *self,
+					      GtkWindow           *parent)
+{
+	VirtViewerSessionClass *klass;
+
+	g_return_if_fail(VIRT_VIEWER_IS_SESSION(self));
+
+	klass = VIRT_VIEWER_SESSION_GET_CLASS(self);
+	g_return_if_fail(klass->usb_device_selection != NULL);
+
+	klass->usb_device_selection(self, parent);
+}
+
 /*
  * Local variables:
  *  c-indent-level: 8

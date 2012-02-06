@@ -867,6 +867,19 @@ virt_viewer_window_update_title(VirtViewerWindow *self)
 }
 
 void
+virt_viewer_window_set_usb_options_sensitive(VirtViewerWindow *self, gboolean sensitive)
+{
+	VirtViewerWindowPrivate *priv;
+	GtkWidget *menu;
+
+	g_return_if_fail(VIRT_VIEWER_IS_WINDOW(self));
+
+	priv = self->priv;
+	menu = GTK_WIDGET(gtk_builder_get_object(priv->builder, "menu-file-usb-device-selection"));
+	gtk_widget_set_sensitive(menu, sensitive);
+}
+
+void
 virt_viewer_window_set_display(VirtViewerWindow *self, VirtViewerDisplay *display)
 {
 	VirtViewerWindowPrivate *priv;

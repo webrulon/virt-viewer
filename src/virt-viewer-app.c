@@ -449,6 +449,21 @@ virt_viewer_app_update_title(VirtViewerApp *self)
 	g_hash_table_foreach(self->priv->windows, update_title, NULL);
 }
 
+static void set_usb_options_sensitive(gpointer key G_GNUC_UNUSED,
+					 gpointer value,
+					 gpointer user_data)
+{
+	virt_viewer_window_set_usb_options_sensitive(
+		VIRT_VIEWER_WINDOW(value), GPOINTER_TO_INT(user_data));
+}
+
+static void
+virt_viewer_app_set_usb_options_sensitive(VirtViewerApp *self, gboolean sensitive)
+{
+	g_hash_table_foreach(self->priv->windows, set_usb_options_sensitive,
+			     GINT_TO_POINTER(sensitive));
+}
+
 static VirtViewerWindow *
 virt_viewer_app_get_nth_window(VirtViewerApp *self, gint nth)
 {
@@ -981,7 +996,10 @@ static void
 virt_viewer_app_initialized(VirtViewerSession *session G_GNUC_UNUSED,
 			    VirtViewerApp *self)
 {
+	gboolean has_usb = virt_viewer_session_has_usb(self->priv->session);
+
 	virt_viewer_app_update_title(self);
+	virt_viewer_app_set_usb_options_sensitive(self, has_usb);
 }
 
 static void
@@ -995,6 +1013,7 @@ virt_viewer_app_disconnected(VirtViewerSession *session G_GNUC_UNUSED,
 						      _("Unable to connect to the graphic server %s"),
 						      priv->pretty_address);
 	}
+	virt_viewer_app_set_usb_options_sensitive(self, FALSE);
 	virt_viewer_app_deactivate(self);
 }
 

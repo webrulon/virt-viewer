@@ -54,6 +54,7 @@ static gboolean virt_viewer_session_spice_open_fd(VirtViewerSession *session, in
 static gboolean virt_viewer_session_spice_open_host(VirtViewerSession *session, char *host, char *port);
 static gboolean virt_viewer_session_spice_open_uri(VirtViewerSession *session, char *uri);
 static gboolean virt_viewer_session_spice_channel_open_fd(VirtViewerSession *session, VirtViewerSessionChannel *channel, int fd);
+static gboolean virt_viewer_session_spice_has_usb(VirtViewerSession *session);
 static void virt_viewer_session_spice_usb_device_selection(VirtViewerSession *session, GtkWindow *parent);
 static void virt_viewer_session_spice_channel_new(SpiceSession *s,
 						  SpiceChannel *channel,
@@ -120,6 +121,7 @@ virt_viewer_session_spice_class_init(VirtViewerSessionSpiceClass *klass)
 	dclass->open_host = virt_viewer_session_spice_open_host;
 	dclass->open_uri = virt_viewer_session_spice_open_uri;
 	dclass->channel_open_fd = virt_viewer_session_spice_channel_open_fd;
+	dclass->has_usb = virt_viewer_session_spice_has_usb;
 	dclass->usb_device_selection = virt_viewer_session_spice_usb_device_selection;
 
 	g_type_class_add_private(klass, sizeof(VirtViewerSessionSpicePrivate));
@@ -308,6 +310,17 @@ virt_viewer_session_spice_main_channel_event(SpiceChannel *channel G_GNUC_UNUSED
 	}
 
 	g_free(password);
+}
+
+static gboolean
+virt_viewer_session_spice_has_usb(VirtViewerSession *session)
+{
+	VirtViewerSessionSpice *self = VIRT_VIEWER_SESSION_SPICE(session);
+	VirtViewerSessionSpicePrivate *priv = self->priv;
+
+	return spice_usb_device_manager_get(priv->session, NULL) &&
+	       spice_session_has_channel_type(priv->session,
+					      SPICE_CHANNEL_USBREDIR);
 }
 
 static void

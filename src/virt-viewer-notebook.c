@@ -127,6 +127,7 @@ virt_viewer_notebook_show_display(VirtViewerNotebook *self)
 
 	display = gtk_notebook_get_nth_page(GTK_NOTEBOOK(self), 1);
 	g_warn_if_fail(display != NULL);
+	gtk_widget_grab_focus(display);
 
 	gtk_notebook_set_current_page(GTK_NOTEBOOK(self), 1);
 	gtk_widget_show_all(GTK_WIDGET(self));

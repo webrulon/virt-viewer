@@ -63,6 +63,7 @@ static void virt_viewer_display_get_property(GObject *object,
 					     guint prop_id,
 					     GValue *value,
 					     GParamSpec *pspec);
+static void virt_viewer_display_grab_focus(GtkWidget *widget);
 
 G_DEFINE_ABSTRACT_TYPE(VirtViewerDisplay, virt_viewer_display, GTK_TYPE_BIN)
 
@@ -93,6 +94,7 @@ virt_viewer_display_class_init(VirtViewerDisplayClass *class)
 	widget_class->size_request = virt_viewer_display_size_request;
 #endif
 	widget_class->size_allocate = virt_viewer_display_size_allocate;
+        widget_class->grab_focus = virt_viewer_display_grab_focus;
 
 	g_object_class_install_property(object_class,
 					PROP_DESKTOP_WIDTH,
@@ -285,6 +287,15 @@ virt_viewer_display_get_property(GObject *object,
 		G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
 		break;
 	}
+}
+
+
+static void
+virt_viewer_display_grab_focus(GtkWidget *widget)
+{
+	GtkBin *bin = GTK_BIN(widget);
+
+	gtk_widget_grab_focus(gtk_bin_get_child(bin));
 }
 
 

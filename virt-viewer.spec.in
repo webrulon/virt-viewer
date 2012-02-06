@@ -128,7 +128,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/%{name}/ui/virt-viewer.xml
 %{_datadir}/%{name}/ui/virt-viewer-auth.xml
 %{_datadir}/%{name}/ui/virt-viewer-about.xml
-%{_mandir}/man1/%{name}*
+%{_mandir}/man1/virt-viewer.1*
+%{_mandir}/man1/remote-viewer.1*
 
 %if %{_with_plugin}
 %files plugin

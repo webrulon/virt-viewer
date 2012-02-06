@@ -97,7 +97,7 @@ Written by Daniel P. Berrange, based on the GTK-VNC example program gvncviewer.
 
 =head1 BUGS
 
-Report bugs to the mailing list C<http://www.redhat.com/mailman/listinfo/et-mgmt-tools>
+Report bugs to the mailing list C<http://www.redhat.com/mailman/listinfo/virt-tools-list>
 
 =head1 COPYRIGHT
 

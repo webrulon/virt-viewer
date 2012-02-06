@@ -1,7 +1,15 @@
+NULL =
 
-man_MANS = virt-viewer.1
+man_MANS =					\
+	remote-viewer.1				\
+	virt-viewer.1				\
+	$(NULL)
 
-EXTRA_DIST = virt-viewer.pod
+EXTRA_DIST =					\
+	remote-viewer.pod			\
+	virt-viewer.pod				\
+	$(NULL)
+
 DISTCLEANFILES = $(man_MANS)
 
 %.1: %.pod

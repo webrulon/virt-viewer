@@ -29,6 +29,8 @@ URL: http://virt-manager.org/
 Source0: http://virt-manager.org/download/sources/%{name}/%{name}-%{version}.tar.gz
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 Requires: openssh-clients
+Requires(post):   %{_sbindir}/update-alternatives
+Requires(postun): %{_sbindir}/update-alternatives
 
 %if %{with_gtk3}
 BuildRequires: gtk3-devel >= 3.0.0
@@ -109,6 +111,9 @@ browsers.
 %install
 rm -rf $RPM_BUILD_ROOT
 %__make install  DESTDIR=$RPM_BUILD_ROOT
+mkdir -p %{buildroot}%{_libexecdir}
+touch %{buildroot}%{_libexecdir}/spice-xpi-client
+install -m 0755 data/spice-xpi-client-remote-viewer %{buildroot}%{_libexecdir}/
 %if %{_with_plugin}
 rm -f %{buildroot}%{_libdir}/mozilla/plugins/%{name}-plugin.a
 rm -f %{buildroot}%{_libdir}/mozilla/plugins/%{name}-plugin.la
@@ -117,6 +122,15 @@ rm -f %{buildroot}%{_libdir}/mozilla/plugins/%{name}-plugin.la
 
 %clean
 rm -rf $RPM_BUILD_ROOT
+
+%post
+%{_sbindir}/update-alternatives --install %{_libexecdir}/spice-xpi-client \
+  spice-xpi-client %{_libexecdir}/spice-xpi-client-remote-viewer 20
+
+%postun
+if [ $1 -eq 0 ] ; then
+  %{_sbindir}/update-alternatives --remove spice-xpi-client %{_libexecdir}/spice-xpi-client-remote-viewer
+fi
 
 %files -f %{name}.lang
 %defattr(-,root,root,-)
@@ -128,6 +142,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/%{name}/ui/virt-viewer.xml
 %{_datadir}/%{name}/ui/virt-viewer-auth.xml
 %{_datadir}/%{name}/ui/virt-viewer-about.xml
+%ghost %{_libexecdir}/spice-xpi-client
+%{_libexecdir}/spice-xpi-client-remote-viewer
 %{_mandir}/man1/virt-viewer.1*
 %{_mandir}/man1/remote-viewer.1*
 

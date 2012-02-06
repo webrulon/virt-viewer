@@ -1,0 +1,6 @@
+#!/bin/sh
+
+logger -t spice "starting remote-viewer --spice-controller $@..."
+env | logger -t spice
+exec remote-viewer --spice-controller "$@" 2>&1 | logger -t spice
+logger -t spice "remote-viewer execution failed"

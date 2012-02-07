@@ -29,6 +29,7 @@
 #include <spice-audio.h>
 
 #include "virt-viewer-display.h"
+#include "virt-viewer-session-spice.h"
 
 G_BEGIN_DECLS
 
@@ -65,7 +66,8 @@ struct _VirtViewerDisplaySpiceClass {
 
 GType virt_viewer_display_spice_get_type(void);
 
-GtkWidget* virt_viewer_display_spice_new(SpiceChannel *channel,
+GtkWidget* virt_viewer_display_spice_new(VirtViewerSessionSpice *session,
+                                         SpiceChannel *channel,
                                          SpiceDisplay *display);
 
 G_END_DECLS

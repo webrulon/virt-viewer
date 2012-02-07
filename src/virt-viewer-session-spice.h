@@ -66,6 +66,7 @@ struct _VirtViewerSessionSpiceClass {
 GType virt_viewer_session_spice_get_type(void);
 
 VirtViewerSession* virt_viewer_session_spice_new(void);
+SpiceMainChannel* virt_viewer_session_spice_get_main_channel(VirtViewerSessionSpice *self);
 
 G_END_DECLS
 

@@ -40,6 +40,7 @@ G_DEFINE_TYPE (VirtViewerSessionSpice, virt_viewer_session_spice, VIRT_VIEWER_TY
 struct _VirtViewerSessionSpicePrivate {
     SpiceSession *session;
     SpiceGtkSession *gtk_session;
+    SpiceMainChannel *main_channel;
     SpiceAudio *audio;
 };
 
@@ -103,6 +104,8 @@ virt_viewer_session_spice_dispose(GObject *obj)
     }
     if (spice->priv->audio)
         g_object_unref(spice->priv->audio);
+    if (spice->priv->main_channel)
+        g_object_unref(spice->priv->main_channel);
 
     G_OBJECT_CLASS(virt_viewer_session_spice_parent_class)->finalize(obj);
 }
@@ -370,8 +373,16 @@ virt_viewer_session_spice_channel_new(SpiceSession *s,
     g_object_get(channel, "channel-id", &id, NULL);
 
     if (SPICE_IS_MAIN_CHANNEL(channel)) {
+        if (self->priv->main_channel != NULL) {
+            /* FIXME: use telepathy-glib g_signal_connect_object to automatically disconnect.. */
+            g_signal_handlers_disconnect_by_func(self->priv->main_channel,
+                                                 virt_viewer_session_spice_main_channel_event, self);
+            g_object_unref(self->priv->main_channel);
+        }
+
         g_signal_connect(channel, "channel-event",
                          G_CALLBACK(virt_viewer_session_spice_main_channel_event), self);
+        self->priv->main_channel = g_object_ref(channel);
     }
 
     if (SPICE_IS_DISPLAY_CHANNEL(channel)) {
@@ -380,7 +391,8 @@ virt_viewer_session_spice_channel_new(SpiceSession *s,
         g_signal_emit_by_name(session, "session-connected");
 
         DEBUG_LOG("new session channel (#%d)", id);
-        display = virt_viewer_display_spice_new(channel,
+        display = virt_viewer_display_spice_new(self,
+                                                channel,
                                                 spice_display_new(s, id));
 
         virt_viewer_session_add_display(VIRT_VIEWER_SESSION(session),
@@ -414,6 +426,10 @@ virt_viewer_session_spice_channel_destroy(G_GNUC_UNUSED SpiceSession *s,
     g_object_get(channel, "channel-id", &id, NULL);
     if (SPICE_IS_MAIN_CHANNEL(channel)) {
         DEBUG_LOG("zap main channel");
+        if (channel == SPICE_CHANNEL(self->priv->main_channel)) {
+            g_object_unref(self->priv->main_channel);
+            self->priv->main_channel = NULL;
+        }
     }
 
     if (SPICE_IS_DISPLAY_CHANNEL(channel)) {
@@ -437,6 +453,14 @@ virt_viewer_session_spice_new(void)
     create_spice_session(self);
 
     return VIRT_VIEWER_SESSION(self);
+}
+
+SpiceMainChannel*
+virt_viewer_session_spice_get_main_channel(VirtViewerSessionSpice *self)
+{
+    g_return_val_if_fail(VIRT_VIEWER_IS_SESSION_SPICE(self), NULL);
+
+    return self->priv->main_channel;
 }
 
 /*

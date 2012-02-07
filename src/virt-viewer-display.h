@@ -45,6 +45,9 @@ G_BEGIN_DECLS
 #define VIRT_VIEWER_DISPLAY_GET_CLASS(obj)                                \
     (G_TYPE_INSTANCE_GET_CLASS ((obj), VIRT_VIEWER_TYPE_DISPLAY, VirtViewerDisplayClass))
 
+typedef struct _VirtViewerSession       VirtViewerSession;
+typedef struct _VirtViewerSessionClass  VirtViewerSessionClass;
+
 typedef struct _VirtViewerDisplay       VirtViewerDisplay;
 typedef struct _VirtViewerDisplayClass  VirtViewerDisplayClass;
 typedef struct _VirtViewerDisplayPrivate VirtViewerDisplayPrivate;
@@ -94,13 +97,16 @@ void virt_viewer_display_get_desktop_size(VirtViewerDisplay *display,
 
 void virt_viewer_display_set_zoom_level(VirtViewerDisplay *display,
                                         guint zoom);
+guint virt_viewer_display_get_zoom_level(VirtViewerDisplay *display);
 void virt_viewer_display_set_zoom(VirtViewerDisplay *display,
                                   gboolean zoom);
+gboolean virt_viewer_display_get_zoom(VirtViewerDisplay *display);
 
 void virt_viewer_display_send_keys(VirtViewerDisplay *display,
                                    const guint *keyvals, int nkeyvals);
 GdkPixbuf* virt_viewer_display_get_pixbuf(VirtViewerDisplay *display);
 void virt_viewer_display_set_show_hint(VirtViewerDisplay *display, gint hint);
+VirtViewerSession* virt_viewer_display_get_session(VirtViewerDisplay *display);
 
 G_END_DECLS
 

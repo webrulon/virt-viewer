@@ -26,6 +26,7 @@
 
 #include <locale.h>
 
+#include "virt-viewer-session.h"
 #include "virt-viewer-display.h"
 #include "virt-viewer-util.h"
 
@@ -40,6 +41,7 @@ struct _VirtViewerDisplayPrivate
     gboolean zoom;
     gint nth_display;
     gint show_hint;
+    VirtViewerSession *session;
 };
 
 static void virt_viewer_display_size_request(GtkWidget *widget,
@@ -75,6 +77,7 @@ enum {
     PROP_ZOOM,
     PROP_ZOOM_LEVEL,
     PROP_SHOW_HINT,
+    PROP_SESSION,
 };
 
 static void
@@ -153,6 +156,15 @@ virt_viewer_display_class_init(VirtViewerDisplayClass *class)
                                                      G_MAXINT32,
                                                      0,
                                                      G_PARAM_READABLE));
+
+    g_object_class_install_property(object_class,
+                                    PROP_SESSION,
+                                    g_param_spec_object("session",
+                                                        "Session",
+                                                        "VirtSession",
+                                                        VIRT_VIEWER_TYPE_SESSION,
+                                                        G_PARAM_READWRITE |
+                                                        G_PARAM_CONSTRUCT_ONLY));
 
 
     g_signal_new("display-pointer-grab",
@@ -252,6 +264,11 @@ virt_viewer_display_set_property(GObject *object,
     case PROP_NTH_DISPLAY:
         priv->nth_display = g_value_get_int(value);
         break;
+    case PROP_SESSION:
+        g_warn_if_fail(priv->session == NULL);
+        priv->session = g_value_dup_object(value);
+        break;
+
     default:
         G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
         break;
@@ -279,6 +296,9 @@ virt_viewer_display_get_property(GObject *object,
         break;
     case PROP_SHOW_HINT:
         g_value_set_int(value, priv->show_hint);
+        break;
+    case PROP_SESSION:
+        g_value_set_object(value, virt_viewer_display_get_session(display));
         break;
 
     default:
@@ -468,6 +488,13 @@ void virt_viewer_display_set_zoom_level(VirtViewerDisplay *display,
 }
 
 
+guint virt_viewer_display_get_zoom_level(VirtViewerDisplay *display)
+{
+    VirtViewerDisplayPrivate *priv = display->priv;
+    return priv->zoom_level;
+}
+
+
 void virt_viewer_display_set_zoom(VirtViewerDisplay *display,
                                   gboolean zoom)
 {
@@ -480,6 +507,14 @@ void virt_viewer_display_set_zoom(VirtViewerDisplay *display,
         gtk_widget_queue_resize(GTK_WIDGET(display));
     }
 }
+
+
+gboolean virt_viewer_display_get_zoom(VirtViewerDisplay *display)
+{
+    VirtViewerDisplayPrivate *priv = display->priv;
+    return priv->zoom;
+}
+
 
 void virt_viewer_display_send_keys(VirtViewerDisplay *display,
                                    const guint *keyvals, int nkeyvals)
@@ -507,6 +542,13 @@ void virt_viewer_display_set_show_hint(VirtViewerDisplay *self, gint hint)
 
     priv->show_hint = hint;
     g_object_notify(G_OBJECT(self), "show-hint");
+}
+
+VirtViewerSession* virt_viewer_display_get_session(VirtViewerDisplay *self)
+{
+    g_return_val_if_fail(VIRT_VIEWER_IS_DISPLAY(self), NULL);
+
+    return self->priv->session;
 }
 
 /*

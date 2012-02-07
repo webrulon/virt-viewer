@@ -47,8 +47,6 @@ G_BEGIN_DECLS
 #define VIRT_VIEWER_SESSION_GET_CLASS(obj)                                \
     (G_TYPE_INSTANCE_GET_CLASS ((obj), VIRT_VIEWER_TYPE_SESSION, VirtViewerSessionClass))
 
-typedef struct _VirtViewerSession       VirtViewerSession;
-typedef struct _VirtViewerSessionClass  VirtViewerSessionClass;
 typedef struct _VirtViewerSessionPrivate VirtViewerSessionPrivate;
 
 typedef struct _VirtViewerSessionChannel VirtViewerSessionChannel;

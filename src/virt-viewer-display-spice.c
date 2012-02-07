@@ -151,8 +151,35 @@ virt_viewer_display_spice_mouse_grab(SpiceDisplay *display G_GNUC_UNUSED,
 }
 
 
+static void
+virt_viewer_display_spice_size_allocate(SpiceDisplay *display G_GNUC_UNUSED,
+                                        GtkAllocation *allocation,
+                                        VirtViewerDisplaySpice *self G_GNUC_UNUSED)
+{
+    gdouble dw = allocation->width, dh = allocation->height;
+    guint zoom = 100;
+    guint channelid;
+
+    if (virt_viewer_display_get_zoom(VIRT_VIEWER_DISPLAY(self))) {
+        zoom = virt_viewer_display_get_zoom_level(VIRT_VIEWER_DISPLAY(self));
+
+        dw /= ((double)zoom / 100.0);
+        dh /= ((double)zoom / 100.0);
+    }
+
+    g_object_get(self->priv->channel, "channel-id", &channelid, NULL);
+
+    SpiceMainChannel *main_channel = virt_viewer_session_spice_get_main_channel(
+        VIRT_VIEWER_SESSION_SPICE(virt_viewer_display_get_session(VIRT_VIEWER_DISPLAY(self))));
+    spice_main_set_display(main_channel,
+                           channelid,
+                           0, 0, dw, dh);
+}
+
+
 GtkWidget *
-virt_viewer_display_spice_new(SpiceChannel *channel,
+virt_viewer_display_spice_new(VirtViewerSessionSpice *session,
+                              SpiceChannel *channel,
                               SpiceDisplay *display)
 {
     VirtViewerDisplaySpice *self;
@@ -164,6 +191,7 @@ virt_viewer_display_spice_new(SpiceChannel *channel,
     g_object_get(channel, "channel-id", &channelid, NULL);
 
     self = g_object_new(VIRT_VIEWER_TYPE_DISPLAY_SPICE,
+                        "session", session,
                         "nth-display", channelid,
                         NULL);
     self->priv->channel = g_object_ref(channel);
@@ -189,6 +217,10 @@ virt_viewer_display_spice_new(SpiceChannel *channel,
     g_signal_connect(self->priv->display,
                      "mouse-grab",
                      G_CALLBACK(virt_viewer_display_spice_mouse_grab), self);
+    g_signal_connect(self->priv->display,
+                     "size-allocate",
+                     G_CALLBACK(virt_viewer_display_spice_size_allocate), self);
+
 
     return GTK_WIDGET(self);
 }

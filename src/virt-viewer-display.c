@@ -40,7 +40,6 @@ struct _VirtViewerDisplayPrivate
     gboolean zoom;
     gint nth_display;
     gint show_hint;
-    gboolean maintain_aspect_ratio;
 };
 
 static void virt_viewer_display_size_request(GtkWidget *widget,
@@ -222,7 +221,6 @@ virt_viewer_display_init(VirtViewerDisplay *display)
     display->priv->zoom_level = 100;
     display->priv->zoom = TRUE;
     display->priv->dirty = TRUE;
-    display->priv->maintain_aspect_ratio = TRUE;
 }
 
 GtkWidget*
@@ -389,13 +387,7 @@ virt_viewer_display_size_allocate(GtkWidget *widget,
 
     desktopAspect = (double)priv->desktopWidth / (double)priv->desktopHeight;
 
-    if (child &&
-        gtk_widget_get_visible(child)) {
-        if (!priv->maintain_aspect_ratio) {
-            gtk_widget_size_allocate(child, allocation);
-            goto end;
-        }
-
+    if (child && gtk_widget_get_visible(child)) {
         border_width = gtk_container_get_border_width(GTK_CONTAINER(display));
 
         width  = MAX(1, allocation->width - 2 * border_width);
@@ -417,7 +409,7 @@ virt_viewer_display_size_allocate(GtkWidget *widget,
         gtk_widget_size_allocate(child, &child_allocation);
     }
 
- end:
+
     /* This unsets the size request, so that the user can
      * manually resize the window smaller again
      */
@@ -425,15 +417,6 @@ virt_viewer_display_size_allocate(GtkWidget *widget,
         g_idle_add(virt_viewer_display_idle, widget);
         priv->dirty = FALSE;
     }
-}
-
-
-void virt_viewer_display_set_maintain_aspect_ratio(VirtViewerDisplay *display,
-                                                   gboolean maintain)
-{
-    g_return_if_fail(VIRT_VIEWER_IS_DISPLAY(display));
-
-    display->priv->maintain_aspect_ratio = maintain;
 }
 
 

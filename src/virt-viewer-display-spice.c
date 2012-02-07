@@ -75,8 +75,6 @@ static void
 virt_viewer_display_spice_init(VirtViewerDisplaySpice *self G_GNUC_UNUSED)
 {
     self->priv = VIRT_VIEWER_DISPLAY_SPICE_GET_PRIVATE(self);
-
-    virt_viewer_display_set_maintain_aspect_ratio(VIRT_VIEWER_DISPLAY(self), FALSE);
 }
 
 static void
@@ -181,8 +179,8 @@ virt_viewer_display_spice_new(SpiceChannel *channel,
     g_object_set(self->priv->display,
                  "grab-keyboard", TRUE,
                  "grab-mouse", TRUE,
+                 "resize-guest", FALSE,
                  "scaling", TRUE,
-                 "resize-guest", TRUE,
                  NULL);
 
     g_signal_connect(self->priv->display,

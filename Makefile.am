@@ -2,7 +2,7 @@ NULL =
 
 ACLOCAL_AMFLAGS = -I m4
 
-SUBDIRS = src man plugin po data
+SUBDIRS = src man plugin po data icons
 
 EXTRA_DIST =					\
 	$(PACKAGE).spec				\

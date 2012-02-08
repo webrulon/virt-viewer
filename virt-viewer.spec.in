@@ -124,13 +124,19 @@ rm -f %{buildroot}%{_libdir}/mozilla/plugins/%{name}-plugin.la
 rm -rf $RPM_BUILD_ROOT
 
 %post
+/bin/touch --no-create %{_datadir}/icons/hicolor &>/dev/null || :
 %{_sbindir}/update-alternatives --install %{_libexecdir}/spice-xpi-client \
   spice-xpi-client %{_libexecdir}/spice-xpi-client-remote-viewer 20
 
 %postun
 if [ $1 -eq 0 ] ; then
+  /bin/touch --no-create %{_datadir}/icons/hicolor &>/dev/null
+  /usr/bin/gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
   %{_sbindir}/update-alternatives --remove spice-xpi-client %{_libexecdir}/spice-xpi-client-remote-viewer
 fi
+
+%posttrans
+/usr/bin/gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 
 %files -f %{name}.lang
 %defattr(-,root,root,-)
@@ -142,6 +148,7 @@ fi
 %{_datadir}/%{name}/ui/virt-viewer.xml
 %{_datadir}/%{name}/ui/virt-viewer-auth.xml
 %{_datadir}/%{name}/ui/virt-viewer-about.xml
+%{_datadir}/icons/hicolor/*/apps/*
 %ghost %{_libexecdir}/spice-xpi-client
 %{_libexecdir}/spice-xpi-client-remote-viewer
 %{_mandir}/man1/virt-viewer.1*

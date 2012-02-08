@@ -152,9 +152,9 @@ virt_viewer_display_spice_mouse_grab(SpiceDisplay *display G_GNUC_UNUSED,
 
 
 static void
-virt_viewer_display_spice_size_allocate(SpiceDisplay *display G_GNUC_UNUSED,
+virt_viewer_display_spice_size_allocate(VirtViewerDisplaySpice *self,
                                         GtkAllocation *allocation,
-                                        VirtViewerDisplaySpice *self G_GNUC_UNUSED)
+                                        gpointer data G_GNUC_UNUSED)
 {
     gdouble dw = allocation->width, dh = allocation->height;
     guint zoom = 100;
@@ -217,7 +217,7 @@ virt_viewer_display_spice_new(VirtViewerSessionSpice *session,
     g_signal_connect(self->priv->display,
                      "mouse-grab",
                      G_CALLBACK(virt_viewer_display_spice_mouse_grab), self);
-    g_signal_connect(self->priv->display,
+    g_signal_connect(self,
                      "size-allocate",
                      G_CALLBACK(virt_viewer_display_spice_size_allocate), self);
 

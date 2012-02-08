@@ -129,3 +129,6 @@ exclude_file_name_regexp--sc_preprocessor_indentation = ^*/*.[ch]
 exclude_file_name_regexp--sc_prohibit_strcmp = ^*/*.[ch]
 exclude_file_name_regexp--sc_require_config_h = ^plugin/
 exclude_file_name_regexp--sc_require_config_h_first = ^plugin/
+
+exclude_file_name_regexp--sc_prohibit_empty_lines_at_EOF = ^icons/
+exclude_file_name_regexp--sc_trailing_blank = ^icons/

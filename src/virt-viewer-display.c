@@ -42,6 +42,7 @@ struct _VirtViewerDisplayPrivate
     gint nth_display;
     gint show_hint;
     VirtViewerSession *session;
+    gboolean auto_resize;
 };
 
 static void virt_viewer_display_size_request(GtkWidget *widget,
@@ -233,6 +234,7 @@ virt_viewer_display_init(VirtViewerDisplay *display)
     display->priv->zoom_level = 100;
     display->priv->zoom = TRUE;
     display->priv->dirty = TRUE;
+    display->priv->auto_resize = TRUE;
 }
 
 GtkWidget*
@@ -549,6 +551,20 @@ VirtViewerSession* virt_viewer_display_get_session(VirtViewerDisplay *self)
     g_return_val_if_fail(VIRT_VIEWER_IS_DISPLAY(self), NULL);
 
     return self->priv->session;
+}
+
+void virt_viewer_display_set_auto_resize(VirtViewerDisplay *self, gboolean auto_resize)
+{
+    g_return_if_fail(VIRT_VIEWER_IS_DISPLAY(self));
+
+    self->priv->auto_resize = auto_resize;
+}
+
+gboolean virt_viewer_display_get_auto_resize(VirtViewerDisplay *self)
+{
+    g_return_val_if_fail(VIRT_VIEWER_IS_DISPLAY(self), FALSE);
+
+    return self->priv->auto_resize;
 }
 
 /*

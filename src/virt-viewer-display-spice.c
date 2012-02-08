@@ -160,6 +160,9 @@ virt_viewer_display_spice_size_allocate(VirtViewerDisplaySpice *self,
     guint zoom = 100;
     guint channelid;
 
+    if (virt_viewer_display_get_auto_resize(VIRT_VIEWER_DISPLAY(self)) == FALSE)
+        return;
+
     if (virt_viewer_display_get_zoom(VIRT_VIEWER_DISPLAY(self))) {
         zoom = virt_viewer_display_get_zoom_level(VIRT_VIEWER_DISPLAY(self));
 

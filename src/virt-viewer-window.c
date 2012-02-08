@@ -681,6 +681,8 @@ virt_viewer_window_menu_view_resize(GtkWidget *menu,
     } else {
         priv->auto_resize = FALSE;
     }
+
+    virt_viewer_display_set_auto_resize(priv->display, priv->auto_resize);
 }
 
 static void
@@ -901,6 +903,7 @@ virt_viewer_window_set_display(VirtViewerWindow *self, VirtViewerDisplay *displa
         priv->display = g_object_ref(display);
 
         virt_viewer_display_set_zoom_level(VIRT_VIEWER_DISPLAY(priv->display), priv->zoomlevel);
+        virt_viewer_display_set_auto_resize(VIRT_VIEWER_DISPLAY(priv->display), priv->auto_resize);
 
         gtk_notebook_append_page(GTK_NOTEBOOK(priv->notebook), GTK_WIDGET(display), NULL);
         gtk_widget_show_all(GTK_WIDGET(display));

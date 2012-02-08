@@ -107,7 +107,8 @@ void virt_viewer_display_send_keys(VirtViewerDisplay *display,
 GdkPixbuf* virt_viewer_display_get_pixbuf(VirtViewerDisplay *display);
 void virt_viewer_display_set_show_hint(VirtViewerDisplay *display, gint hint);
 VirtViewerSession* virt_viewer_display_get_session(VirtViewerDisplay *display);
-
+void virt_viewer_display_set_auto_resize(VirtViewerDisplay *display, gboolean auto_resize);
+gboolean virt_viewer_display_get_auto_resize(VirtViewerDisplay *display);
 G_END_DECLS
 
 #endif /* _VIRT_VIEWER_DISPLAY_H */

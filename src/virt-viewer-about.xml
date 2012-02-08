@@ -1,20 +1,23 @@
-<?xml version="1.0"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <interface>
   <!-- interface-requires gtk+ 2.12 -->
-  <!-- interface-naming-policy toplevel-contextual -->
   <object class="GtkAboutDialog" id="about">
+    <property name="can_focus">False</property>
     <property name="border_width">5</property>
     <property name="title" translatable="yes">About Glade</property>
     <property name="resizable">False</property>
+    <property name="modal">True</property>
     <property name="window_position">center-on-parent</property>
+    <property name="destroy_with_parent">True</property>
     <property name="type_hint">dialog</property>
+    <property name="skip_taskbar_hint">True</property>
+    <property name="skip_pager_hint">True</property>
     <property name="program_name">Virtual Machine Viewer</property>
     <property name="copyright" translatable="yes">Copyright (C) 2007-2012 Daniel P. Berrange
 Copyright (C) 2007-2012 Red Hat, Inc.</property>
     <property name="comments" translatable="yes">A remote desktop client built with GTK-VNC, SPICE-GTK and libvirt</property>
     <property name="website">http://virt-manager.org/</property>
     <property name="website_label" translatable="yes">virt-manager.org</property>
-    <property name="logo_icon_name">virt-viewer</property>
     <property name="license" translatable="yes">This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
 the Free Software Foundation; either version 2 of the License, or
@@ -33,25 +36,30 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 Marc-André Lureau
 </property>
     <property name="translator_credits" translatable="yes">The Fedora Translation Team</property>
-    <signal name="response" handler="virt_viewer_app_about_close"/>
-    <signal name="delete_event" handler="virt_viewer_app_about_delete"/>
+    <property name="logo_icon_name">virt-viewer</property>
+    <signal name="delete-event" handler="virt_viewer_app_about_delete" swapped="no"/>
+    <signal name="response" handler="virt_viewer_app_about_close" swapped="no"/>
     <child internal-child="vbox">
-      <object class="GtkVBox" id="dialog-vbox1">
+      <object class="GtkBox" id="dialog-vbox1">
         <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="orientation">vertical</property>
         <property name="spacing">2</property>
-        <child>
-          <placeholder/>
-        </child>
         <child internal-child="action_area">
-          <object class="GtkHButtonBox" id="dialog-action_area1">
+          <object class="GtkButtonBox" id="dialog-action_area1">
             <property name="visible">True</property>
+            <property name="can_focus">False</property>
             <property name="layout_style">end</property>
           </object>
           <packing>
             <property name="expand">False</property>
+            <property name="fill">True</property>
             <property name="pack_type">end</property>
             <property name="position">0</property>
           </packing>
+        </child>
+        <child>
+          <placeholder/>
         </child>
       </object>
     </child>

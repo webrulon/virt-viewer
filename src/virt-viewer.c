@@ -524,6 +524,68 @@ virt_viewer_error_func (void *data G_GNUC_UNUSED,
     /* nada */
 }
 
+
+
+static int
+virt_viewer_auth_libvirt_credentials(virConnectCredentialPtr cred,
+                                     unsigned int ncred,
+                                     void *cbdata)
+{
+    char **username = NULL, **password = NULL;
+    VirtViewer *app = cbdata;
+    int i;
+    int ret = -1;
+
+    DEBUG_LOG("Got libvirt credential request for %d credential(s)", ncred);
+
+    for (i = 0 ; i < ncred ; i++) {
+        switch (cred[i].type) {
+        case VIR_CRED_USERNAME:
+        case VIR_CRED_AUTHNAME:
+            username = &cred[i].result;
+            break;
+        case VIR_CRED_PASSPHRASE:
+            password = &cred[i].result;
+            break;
+        default:
+            DEBUG_LOG("Unsupported libvirt credential %d", cred[i].type);
+            return -1;
+        }
+    }
+
+    if (username || password) {
+        VirtViewerWindow *vwin = virt_viewer_app_get_main_window(VIRT_VIEWER_APP(app));
+        GtkWindow *win = virt_viewer_window_get_window(vwin);
+        ret = virt_viewer_auth_collect_credentials(win,
+                                                   "libvirt",
+                                                   app->priv->uri,
+                                                   username, password);
+        if (ret < 0)
+            goto cleanup;
+    } else {
+        ret = 0;
+    }
+
+    for (i = 0 ; i < ncred ; i++) {
+        switch (cred[i].type) {
+        case VIR_CRED_AUTHNAME:
+        case VIR_CRED_USERNAME:
+        case VIR_CRED_PASSPHRASE:
+            if (cred[i].result)
+                cred[i].resultlen = strlen(cred[i].result);
+            else
+                cred[i].resultlen = 0;
+            DEBUG_LOG("Got '%s' %d %d", cred[i].result, cred[i].resultlen, cred[i].type);
+            break;
+        }
+    }
+
+ cleanup:
+    DEBUG_LOG("Return %d", ret);
+    return ret;
+}
+
+
 static gboolean
 virt_viewer_start(VirtViewerApp *app)
 {
@@ -535,7 +597,7 @@ virt_viewer_start(VirtViewerApp *app)
         .credtype = cred_types,
         .ncredtype = ARRAY_CARDINALITY(cred_types),
         .cb = virt_viewer_auth_libvirt_credentials,
-        .cbdata = (void *)priv->uri,
+        .cbdata = app,
     };
     int oflags = 0;
 

@@ -38,6 +38,7 @@ G_DEFINE_TYPE (VirtViewerSessionSpice, virt_viewer_session_spice, VIRT_VIEWER_TY
 
 
 struct _VirtViewerSessionSpicePrivate {
+    GtkWindow *main_window;
     SpiceSession *session;
     SpiceGtkSession *gtk_session;
     SpiceMainChannel *main_channel;
@@ -106,6 +107,8 @@ virt_viewer_session_spice_dispose(GObject *obj)
         g_object_unref(spice->priv->audio);
     if (spice->priv->main_channel)
         g_object_unref(spice->priv->main_channel);
+    if (spice->priv->main_window)
+        g_object_unref(spice->priv->main_window);
 
     G_OBJECT_CLASS(virt_viewer_session_spice_parent_class)->finalize(obj);
 }
@@ -298,7 +301,8 @@ virt_viewer_session_spice_main_channel_event(SpiceChannel *channel G_GNUC_UNUSED
         break;
     case SPICE_CHANNEL_ERROR_AUTH:
         DEBUG_LOG("main channel: auth failure (wrong password?)");
-        int ret = virt_viewer_auth_collect_credentials("SPICE",
+        int ret = virt_viewer_auth_collect_credentials(self->priv->main_window,
+                                                       "SPICE",
                                                        NULL,
                                                        NULL, &password);
         if (ret < 0) {
@@ -444,13 +448,14 @@ virt_viewer_session_spice_channel_destroy(G_GNUC_UNUSED SpiceSession *s,
 }
 
 VirtViewerSession *
-virt_viewer_session_spice_new(void)
+virt_viewer_session_spice_new(GtkWindow *main_window)
 {
     VirtViewerSessionSpice *self;
 
     self = g_object_new(VIRT_VIEWER_TYPE_SESSION_SPICE, NULL);
 
     create_spice_session(self);
+    self->priv->main_window = g_object_ref(main_window);
 
     return VIRT_VIEWER_SESSION(self);
 }

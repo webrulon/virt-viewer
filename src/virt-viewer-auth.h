@@ -31,20 +31,16 @@
 
 #include "virt-viewer-util.h"
 
-void virt_viewer_auth_vnc_credentials(GtkWidget *vnc,
+void virt_viewer_auth_vnc_credentials(GtkWindow *window,
+                                      GtkWidget *vnc,
                                       GValueArray *credList,
-                                      char **message);
+                                      char *vncAddress);
 
-int virt_viewer_auth_collect_credentials(const char *type,
+int virt_viewer_auth_collect_credentials(GtkWindow *window,
+                                         const char *type,
                                          const char *address,
                                          char **username,
                                          char **password);
-
-#ifdef HAVE_LIBVIRT
-int virt_viewer_auth_libvirt_credentials(virConnectCredentialPtr cred,
-                                         unsigned int ncred,
-                                         void *cbdata);
-#endif
 
 #endif
 /*

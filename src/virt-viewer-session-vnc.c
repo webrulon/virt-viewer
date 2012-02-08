@@ -34,6 +34,7 @@
 G_DEFINE_TYPE(VirtViewerSessionVnc, virt_viewer_session_vnc, VIRT_VIEWER_TYPE_SESSION)
 
 struct _VirtViewerSessionVncPrivate {
+    GtkWindow *main_window;
     /* XXX we should really just have a VncConnection */
     VncDisplay *vnc;
 };
@@ -57,6 +58,8 @@ virt_viewer_session_vnc_finalize(GObject *obj)
         vnc_display_close(vnc->priv->vnc);
         g_object_unref(vnc->priv->vnc);
     }
+    if (vnc->priv->main_window)
+        g_object_unref(vnc->priv->main_window);
 
     G_OBJECT_CLASS(virt_viewer_session_vnc_parent_class)->finalize(obj);
 }
@@ -208,6 +211,21 @@ virt_viewer_session_vnc_open_uri(VirtViewerSession* session,
     return ret;
 }
 
+
+static void
+virt_viewer_session_vnc_auth_credential(GtkWidget *src,
+                                        GValueArray *credList,
+                                        VirtViewerSession *session)
+{
+    VirtViewerSessionVnc *self = VIRT_VIEWER_SESSION_VNC(session);
+
+    virt_viewer_auth_vnc_credentials(self->priv->main_window,
+                                     src,
+                                     credList,
+                                     NULL);
+}
+
+
 static void
 virt_viewer_session_vnc_close(VirtViewerSession* session)
 {
@@ -240,18 +258,19 @@ virt_viewer_session_vnc_close(VirtViewerSession* session)
                      G_CALLBACK(virt_viewer_session_vnc_cut_text), session);
 
     g_signal_connect(self->priv->vnc, "vnc-auth-credential",
-                     G_CALLBACK(virt_viewer_auth_vnc_credentials), NULL);
+                     G_CALLBACK(virt_viewer_session_vnc_auth_credential), session);
 
 }
 
 VirtViewerSession *
-virt_viewer_session_vnc_new(void)
+virt_viewer_session_vnc_new(GtkWindow *main_window)
 {
     VirtViewerSessionVnc *session;
 
     session = g_object_new(VIRT_VIEWER_TYPE_SESSION_VNC, NULL);
 
     session->priv->vnc = VNC_DISPLAY(vnc_display_new());
+    session->priv->main_window = g_object_ref(main_window);
 
     g_signal_connect(session->priv->vnc, "vnc-connected",
                      G_CALLBACK(virt_viewer_session_vnc_connected), session);
@@ -270,7 +289,7 @@ virt_viewer_session_vnc_new(void)
                      G_CALLBACK(virt_viewer_session_vnc_cut_text), session);
 
     g_signal_connect(session->priv->vnc, "vnc-auth-credential",
-                     G_CALLBACK(virt_viewer_auth_vnc_credentials), NULL);
+                     G_CALLBACK(virt_viewer_session_vnc_auth_credential), session);
 
     return VIRT_VIEWER_SESSION(session);
 }

@@ -623,16 +623,18 @@ virt_viewer_app_create_session(VirtViewerApp *self, const gchar *type)
 
 #ifdef HAVE_GTK_VNC
     if (g_ascii_strcasecmp(type, "vnc") == 0) {
+        GtkWindow *window = virt_viewer_window_get_window(priv->main_window);
         virt_viewer_app_trace(self, "Guest %s has a %s display\n",
                               priv->guest_name, type);
-        priv->session = virt_viewer_session_vnc_new();
+        priv->session = virt_viewer_session_vnc_new(window);
     } else
 #endif
 #ifdef HAVE_SPICE_GTK
         if (g_ascii_strcasecmp(type, "spice") == 0) {
+            GtkWindow *window = virt_viewer_window_get_window(priv->main_window);
             virt_viewer_app_trace(self, "Guest %s has a %s display\n",
                                   priv->guest_name, type);
-            priv->session = virt_viewer_session_spice_new();
+            priv->session = virt_viewer_session_spice_new(window);
         } else
 #endif
             {

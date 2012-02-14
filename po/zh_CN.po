@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: zh_CN\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-02-14 17:22+0000\n"
+"POT-Creation-Date: 2012-02-14 17:56+0000\n"
 "PO-Revision-Date: 2010-09-30 16:45+0800\n"
 "Last-Translator: Aron Xu <happyaron.xu@gmail.com>\n"
 "Language-Team: Chinese (simplified) <i18n-zh@googlegroups.com>\n"
@@ -118,6 +118,69 @@ msgstr "无法为客户端 %s 确定 VNC 端口"
 msgid "Couldn't create a session for this type: %s"
 msgstr ""
 
+#.
+#. * Local variables:
+#. *  c-indent-level: 4
+#. *  c-basic-offset: 4
+#. *  indent-tabs-mode: nil
+#. * End:
+#.
+#: ../src/virt-viewer-about.xml.h:1
+#, fuzzy
+msgid "A remote desktop client built with GTK-VNC, SPICE-GTK and libvirt"
+msgstr "内置 GTK-VNC 和 libvirt 的远程桌面客户端"
+
+#: ../src/virt-viewer-about.xml.h:2
+msgid "About Glade"
+msgstr "关于 Glade"
+
+#: ../src/virt-viewer-about.xml.h:3
+#, fuzzy
+msgid ""
+"Copyright (C) 2007-2012 Daniel P. Berrange\n"
+"Copyright (C) 2007-2012 Red Hat, Inc."
+msgstr ""
+"版权所有 2007-2008 Daniel P. Berrange\n"
+"版权所有 2007-2008 红帽公司"
+
+#: ../src/virt-viewer-about.xml.h:5
+msgid "The Fedora Translation Team"
+msgstr "Fedora 翻译团队"
+
+#: ../src/virt-viewer-about.xml.h:6
+msgid ""
+"This program is free software; you can redistribute it and/or modify\n"
+"it under the terms of the GNU General Public License as published by\n"
+"the Free Software Foundation; either version 2 of the License, or\n"
+"(at your option) any later version.\n"
+"\n"
+"This program is distributed in the hope that it will be useful,\n"
+"but WITHOUT ANY WARRANTY; without even the implied warranty of\n"
+"MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\n"
+"GNU General Public License for more details.\n"
+"\n"
+"You should have received a copy of the GNU General Public License\n"
+"along with this program; if not, write to the Free Software\n"
+"Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA\n"
+msgstr ""
+"这个程序是免费软件。您可以根据自由软件基金\n"
+"发布的 GNU 通用公共许可证版本 2 或者之后的版本\n"
+"中的条款重新发布和/或者修改\n"
+"这个软件。 \n"
+"\n"
+"这个程序的发布是希望它能对您\n"
+"有所帮助，但并不保证对您有用，\n"
+"甚至不包含用于特殊目的的适销性或者适用性保证。\n"
+"详情请查看 GNU 通用公共许可证。\n"
+"\n"
+"这个程序应该附带有一份 GNU 通用公共许可证副本。\n"
+"如果没有，请致函自由软件基金有限公司，\n"
+"地址 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA\n"
+
+#: ../src/virt-viewer-about.xml.h:20
+msgid "virt-manager.org"
+msgstr "virt-manager.org"
+
 #: ../src/virt-viewer-app.c:259
 msgid "This is the last visible display. Do you want to quit?"
 msgstr ""
@@ -181,6 +244,29 @@ msgstr "无法连接到 VNC 服务器 %s"
 #, c-format
 msgid "USB redirection error: %s"
 msgstr ""
+
+#.
+#. * Local variables:
+#. *  c-indent-level: 4
+#. *  c-basic-offset: 4
+#. *  indent-tabs-mode: nil
+#. * End:
+#.
+#: ../src/virt-viewer-auth.xml.h:1
+msgid "Authentication required"
+msgstr "需要验证"
+
+#: ../src/virt-viewer-auth.xml.h:2
+msgid "Password:"
+msgstr "密码："
+
+#: ../src/virt-viewer-auth.xml.h:3
+msgid "Username:"
+msgstr "用户名："
+
+#: ../src/virt-viewer-auth.xml.h:4
+msgid "label"
+msgstr "标签"
 
 #: ../src/virt-viewer-main.c:38
 #, c-format
@@ -327,132 +413,113 @@ msgstr "无法使用 URI %s 连接到 libvirt"
 msgid "[none]"
 msgstr "[无]"
 
-#~ msgid "A remote desktop client built with GTK-VNC and libvirt"
-#~ msgstr "内置 GTK-VNC 和 libvirt 的远程桌面客户端"
+#.
+#. * Local variables:
+#. *  c-indent-level: 4
+#. *  c-basic-offset: 4
+#. *  indent-tabs-mode: nil
+#. * End:
+#.
+#: ../src/virt-viewer.xml.h:1
+msgid "Automatically resize"
+msgstr "自动重新定义大小"
 
-#~ msgid "About Glade"
-#~ msgstr "关于 Glade"
+#: ../src/virt-viewer.xml.h:2
+msgid "Ctrl+Alt+F11"
+msgstr "Ctrl+Alt+F11"
 
-#~ msgid ""
-#~ "Copyright 2007-2008 Daniel P. Berrange\n"
-#~ "Copyright 2007-2008 Red Hat, Inc."
-#~ msgstr ""
-#~ "版权所有 2007-2008 Daniel P. Berrange\n"
-#~ "版权所有 2007-2008 红帽公司"
+#: ../src/virt-viewer.xml.h:3
+msgid "Ctrl+Alt+F12"
+msgstr "Ctrl+Alt+F12"
 
-#~ msgid "The Fedora Translation Team"
-#~ msgstr "Fedora 翻译团队"
+#: ../src/virt-viewer.xml.h:4
+msgid "Ctrl+Alt+F1_0"
+msgstr "Ctrl+Alt+F1_0"
 
-#~ msgid ""
-#~ "This program is free software; you can redistribute it and/or modify\n"
-#~ "it under the terms of the GNU General Public License as published by\n"
-#~ "the Free Software Foundation; either version 2 of the License, or\n"
-#~ "(at your option) any later version.\n"
-#~ "\n"
-#~ "This program is distributed in the hope that it will be useful,\n"
-#~ "but WITHOUT ANY WARRANTY; without even the implied warranty of\n"
-#~ "MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\n"
-#~ "GNU General Public License for more details.\n"
-#~ "\n"
-#~ "You should have received a copy of the GNU General Public License\n"
-#~ "along with this program; if not, write to the Free Software\n"
-#~ "Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  "
-#~ "USA\n"
-#~ msgstr ""
-#~ "这个程序是免费软件。您可以根据自由软件基金\n"
-#~ "发布的 GNU 通用公共许可证版本 2 或者之后的版本\n"
-#~ "中的条款重新发布和/或者修改\n"
-#~ "这个软件。 \n"
-#~ "\n"
-#~ "这个程序的发布是希望它能对您\n"
-#~ "有所帮助，但并不保证对您有用，\n"
-#~ "甚至不包含用于特殊目的的适销性或者适用性保证。\n"
-#~ "详情请查看 GNU 通用公共许可证。\n"
-#~ "\n"
-#~ "这个程序应该附带有一份 GNU 通用公共许可证副本。\n"
-#~ "如果没有，请致函自由软件基金有限公司，\n"
-#~ "地址 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA\n"
+#: ../src/virt-viewer.xml.h:5
+msgid "Ctrl+Alt+F_1"
+msgstr "Ctrl+Alt+F_1"
 
-#~ msgid "virt-manager.org"
-#~ msgstr "virt-manager.org"
+#: ../src/virt-viewer.xml.h:6
+msgid "Ctrl+Alt+F_2"
+msgstr "Ctrl+Alt+F_2"
 
-#~ msgid "Authentication required"
-#~ msgstr "需要验证"
+#: ../src/virt-viewer.xml.h:7
+msgid "Ctrl+Alt+F_3"
+msgstr "Ctrl+Alt+F_3"
 
-#~ msgid "Password:"
-#~ msgstr "密码："
+#: ../src/virt-viewer.xml.h:8
+msgid "Ctrl+Alt+F_4"
+msgstr "Ctrl+Alt+F_4"
 
-#~ msgid "Username:"
-#~ msgstr "用户名："
+#: ../src/virt-viewer.xml.h:9
+msgid "Ctrl+Alt+F_5"
+msgstr "Ctrl+Alt+F_5"
 
-#~ msgid "label"
-#~ msgstr "标签"
+#: ../src/virt-viewer.xml.h:10
+msgid "Ctrl+Alt+F_6"
+msgstr "Ctrl+Alt+F_6"
 
-#~ msgid "Automatically resize"
-#~ msgstr "自动重新定义大小"
+#: ../src/virt-viewer.xml.h:11
+msgid "Ctrl+Alt+F_7"
+msgstr "Ctrl+Alt+F_7"
 
-#~ msgid "Ctrl+Alt+F11"
-#~ msgstr "Ctrl+Alt+F11"
+#: ../src/virt-viewer.xml.h:12
+msgid "Ctrl+Alt+F_8"
+msgstr "Ctrl+Alt+F_8"
 
-#~ msgid "Ctrl+Alt+F12"
-#~ msgstr "Ctrl+Alt+F12"
+#: ../src/virt-viewer.xml.h:13
+msgid "Ctrl+Alt+F_9"
+msgstr "Ctrl+Alt+F_9"
 
-#~ msgid "Ctrl+Alt+F1_0"
-#~ msgstr "Ctrl+Alt+F1_0"
+#: ../src/virt-viewer.xml.h:14
+msgid "Ctrl+Alt+_Backspace"
+msgstr "Ctrl+Alt+_Backspace"
 
-#~ msgid "Ctrl+Alt+F_1"
-#~ msgstr "Ctrl+Alt+F_1"
+#: ../src/virt-viewer.xml.h:15
+msgid "Ctrl+Alt+_Del"
+msgstr "Ctrl+Alt+_Del"
 
-#~ msgid "Ctrl+Alt+F_2"
-#~ msgstr "Ctrl+Alt+F_2"
+#: ../src/virt-viewer.xml.h:16
+msgid "Displays"
+msgstr ""
 
-#~ msgid "Ctrl+Alt+F_3"
-#~ msgstr "Ctrl+Alt+F_3"
+#: ../src/virt-viewer.xml.h:17
+#, fuzzy
+msgid "Full screen"
+msgstr "全屏"
 
-#~ msgid "Ctrl+Alt+F_4"
-#~ msgstr "Ctrl+Alt+F_4"
+#: ../src/virt-viewer.xml.h:18
+msgid "Screenshot"
+msgstr "截屏"
 
-#~ msgid "Ctrl+Alt+F_5"
-#~ msgstr "Ctrl+Alt+F_5"
+#: ../src/virt-viewer.xml.h:19
+msgid "USB device selection"
+msgstr ""
 
-#~ msgid "Ctrl+Alt+F_6"
-#~ msgstr "Ctrl+Alt+F_6"
+#: ../src/virt-viewer.xml.h:20
+msgid "_File"
+msgstr "文件(_F)"
 
-#~ msgid "Ctrl+Alt+F_7"
-#~ msgstr "Ctrl+Alt+F_7"
+#: ../src/virt-viewer.xml.h:21
+msgid "_Help"
+msgstr "帮助(_H)"
 
-#~ msgid "Ctrl+Alt+F_8"
-#~ msgstr "Ctrl+Alt+F_8"
+#: ../src/virt-viewer.xml.h:22
+msgid "_PrintScreen"
+msgstr "打印屏幕内容(_P)"
 
-#~ msgid "Ctrl+Alt+F_9"
-#~ msgstr "Ctrl+Alt+F_9"
+#: ../src/virt-viewer.xml.h:23
+msgid "_Send key"
+msgstr "发送组合键(_S)"
 
-#~ msgid "Ctrl+Alt+_Backspace"
-#~ msgstr "Ctrl+Alt+_Backspace"
+#: ../src/virt-viewer.xml.h:24
+msgid "_View"
+msgstr "查看(_V)"
 
-#~ msgid "Ctrl+Alt+_Del"
-#~ msgstr "Ctrl+Alt+_Del"
-
-#~ msgid "Screenshot"
-#~ msgstr "截屏"
-
-#~ msgid "_File"
-#~ msgstr "文件(_F)"
-
-#~ msgid "_Help"
-#~ msgstr "帮助(_H)"
-
-#~ msgid "_PrintScreen"
-#~ msgstr "打印屏幕内容(_P)"
-
-#~ msgid "_Send key"
-#~ msgstr "发送组合键(_S)"
-
-#~ msgid "_View"
-#~ msgstr "查看(_V)"
-
-#~ msgid "_Zoom"
-#~ msgstr "缩放(_Z)"
+#: ../src/virt-viewer.xml.h:25
+msgid "_Zoom"
+msgstr "缩放(_Z)"
 
 #~ msgid "page 1"
 #~ msgstr "第一页"

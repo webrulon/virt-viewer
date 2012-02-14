@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: virt-viewer.default.ko\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-02-14 17:22+0000\n"
+"POT-Creation-Date: 2012-02-14 17:56+0000\n"
 "PO-Revision-Date: 2010-04-01 08:59+1000\n"
 "Last-Translator: Hyunsok Oh <hoh@redhat.com>\n"
 "Language-Team: Korean <ko@li.org>\n"
@@ -119,6 +119,69 @@ msgstr "게스트 %s에 대한 VNC 포트를 결정할 수 없습니다"
 msgid "Couldn't create a session for this type: %s"
 msgstr ""
 
+#.
+#. * Local variables:
+#. *  c-indent-level: 4
+#. *  c-basic-offset: 4
+#. *  indent-tabs-mode: nil
+#. * End:
+#.
+#: ../src/virt-viewer-about.xml.h:1
+#, fuzzy
+msgid "A remote desktop client built with GTK-VNC, SPICE-GTK and libvirt"
+msgstr "GTK-VNC와 libvirt로 만들어진 원격 데스크탑 클라이언트"
+
+#: ../src/virt-viewer-about.xml.h:2
+msgid "About Glade"
+msgstr "Glade에 관하여"
+
+#: ../src/virt-viewer-about.xml.h:3
+#, fuzzy
+msgid ""
+"Copyright (C) 2007-2012 Daniel P. Berrange\n"
+"Copyright (C) 2007-2012 Red Hat, Inc."
+msgstr ""
+"Copyright 2007-2008 Daniel P. Berrange\n"
+"Copyright 2007-2008 Red Hat, Inc."
+
+#: ../src/virt-viewer-about.xml.h:5
+msgid "The Fedora Translation Team"
+msgstr "페도라 번역 팀"
+
+#: ../src/virt-viewer-about.xml.h:6
+msgid ""
+"This program is free software; you can redistribute it and/or modify\n"
+"it under the terms of the GNU General Public License as published by\n"
+"the Free Software Foundation; either version 2 of the License, or\n"
+"(at your option) any later version.\n"
+"\n"
+"This program is distributed in the hope that it will be useful,\n"
+"but WITHOUT ANY WARRANTY; without even the implied warranty of\n"
+"MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\n"
+"GNU General Public License for more details.\n"
+"\n"
+"You should have received a copy of the GNU General Public License\n"
+"along with this program; if not, write to the Free Software\n"
+"Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA\n"
+msgstr ""
+"This program is free software; you can redistribute it and/or modify\n"
+"it under the terms of the GNU General Public License as published by\n"
+"the Free Software Foundation; either version 2 of the License, or\n"
+"(at your option) any later version.\n"
+"\n"
+"This program is distributed in the hope that it will be useful,\n"
+"but WITHOUT ANY WARRANTY; without even the implied warranty of\n"
+"MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\n"
+"GNU General Public License for more details.\n"
+"\n"
+"You should have received a copy of the GNU General Public License\n"
+"along with this program; if not, write to the Free Software\n"
+"Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA\n"
+
+#: ../src/virt-viewer-about.xml.h:20
+msgid "virt-manager.org"
+msgstr "virt-manager.org"
+
 #: ../src/virt-viewer-app.c:259
 msgid "This is the last visible display. Do you want to quit?"
 msgstr ""
@@ -182,6 +245,29 @@ msgstr "VNC 서버 %s에 연결할 수 없습니다"
 #, c-format
 msgid "USB redirection error: %s"
 msgstr ""
+
+#.
+#. * Local variables:
+#. *  c-indent-level: 4
+#. *  c-basic-offset: 4
+#. *  indent-tabs-mode: nil
+#. * End:
+#.
+#: ../src/virt-viewer-auth.xml.h:1
+msgid "Authentication required"
+msgstr "인증이 필요합니다"
+
+#: ../src/virt-viewer-auth.xml.h:2
+msgid "Password:"
+msgstr "암호:"
+
+#: ../src/virt-viewer-auth.xml.h:3
+msgid "Username:"
+msgstr "사용자명:"
+
+#: ../src/virt-viewer-auth.xml.h:4
+msgid "label"
+msgstr "라벨"
 
 #: ../src/virt-viewer-main.c:38
 #, c-format
@@ -328,136 +414,119 @@ msgstr "URI %s로 libvirt에 연결할 수 없습니다"
 msgid "[none]"
 msgstr "[없음]"
 
-#~ msgid "A remote desktop client built with GTK-VNC and libvirt"
-#~ msgstr "GTK-VNC와 libvirt로 만들어진 원격 데스크탑 클라이언트"
+#.
+#. * Local variables:
+#. *  c-indent-level: 4
+#. *  c-basic-offset: 4
+#. *  indent-tabs-mode: nil
+#. * End:
+#.
+#: ../src/virt-viewer.xml.h:1
+msgid "Automatically resize"
+msgstr "자동으로 크기 변경"
 
-#~ msgid "About Glade"
-#~ msgstr "Glade에 관하여"
+#: ../src/virt-viewer.xml.h:2
+msgid "Ctrl+Alt+F11"
+msgstr "Ctrl+Alt+F11"
 
-#~ msgid ""
-#~ "Copyright 2007-2008 Daniel P. Berrange\n"
-#~ "Copyright 2007-2008 Red Hat, Inc."
-#~ msgstr ""
-#~ "Copyright 2007-2008 Daniel P. Berrange\n"
-#~ "Copyright 2007-2008 Red Hat, Inc."
+#: ../src/virt-viewer.xml.h:3
+msgid "Ctrl+Alt+F12"
+msgstr "Ctrl+Alt+F12"
 
-#~ msgid "The Fedora Translation Team"
-#~ msgstr "페도라 번역 팀"
+#: ../src/virt-viewer.xml.h:4
+msgid "Ctrl+Alt+F1_0"
+msgstr "Ctrl+Alt+F1_0"
 
-#~ msgid ""
-#~ "This program is free software; you can redistribute it and/or modify\n"
-#~ "it under the terms of the GNU General Public License as published by\n"
-#~ "the Free Software Foundation; either version 2 of the License, or\n"
-#~ "(at your option) any later version.\n"
-#~ "\n"
-#~ "This program is distributed in the hope that it will be useful,\n"
-#~ "but WITHOUT ANY WARRANTY; without even the implied warranty of\n"
-#~ "MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\n"
-#~ "GNU General Public License for more details.\n"
-#~ "\n"
-#~ "You should have received a copy of the GNU General Public License\n"
-#~ "along with this program; if not, write to the Free Software\n"
-#~ "Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  "
-#~ "USA\n"
-#~ msgstr ""
-#~ "This program is free software; you can redistribute it and/or modify\n"
-#~ "it under the terms of the GNU General Public License as published by\n"
-#~ "the Free Software Foundation; either version 2 of the License, or\n"
-#~ "(at your option) any later version.\n"
-#~ "\n"
-#~ "This program is distributed in the hope that it will be useful,\n"
-#~ "but WITHOUT ANY WARRANTY; without even the implied warranty of\n"
-#~ "MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\n"
-#~ "GNU General Public License for more details.\n"
-#~ "\n"
-#~ "You should have received a copy of the GNU General Public License\n"
-#~ "along with this program; if not, write to the Free Software\n"
-#~ "Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  "
-#~ "USA\n"
+#: ../src/virt-viewer.xml.h:5
+msgid "Ctrl+Alt+F_1"
+msgstr "Ctrl+Alt+F_1"
 
-#~ msgid "virt-manager.org"
-#~ msgstr "virt-manager.org"
+#: ../src/virt-viewer.xml.h:6
+msgid "Ctrl+Alt+F_2"
+msgstr "Ctrl+Alt+F_2"
 
-#~ msgid "Authentication required"
-#~ msgstr "인증이 필요합니다"
+#: ../src/virt-viewer.xml.h:7
+msgid "Ctrl+Alt+F_3"
+msgstr "Ctrl+Alt+F_3"
 
-#~ msgid "Password:"
-#~ msgstr "암호:"
+#: ../src/virt-viewer.xml.h:8
+msgid "Ctrl+Alt+F_4"
+msgstr "Ctrl+Alt+F_4"
 
-#~ msgid "Username:"
-#~ msgstr "사용자명:"
+#: ../src/virt-viewer.xml.h:9
+msgid "Ctrl+Alt+F_5"
+msgstr "Ctrl+Alt+F_5"
+
+#: ../src/virt-viewer.xml.h:10
+msgid "Ctrl+Alt+F_6"
+msgstr "Ctrl+Alt+F_6"
+
+#: ../src/virt-viewer.xml.h:11
+msgid "Ctrl+Alt+F_7"
+msgstr "Ctrl+Alt+F_7"
+
+#: ../src/virt-viewer.xml.h:12
+msgid "Ctrl+Alt+F_8"
+msgstr "Ctrl+Alt+F_8"
+
+#: ../src/virt-viewer.xml.h:13
+msgid "Ctrl+Alt+F_9"
+msgstr "Ctrl+Alt+F_9"
+
+#: ../src/virt-viewer.xml.h:14
+msgid "Ctrl+Alt+_Backspace"
+msgstr "Ctrl+Alt+_Backspace"
+
+#: ../src/virt-viewer.xml.h:15
+msgid "Ctrl+Alt+_Del"
+msgstr "Ctrl+Alt+_Del"
+
+#: ../src/virt-viewer.xml.h:16
+msgid "Displays"
+msgstr ""
+
+#: ../src/virt-viewer.xml.h:17
+#, fuzzy
+msgid "Full screen"
+msgstr "전체 화면"
+
+#: ../src/virt-viewer.xml.h:18
+msgid "Screenshot"
+msgstr "스크린샷"
+
+#: ../src/virt-viewer.xml.h:19
+msgid "USB device selection"
+msgstr ""
+
+#: ../src/virt-viewer.xml.h:20
+msgid "_File"
+msgstr "파일(_F)"
+
+#: ../src/virt-viewer.xml.h:21
+msgid "_Help"
+msgstr "도움말(_H)"
+
+#: ../src/virt-viewer.xml.h:22
+msgid "_PrintScreen"
+msgstr "화면 프린트(_P)"
+
+#: ../src/virt-viewer.xml.h:23
+msgid "_Send key"
+msgstr "키 전송(_S)"
+
+#: ../src/virt-viewer.xml.h:24
+msgid "_View"
+msgstr "보기(_V)"
+
+#: ../src/virt-viewer.xml.h:25
+msgid "_Zoom"
+msgstr ""
 
 #~ msgid "gtk-cancel"
 #~ msgstr "gtk-cancel"
 
 #~ msgid "gtk-ok"
 #~ msgstr "gtk-ok"
-
-#~ msgid "label"
-#~ msgstr "라벨"
-
-#~ msgid "Automatically resize"
-#~ msgstr "자동으로 크기 변경"
-
-#~ msgid "Ctrl+Alt+F11"
-#~ msgstr "Ctrl+Alt+F11"
-
-#~ msgid "Ctrl+Alt+F12"
-#~ msgstr "Ctrl+Alt+F12"
-
-#~ msgid "Ctrl+Alt+F1_0"
-#~ msgstr "Ctrl+Alt+F1_0"
-
-#~ msgid "Ctrl+Alt+F_1"
-#~ msgstr "Ctrl+Alt+F_1"
-
-#~ msgid "Ctrl+Alt+F_2"
-#~ msgstr "Ctrl+Alt+F_2"
-
-#~ msgid "Ctrl+Alt+F_3"
-#~ msgstr "Ctrl+Alt+F_3"
-
-#~ msgid "Ctrl+Alt+F_4"
-#~ msgstr "Ctrl+Alt+F_4"
-
-#~ msgid "Ctrl+Alt+F_5"
-#~ msgstr "Ctrl+Alt+F_5"
-
-#~ msgid "Ctrl+Alt+F_6"
-#~ msgstr "Ctrl+Alt+F_6"
-
-#~ msgid "Ctrl+Alt+F_7"
-#~ msgstr "Ctrl+Alt+F_7"
-
-#~ msgid "Ctrl+Alt+F_8"
-#~ msgstr "Ctrl+Alt+F_8"
-
-#~ msgid "Ctrl+Alt+F_9"
-#~ msgstr "Ctrl+Alt+F_9"
-
-#~ msgid "Ctrl+Alt+_Backspace"
-#~ msgstr "Ctrl+Alt+_Backspace"
-
-#~ msgid "Ctrl+Alt+_Del"
-#~ msgstr "Ctrl+Alt+_Del"
-
-#~ msgid "Screenshot"
-#~ msgstr "스크린샷"
-
-#~ msgid "_File"
-#~ msgstr "파일(_F)"
-
-#~ msgid "_Help"
-#~ msgstr "도움말(_H)"
-
-#~ msgid "_PrintScreen"
-#~ msgstr "화면 프린트(_P)"
-
-#~ msgid "_Send key"
-#~ msgstr "키 전송(_S)"
-
-#~ msgid "_View"
-#~ msgstr "보기(_V)"
 
 #~ msgid "gtk-about"
 #~ msgstr "gtk-about"

@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: virt-viewer.tip.virt-viewer.or\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-02-14 17:22+0000\n"
+"POT-Creation-Date: 2012-02-14 17:56+0000\n"
 "PO-Revision-Date: 2010-02-01 12:55+0530\n"
 "Last-Translator: Manoj Kumar Giri <mgiri@redhat.com>\n"
 "Language-Team: Oriya <oriya-it@googlegroups.com>\n"
@@ -118,6 +118,69 @@ msgstr "ଅତିଥି %s ପାଇଁ VNC ସଂଯୋଗିକୀ ନିର�
 msgid "Couldn't create a session for this type: %s"
 msgstr ""
 
+#.
+#. * Local variables:
+#. *  c-indent-level: 4
+#. *  c-basic-offset: 4
+#. *  indent-tabs-mode: nil
+#. * End:
+#.
+#: ../src/virt-viewer-about.xml.h:1
+#, fuzzy
+msgid "A remote desktop client built with GTK-VNC, SPICE-GTK and libvirt"
+msgstr "ଗୋଟିଏ ସୁଦୂର ଡେସ୍କଟପ କ୍ଲାଏଣ୍ଟ GTK-VNC ଏବଂ libvirt ସହିତ ନିର୍ମିତ"
+
+#: ../src/virt-viewer-about.xml.h:2
+msgid "About Glade"
+msgstr "Glade ବିଷୟରେ"
+
+#: ../src/virt-viewer-about.xml.h:3
+#, fuzzy
+msgid ""
+"Copyright (C) 2007-2012 Daniel P. Berrange\n"
+"Copyright (C) 2007-2012 Red Hat, Inc."
+msgstr ""
+"Copyright 2007-2008 Daniel P. Berrange\n"
+"Copyright 2007-2008 Red Hat, Inc."
+
+#: ../src/virt-viewer-about.xml.h:5
+msgid "The Fedora Translation Team"
+msgstr "Fedora ଅନୁବାଦ ମଣ୍ଡଳୀ"
+
+#: ../src/virt-viewer-about.xml.h:6
+msgid ""
+"This program is free software; you can redistribute it and/or modify\n"
+"it under the terms of the GNU General Public License as published by\n"
+"the Free Software Foundation; either version 2 of the License, or\n"
+"(at your option) any later version.\n"
+"\n"
+"This program is distributed in the hope that it will be useful,\n"
+"but WITHOUT ANY WARRANTY; without even the implied warranty of\n"
+"MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\n"
+"GNU General Public License for more details.\n"
+"\n"
+"You should have received a copy of the GNU General Public License\n"
+"along with this program; if not, write to the Free Software\n"
+"Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA\n"
+msgstr ""
+"This program is free software; you can redistribute it and/or modify\n"
+"it under the terms of the GNU General Public License as published by\n"
+"the Free Software Foundation; either version 2 of the License, or\n"
+"(at your option) any later version.\n"
+"\n"
+"This program is distributed in the hope that it will be useful,\n"
+"but WITHOUT ANY WARRANTY; without even the implied warranty of\n"
+"MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\n"
+"GNU General Public License for more details.\n"
+"\n"
+"You should have received a copy of the GNU General Public License\n"
+"along with this program; if not, write to the Free Software\n"
+"Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA\n"
+
+#: ../src/virt-viewer-about.xml.h:20
+msgid "virt-manager.org"
+msgstr "virt-manager.org"
+
 #: ../src/virt-viewer-app.c:259
 msgid "This is the last visible display. Do you want to quit?"
 msgstr ""
@@ -181,6 +244,29 @@ msgstr "VNC ସର୍ଭର %s ସହିତ ସଂଯୋଗ କରିବାର�
 #, c-format
 msgid "USB redirection error: %s"
 msgstr ""
+
+#.
+#. * Local variables:
+#. *  c-indent-level: 4
+#. *  c-basic-offset: 4
+#. *  indent-tabs-mode: nil
+#. * End:
+#.
+#: ../src/virt-viewer-auth.xml.h:1
+msgid "Authentication required"
+msgstr "ବୈଧିକରଣ ଆବଶ୍ଯକ"
+
+#: ../src/virt-viewer-auth.xml.h:2
+msgid "Password:"
+msgstr "ପ୍ରବେଶ ସଙ୍କେତ:"
+
+#: ../src/virt-viewer-auth.xml.h:3
+msgid "Username:"
+msgstr "ଚାଳକ ନାମ:"
+
+#: ../src/virt-viewer-auth.xml.h:4
+msgid "label"
+msgstr "ସୂଚକ"
 
 #: ../src/virt-viewer-main.c:38
 #, c-format
@@ -327,136 +413,119 @@ msgstr "URI %s ସହାୟତାରେ libvirt ସହିତ ସଂଯୋଗ କ
 msgid "[none]"
 msgstr "[କିଛି ନାହିଁ]"
 
-#~ msgid "A remote desktop client built with GTK-VNC and libvirt"
-#~ msgstr "ଗୋଟିଏ ସୁଦୂର ଡେସ୍କଟପ କ୍ଲାଏଣ୍ଟ GTK-VNC ଏବଂ libvirt ସହିତ ନିର୍ମିତ"
+#.
+#. * Local variables:
+#. *  c-indent-level: 4
+#. *  c-basic-offset: 4
+#. *  indent-tabs-mode: nil
+#. * End:
+#.
+#: ../src/virt-viewer.xml.h:1
+msgid "Automatically resize"
+msgstr "ସ୍ୱୟଂଚାଳିତ ଭାବରେ ଆକାର ପରିବର୍ତ୍ତନ କରନ୍ତୁ"
 
-#~ msgid "About Glade"
-#~ msgstr "Glade ବିଷୟରେ"
+#: ../src/virt-viewer.xml.h:2
+msgid "Ctrl+Alt+F11"
+msgstr "Ctrl+Alt+F11"
 
-#~ msgid ""
-#~ "Copyright 2007-2008 Daniel P. Berrange\n"
-#~ "Copyright 2007-2008 Red Hat, Inc."
-#~ msgstr ""
-#~ "Copyright 2007-2008 Daniel P. Berrange\n"
-#~ "Copyright 2007-2008 Red Hat, Inc."
+#: ../src/virt-viewer.xml.h:3
+msgid "Ctrl+Alt+F12"
+msgstr "Ctrl+Alt+F12"
 
-#~ msgid "The Fedora Translation Team"
-#~ msgstr "Fedora ଅନୁବାଦ ମଣ୍ଡଳୀ"
+#: ../src/virt-viewer.xml.h:4
+msgid "Ctrl+Alt+F1_0"
+msgstr "Ctrl+Alt+F10 (_0)"
 
-#~ msgid ""
-#~ "This program is free software; you can redistribute it and/or modify\n"
-#~ "it under the terms of the GNU General Public License as published by\n"
-#~ "the Free Software Foundation; either version 2 of the License, or\n"
-#~ "(at your option) any later version.\n"
-#~ "\n"
-#~ "This program is distributed in the hope that it will be useful,\n"
-#~ "but WITHOUT ANY WARRANTY; without even the implied warranty of\n"
-#~ "MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\n"
-#~ "GNU General Public License for more details.\n"
-#~ "\n"
-#~ "You should have received a copy of the GNU General Public License\n"
-#~ "along with this program; if not, write to the Free Software\n"
-#~ "Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  "
-#~ "USA\n"
-#~ msgstr ""
-#~ "This program is free software; you can redistribute it and/or modify\n"
-#~ "it under the terms of the GNU General Public License as published by\n"
-#~ "the Free Software Foundation; either version 2 of the License, or\n"
-#~ "(at your option) any later version.\n"
-#~ "\n"
-#~ "This program is distributed in the hope that it will be useful,\n"
-#~ "but WITHOUT ANY WARRANTY; without even the implied warranty of\n"
-#~ "MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\n"
-#~ "GNU General Public License for more details.\n"
-#~ "\n"
-#~ "You should have received a copy of the GNU General Public License\n"
-#~ "along with this program; if not, write to the Free Software\n"
-#~ "Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  "
-#~ "USA\n"
+#: ../src/virt-viewer.xml.h:5
+msgid "Ctrl+Alt+F_1"
+msgstr "Ctrl+Alt+F1 (_1)"
 
-#~ msgid "virt-manager.org"
-#~ msgstr "virt-manager.org"
+#: ../src/virt-viewer.xml.h:6
+msgid "Ctrl+Alt+F_2"
+msgstr "Ctrl+Alt+F2 (_2)"
 
-#~ msgid "Authentication required"
-#~ msgstr "ବୈଧିକରଣ ଆବଶ୍ଯକ"
+#: ../src/virt-viewer.xml.h:7
+msgid "Ctrl+Alt+F_3"
+msgstr "Ctrl+Alt+F3 (_3)"
 
-#~ msgid "Password:"
-#~ msgstr "ପ୍ରବେଶ ସଙ୍କେତ:"
+#: ../src/virt-viewer.xml.h:8
+msgid "Ctrl+Alt+F_4"
+msgstr "Ctrl+Alt+F4 (_4)"
 
-#~ msgid "Username:"
-#~ msgstr "ଚାଳକ ନାମ:"
+#: ../src/virt-viewer.xml.h:9
+msgid "Ctrl+Alt+F_5"
+msgstr "Ctrl+Alt+F5 (_5)"
+
+#: ../src/virt-viewer.xml.h:10
+msgid "Ctrl+Alt+F_6"
+msgstr "Ctrl+Alt+F6 (_6)"
+
+#: ../src/virt-viewer.xml.h:11
+msgid "Ctrl+Alt+F_7"
+msgstr "Ctrl+Alt+F7 (_7)"
+
+#: ../src/virt-viewer.xml.h:12
+msgid "Ctrl+Alt+F_8"
+msgstr "Ctrl+Alt+F8 (_8)"
+
+#: ../src/virt-viewer.xml.h:13
+msgid "Ctrl+Alt+F_9"
+msgstr "Ctrl+Alt+F9 (_9)"
+
+#: ../src/virt-viewer.xml.h:14
+msgid "Ctrl+Alt+_Backspace"
+msgstr "Ctrl+Alt+Backspace (_B)"
+
+#: ../src/virt-viewer.xml.h:15
+msgid "Ctrl+Alt+_Del"
+msgstr "Ctrl+Alt+Del (_D)"
+
+#: ../src/virt-viewer.xml.h:16
+msgid "Displays"
+msgstr ""
+
+#: ../src/virt-viewer.xml.h:17
+#, fuzzy
+msgid "Full screen"
+msgstr "ସମ୍ପୂର୍ଣ୍ଣ ପରଦା"
+
+#: ../src/virt-viewer.xml.h:18
+msgid "Screenshot"
+msgstr "ସ୍କ୍ରିନ୍ସଟ୍"
+
+#: ../src/virt-viewer.xml.h:19
+msgid "USB device selection"
+msgstr ""
+
+#: ../src/virt-viewer.xml.h:20
+msgid "_File"
+msgstr "ଫାଇଲ (_F)"
+
+#: ../src/virt-viewer.xml.h:21
+msgid "_Help"
+msgstr "ସହାୟତା (_H)"
+
+#: ../src/virt-viewer.xml.h:22
+msgid "_PrintScreen"
+msgstr "PrintScreen (_P)"
+
+#: ../src/virt-viewer.xml.h:23
+msgid "_Send key"
+msgstr "କି ପଠାନ୍ତୁ (_S)"
+
+#: ../src/virt-viewer.xml.h:24
+msgid "_View"
+msgstr "ଦ୍ରୁଶ୍ଯ (_V)"
+
+#: ../src/virt-viewer.xml.h:25
+msgid "_Zoom"
+msgstr ""
 
 #~ msgid "gtk-cancel"
 #~ msgstr "gtk-cancel"
 
 #~ msgid "gtk-ok"
 #~ msgstr "gtk-ok"
-
-#~ msgid "label"
-#~ msgstr "ସୂଚକ"
-
-#~ msgid "Automatically resize"
-#~ msgstr "ସ୍ୱୟଂଚାଳିତ ଭାବରେ ଆକାର ପରିବର୍ତ୍ତନ କରନ୍ତୁ"
-
-#~ msgid "Ctrl+Alt+F11"
-#~ msgstr "Ctrl+Alt+F11"
-
-#~ msgid "Ctrl+Alt+F12"
-#~ msgstr "Ctrl+Alt+F12"
-
-#~ msgid "Ctrl+Alt+F1_0"
-#~ msgstr "Ctrl+Alt+F10 (_0)"
-
-#~ msgid "Ctrl+Alt+F_1"
-#~ msgstr "Ctrl+Alt+F1 (_1)"
-
-#~ msgid "Ctrl+Alt+F_2"
-#~ msgstr "Ctrl+Alt+F2 (_2)"
-
-#~ msgid "Ctrl+Alt+F_3"
-#~ msgstr "Ctrl+Alt+F3 (_3)"
-
-#~ msgid "Ctrl+Alt+F_4"
-#~ msgstr "Ctrl+Alt+F4 (_4)"
-
-#~ msgid "Ctrl+Alt+F_5"
-#~ msgstr "Ctrl+Alt+F5 (_5)"
-
-#~ msgid "Ctrl+Alt+F_6"
-#~ msgstr "Ctrl+Alt+F6 (_6)"
-
-#~ msgid "Ctrl+Alt+F_7"
-#~ msgstr "Ctrl+Alt+F7 (_7)"
-
-#~ msgid "Ctrl+Alt+F_8"
-#~ msgstr "Ctrl+Alt+F8 (_8)"
-
-#~ msgid "Ctrl+Alt+F_9"
-#~ msgstr "Ctrl+Alt+F9 (_9)"
-
-#~ msgid "Ctrl+Alt+_Backspace"
-#~ msgstr "Ctrl+Alt+Backspace (_B)"
-
-#~ msgid "Ctrl+Alt+_Del"
-#~ msgstr "Ctrl+Alt+Del (_D)"
-
-#~ msgid "Screenshot"
-#~ msgstr "ସ୍କ୍ରିନ୍ସଟ୍"
-
-#~ msgid "_File"
-#~ msgstr "ଫାଇଲ (_F)"
-
-#~ msgid "_Help"
-#~ msgstr "ସହାୟତା (_H)"
-
-#~ msgid "_PrintScreen"
-#~ msgstr "PrintScreen (_P)"
-
-#~ msgid "_Send key"
-#~ msgstr "କି ପଠାନ୍ତୁ (_S)"
-
-#~ msgid "_View"
-#~ msgstr "ଦ୍ରୁଶ୍ଯ (_V)"
 
 #~ msgid "gtk-about"
 #~ msgstr "gtk-about"

@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-02-14 17:22+0000\n"
+"POT-Creation-Date: 2012-02-14 17:56+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -106,6 +106,52 @@ msgstr ""
 msgid "Couldn't create a session for this type: %s"
 msgstr ""
 
+#.
+#. * Local variables:
+#. *  c-indent-level: 4
+#. *  c-basic-offset: 4
+#. *  indent-tabs-mode: nil
+#. * End:
+#.
+#: ../src/virt-viewer-about.xml.h:1
+msgid "A remote desktop client built with GTK-VNC, SPICE-GTK and libvirt"
+msgstr ""
+
+#: ../src/virt-viewer-about.xml.h:2
+msgid "About Glade"
+msgstr ""
+
+#: ../src/virt-viewer-about.xml.h:3
+msgid ""
+"Copyright (C) 2007-2012 Daniel P. Berrange\n"
+"Copyright (C) 2007-2012 Red Hat, Inc."
+msgstr ""
+
+#: ../src/virt-viewer-about.xml.h:5
+msgid "The Fedora Translation Team"
+msgstr ""
+
+#: ../src/virt-viewer-about.xml.h:6
+msgid ""
+"This program is free software; you can redistribute it and/or modify\n"
+"it under the terms of the GNU General Public License as published by\n"
+"the Free Software Foundation; either version 2 of the License, or\n"
+"(at your option) any later version.\n"
+"\n"
+"This program is distributed in the hope that it will be useful,\n"
+"but WITHOUT ANY WARRANTY; without even the implied warranty of\n"
+"MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\n"
+"GNU General Public License for more details.\n"
+"\n"
+"You should have received a copy of the GNU General Public License\n"
+"along with this program; if not, write to the Free Software\n"
+"Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA\n"
+msgstr ""
+
+#: ../src/virt-viewer-about.xml.h:20
+msgid "virt-manager.org"
+msgstr ""
+
 #: ../src/virt-viewer-app.c:259
 msgid "This is the last visible display. Do you want to quit?"
 msgstr ""
@@ -164,6 +210,29 @@ msgstr ""
 #: ../src/virt-viewer-app.c:1084
 #, c-format
 msgid "USB redirection error: %s"
+msgstr ""
+
+#.
+#. * Local variables:
+#. *  c-indent-level: 4
+#. *  c-basic-offset: 4
+#. *  indent-tabs-mode: nil
+#. * End:
+#.
+#: ../src/virt-viewer-auth.xml.h:1
+msgid "Authentication required"
+msgstr ""
+
+#: ../src/virt-viewer-auth.xml.h:2
+msgid "Password:"
+msgstr ""
+
+#: ../src/virt-viewer-auth.xml.h:3
+msgid "Username:"
+msgstr ""
+
+#: ../src/virt-viewer-auth.xml.h:4
+msgid "label"
 msgstr ""
 
 #: ../src/virt-viewer-main.c:38
@@ -292,4 +361,111 @@ msgstr ""
 
 #: ../src/virt-viewer.c:625
 msgid "[none]"
+msgstr ""
+
+#.
+#. * Local variables:
+#. *  c-indent-level: 4
+#. *  c-basic-offset: 4
+#. *  indent-tabs-mode: nil
+#. * End:
+#.
+#: ../src/virt-viewer.xml.h:1
+msgid "Automatically resize"
+msgstr ""
+
+#: ../src/virt-viewer.xml.h:2
+msgid "Ctrl+Alt+F11"
+msgstr ""
+
+#: ../src/virt-viewer.xml.h:3
+msgid "Ctrl+Alt+F12"
+msgstr ""
+
+#: ../src/virt-viewer.xml.h:4
+msgid "Ctrl+Alt+F1_0"
+msgstr ""
+
+#: ../src/virt-viewer.xml.h:5
+msgid "Ctrl+Alt+F_1"
+msgstr ""
+
+#: ../src/virt-viewer.xml.h:6
+msgid "Ctrl+Alt+F_2"
+msgstr ""
+
+#: ../src/virt-viewer.xml.h:7
+msgid "Ctrl+Alt+F_3"
+msgstr ""
+
+#: ../src/virt-viewer.xml.h:8
+msgid "Ctrl+Alt+F_4"
+msgstr ""
+
+#: ../src/virt-viewer.xml.h:9
+msgid "Ctrl+Alt+F_5"
+msgstr ""
+
+#: ../src/virt-viewer.xml.h:10
+msgid "Ctrl+Alt+F_6"
+msgstr ""
+
+#: ../src/virt-viewer.xml.h:11
+msgid "Ctrl+Alt+F_7"
+msgstr ""
+
+#: ../src/virt-viewer.xml.h:12
+msgid "Ctrl+Alt+F_8"
+msgstr ""
+
+#: ../src/virt-viewer.xml.h:13
+msgid "Ctrl+Alt+F_9"
+msgstr ""
+
+#: ../src/virt-viewer.xml.h:14
+msgid "Ctrl+Alt+_Backspace"
+msgstr ""
+
+#: ../src/virt-viewer.xml.h:15
+msgid "Ctrl+Alt+_Del"
+msgstr ""
+
+#: ../src/virt-viewer.xml.h:16
+msgid "Displays"
+msgstr ""
+
+#: ../src/virt-viewer.xml.h:17
+msgid "Full screen"
+msgstr ""
+
+#: ../src/virt-viewer.xml.h:18
+msgid "Screenshot"
+msgstr ""
+
+#: ../src/virt-viewer.xml.h:19
+msgid "USB device selection"
+msgstr ""
+
+#: ../src/virt-viewer.xml.h:20
+msgid "_File"
+msgstr ""
+
+#: ../src/virt-viewer.xml.h:21
+msgid "_Help"
+msgstr ""
+
+#: ../src/virt-viewer.xml.h:22
+msgid "_PrintScreen"
+msgstr ""
+
+#: ../src/virt-viewer.xml.h:23
+msgid "_Send key"
+msgstr ""
+
+#: ../src/virt-viewer.xml.h:24
+msgid "_View"
+msgstr ""
+
+#: ../src/virt-viewer.xml.h:25
+msgid "_Zoom"
 msgstr ""

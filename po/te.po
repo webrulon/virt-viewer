@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: virt-viewer.tip.virt-viewer\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-02-14 17:22+0000\n"
+"POT-Creation-Date: 2012-02-14 17:56+0000\n"
 "PO-Revision-Date: 2010-01-28 16:26+0530\n"
 "Last-Translator: Krishna Babu K <kkrothap@redhat.com>\n"
 "Language-Team: Telugu <en@li.org>\n"
@@ -118,6 +118,69 @@ msgstr "గెస్టు %s కొరకు VNC పోర్టును న�
 msgid "Couldn't create a session for this type: %s"
 msgstr ""
 
+#.
+#. * Local variables:
+#. *  c-indent-level: 4
+#. *  c-basic-offset: 4
+#. *  indent-tabs-mode: nil
+#. * End:
+#.
+#: ../src/virt-viewer-about.xml.h:1
+#, fuzzy
+msgid "A remote desktop client built with GTK-VNC, SPICE-GTK and libvirt"
+msgstr "GTK-VNC మరియు libvirtతో వొక రిమోట్ డెస్కుటాప్ క్లైంట్ నిర్మించబడింది"
+
+#: ../src/virt-viewer-about.xml.h:2
+msgid "About Glade"
+msgstr "గ్లేడ్ గురించి"
+
+#: ../src/virt-viewer-about.xml.h:3
+#, fuzzy
+msgid ""
+"Copyright (C) 2007-2012 Daniel P. Berrange\n"
+"Copyright (C) 2007-2012 Red Hat, Inc."
+msgstr ""
+"Copyright 2007-2008 Daniel P. Berrange\n"
+"Copyright 2007-2008 Red Hat, Inc."
+
+#: ../src/virt-viewer-about.xml.h:5
+msgid "The Fedora Translation Team"
+msgstr "Fedora అనువాద సమూహం"
+
+#: ../src/virt-viewer-about.xml.h:6
+msgid ""
+"This program is free software; you can redistribute it and/or modify\n"
+"it under the terms of the GNU General Public License as published by\n"
+"the Free Software Foundation; either version 2 of the License, or\n"
+"(at your option) any later version.\n"
+"\n"
+"This program is distributed in the hope that it will be useful,\n"
+"but WITHOUT ANY WARRANTY; without even the implied warranty of\n"
+"MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\n"
+"GNU General Public License for more details.\n"
+"\n"
+"You should have received a copy of the GNU General Public License\n"
+"along with this program; if not, write to the Free Software\n"
+"Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA\n"
+msgstr ""
+"ఈ ప్రోగ్రామ్ ఉచిత సాఫ్టువేర్; ఉచిత సాఫ్టువేర్ సంస్థ తరుపున ప్రచురితమైన\n"
+"GNU జనరల్ పబ్లిక్ లైసెన్సు కు లోబడి దీనిని మీరు పునఃపంపిణి మరియు/లేదా\n"
+"సవరణ చేయవచ్చు; మీరు అనుసరించవలిసినది లైసెన్సు యొక్క వర్షన్ 2, లేదా\n"
+"(మీ ఐచ్చికం వద్ద) దాని తరువాతి వర్షన్ కాని.\n"
+"\n"
+"పవర్ నిర్వాహకి అది ఉపయోగపడుతుందనే నమ్మకం తో పంపిణీ చేయబడింది,\n"
+"అయితే ఏ హామి లేదు; వ్యాపారసంబంధితంగా కాని లేదా ప్రతిపాదిత ప్రయోజనం కొరకు\n"
+"కాని హామీ లేదు. అధికవివరములకొరకు GNU జనరల్ పబ్లిక్ లైసెన్సు ను\n"
+"చూడండి.\n"
+"\n"
+"ఈ ప్రోగ్రామ్ తో మీరు GNU జనరల్ పబ్లిక్ లైసెన్సు నకలు ను పొంది ఉంటారు;\n"
+"పొందకపోతే, Free Software Foundation, Inc., Temple Place,\n"
+"Suite 330, Boston, MA  02111-1307  USAకు వ్రాయండి.\n"
+
+#: ../src/virt-viewer-about.xml.h:20
+msgid "virt-manager.org"
+msgstr "virt-manager.org"
+
 #: ../src/virt-viewer-app.c:259
 msgid "This is the last visible display. Do you want to quit?"
 msgstr ""
@@ -181,6 +244,29 @@ msgstr "VNC సేవిక %sకు అనుసంధానం కాలేక
 #, c-format
 msgid "USB redirection error: %s"
 msgstr ""
+
+#.
+#. * Local variables:
+#. *  c-indent-level: 4
+#. *  c-basic-offset: 4
+#. *  indent-tabs-mode: nil
+#. * End:
+#.
+#: ../src/virt-viewer-auth.xml.h:1
+msgid "Authentication required"
+msgstr "ధృవీకరణము అవసరమైంది"
+
+#: ../src/virt-viewer-auth.xml.h:2
+msgid "Password:"
+msgstr "సంకేతపదము:"
+
+#: ../src/virt-viewer-auth.xml.h:3
+msgid "Username:"
+msgstr "వినియోగదారినామము:"
+
+#: ../src/virt-viewer-auth.xml.h:4
+msgid "label"
+msgstr "లేబుల్"
 
 #: ../src/virt-viewer-main.c:38
 #, c-format
@@ -327,135 +413,119 @@ msgstr "URI %sతో libvirtకు అనుసంధానం కాలేద�
 msgid "[none]"
 msgstr "[ఏదీకాదు]"
 
-#~ msgid "A remote desktop client built with GTK-VNC and libvirt"
-#~ msgstr "GTK-VNC మరియు libvirtతో వొక రిమోట్ డెస్కుటాప్ క్లైంట్ నిర్మించబడింది"
+#.
+#. * Local variables:
+#. *  c-indent-level: 4
+#. *  c-basic-offset: 4
+#. *  indent-tabs-mode: nil
+#. * End:
+#.
+#: ../src/virt-viewer.xml.h:1
+msgid "Automatically resize"
+msgstr "స్వయంచాలకంగా పునఃపరిమాణము"
 
-#~ msgid "About Glade"
-#~ msgstr "గ్లేడ్ గురించి"
+#: ../src/virt-viewer.xml.h:2
+msgid "Ctrl+Alt+F11"
+msgstr "Ctrl+Alt+F11"
 
-#~ msgid ""
-#~ "Copyright 2007-2008 Daniel P. Berrange\n"
-#~ "Copyright 2007-2008 Red Hat, Inc."
-#~ msgstr ""
-#~ "Copyright 2007-2008 Daniel P. Berrange\n"
-#~ "Copyright 2007-2008 Red Hat, Inc."
+#: ../src/virt-viewer.xml.h:3
+msgid "Ctrl+Alt+F12"
+msgstr "Ctrl+Alt+F12"
 
-#~ msgid "The Fedora Translation Team"
-#~ msgstr "Fedora అనువాద సమూహం"
+#: ../src/virt-viewer.xml.h:4
+msgid "Ctrl+Alt+F1_0"
+msgstr "Ctrl+Alt+F1_0"
 
-#~ msgid ""
-#~ "This program is free software; you can redistribute it and/or modify\n"
-#~ "it under the terms of the GNU General Public License as published by\n"
-#~ "the Free Software Foundation; either version 2 of the License, or\n"
-#~ "(at your option) any later version.\n"
-#~ "\n"
-#~ "This program is distributed in the hope that it will be useful,\n"
-#~ "but WITHOUT ANY WARRANTY; without even the implied warranty of\n"
-#~ "MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\n"
-#~ "GNU General Public License for more details.\n"
-#~ "\n"
-#~ "You should have received a copy of the GNU General Public License\n"
-#~ "along with this program; if not, write to the Free Software\n"
-#~ "Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  "
-#~ "USA\n"
-#~ msgstr ""
-#~ "ఈ ప్రోగ్రామ్ ఉచిత సాఫ్టువేర్; ఉచిత సాఫ్టువేర్ సంస్థ తరుపున ప్రచురితమైన\n"
-#~ "GNU జనరల్ పబ్లిక్ లైసెన్సు కు లోబడి దీనిని మీరు పునఃపంపిణి మరియు/లేదా\n"
-#~ "సవరణ చేయవచ్చు; మీరు అనుసరించవలిసినది లైసెన్సు యొక్క వర్షన్ 2, లేదా\n"
-#~ "(మీ ఐచ్చికం వద్ద) దాని తరువాతి వర్షన్ కాని.\n"
-#~ "\n"
-#~ "పవర్ నిర్వాహకి అది ఉపయోగపడుతుందనే నమ్మకం తో పంపిణీ చేయబడింది,\n"
-#~ "అయితే ఏ హామి లేదు; వ్యాపారసంబంధితంగా కాని లేదా ప్రతిపాదిత ప్రయోజనం కొరకు\n"
-#~ "కాని హామీ లేదు. అధికవివరములకొరకు GNU జనరల్ పబ్లిక్ లైసెన్సు ను\n"
-#~ "చూడండి.\n"
-#~ "\n"
-#~ "ఈ ప్రోగ్రామ్ తో మీరు GNU జనరల్ పబ్లిక్ లైసెన్సు నకలు ను పొంది ఉంటారు;\n"
-#~ "పొందకపోతే, Free Software Foundation, Inc., Temple Place,\n"
-#~ "Suite 330, Boston, MA  02111-1307  USAకు వ్రాయండి.\n"
+#: ../src/virt-viewer.xml.h:5
+msgid "Ctrl+Alt+F_1"
+msgstr "Ctrl+Alt+F_1"
 
-#~ msgid "virt-manager.org"
-#~ msgstr "virt-manager.org"
+#: ../src/virt-viewer.xml.h:6
+msgid "Ctrl+Alt+F_2"
+msgstr "Ctrl+Alt+F_2"
 
-#~ msgid "Authentication required"
-#~ msgstr "ధృవీకరణము అవసరమైంది"
+#: ../src/virt-viewer.xml.h:7
+msgid "Ctrl+Alt+F_3"
+msgstr "Ctrl+Alt+F_3"
 
-#~ msgid "Password:"
-#~ msgstr "సంకేతపదము:"
+#: ../src/virt-viewer.xml.h:8
+msgid "Ctrl+Alt+F_4"
+msgstr "Ctrl+Alt+F_4"
 
-#~ msgid "Username:"
-#~ msgstr "వినియోగదారినామము:"
+#: ../src/virt-viewer.xml.h:9
+msgid "Ctrl+Alt+F_5"
+msgstr "Ctrl+Alt+F_5"
+
+#: ../src/virt-viewer.xml.h:10
+msgid "Ctrl+Alt+F_6"
+msgstr "Ctrl+Alt+F_6"
+
+#: ../src/virt-viewer.xml.h:11
+msgid "Ctrl+Alt+F_7"
+msgstr "Ctrl+Alt+F_7"
+
+#: ../src/virt-viewer.xml.h:12
+msgid "Ctrl+Alt+F_8"
+msgstr "Ctrl+Alt+F_8"
+
+#: ../src/virt-viewer.xml.h:13
+msgid "Ctrl+Alt+F_9"
+msgstr "Ctrl+Alt+F_9"
+
+#: ../src/virt-viewer.xml.h:14
+msgid "Ctrl+Alt+_Backspace"
+msgstr "Ctrl+Alt+_Backspace"
+
+#: ../src/virt-viewer.xml.h:15
+msgid "Ctrl+Alt+_Del"
+msgstr "Ctrl+Alt+_Del"
+
+#: ../src/virt-viewer.xml.h:16
+msgid "Displays"
+msgstr ""
+
+#: ../src/virt-viewer.xml.h:17
+#, fuzzy
+msgid "Full screen"
+msgstr "నిండు తెర"
+
+#: ../src/virt-viewer.xml.h:18
+msgid "Screenshot"
+msgstr "స్క్రీన్‌షాట్"
+
+#: ../src/virt-viewer.xml.h:19
+msgid "USB device selection"
+msgstr ""
+
+#: ../src/virt-viewer.xml.h:20
+msgid "_File"
+msgstr "ఫైలు (_F)"
+
+#: ../src/virt-viewer.xml.h:21
+msgid "_Help"
+msgstr "సహాయము(_H)"
+
+#: ../src/virt-viewer.xml.h:22
+msgid "_PrintScreen"
+msgstr "ప్రింట్‌స్క్రీన్ (_P)"
+
+#: ../src/virt-viewer.xml.h:23
+msgid "_Send key"
+msgstr "పంపు కీ(_S)"
+
+#: ../src/virt-viewer.xml.h:24
+msgid "_View"
+msgstr "దర్శించు (_V)"
+
+#: ../src/virt-viewer.xml.h:25
+msgid "_Zoom"
+msgstr ""
 
 #~ msgid "gtk-cancel"
 #~ msgstr "gtk-cancel"
 
 #~ msgid "gtk-ok"
 #~ msgstr "gtk-ok"
-
-#~ msgid "label"
-#~ msgstr "లేబుల్"
-
-#~ msgid "Automatically resize"
-#~ msgstr "స్వయంచాలకంగా పునఃపరిమాణము"
-
-#~ msgid "Ctrl+Alt+F11"
-#~ msgstr "Ctrl+Alt+F11"
-
-#~ msgid "Ctrl+Alt+F12"
-#~ msgstr "Ctrl+Alt+F12"
-
-#~ msgid "Ctrl+Alt+F1_0"
-#~ msgstr "Ctrl+Alt+F1_0"
-
-#~ msgid "Ctrl+Alt+F_1"
-#~ msgstr "Ctrl+Alt+F_1"
-
-#~ msgid "Ctrl+Alt+F_2"
-#~ msgstr "Ctrl+Alt+F_2"
-
-#~ msgid "Ctrl+Alt+F_3"
-#~ msgstr "Ctrl+Alt+F_3"
-
-#~ msgid "Ctrl+Alt+F_4"
-#~ msgstr "Ctrl+Alt+F_4"
-
-#~ msgid "Ctrl+Alt+F_5"
-#~ msgstr "Ctrl+Alt+F_5"
-
-#~ msgid "Ctrl+Alt+F_6"
-#~ msgstr "Ctrl+Alt+F_6"
-
-#~ msgid "Ctrl+Alt+F_7"
-#~ msgstr "Ctrl+Alt+F_7"
-
-#~ msgid "Ctrl+Alt+F_8"
-#~ msgstr "Ctrl+Alt+F_8"
-
-#~ msgid "Ctrl+Alt+F_9"
-#~ msgstr "Ctrl+Alt+F_9"
-
-#~ msgid "Ctrl+Alt+_Backspace"
-#~ msgstr "Ctrl+Alt+_Backspace"
-
-#~ msgid "Ctrl+Alt+_Del"
-#~ msgstr "Ctrl+Alt+_Del"
-
-#~ msgid "Screenshot"
-#~ msgstr "స్క్రీన్‌షాట్"
-
-#~ msgid "_File"
-#~ msgstr "ఫైలు (_F)"
-
-#~ msgid "_Help"
-#~ msgstr "సహాయము(_H)"
-
-#~ msgid "_PrintScreen"
-#~ msgstr "ప్రింట్‌స్క్రీన్ (_P)"
-
-#~ msgid "_Send key"
-#~ msgstr "పంపు కీ(_S)"
-
-#~ msgid "_View"
-#~ msgstr "దర్శించు (_V)"
 
 #~ msgid "gtk-about"
 #~ msgstr "gtk-about"

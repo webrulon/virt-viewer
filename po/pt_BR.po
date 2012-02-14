@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: pt_BR\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-02-14 17:22+0000\n"
+"POT-Creation-Date: 2012-02-14 17:56+0000\n"
 "PO-Revision-Date: 2010-01-22 11:25+1000\n"
 "Last-Translator: Glaucia Cintra <gcintra@redhat.com>\n"
 "Language-Team: Portuguese <en@li.org>\n"
@@ -119,6 +119,70 @@ msgstr "Não é possível determinar a porta VNC para o convidado %s"
 msgid "Couldn't create a session for this type: %s"
 msgstr ""
 
+#.
+#. * Local variables:
+#. *  c-indent-level: 4
+#. *  c-basic-offset: 4
+#. *  indent-tabs-mode: nil
+#. * End:
+#.
+#: ../src/virt-viewer-about.xml.h:1
+#, fuzzy
+msgid "A remote desktop client built with GTK-VNC, SPICE-GTK and libvirt"
+msgstr "Um cliente de desktop remoto construído com o GTK-VNC e libvirt"
+
+#: ../src/virt-viewer-about.xml.h:2
+msgid "About Glade"
+msgstr "Sobre o Glade"
+
+#: ../src/virt-viewer-about.xml.h:3
+#, fuzzy
+msgid ""
+"Copyright (C) 2007-2012 Daniel P. Berrange\n"
+"Copyright (C) 2007-2012 Red Hat, Inc."
+msgstr ""
+"Copyright 2007-2008 Daniel P. Berrange\n"
+"Copyright 2007-2008 Red Hat, Inc."
+
+#: ../src/virt-viewer-about.xml.h:5
+msgid "The Fedora Translation Team"
+msgstr "A equipe de Traduções do Fedora"
+
+#: ../src/virt-viewer-about.xml.h:6
+msgid ""
+"This program is free software; you can redistribute it and/or modify\n"
+"it under the terms of the GNU General Public License as published by\n"
+"the Free Software Foundation; either version 2 of the License, or\n"
+"(at your option) any later version.\n"
+"\n"
+"This program is distributed in the hope that it will be useful,\n"
+"but WITHOUT ANY WARRANTY; without even the implied warranty of\n"
+"MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\n"
+"GNU General Public License for more details.\n"
+"\n"
+"You should have received a copy of the GNU General Public License\n"
+"along with this program; if not, write to the Free Software\n"
+"Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA\n"
+msgstr ""
+"Este programa é um software livre. Você pode redistribuí-lo e/ou modificá-"
+"lo \n"
+"sob os termos da Licensa Pública Geral GNU, de acordo com o publicado pela \n"
+"Fundação de Software Livre, sendo a versão 2 da Licensa, ou  \n"
+"(como queira) qualquer outra versão posterior.\n"
+"\n"
+"Espera-se que este programa seja útil, \n"
+"porém SEM NENHUMA GARANTIA, até mesmo sem a garantia implicada de \n"
+"MERCANTIBILIDADE ou PARA UM PRÒPÓSITO ESPECÍFICO. Veja a \n"
+"Licensa Pública Geral GNU para maiores detalhes. \n"
+"\n"
+"Uma cópia da Licensa Pública Geral do GNU deve ter sido anexada n à este "
+"programam. Caso não tenha recebido, escreva para Free Software \n"
+"Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA \n"
+
+#: ../src/virt-viewer-about.xml.h:20
+msgid "virt-manager.org"
+msgstr "virt-manager.org"
+
 #: ../src/virt-viewer-app.c:259
 msgid "This is the last visible display. Do you want to quit?"
 msgstr ""
@@ -182,6 +246,29 @@ msgstr "Não é possível conectar ao servidor do VNC  %s"
 #, c-format
 msgid "USB redirection error: %s"
 msgstr ""
+
+#.
+#. * Local variables:
+#. *  c-indent-level: 4
+#. *  c-basic-offset: 4
+#. *  indent-tabs-mode: nil
+#. * End:
+#.
+#: ../src/virt-viewer-auth.xml.h:1
+msgid "Authentication required"
+msgstr "Autenticação requerida"
+
+#: ../src/virt-viewer-auth.xml.h:2
+msgid "Password:"
+msgstr "Senha:"
+
+#: ../src/virt-viewer-auth.xml.h:3
+msgid "Username:"
+msgstr "Nome do Usuário:"
+
+#: ../src/virt-viewer-auth.xml.h:4
+msgid "label"
+msgstr "rótulo"
 
 #: ../src/virt-viewer-main.c:38
 #, c-format
@@ -328,137 +415,119 @@ msgstr "Não é possível conectar ao libvirt com o URI %s"
 msgid "[none]"
 msgstr "[nenhum]"
 
-#~ msgid "A remote desktop client built with GTK-VNC and libvirt"
-#~ msgstr "Um cliente de desktop remoto construído com o GTK-VNC e libvirt"
+#.
+#. * Local variables:
+#. *  c-indent-level: 4
+#. *  c-basic-offset: 4
+#. *  indent-tabs-mode: nil
+#. * End:
+#.
+#: ../src/virt-viewer.xml.h:1
+msgid "Automatically resize"
+msgstr "redefinição automática do tamanho"
 
-#~ msgid "About Glade"
-#~ msgstr "Sobre o Glade"
+#: ../src/virt-viewer.xml.h:2
+msgid "Ctrl+Alt+F11"
+msgstr "Ctrl+Alt+F11"
 
-#~ msgid ""
-#~ "Copyright 2007-2008 Daniel P. Berrange\n"
-#~ "Copyright 2007-2008 Red Hat, Inc."
-#~ msgstr ""
-#~ "Copyright 2007-2008 Daniel P. Berrange\n"
-#~ "Copyright 2007-2008 Red Hat, Inc."
+#: ../src/virt-viewer.xml.h:3
+msgid "Ctrl+Alt+F12"
+msgstr "Ctrl+Alt+F12"
 
-#~ msgid "The Fedora Translation Team"
-#~ msgstr "A equipe de Traduções do Fedora"
+#: ../src/virt-viewer.xml.h:4
+msgid "Ctrl+Alt+F1_0"
+msgstr "Ctrl+Alt+F1_0"
 
-#~ msgid ""
-#~ "This program is free software; you can redistribute it and/or modify\n"
-#~ "it under the terms of the GNU General Public License as published by\n"
-#~ "the Free Software Foundation; either version 2 of the License, or\n"
-#~ "(at your option) any later version.\n"
-#~ "\n"
-#~ "This program is distributed in the hope that it will be useful,\n"
-#~ "but WITHOUT ANY WARRANTY; without even the implied warranty of\n"
-#~ "MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\n"
-#~ "GNU General Public License for more details.\n"
-#~ "\n"
-#~ "You should have received a copy of the GNU General Public License\n"
-#~ "along with this program; if not, write to the Free Software\n"
-#~ "Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  "
-#~ "USA\n"
-#~ msgstr ""
-#~ "Este programa é um software livre. Você pode redistribuí-lo e/ou modificá-"
-#~ "lo \n"
-#~ "sob os termos da Licensa Pública Geral GNU, de acordo com o publicado "
-#~ "pela \n"
-#~ "Fundação de Software Livre, sendo a versão 2 da Licensa, ou  \n"
-#~ "(como queira) qualquer outra versão posterior.\n"
-#~ "\n"
-#~ "Espera-se que este programa seja útil, \n"
-#~ "porém SEM NENHUMA GARANTIA, até mesmo sem a garantia implicada de \n"
-#~ "MERCANTIBILIDADE ou PARA UM PRÒPÓSITO ESPECÍFICO. Veja a \n"
-#~ "Licensa Pública Geral GNU para maiores detalhes. \n"
-#~ "\n"
-#~ "Uma cópia da Licensa Pública Geral do GNU deve ter sido anexada n à este "
-#~ "programam. Caso não tenha recebido, escreva para Free Software \n"
-#~ "Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA \n"
+#: ../src/virt-viewer.xml.h:5
+msgid "Ctrl+Alt+F_1"
+msgstr "Ctrl+Alt+F_1"
 
-#~ msgid "virt-manager.org"
-#~ msgstr "virt-manager.org"
+#: ../src/virt-viewer.xml.h:6
+msgid "Ctrl+Alt+F_2"
+msgstr "Ctrl+Alt+F_2"
 
-#~ msgid "Authentication required"
-#~ msgstr "Autenticação requerida"
+#: ../src/virt-viewer.xml.h:7
+msgid "Ctrl+Alt+F_3"
+msgstr "Ctrl+Alt+F_3"
 
-#~ msgid "Password:"
-#~ msgstr "Senha:"
+#: ../src/virt-viewer.xml.h:8
+msgid "Ctrl+Alt+F_4"
+msgstr "Ctrl+Alt+F_4"
 
-#~ msgid "Username:"
-#~ msgstr "Nome do Usuário:"
+#: ../src/virt-viewer.xml.h:9
+msgid "Ctrl+Alt+F_5"
+msgstr "Ctrl+Alt+F_5"
+
+#: ../src/virt-viewer.xml.h:10
+msgid "Ctrl+Alt+F_6"
+msgstr "Ctrl+Alt+F_6"
+
+#: ../src/virt-viewer.xml.h:11
+msgid "Ctrl+Alt+F_7"
+msgstr "Ctrl+Alt+F_7"
+
+#: ../src/virt-viewer.xml.h:12
+msgid "Ctrl+Alt+F_8"
+msgstr "Ctrl+Alt+F_8"
+
+#: ../src/virt-viewer.xml.h:13
+msgid "Ctrl+Alt+F_9"
+msgstr "Ctrl+Alt+F_9"
+
+#: ../src/virt-viewer.xml.h:14
+msgid "Ctrl+Alt+_Backspace"
+msgstr "Ctrl+Alt+_Backspace"
+
+#: ../src/virt-viewer.xml.h:15
+msgid "Ctrl+Alt+_Del"
+msgstr "Ctrl+Alt+_Del"
+
+#: ../src/virt-viewer.xml.h:16
+msgid "Displays"
+msgstr ""
+
+#: ../src/virt-viewer.xml.h:17
+#, fuzzy
+msgid "Full screen"
+msgstr "Tela cheia"
+
+#: ../src/virt-viewer.xml.h:18
+msgid "Screenshot"
+msgstr "Screenshot"
+
+#: ../src/virt-viewer.xml.h:19
+msgid "USB device selection"
+msgstr ""
+
+#: ../src/virt-viewer.xml.h:20
+msgid "_File"
+msgstr "_File"
+
+#: ../src/virt-viewer.xml.h:21
+msgid "_Help"
+msgstr "_Help"
+
+#: ../src/virt-viewer.xml.h:22
+msgid "_PrintScreen"
+msgstr "_PrintScreen"
+
+#: ../src/virt-viewer.xml.h:23
+msgid "_Send key"
+msgstr "_Send key"
+
+#: ../src/virt-viewer.xml.h:24
+msgid "_View"
+msgstr "_View"
+
+#: ../src/virt-viewer.xml.h:25
+msgid "_Zoom"
+msgstr ""
 
 #~ msgid "gtk-cancel"
 #~ msgstr "gtk-cancel"
 
 #~ msgid "gtk-ok"
 #~ msgstr "gtk-ok"
-
-#~ msgid "label"
-#~ msgstr "rótulo"
-
-#~ msgid "Automatically resize"
-#~ msgstr "redefinição automática do tamanho"
-
-#~ msgid "Ctrl+Alt+F11"
-#~ msgstr "Ctrl+Alt+F11"
-
-#~ msgid "Ctrl+Alt+F12"
-#~ msgstr "Ctrl+Alt+F12"
-
-#~ msgid "Ctrl+Alt+F1_0"
-#~ msgstr "Ctrl+Alt+F1_0"
-
-#~ msgid "Ctrl+Alt+F_1"
-#~ msgstr "Ctrl+Alt+F_1"
-
-#~ msgid "Ctrl+Alt+F_2"
-#~ msgstr "Ctrl+Alt+F_2"
-
-#~ msgid "Ctrl+Alt+F_3"
-#~ msgstr "Ctrl+Alt+F_3"
-
-#~ msgid "Ctrl+Alt+F_4"
-#~ msgstr "Ctrl+Alt+F_4"
-
-#~ msgid "Ctrl+Alt+F_5"
-#~ msgstr "Ctrl+Alt+F_5"
-
-#~ msgid "Ctrl+Alt+F_6"
-#~ msgstr "Ctrl+Alt+F_6"
-
-#~ msgid "Ctrl+Alt+F_7"
-#~ msgstr "Ctrl+Alt+F_7"
-
-#~ msgid "Ctrl+Alt+F_8"
-#~ msgstr "Ctrl+Alt+F_8"
-
-#~ msgid "Ctrl+Alt+F_9"
-#~ msgstr "Ctrl+Alt+F_9"
-
-#~ msgid "Ctrl+Alt+_Backspace"
-#~ msgstr "Ctrl+Alt+_Backspace"
-
-#~ msgid "Ctrl+Alt+_Del"
-#~ msgstr "Ctrl+Alt+_Del"
-
-#~ msgid "Screenshot"
-#~ msgstr "Screenshot"
-
-#~ msgid "_File"
-#~ msgstr "_File"
-
-#~ msgid "_Help"
-#~ msgstr "_Help"
-
-#~ msgid "_PrintScreen"
-#~ msgstr "_PrintScreen"
-
-#~ msgid "_Send key"
-#~ msgstr "_Send key"
-
-#~ msgid "_View"
-#~ msgstr "_View"
 
 #~ msgid "gtk-about"
 #~ msgstr "gtk-about"

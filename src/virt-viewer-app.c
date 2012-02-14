@@ -111,6 +111,7 @@ struct _VirtViewerAppPrivate {
 
     gboolean direct;
     gboolean verbose;
+    gboolean enable_accel;
     gboolean authretry;
     gboolean started;
     gboolean fullscreen;
@@ -150,6 +151,7 @@ enum {
     PROP_GURI,
     PROP_FULLSCREEN,
     PROP_TITLE,
+    PROP_ENABLE_ACCEL,
 };
 
 enum {
@@ -1121,6 +1123,10 @@ virt_viewer_app_get_property (GObject *object, guint property_id,
         g_value_set_string(value, priv->title);
         break;
 
+    case PROP_ENABLE_ACCEL:
+        g_value_set_boolean(value, virt_viewer_app_get_enable_accel(self));
+        break;
+
     default:
         G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
     }
@@ -1163,6 +1169,10 @@ virt_viewer_app_set_property (GObject *object, guint property_id,
         g_free(priv->title);
         priv->title = g_value_dup_string(value);
         virt_viewer_app_set_all_window_subtitles(self);
+        break;
+
+    case PROP_ENABLE_ACCEL:
+        priv->enable_accel = g_value_get_boolean(value);
         break;
 
     default:
@@ -1341,6 +1351,16 @@ virt_viewer_app_class_init (VirtViewerAppClass *klass)
                                                         G_PARAM_READABLE |
                                                         G_PARAM_WRITABLE |
                                                         G_PARAM_STATIC_STRINGS));
+
+    g_object_class_install_property(object_class,
+                                    PROP_ENABLE_ACCEL,
+                                    g_param_spec_boolean("enable-accel",
+                                                         "Enable Accel",
+                                                         "Enable accelerators",
+                                                         FALSE,
+                                                         G_PARAM_CONSTRUCT |
+                                                         G_PARAM_READWRITE |
+                                                         G_PARAM_STATIC_STRINGS));
 
     signals[SIGNAL_WINDOW_ADDED] =
         g_signal_new("window-added",
@@ -1636,6 +1656,14 @@ virt_viewer_app_show_display(VirtViewerApp *self)
 {
     g_return_if_fail(VIRT_VIEWER_IS_APP(self));
     g_hash_table_foreach(self->priv->windows, show_display_cb, self);
+}
+
+gboolean
+virt_viewer_app_get_enable_accel(VirtViewerApp *self)
+{
+    g_return_val_if_fail(VIRT_VIEWER_IS_APP(self), FALSE);
+
+    return self->priv->enable_accel;
 }
 
 GHashTable*

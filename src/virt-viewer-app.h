@@ -94,6 +94,7 @@ GHashTable* virt_viewer_app_get_windows(VirtViewerApp *self);
 
 void virt_viewer_app_usb_device_selection(VirtViewerApp   *self,
                                           GtkWindow       *parent);
+gboolean virt_viewer_app_get_enable_accel(VirtViewerApp *self);
 
 G_END_DECLS
 

@@ -273,6 +273,14 @@ virt_viewer_window_class_init (VirtViewerWindowClass *klass)
                                                         G_PARAM_STATIC_STRINGS));
 }
 
+static gboolean
+can_activate_cb (GtkWidget *widget G_GNUC_UNUSED,
+                 guint signal_id G_GNUC_UNUSED,
+                 VirtViewerWindow *self G_GNUC_UNUSED)
+{
+    return TRUE;
+}
+
 static void
 virt_viewer_window_init (VirtViewerWindow *self)
 {
@@ -297,6 +305,16 @@ virt_viewer_window_init (VirtViewerWindow *self)
     gtk_builder_connect_signals(priv->builder, self);
 
     priv->accel_group = GTK_ACCEL_GROUP(gtk_builder_get_object(priv->builder, "accelgroup"));
+
+    /* make sure they can be activated even if the menu item is not visible */
+    g_signal_connect(gtk_builder_get_object(priv->builder, "menu-view-fullscreen"),
+                     "can-activate-accel", G_CALLBACK(can_activate_cb), self);
+    g_signal_connect(gtk_builder_get_object(priv->builder, "menu-file-smartcard-insert"),
+                     "can-activate-accel", G_CALLBACK(can_activate_cb), self);
+    g_signal_connect(gtk_builder_get_object(priv->builder, "menu-file-smartcard-remove"),
+                     "can-activate-accel", G_CALLBACK(can_activate_cb), self);
+    g_signal_connect(gtk_builder_get_object(priv->builder, "menu-view-release-cursor"),
+                     "can-activate-accel", G_CALLBACK(can_activate_cb), self);
 
     vbox = GTK_WIDGET(gtk_builder_get_object(priv->builder, "viewer-box"));
     virt_viewer_window_toolbar_setup(self);

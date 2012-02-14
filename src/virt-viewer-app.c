@@ -1261,6 +1261,11 @@ virt_viewer_app_constructor (GType gtype,
     priv->main_window = virt_viewer_app_window_new(self, priv->container, 0);
     priv->main_notebook = GTK_WIDGET(virt_viewer_window_get_notebook(priv->main_window));
 
+    gtk_accel_map_add_entry("<virt-viewer>/file/smartcard-insert", GDK_KEY_F8, GDK_SHIFT_MASK);
+    gtk_accel_map_add_entry("<virt-viewer>/file/smartcard-remove", GDK_KEY_F9, GDK_SHIFT_MASK);
+    gtk_accel_map_add_entry("<virt-viewer>/view/fullscreen", GDK_KEY_F11, 0);
+    gtk_accel_map_add_entry("<virt-viewer>/view/release-cursor", GDK_KEY_F12, GDK_SHIFT_MASK);
+
     return obj;
 }
 

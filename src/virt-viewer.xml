@@ -110,7 +110,6 @@
                         <property name="accel_path">&lt;virt-viewer&gt;/view/fullscreen</property>
                         <property name="label" translatable="yes">Full screen</property>
                         <property name="use_underline">True</property>
-                        <accelerator key="F11" signal="activate"/>
                         <signal name="toggled" handler="virt_viewer_window_menu_view_fullscreen" swapped="no"/>
                       </object>
                     </child>

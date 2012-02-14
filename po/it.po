@@ -2,67 +2,218 @@
 # This file is distributed under the same license as the virt-viewer package.
 # Gianluca Sforna <giallu@fedoraproject.org>, 2010.
 # Francesco Tombolini <tombo@adamantio.net>, 2010.
+#. translators: <ungrab empty>
+#: ../src/virt-viewer-window.c:865 ../src/virt-viewer-window.c:867
 msgid ""
 msgstr ""
 "Project-Id-Version: it\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-01-29 07:48+0000\n"
+"POT-Creation-Date: 2012-02-14 17:22+0000\n"
 "PO-Revision-Date: 2010-11-18 00:08+0100\n"
 "Last-Translator: Francesco Tombolini <tombo@adamantio.net>\n"
 "Language-Team: Italian <trans-it@lists.fedoraproject.org>\n"
+"Language: it\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Lokalize 1.1\n"
 
-#: ../src/main.c:34
+#: ../src/remote-viewer-main.c:42
+#, fuzzy, c-format
+msgid "remote-viewer version %s\n"
+msgstr "%s versione %s\n"
+
+#: ../src/remote-viewer-main.c:63 ../src/virt-viewer-main.c:60
+msgid "Run '"
+msgstr "Esegui '"
+
+#: ../src/remote-viewer-main.c:66 ../src/virt-viewer-main.c:63
+#, fuzzy
+msgid "Display version information"
+msgstr "mostra informazioni sulla versione"
+
+#: ../src/remote-viewer-main.c:68 ../src/virt-viewer-main.c:65
+#, fuzzy
+msgid "Display verbose information"
+msgstr "mostra informazioni dettagliate"
+
+#: ../src/remote-viewer-main.c:70 ../src/virt-viewer-main.c:67
+#, fuzzy
+msgid "Direct connection with no automatic tunnels"
+msgstr "connessione diretta senza tunnel automatici"
+
+#: ../src/remote-viewer-main.c:72 ../src/virt-viewer-main.c:77
+msgid "Zoom level of window, in percentage"
+msgstr "Livello di zoom della finestra, in percentuale"
+
+#: ../src/remote-viewer-main.c:74 ../src/virt-viewer-main.c:79
+#, fuzzy
+msgid "Display debugging information"
+msgstr "mostra informazioni di debug"
+
+#: ../src/remote-viewer-main.c:76 ../src/virt-viewer-main.c:81
+msgid "Open in full screen mode"
+msgstr ""
+
+#: ../src/remote-viewer-main.c:79
+msgid "Open connection using Spice controller communication"
+msgstr ""
+
+#. Setup command line options
+#: ../src/remote-viewer-main.c:92
+msgid "- Remote viewer client"
+msgstr ""
+
+#: ../src/remote-viewer-main.c:117
+#, fuzzy, c-format
+msgid ""
+"\n"
+"Usage: %s [OPTIONS] URI\n"
+"\n"
+"%s\n"
+"\n"
+msgstr ""
+"\n"
+"Utilizzo: %s [OPZIONI] NOME-DOMINIO|ID|UUID\n"
+"\n"
+"%s\n"
+"\n"
+
+#: ../src/remote-viewer-main.c:122 ../src/virt-viewer-main.c:121
+#, c-format
+msgid "Zoom level must be within 10-200\n"
+msgstr ""
+
+#: ../src/remote-viewer.c:185 ../src/remote-viewer.c:482
+msgid "Failed to initiate connection"
+msgstr ""
+
+#: ../src/remote-viewer.c:198
+msgid "Display disabled by controller"
+msgstr ""
+
+#: ../src/remote-viewer.c:398
+#, c-format
+msgid "Controller connection failed: %s"
+msgstr ""
+
+#: ../src/remote-viewer.c:452
+msgid "Couldn't create a Spice session"
+msgstr ""
+
+#: ../src/remote-viewer.c:462
+msgid "Setting up Spice session..."
+msgstr ""
+
+#: ../src/remote-viewer.c:472
+#, fuzzy
+msgid "Cannot determine the connection type from URI"
+msgstr "Impossibile determinare l'host per il guest %s"
+
+#: ../src/remote-viewer.c:477
+#, c-format
+msgid "Couldn't create a session for this type: %s"
+msgstr ""
+
+#: ../src/virt-viewer-app.c:259
+msgid "This is the last visible display. Do you want to quit?"
+msgstr ""
+
+#: ../src/virt-viewer-app.c:573
+#, c-format
+msgid "Waiting for display %d..."
+msgstr ""
+
+#: ../src/virt-viewer-app.c:655
+#, c-format
+msgid "Unknown graphic type for the guest %s"
+msgstr "Impossibile determinare il tipo grafico per il guest %s"
+
+#: ../src/virt-viewer-app.c:730
+msgid "Connect to ssh failed."
+msgstr "Connessione a ssh fallita"
+
+#: ../src/virt-viewer-app.c:732
+msgid "Can't connect to channel, SSH only supported."
+msgstr "Impossibile connettersi al canale, solo SSH è supportato."
+
+#: ../src/virt-viewer-app.c:744
+msgid "Connect to channel unsupported."
+msgstr "Connessione al canale non supportata"
+
+#: ../src/virt-viewer-app.c:824
+#, fuzzy
+msgid "Connecting to graphic server"
+msgstr "Impossibile connettersi al server grafico %s"
+
+#: ../src/virt-viewer-app.c:954
+msgid "Guest domain has shutdown"
+msgstr ""
+
+#: ../src/virt-viewer-app.c:1004
+#, fuzzy
+msgid "Connected to graphic server"
+msgstr "Impossibile connettersi al server grafico %s"
+
+#: ../src/virt-viewer-app.c:1027
+#, c-format
+msgid "Unable to connect to the graphic server %s"
+msgstr "Impossibile connettersi al server grafico %s"
+
+#: ../src/virt-viewer-app.c:1056
+#, fuzzy, c-format
+msgid ""
+"Unable to authenticate with remote desktop server at %s: %s\n"
+"Retry connection again?"
+msgstr ""
+"Impossibile autenticarsi con il server VNC %s: %s\n"
+"Riprovare la connessione?"
+
+#: ../src/virt-viewer-app.c:1076
+#, fuzzy, c-format
+msgid "Unable to authenticate with remote desktop server: %s"
+msgstr "Impossibile connettersi al server grafico %s"
+
+#: ../src/virt-viewer-app.c:1084
+#, c-format
+msgid "USB redirection error: %s"
+msgstr ""
+
+#: ../src/virt-viewer-main.c:38
 #, c-format
 msgid "%s version %s\n"
 msgstr "%s versione %s\n"
 
-#: ../src/main.c:53
-msgid "Run '"
-msgstr "Esegui '"
+#: ../src/virt-viewer-main.c:69
+msgid "Attach to the local display using libvirt"
+msgstr ""
 
-#: ../src/main.c:56
-msgid "display version information"
-msgstr "mostra informazioni sulla versione"
-
-#: ../src/main.c:58
-msgid "display verbose information"
-msgstr "mostra informazioni dettagliate"
-
-#: ../src/main.c:60
-msgid "direct connection with no automatic tunnels"
-msgstr "connessione diretta senza tunnel automatici"
-
-#: ../src/main.c:62
-msgid "connect to hypervisor"
+#: ../src/virt-viewer-main.c:71
+#, fuzzy
+msgid "Connect to hypervisor"
 msgstr "connetti all'hypervisor"
 
-#: ../src/main.c:64
-msgid "wait for domain to start"
+#: ../src/virt-viewer-main.c:73
+#, fuzzy
+msgid "Wait for domain to start"
 msgstr "attendi l'avvio del dominio"
 
-#: ../src/main.c:66
-msgid "reconnect to domain upon restart"
+#: ../src/virt-viewer-main.c:75
+#, fuzzy
+msgid "Reconnect to domain upon restart"
 msgstr "riconnetti al dominio dopo il riavvio"
 
-#: ../src/main.c:68
-msgid "Zoom level of window, in percentage"
-msgstr "Livello di zoom della finestra, in percentuale"
-
-#: ../src/main.c:70
-msgid "display debugging information"
-msgstr "mostra informazioni di debug"
+#: ../src/virt-viewer-main.c:92
+msgid "Virt Viewer"
+msgstr ""
 
 #. Setup command line options
-#: ../src/main.c:82
+#: ../src/virt-viewer-main.c:95
 msgid "- Virtual machine graphical console"
 msgstr "- Console grafica della virtual machine"
 
-#: ../src/main.c:98
+#: ../src/virt-viewer-main.c:116
 #, c-format
 msgid ""
 "\n"
@@ -77,270 +228,254 @@ msgstr ""
 "%s\n"
 "\n"
 
-#: ../src/viewer.c:1053
-#, c-format
-msgid "Cannot find guest domain %s"
-msgstr "Impossibile trovare il dominio guest %s"
+#: ../src/virt-viewer-session-spice.c:347
+msgid "Select USB devices for redirection"
+msgstr ""
 
-#: ../src/viewer.c:1161
-#, c-format
-msgid "Unable to connect to libvirt with URI %s"
-msgstr "Impossibile connettersi a libvirt con la URI %s"
-
-#: ../src/viewer.c:1162
-msgid "[none]"
-msgstr "[nessuno]"
-
-#: ../src/display-vnc.c:142
-#, c-format
-msgid ""
-"Unable to authenticate with VNC server at %s\n"
-"Unsupported authentication type %d"
+#: ../src/virt-viewer-session-vnc.c:140
+#, fuzzy, c-format
+msgid "Unsupported authentication type %d"
 msgstr ""
 "Impossibile autenticarsi con il server VNC %s\n"
 "Tipo di autenticazione non supportato: %d"
 
-#: ../src/display-vnc.c:158
-#, c-format
-msgid ""
-"Unable to authenticate with VNC server at %s: %s\n"
-"Retry connection again?"
+#: ../src/virt-viewer-window.c:774
+msgid "Disconnect"
 msgstr ""
-"Impossibile autenticarsi con il server VNC %s: %s\n"
-"Riprovare la connessione?"
 
-#. * Local variables:
-#. *  c-indent-level: 8
-#. *  c-basic-offset: 8
-#. *  tab-width: 8
-#. * End:
-#. 
-#: ../src/about.glade.h:1
-msgid "A remote desktop client built with GTK-VNC and libvirt"
-msgstr "Un remote desktop client basato su GTK-VNC e libvirt"
-
-#: ../src/about.glade.h:2
-msgid "About Glade"
-msgstr "Informazioni su Glade"
-
-#: ../src/about.glade.h:3
-msgid ""
-"Copyright 2007-2008 Daniel P. Berrange\n"
-"Copyright 2007-2008 Red Hat, Inc."
-msgstr ""
-"Copyright 2007-2008 Daniel P. Berrange\n"
-"Copyright 2007-2008 Red Hat, Inc."
-
-#: ../src/about.glade.h:5
-msgid "The Fedora Translation Team"
-msgstr ""
-"Il team di traduzione di Fedora\n"
-"Francesco Tombolini <tombo@fedoraproject.org>, 2010\n"
-"Gianluca Sforna <giallu@fedoraproject.org>, 2010"
-
-#: ../src/about.glade.h:6
-msgid ""
-"This program is free software; you can redistribute it and/or modify\n"
-"it under the terms of the GNU General Public License as published by\n"
-"the Free Software Foundation; either version 2 of the License, or\n"
-"(at your option) any later version.\n"
-"\n"
-"This program is distributed in the hope that it will be useful,\n"
-"but WITHOUT ANY WARRANTY; without even the implied warranty of\n"
-"MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\n"
-"GNU General Public License for more details.\n"
-"\n"
-"You should have received a copy of the GNU General Public License\n"
-"along with this program; if not, write to the Free Software\n"
-"Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA\n"
-msgstr ""
-"This program is free software; you can redistribute it and/or modify\n"
-"it under the terms of the GNU General Public License as published by\n"
-"the Free Software Foundation; either version 2 of the License, or\n"
-"(at your option) any later version.\n"
-"\n"
-"This program is distributed in the hope that it will be useful,\n"
-"but WITHOUT ANY WARRANTY; without even the implied warranty of\n"
-"MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\n"
-"GNU General Public License for more details.\n"
-"\n"
-"You should have received a copy of the GNU General Public License\n"
-"along with this program; if not, write to the Free Software\n"
-"Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA\n"
-
-#: ../src/about.glade.h:20
-msgid "virt-manager.org"
-msgstr "virt-manager.org"
-
-#: ../src/auth.glade.h:1
-msgid "Authentication required"
-msgstr "Richiesta autenticazione"
-
-#: ../src/auth.glade.h:2
-msgid "Password:"
-msgstr "Password:"
-
-#: ../src/auth.glade.h:3
-msgid "Username:"
-msgstr "Nome utente:"
-
-#: ../src/auth.glade.h:4
-msgid "gtk-cancel"
-msgstr "gtk-cancel"
-
-#: ../src/auth.glade.h:5
-msgid "gtk-ok"
-msgstr "gtk-ok"
-
-#: ../src/auth.glade.h:6
-msgid "label"
-msgstr "etichetta"
-
-#: ../src/viewer.glade.h:1
-msgid "Automatically resize"
-msgstr "Ridimensiona automaticamente"
-
-#: ../src/viewer.glade.h:2
-msgid "Ctrl+Alt+F11"
-msgstr "Ctrl+Alt+F11"
-
-#: ../src/viewer.glade.h:3
-msgid "Ctrl+Alt+F12"
-msgstr "Ctrl+Alt+F12"
-
-#: ../src/viewer.glade.h:4
-msgid "Ctrl+Alt+F1_0"
-msgstr "Ctrl+Alt+F1_0"
-
-#: ../src/viewer.glade.h:5
-msgid "Ctrl+Alt+F_1"
-msgstr "Ctrl+Alt+F_1"
-
-#: ../src/viewer.glade.h:6
-msgid "Ctrl+Alt+F_2"
-msgstr "Ctrl+Alt+F_2"
-
-#: ../src/viewer.glade.h:7
-msgid "Ctrl+Alt+F_3"
-msgstr "Ctrl+Alt+F_3"
-
-#: ../src/viewer.glade.h:8
-msgid "Ctrl+Alt+F_4"
-msgstr "Ctrl+Alt+F_4"
-
-#: ../src/viewer.glade.h:9
-msgid "Ctrl+Alt+F_5"
-msgstr "Ctrl+Alt+F_5"
-
-#: ../src/viewer.glade.h:10
-msgid "Ctrl+Alt+F_6"
-msgstr "Ctrl+Alt+F_6"
-
-#: ../src/viewer.glade.h:11
-msgid "Ctrl+Alt+F_7"
-msgstr "Ctrl+Alt+F_7"
-
-#: ../src/viewer.glade.h:12
-msgid "Ctrl+Alt+F_8"
-msgstr "Ctrl+Alt+F_8"
-
-#: ../src/viewer.glade.h:13
-msgid "Ctrl+Alt+F_9"
-msgstr "Ctrl+Alt+F_9"
-
-#: ../src/viewer.glade.h:14
-msgid "Ctrl+Alt+_Backspace"
-msgstr "Ctrl+Alt+_Backspace"
-
-#: ../src/viewer.glade.h:15
-msgid "Ctrl+Alt+_Del"
-msgstr "Ctrl+Alt+_Del"
-
-#: ../src/viewer.glade.h:16
-msgid "Full screen"
+#: ../src/virt-viewer-window.c:781 ../src/virt-viewer-window.c:782
+#, fuzzy
+msgid "Leave fullscreen"
 msgstr "Schermo intero"
 
-#: ../src/viewer.glade.h:17
-msgid "Screenshot"
-msgstr "Cattura schermata"
+#: ../src/virt-viewer-window.c:854
+msgid "(Press Ctrl+Alt to release pointer)"
+msgstr ""
 
-#: ../src/viewer.glade.h:18
-msgid "_File"
-msgstr "_File"
+#. translators:
+#. * This is "<ungrab (or empty)><space (or empty)><subtitle (or empty)> - <appname>"
+#. * Such as: "(Press Ctrl+Alt to release pointer) BigCorpTycoon MOTD - Virt Viewer"
+#.
+#: ../src/virt-viewer-window.c:863
+#, c-format
+msgid "%s%s%s - %s"
+msgstr ""
 
-#: ../src/viewer.glade.h:19
-msgid "_Help"
-msgstr "_Aiuto"
+#. translators: <space>
+#: ../src/virt-viewer-window.c:867
+msgid " "
+msgstr ""
 
-#: ../src/viewer.glade.h:20
-msgid "_PrintScreen"
-msgstr "_Stamp"
+#: ../src/virt-viewer.c:144
+#, fuzzy
+msgid "Waiting for guest domain to re-start"
+msgstr "attendi l'avvio del dominio"
 
-#: ../src/viewer.glade.h:21
-msgid "_Send key"
-msgstr "_Manda tasto"
-
-#: ../src/viewer.glade.h:22
-msgid "_View"
-msgstr "_Visualizza"
-
-#: ../src/viewer.glade.h:23
-msgid "_Zoom"
-msgstr "_Zoom"
-
-#: ../src/viewer.glade.h:24
-msgid "gtk-about"
-msgstr "gtk-about"
-
-#: ../src/viewer.glade.h:25
-msgid "gtk-quit"
-msgstr "gtk-quit"
-
-#: ../src/viewer.glade.h:26
-msgid "page 1"
-msgstr "pagina 1"
-
-#: ../src/viewer.glade.h:27
-msgid "page 2"
-msgstr "pagina 2"
-
-#: ../src/viewer.glade.h:28
-msgid "page 3"
-msgstr "pagina 3"
-
-#: ../src/viewer.c:863
-msgid "Connect to channel unsupported."
-msgstr "Connessione al canale non supportata"
-
-#: ../src/viewer.c:858
-msgid "Can't connect to channel, SSH only supported."
-msgstr "Impossibile connettersi al canale, solo SSH è supportato."
-
-#: ../src/viewer.c:805
+#: ../src/virt-viewer.c:308
 #, c-format
 msgid "Cannot determine the graphic type for the guest %s"
 msgstr "Impossibile determinare il tipo grafico per il guest %s"
 
-#: ../src/viewer.c:824
-#, c-format
-msgid "Cannot determine the graphic port for the guest %s"
-msgstr "Impossibile determinare la porta grafica per il guest %s"
-
-#: ../src/viewer.c:817
-#, c-format
-msgid "Unknown graphic type for the guest %s"
+#: ../src/virt-viewer.c:321
+#, fuzzy, c-format
+msgid "Cannot determine the graphic address for the guest %s"
 msgstr "Impossibile determinare il tipo grafico per il guest %s"
 
-#: ../src/viewer.c:856
-msgid "Connect to ssh failed."
-msgstr "Connessione a ssh fallita"
-
-#: ../src/viewer.c:830
+#: ../src/virt-viewer.c:344
 #, c-format
 msgid "Cannot determine the host for the guest %s"
 msgstr "Impossibile determinare l'host per il guest %s"
 
-#: ../src/viewer.c:1006
+#: ../src/virt-viewer.c:474
+#, fuzzy
+msgid "Finding guest domain"
+msgstr "Impossibile trovare il dominio guest %s"
+
+#: ../src/virt-viewer.c:478
+#, fuzzy
+msgid "Waiting for guest domain to be created"
+msgstr "attendi l'avvio del dominio"
+
+#: ../src/virt-viewer.c:483
 #, c-format
-msgid "Unable to connect to the graphic server %s"
-msgstr "Impossibile connettersi al server grafico %s"
+msgid "Cannot find guest domain %s"
+msgstr "Impossibile trovare il dominio guest %s"
+
+#: ../src/virt-viewer.c:490
+#, fuzzy
+msgid "Checking guest domain status"
+msgstr "Impossibile trovare il dominio guest %s"
+
+#: ../src/virt-viewer.c:497
+#, fuzzy
+msgid "Waiting for guest domain to start"
+msgstr "attendi l'avvio del dominio"
+
+#: ../src/virt-viewer.c:504
+#, fuzzy
+msgid "Waiting for guest domain to start server"
+msgstr "attendi l'avvio del dominio"
+
+#: ../src/virt-viewer.c:624
+#, c-format
+msgid "Unable to connect to libvirt with URI %s"
+msgstr "Impossibile connettersi a libvirt con la URI %s"
+
+#: ../src/virt-viewer.c:625
+msgid "[none]"
+msgstr "[nessuno]"
+
+#~ msgid "A remote desktop client built with GTK-VNC and libvirt"
+#~ msgstr "Un remote desktop client basato su GTK-VNC e libvirt"
+
+#~ msgid "About Glade"
+#~ msgstr "Informazioni su Glade"
+
+#~ msgid ""
+#~ "Copyright 2007-2008 Daniel P. Berrange\n"
+#~ "Copyright 2007-2008 Red Hat, Inc."
+#~ msgstr ""
+#~ "Copyright 2007-2008 Daniel P. Berrange\n"
+#~ "Copyright 2007-2008 Red Hat, Inc."
+
+#~ msgid "The Fedora Translation Team"
+#~ msgstr ""
+#~ "Il team di traduzione di Fedora\n"
+#~ "Francesco Tombolini <tombo@fedoraproject.org>, 2010\n"
+#~ "Gianluca Sforna <giallu@fedoraproject.org>, 2010"
+
+#~ msgid ""
+#~ "This program is free software; you can redistribute it and/or modify\n"
+#~ "it under the terms of the GNU General Public License as published by\n"
+#~ "the Free Software Foundation; either version 2 of the License, or\n"
+#~ "(at your option) any later version.\n"
+#~ "\n"
+#~ "This program is distributed in the hope that it will be useful,\n"
+#~ "but WITHOUT ANY WARRANTY; without even the implied warranty of\n"
+#~ "MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\n"
+#~ "GNU General Public License for more details.\n"
+#~ "\n"
+#~ "You should have received a copy of the GNU General Public License\n"
+#~ "along with this program; if not, write to the Free Software\n"
+#~ "Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  "
+#~ "USA\n"
+#~ msgstr ""
+#~ "This program is free software; you can redistribute it and/or modify\n"
+#~ "it under the terms of the GNU General Public License as published by\n"
+#~ "the Free Software Foundation; either version 2 of the License, or\n"
+#~ "(at your option) any later version.\n"
+#~ "\n"
+#~ "This program is distributed in the hope that it will be useful,\n"
+#~ "but WITHOUT ANY WARRANTY; without even the implied warranty of\n"
+#~ "MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\n"
+#~ "GNU General Public License for more details.\n"
+#~ "\n"
+#~ "You should have received a copy of the GNU General Public License\n"
+#~ "along with this program; if not, write to the Free Software\n"
+#~ "Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  "
+#~ "USA\n"
+
+#~ msgid "virt-manager.org"
+#~ msgstr "virt-manager.org"
+
+#~ msgid "Authentication required"
+#~ msgstr "Richiesta autenticazione"
+
+#~ msgid "Password:"
+#~ msgstr "Password:"
+
+#~ msgid "Username:"
+#~ msgstr "Nome utente:"
+
+#~ msgid "gtk-cancel"
+#~ msgstr "gtk-cancel"
+
+#~ msgid "gtk-ok"
+#~ msgstr "gtk-ok"
+
+#~ msgid "label"
+#~ msgstr "etichetta"
+
+#~ msgid "Automatically resize"
+#~ msgstr "Ridimensiona automaticamente"
+
+#~ msgid "Ctrl+Alt+F11"
+#~ msgstr "Ctrl+Alt+F11"
+
+#~ msgid "Ctrl+Alt+F12"
+#~ msgstr "Ctrl+Alt+F12"
+
+#~ msgid "Ctrl+Alt+F1_0"
+#~ msgstr "Ctrl+Alt+F1_0"
+
+#~ msgid "Ctrl+Alt+F_1"
+#~ msgstr "Ctrl+Alt+F_1"
+
+#~ msgid "Ctrl+Alt+F_2"
+#~ msgstr "Ctrl+Alt+F_2"
+
+#~ msgid "Ctrl+Alt+F_3"
+#~ msgstr "Ctrl+Alt+F_3"
+
+#~ msgid "Ctrl+Alt+F_4"
+#~ msgstr "Ctrl+Alt+F_4"
+
+#~ msgid "Ctrl+Alt+F_5"
+#~ msgstr "Ctrl+Alt+F_5"
+
+#~ msgid "Ctrl+Alt+F_6"
+#~ msgstr "Ctrl+Alt+F_6"
+
+#~ msgid "Ctrl+Alt+F_7"
+#~ msgstr "Ctrl+Alt+F_7"
+
+#~ msgid "Ctrl+Alt+F_8"
+#~ msgstr "Ctrl+Alt+F_8"
+
+#~ msgid "Ctrl+Alt+F_9"
+#~ msgstr "Ctrl+Alt+F_9"
+
+#~ msgid "Ctrl+Alt+_Backspace"
+#~ msgstr "Ctrl+Alt+_Backspace"
+
+#~ msgid "Ctrl+Alt+_Del"
+#~ msgstr "Ctrl+Alt+_Del"
+
+#~ msgid "Screenshot"
+#~ msgstr "Cattura schermata"
+
+#~ msgid "_File"
+#~ msgstr "_File"
+
+#~ msgid "_Help"
+#~ msgstr "_Aiuto"
+
+#~ msgid "_PrintScreen"
+#~ msgstr "_Stamp"
+
+#~ msgid "_Send key"
+#~ msgstr "_Manda tasto"
+
+#~ msgid "_View"
+#~ msgstr "_Visualizza"
+
+#~ msgid "_Zoom"
+#~ msgstr "_Zoom"
+
+#~ msgid "gtk-about"
+#~ msgstr "gtk-about"
+
+#~ msgid "gtk-quit"
+#~ msgstr "gtk-quit"
+
+#~ msgid "page 1"
+#~ msgstr "pagina 1"
+
+#~ msgid "page 2"
+#~ msgstr "pagina 2"
+
+#~ msgid "page 3"
+#~ msgstr "pagina 3"
+
+#~ msgid "Cannot determine the graphic port for the guest %s"
+#~ msgstr "Impossibile determinare la porta grafica per il guest %s"

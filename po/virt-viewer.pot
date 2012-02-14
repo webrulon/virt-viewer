@@ -1,60 +1,52 @@
-# virt-viewer (virt-manager.org) translation to hu_HU.
-# Copyright (C) 2010 Fedora Project
-# This file is distributed under the same license as the libvirt package.
-# Nikolas Slivka <snicore@gmail.com>, 2010.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
 #. translators: <ungrab empty>
 #: ../src/virt-viewer-window.c:865 ../src/virt-viewer-window.c:867
+#, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: virt-viewer.tip\n"
+"Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-02-14 17:22+0000\n"
-"PO-Revision-Date: 2010-02-20 16:31+0100\n"
-"Last-Translator: Nikolas Slivka <snicore@gmail.com>\n"
-"Language-Team: Hungarian Fedora Translation Team <fedora-trans-hu@redhat."
-"org>\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: \n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=utf-8\n"
+"Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n!=1);\n"
-"X-Poedit-Language: Hungarian\n"
-"X-Poedit-SourceCharset: utf-8\n"
-"X-Poedit-Country: HUNGARY\n"
 
 #: ../src/remote-viewer-main.c:42
-#, fuzzy, c-format
+#, c-format
 msgid "remote-viewer version %s\n"
-msgstr "%s verzió %s\n"
+msgstr ""
 
 #: ../src/remote-viewer-main.c:63 ../src/virt-viewer-main.c:60
 msgid "Run '"
-msgstr "Futtatás"
+msgstr ""
 
 #: ../src/remote-viewer-main.c:66 ../src/virt-viewer-main.c:63
-#, fuzzy
 msgid "Display version information"
-msgstr "verzió információk megjelenítése"
+msgstr ""
 
 #: ../src/remote-viewer-main.c:68 ../src/virt-viewer-main.c:65
-#, fuzzy
 msgid "Display verbose information"
-msgstr "részletes információk megjelenítése"
+msgstr ""
 
 #: ../src/remote-viewer-main.c:70 ../src/virt-viewer-main.c:67
-#, fuzzy
 msgid "Direct connection with no automatic tunnels"
-msgstr "közvetlen kapcsolat automata átjárók nélkül"
+msgstr ""
 
 #: ../src/remote-viewer-main.c:72 ../src/virt-viewer-main.c:77
 msgid "Zoom level of window, in percentage"
 msgstr ""
 
 #: ../src/remote-viewer-main.c:74 ../src/virt-viewer-main.c:79
-#, fuzzy
 msgid "Display debugging information"
-msgstr "hibakeresési információk megjelenítése"
+msgstr ""
 
 #: ../src/remote-viewer-main.c:76 ../src/virt-viewer-main.c:81
 msgid "Open in full screen mode"
@@ -70,7 +62,7 @@ msgid "- Remote viewer client"
 msgstr ""
 
 #: ../src/remote-viewer-main.c:117
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "\n"
 "Usage: %s [OPTIONS] URI\n"
@@ -78,11 +70,6 @@ msgid ""
 "%s\n"
 "\n"
 msgstr ""
-"\n"
-"Használata: %s [OPCIÓK] DOMAIN-NAME|ID|UUID\n"
-"\n"
-"%s\n"
-"\n"
 
 #: ../src/remote-viewer-main.c:122 ../src/virt-viewer-main.c:121
 #, c-format
@@ -146,23 +133,21 @@ msgid "Connect to channel unsupported."
 msgstr ""
 
 #: ../src/virt-viewer-app.c:824
-#, fuzzy
 msgid "Connecting to graphic server"
-msgstr "kapcsolódás a hypervisorhoz"
+msgstr ""
 
 #: ../src/virt-viewer-app.c:954
 msgid "Guest domain has shutdown"
 msgstr ""
 
 #: ../src/virt-viewer-app.c:1004
-#, fuzzy
 msgid "Connected to graphic server"
-msgstr "kapcsolódás a hypervisorhoz"
+msgstr ""
 
 #: ../src/virt-viewer-app.c:1027
-#, fuzzy, c-format
+#, c-format
 msgid "Unable to connect to the graphic server %s"
-msgstr "A %s címmel nem tudott csatlakozni a libvirthez"
+msgstr ""
 
 #: ../src/virt-viewer-app.c:1056
 #, c-format
@@ -184,26 +169,23 @@ msgstr ""
 #: ../src/virt-viewer-main.c:38
 #, c-format
 msgid "%s version %s\n"
-msgstr "%s verzió %s\n"
+msgstr ""
 
 #: ../src/virt-viewer-main.c:69
 msgid "Attach to the local display using libvirt"
 msgstr ""
 
 #: ../src/virt-viewer-main.c:71
-#, fuzzy
 msgid "Connect to hypervisor"
-msgstr "kapcsolódás a hypervisorhoz"
+msgstr ""
 
 #: ../src/virt-viewer-main.c:73
-#, fuzzy
 msgid "Wait for domain to start"
-msgstr "várakozás a domain elindulására"
+msgstr ""
 
 #: ../src/virt-viewer-main.c:75
-#, fuzzy
 msgid "Reconnect to domain upon restart"
-msgstr "újracsatlakozás a domainnévhez újraindításkor"
+msgstr ""
 
 #: ../src/virt-viewer-main.c:92
 msgid "Virt Viewer"
@@ -211,9 +193,8 @@ msgstr ""
 
 #. Setup command line options
 #: ../src/virt-viewer-main.c:95
-#, fuzzy
 msgid "- Virtual machine graphical console"
-msgstr "- Virtuális gép grafikus konzol"
+msgstr ""
 
 #: ../src/virt-viewer-main.c:116
 #, c-format
@@ -224,11 +205,6 @@ msgid ""
 "%s\n"
 "\n"
 msgstr ""
-"\n"
-"Használata: %s [OPCIÓK] DOMAIN-NAME|ID|UUID\n"
-"\n"
-"%s\n"
-"\n"
 
 #: ../src/virt-viewer-session-spice.c:347
 msgid "Select USB devices for redirection"
@@ -244,9 +220,8 @@ msgid "Disconnect"
 msgstr ""
 
 #: ../src/virt-viewer-window.c:781 ../src/virt-viewer-window.c:782
-#, fuzzy
 msgid "Leave fullscreen"
-msgstr "Teljes képernyő"
+msgstr ""
 
 #: ../src/virt-viewer-window.c:854
 msgid "(Press Ctrl+Alt to release pointer)"
@@ -267,9 +242,8 @@ msgid " "
 msgstr ""
 
 #: ../src/virt-viewer.c:144
-#, fuzzy
 msgid "Waiting for guest domain to re-start"
-msgstr "várakozás a domain elindulására"
+msgstr ""
 
 #: ../src/virt-viewer.c:308
 #, c-format
@@ -287,136 +261,35 @@ msgid "Cannot determine the host for the guest %s"
 msgstr ""
 
 #: ../src/virt-viewer.c:474
-#, fuzzy
 msgid "Finding guest domain"
-msgstr "%s vendég-domaint nem sikerült megtalálni"
+msgstr ""
 
 #: ../src/virt-viewer.c:478
-#, fuzzy
 msgid "Waiting for guest domain to be created"
-msgstr "várakozás a domain elindulására"
+msgstr ""
 
 #: ../src/virt-viewer.c:483
-#, fuzzy, c-format
+#, c-format
 msgid "Cannot find guest domain %s"
-msgstr "%s vendég-domaint nem sikerült megtalálni"
+msgstr ""
 
 #: ../src/virt-viewer.c:490
-#, fuzzy
 msgid "Checking guest domain status"
-msgstr "%s vendég-domaint nem sikerült megtalálni"
+msgstr ""
 
 #: ../src/virt-viewer.c:497
-#, fuzzy
 msgid "Waiting for guest domain to start"
-msgstr "várakozás a domain elindulására"
+msgstr ""
 
 #: ../src/virt-viewer.c:504
-#, fuzzy
 msgid "Waiting for guest domain to start server"
-msgstr "várakozás a domain elindulására"
+msgstr ""
 
 #: ../src/virt-viewer.c:624
 #, c-format
 msgid "Unable to connect to libvirt with URI %s"
-msgstr "A %s címmel nem tudott csatlakozni a libvirthez"
+msgstr ""
 
 #: ../src/virt-viewer.c:625
 msgid "[none]"
-msgstr "[nincs]"
-
-#~ msgid "A remote desktop client built with GTK-VNC and libvirt"
-#~ msgstr ""
-#~ "A távoli asztali kliens a GTK-VNC és libvirt alkalmazások használatával "
-#~ "készült."
-
-#~ msgid ""
-#~ "Copyright 2007-2008 Daniel P. Berrange\n"
-#~ "Copyright 2007-2008 Red Hat, Inc."
-#~ msgstr ""
-#~ "Copyright 2007-2008 Daniel P. Berrange\n"
-#~ "Copyright 2007-2008 Red Hat, Inc."
-
-#~ msgid "The Fedora Translation Team"
-#~ msgstr "A Fedora Honosító Csapat"
-
-#~ msgid "virt-manager.org"
-#~ msgstr "virt-manager.org"
-
-#~ msgid "Authentication required"
-#~ msgstr "Hitelesítés szükséges"
-
-#~ msgid "Password:"
-#~ msgstr "Jelszó:"
-
-#~ msgid "Username:"
-#~ msgstr "Felhasználónév:"
-
-#~ msgid "Automatically resize"
-#~ msgstr "Automatikus átméretezés"
-
-#~ msgid "Ctrl+Alt+F11"
-#~ msgstr "Ctrl+Alt+F11"
-
-#~ msgid "Ctrl+Alt+F12"
-#~ msgstr "Ctrl+Alt+F12"
-
-#~ msgid "Ctrl+Alt+F1_0"
-#~ msgstr "Ctrl+Alt+F1_0"
-
-#~ msgid "Ctrl+Alt+F_1"
-#~ msgstr "Ctrl+Alt+F_1"
-
-#~ msgid "Ctrl+Alt+F_2"
-#~ msgstr "Ctrl+Alt+F_2"
-
-#~ msgid "Ctrl+Alt+F_3"
-#~ msgstr "Ctrl+Alt+F_3"
-
-#~ msgid "Ctrl+Alt+F_4"
-#~ msgstr "Ctrl+Alt+F_4"
-
-#~ msgid "Ctrl+Alt+F_5"
-#~ msgstr "Ctrl+Alt+F_5"
-
-#~ msgid "Ctrl+Alt+F_6"
-#~ msgstr "Ctrl+Alt+F_6"
-
-#~ msgid "Ctrl+Alt+F_7"
-#~ msgstr "Ctrl+Alt+F_7"
-
-#~ msgid "Ctrl+Alt+F_8"
-#~ msgstr "Ctrl+Alt+F_8"
-
-#~ msgid "Ctrl+Alt+F_9"
-#~ msgstr "Ctrl+Alt+F_9"
-
-#~ msgid "Ctrl+Alt+_Backspace"
-#~ msgstr "Ctrl+Alt+_Backspace"
-
-#~ msgid "Ctrl+Alt+_Del"
-#~ msgstr "Ctrl+Alt+_Del"
-
-#~ msgid "Screenshot"
-#~ msgstr "Képernyőkép"
-
-#~ msgid "_File"
-#~ msgstr "_Fájl"
-
-#~ msgid "_Help"
-#~ msgstr "_Súgó"
-
-#~ msgid "_View"
-#~ msgstr "_Nézet"
-
-#~ msgid "About Glade"
-#~ msgstr "Glade-ről..."
-
-#~ msgid "gtk-cancel"
-#~ msgstr "Mégsem"
-
-#~ msgid "label"
-#~ msgstr "Címke"
-
-#~ msgid "gtk-ok"
-#~ msgstr "Ok"
+msgstr ""

@@ -6,65 +6,216 @@
 #
 # Leah Liu <lliu@redhat.com>, 2010.
 # Aron Xu <aronxu@gnome.org>, 2010.
+#. translators: <ungrab empty>
+#: ../src/virt-viewer-window.c:865 ../src/virt-viewer-window.c:867
 msgid ""
 msgstr ""
 "Project-Id-Version: zh_CN\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-09-29 18:51+0000\n"
+"POT-Creation-Date: 2012-02-14 17:22+0000\n"
 "PO-Revision-Date: 2010-09-30 16:45+0800\n"
 "Last-Translator: Aron Xu <happyaron.xu@gmail.com>\n"
 "Language-Team: Chinese (simplified) <i18n-zh@googlegroups.com>\n"
+"Language: zh_CN\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: ../src/main.c:34
+#: ../src/remote-viewer-main.c:42
+#, fuzzy, c-format
+msgid "remote-viewer version %s\n"
+msgstr "%s 版本 %s\n"
+
+#: ../src/remote-viewer-main.c:63 ../src/virt-viewer-main.c:60
+msgid "Run '"
+msgstr "运行 '"
+
+#: ../src/remote-viewer-main.c:66 ../src/virt-viewer-main.c:63
+#, fuzzy
+msgid "Display version information"
+msgstr "显示版本信息"
+
+#: ../src/remote-viewer-main.c:68 ../src/virt-viewer-main.c:65
+#, fuzzy
+msgid "Display verbose information"
+msgstr "显示详细信息"
+
+#: ../src/remote-viewer-main.c:70 ../src/virt-viewer-main.c:67
+#, fuzzy
+msgid "Direct connection with no automatic tunnels"
+msgstr "无自动通道的直接连接"
+
+#: ../src/remote-viewer-main.c:72 ../src/virt-viewer-main.c:77
+msgid "Zoom level of window, in percentage"
+msgstr "窗口缩放级别，以百分比计"
+
+#: ../src/remote-viewer-main.c:74 ../src/virt-viewer-main.c:79
+#, fuzzy
+msgid "Display debugging information"
+msgstr "显示调试信息"
+
+#: ../src/remote-viewer-main.c:76 ../src/virt-viewer-main.c:81
+msgid "Open in full screen mode"
+msgstr ""
+
+#: ../src/remote-viewer-main.c:79
+msgid "Open connection using Spice controller communication"
+msgstr ""
+
+#. Setup command line options
+#: ../src/remote-viewer-main.c:92
+msgid "- Remote viewer client"
+msgstr ""
+
+#: ../src/remote-viewer-main.c:117
+#, fuzzy, c-format
+msgid ""
+"\n"
+"Usage: %s [OPTIONS] URI\n"
+"\n"
+"%s\n"
+"\n"
+msgstr ""
+"\n"
+"用法：%s [选项] 域名|ID|UUID\n"
+"\n"
+"%s\n"
+"\n"
+
+#: ../src/remote-viewer-main.c:122 ../src/virt-viewer-main.c:121
+#, c-format
+msgid "Zoom level must be within 10-200\n"
+msgstr ""
+
+#: ../src/remote-viewer.c:185 ../src/remote-viewer.c:482
+msgid "Failed to initiate connection"
+msgstr ""
+
+#: ../src/remote-viewer.c:198
+msgid "Display disabled by controller"
+msgstr ""
+
+#: ../src/remote-viewer.c:398
+#, c-format
+msgid "Controller connection failed: %s"
+msgstr ""
+
+#: ../src/remote-viewer.c:452
+msgid "Couldn't create a Spice session"
+msgstr ""
+
+#: ../src/remote-viewer.c:462
+msgid "Setting up Spice session..."
+msgstr ""
+
+#: ../src/remote-viewer.c:472
+#, fuzzy
+msgid "Cannot determine the connection type from URI"
+msgstr "无法为客户端 %s 确定 VNC 端口"
+
+#: ../src/remote-viewer.c:477
+#, c-format
+msgid "Couldn't create a session for this type: %s"
+msgstr ""
+
+#: ../src/virt-viewer-app.c:259
+msgid "This is the last visible display. Do you want to quit?"
+msgstr ""
+
+#: ../src/virt-viewer-app.c:573
+#, c-format
+msgid "Waiting for display %d..."
+msgstr ""
+
+#: ../src/virt-viewer-app.c:655
+#, fuzzy, c-format
+msgid "Unknown graphic type for the guest %s"
+msgstr "无法为客户端 %s 确定 VNC 端口"
+
+#: ../src/virt-viewer-app.c:730
+msgid "Connect to ssh failed."
+msgstr ""
+
+#: ../src/virt-viewer-app.c:732
+msgid "Can't connect to channel, SSH only supported."
+msgstr ""
+
+#: ../src/virt-viewer-app.c:744
+msgid "Connect to channel unsupported."
+msgstr ""
+
+#: ../src/virt-viewer-app.c:824
+#, fuzzy
+msgid "Connecting to graphic server"
+msgstr "连接到管理程序"
+
+#: ../src/virt-viewer-app.c:954
+msgid "Guest domain has shutdown"
+msgstr ""
+
+#: ../src/virt-viewer-app.c:1004
+#, fuzzy
+msgid "Connected to graphic server"
+msgstr "连接到管理程序"
+
+#: ../src/virt-viewer-app.c:1027
+#, fuzzy, c-format
+msgid "Unable to connect to the graphic server %s"
+msgstr "无法连接到 VNC 服务器 %s"
+
+#: ../src/virt-viewer-app.c:1056
+#, fuzzy, c-format
+msgid ""
+"Unable to authenticate with remote desktop server at %s: %s\n"
+"Retry connection again?"
+msgstr ""
+"无法在 %s: %s 使用 VNC 服务器验证\n"
+"重新尝试连接？"
+
+#: ../src/virt-viewer-app.c:1076
+#, fuzzy, c-format
+msgid "Unable to authenticate with remote desktop server: %s"
+msgstr "无法连接到 VNC 服务器 %s"
+
+#: ../src/virt-viewer-app.c:1084
+#, c-format
+msgid "USB redirection error: %s"
+msgstr ""
+
+#: ../src/virt-viewer-main.c:38
 #, c-format
 msgid "%s version %s\n"
 msgstr "%s 版本 %s\n"
 
-#: ../src/main.c:53
-msgid "Run '"
-msgstr "运行 '"
+#: ../src/virt-viewer-main.c:69
+msgid "Attach to the local display using libvirt"
+msgstr ""
 
-#: ../src/main.c:56
-msgid "display version information"
-msgstr "显示版本信息"
-
-#: ../src/main.c:58
-msgid "display verbose information"
-msgstr "显示详细信息"
-
-#: ../src/main.c:60
-msgid "direct connection with no automatic tunnels"
-msgstr "无自动通道的直接连接"
-
-#: ../src/main.c:62
-msgid "connect to hypervisor"
+#: ../src/virt-viewer-main.c:71
+#, fuzzy
+msgid "Connect to hypervisor"
 msgstr "连接到管理程序"
 
-#: ../src/main.c:64
-msgid "wait for domain to start"
+#: ../src/virt-viewer-main.c:73
+#, fuzzy
+msgid "Wait for domain to start"
 msgstr "等待域启动"
 
-#: ../src/main.c:66
-msgid "reconnect to domain upon restart"
+#: ../src/virt-viewer-main.c:75
+#, fuzzy
+msgid "Reconnect to domain upon restart"
 msgstr "重启后重新连接到该域"
 
-#: ../src/main.c:68
-msgid "Zoom level of window, in percentage"
-msgstr "窗口缩放级别，以百分比计"
-
-#: ../src/main.c:70
-msgid "display debugging information"
-msgstr "显示调试信息"
+#: ../src/virt-viewer-main.c:92
+msgid "Virt Viewer"
+msgstr ""
 
 #. Setup command line options
-#: ../src/main.c:82
+#: ../src/virt-viewer-main.c:95
 msgid "- Virtual machine graphical console"
 msgstr "- 虚拟机图形控制台"
 
-#: ../src/main.c:98
+#: ../src/virt-viewer-main.c:116
 #, c-format
 msgid ""
 "\n"
@@ -79,242 +230,232 @@ msgstr ""
 "%s\n"
 "\n"
 
-#: ../src/viewer.c:909
-#, c-format
-msgid "Cannot determine the VNC port for the guest %s"
-msgstr "无法为客户端 %s 确定 VNC 端口"
-
-#: ../src/viewer.c:915
-#, c-format
-msgid "Cannot determine the VNC host for the guest %s"
-msgstr "无法为客户端 %s 确定 VNC 主机"
-
-#: ../src/viewer.c:1015
-#, c-format
-msgid "Unable to connect to the VNC server %s"
-msgstr "无法连接到 VNC 服务器 %s"
-
-#: ../src/viewer.c:1032
-#, c-format
-msgid ""
-"Unable to authenticate with VNC server at %s: %s\n"
-"Retry connection again?"
+#: ../src/virt-viewer-session-spice.c:347
+msgid "Select USB devices for redirection"
 msgstr ""
-"无法在 %s: %s 使用 VNC 服务器验证\n"
-"重新尝试连接？"
 
-#: ../src/viewer.c:1050
-#, c-format
-msgid ""
-"Unable to authenticate with VNC server at %s\n"
-"Unsupported authentication type %d"
+#: ../src/virt-viewer-session-vnc.c:140
+#, fuzzy, c-format
+msgid "Unsupported authentication type %d"
 msgstr ""
 "无法在 %s 使用 VNC 服务器验证\n"
 "不支持验证类型 %d"
 
-#: ../src/viewer.c:1142
+#: ../src/virt-viewer-window.c:774
+msgid "Disconnect"
+msgstr ""
+
+#: ../src/virt-viewer-window.c:781 ../src/virt-viewer-window.c:782
+#, fuzzy
+msgid "Leave fullscreen"
+msgstr "全屏"
+
+#: ../src/virt-viewer-window.c:854
+msgid "(Press Ctrl+Alt to release pointer)"
+msgstr ""
+
+#. translators:
+#. * This is "<ungrab (or empty)><space (or empty)><subtitle (or empty)> - <appname>"
+#. * Such as: "(Press Ctrl+Alt to release pointer) BigCorpTycoon MOTD - Virt Viewer"
+#.
+#: ../src/virt-viewer-window.c:863
+#, c-format
+msgid "%s%s%s - %s"
+msgstr ""
+
+#. translators: <space>
+#: ../src/virt-viewer-window.c:867
+msgid " "
+msgstr ""
+
+#: ../src/virt-viewer.c:144
+#, fuzzy
+msgid "Waiting for guest domain to re-start"
+msgstr "等待域启动"
+
+#: ../src/virt-viewer.c:308
+#, fuzzy, c-format
+msgid "Cannot determine the graphic type for the guest %s"
+msgstr "无法为客户端 %s 确定 VNC 端口"
+
+#: ../src/virt-viewer.c:321
+#, fuzzy, c-format
+msgid "Cannot determine the graphic address for the guest %s"
+msgstr "无法为客户端 %s 确定 VNC 端口"
+
+#: ../src/virt-viewer.c:344
+#, fuzzy, c-format
+msgid "Cannot determine the host for the guest %s"
+msgstr "无法为客户端 %s 确定 VNC 主机"
+
+#: ../src/virt-viewer.c:474
+#, fuzzy
+msgid "Finding guest domain"
+msgstr "无法找到客户端域 %s"
+
+#: ../src/virt-viewer.c:478
+#, fuzzy
+msgid "Waiting for guest domain to be created"
+msgstr "等待域启动"
+
+#: ../src/virt-viewer.c:483
 #, c-format
 msgid "Cannot find guest domain %s"
 msgstr "无法找到客户端域 %s"
 
-#: ../src/viewer.c:1246
+#: ../src/virt-viewer.c:490
+#, fuzzy
+msgid "Checking guest domain status"
+msgstr "无法找到客户端域 %s"
+
+#: ../src/virt-viewer.c:497
+#, fuzzy
+msgid "Waiting for guest domain to start"
+msgstr "等待域启动"
+
+#: ../src/virt-viewer.c:504
+#, fuzzy
+msgid "Waiting for guest domain to start server"
+msgstr "等待域启动"
+
+#: ../src/virt-viewer.c:624
 #, c-format
 msgid "Unable to connect to libvirt with URI %s"
 msgstr "无法使用 URI %s 连接到 libvirt"
 
-#: ../src/viewer.c:1247
+#: ../src/virt-viewer.c:625
 msgid "[none]"
 msgstr "[无]"
 
-#.
-#. * Local variables:
-#. *  c-indent-level: 8
-#. *  c-basic-offset: 8
-#. *  tab-width: 8
-#. * End:
-#.
-#: ../src/about.glade.h:1
-msgid "A remote desktop client built with GTK-VNC and libvirt"
-msgstr "内置 GTK-VNC 和 libvirt 的远程桌面客户端"
+#~ msgid "A remote desktop client built with GTK-VNC and libvirt"
+#~ msgstr "内置 GTK-VNC 和 libvirt 的远程桌面客户端"
 
-#: ../src/about.glade.h:2
-msgid "About Glade"
-msgstr "关于 Glade"
+#~ msgid "About Glade"
+#~ msgstr "关于 Glade"
 
-#: ../src/about.glade.h:3
-msgid ""
-"Copyright 2007-2008 Daniel P. Berrange\n"
-"Copyright 2007-2008 Red Hat, Inc."
-msgstr ""
-"版权所有 2007-2008 Daniel P. Berrange\n"
-"版权所有 2007-2008 红帽公司"
+#~ msgid ""
+#~ "Copyright 2007-2008 Daniel P. Berrange\n"
+#~ "Copyright 2007-2008 Red Hat, Inc."
+#~ msgstr ""
+#~ "版权所有 2007-2008 Daniel P. Berrange\n"
+#~ "版权所有 2007-2008 红帽公司"
 
-#: ../src/about.glade.h:5
-msgid "The Fedora Translation Team"
-msgstr "Fedora 翻译团队"
+#~ msgid "The Fedora Translation Team"
+#~ msgstr "Fedora 翻译团队"
 
-#: ../src/about.glade.h:6
-msgid ""
-"This program is free software; you can redistribute it and/or modify\n"
-"it under the terms of the GNU General Public License as published by\n"
-"the Free Software Foundation; either version 2 of the License, or\n"
-"(at your option) any later version.\n"
-"\n"
-"This program is distributed in the hope that it will be useful,\n"
-"but WITHOUT ANY WARRANTY; without even the implied warranty of\n"
-"MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\n"
-"GNU General Public License for more details.\n"
-"\n"
-"You should have received a copy of the GNU General Public License\n"
-"along with this program; if not, write to the Free Software\n"
-"Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA\n"
-msgstr ""
-"这个程序是免费软件。您可以根据自由软件基金\n"
-"发布的 GNU 通用公共许可证版本 2 或者之后的版本\n"
-"中的条款重新发布和/或者修改\n"
-"这个软件。 \n"
-"\n"
-"这个程序的发布是希望它能对您\n"
-"有所帮助，但并不保证对您有用，\n"
-"甚至不包含用于特殊目的的适销性或者适用性保证。\n"
-"详情请查看 GNU 通用公共许可证。\n"
-"\n"
-"这个程序应该附带有一份 GNU 通用公共许可证副本。\n"
-"如果没有，请致函自由软件基金有限公司，\n"
-"地址 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA\n"
+#~ msgid ""
+#~ "This program is free software; you can redistribute it and/or modify\n"
+#~ "it under the terms of the GNU General Public License as published by\n"
+#~ "the Free Software Foundation; either version 2 of the License, or\n"
+#~ "(at your option) any later version.\n"
+#~ "\n"
+#~ "This program is distributed in the hope that it will be useful,\n"
+#~ "but WITHOUT ANY WARRANTY; without even the implied warranty of\n"
+#~ "MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\n"
+#~ "GNU General Public License for more details.\n"
+#~ "\n"
+#~ "You should have received a copy of the GNU General Public License\n"
+#~ "along with this program; if not, write to the Free Software\n"
+#~ "Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  "
+#~ "USA\n"
+#~ msgstr ""
+#~ "这个程序是免费软件。您可以根据自由软件基金\n"
+#~ "发布的 GNU 通用公共许可证版本 2 或者之后的版本\n"
+#~ "中的条款重新发布和/或者修改\n"
+#~ "这个软件。 \n"
+#~ "\n"
+#~ "这个程序的发布是希望它能对您\n"
+#~ "有所帮助，但并不保证对您有用，\n"
+#~ "甚至不包含用于特殊目的的适销性或者适用性保证。\n"
+#~ "详情请查看 GNU 通用公共许可证。\n"
+#~ "\n"
+#~ "这个程序应该附带有一份 GNU 通用公共许可证副本。\n"
+#~ "如果没有，请致函自由软件基金有限公司，\n"
+#~ "地址 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA\n"
 
-#: ../src/about.glade.h:20
-msgid "virt-manager.org"
-msgstr "virt-manager.org"
+#~ msgid "virt-manager.org"
+#~ msgstr "virt-manager.org"
 
-#: ../src/auth.glade.h:1
-msgid "Authentication required"
-msgstr "需要验证"
+#~ msgid "Authentication required"
+#~ msgstr "需要验证"
 
-#: ../src/auth.glade.h:2
-msgid "Password:"
-msgstr "密码："
+#~ msgid "Password:"
+#~ msgstr "密码："
 
-#: ../src/auth.glade.h:3
-msgid "Username:"
-msgstr "用户名："
+#~ msgid "Username:"
+#~ msgstr "用户名："
 
-#: ../src/auth.glade.h:4
-msgid "gtk-cancel"
-msgstr ""
+#~ msgid "label"
+#~ msgstr "标签"
 
-#: ../src/auth.glade.h:5
-msgid "gtk-ok"
-msgstr ""
+#~ msgid "Automatically resize"
+#~ msgstr "自动重新定义大小"
 
-#: ../src/auth.glade.h:6
-msgid "label"
-msgstr "标签"
+#~ msgid "Ctrl+Alt+F11"
+#~ msgstr "Ctrl+Alt+F11"
 
-#: ../src/viewer.glade.h:1
-msgid "Automatically resize"
-msgstr "自动重新定义大小"
+#~ msgid "Ctrl+Alt+F12"
+#~ msgstr "Ctrl+Alt+F12"
 
-#: ../src/viewer.glade.h:2
-msgid "Ctrl+Alt+F11"
-msgstr "Ctrl+Alt+F11"
+#~ msgid "Ctrl+Alt+F1_0"
+#~ msgstr "Ctrl+Alt+F1_0"
 
-#: ../src/viewer.glade.h:3
-msgid "Ctrl+Alt+F12"
-msgstr "Ctrl+Alt+F12"
+#~ msgid "Ctrl+Alt+F_1"
+#~ msgstr "Ctrl+Alt+F_1"
 
-#: ../src/viewer.glade.h:4
-msgid "Ctrl+Alt+F1_0"
-msgstr "Ctrl+Alt+F1_0"
+#~ msgid "Ctrl+Alt+F_2"
+#~ msgstr "Ctrl+Alt+F_2"
 
-#: ../src/viewer.glade.h:5
-msgid "Ctrl+Alt+F_1"
-msgstr "Ctrl+Alt+F_1"
+#~ msgid "Ctrl+Alt+F_3"
+#~ msgstr "Ctrl+Alt+F_3"
 
-#: ../src/viewer.glade.h:6
-msgid "Ctrl+Alt+F_2"
-msgstr "Ctrl+Alt+F_2"
+#~ msgid "Ctrl+Alt+F_4"
+#~ msgstr "Ctrl+Alt+F_4"
 
-#: ../src/viewer.glade.h:7
-msgid "Ctrl+Alt+F_3"
-msgstr "Ctrl+Alt+F_3"
+#~ msgid "Ctrl+Alt+F_5"
+#~ msgstr "Ctrl+Alt+F_5"
 
-#: ../src/viewer.glade.h:8
-msgid "Ctrl+Alt+F_4"
-msgstr "Ctrl+Alt+F_4"
+#~ msgid "Ctrl+Alt+F_6"
+#~ msgstr "Ctrl+Alt+F_6"
 
-#: ../src/viewer.glade.h:9
-msgid "Ctrl+Alt+F_5"
-msgstr "Ctrl+Alt+F_5"
+#~ msgid "Ctrl+Alt+F_7"
+#~ msgstr "Ctrl+Alt+F_7"
 
-#: ../src/viewer.glade.h:10
-msgid "Ctrl+Alt+F_6"
-msgstr "Ctrl+Alt+F_6"
+#~ msgid "Ctrl+Alt+F_8"
+#~ msgstr "Ctrl+Alt+F_8"
 
-#: ../src/viewer.glade.h:11
-msgid "Ctrl+Alt+F_7"
-msgstr "Ctrl+Alt+F_7"
+#~ msgid "Ctrl+Alt+F_9"
+#~ msgstr "Ctrl+Alt+F_9"
 
-#: ../src/viewer.glade.h:12
-msgid "Ctrl+Alt+F_8"
-msgstr "Ctrl+Alt+F_8"
+#~ msgid "Ctrl+Alt+_Backspace"
+#~ msgstr "Ctrl+Alt+_Backspace"
 
-#: ../src/viewer.glade.h:13
-msgid "Ctrl+Alt+F_9"
-msgstr "Ctrl+Alt+F_9"
+#~ msgid "Ctrl+Alt+_Del"
+#~ msgstr "Ctrl+Alt+_Del"
 
-#: ../src/viewer.glade.h:14
-msgid "Ctrl+Alt+_Backspace"
-msgstr "Ctrl+Alt+_Backspace"
+#~ msgid "Screenshot"
+#~ msgstr "截屏"
 
-#: ../src/viewer.glade.h:15
-msgid "Ctrl+Alt+_Del"
-msgstr "Ctrl+Alt+_Del"
+#~ msgid "_File"
+#~ msgstr "文件(_F)"
 
-#: ../src/viewer.glade.h:16
-msgid "Full screen"
-msgstr "全屏"
+#~ msgid "_Help"
+#~ msgstr "帮助(_H)"
 
-#: ../src/viewer.glade.h:17
-msgid "Screenshot"
-msgstr "截屏"
+#~ msgid "_PrintScreen"
+#~ msgstr "打印屏幕内容(_P)"
 
-#: ../src/viewer.glade.h:18
-msgid "_File"
-msgstr "文件(_F)"
+#~ msgid "_Send key"
+#~ msgstr "发送组合键(_S)"
 
-#: ../src/viewer.glade.h:19
-msgid "_Help"
-msgstr "帮助(_H)"
+#~ msgid "_View"
+#~ msgstr "查看(_V)"
 
-#: ../src/viewer.glade.h:20
-msgid "_PrintScreen"
-msgstr "打印屏幕内容(_P)"
+#~ msgid "_Zoom"
+#~ msgstr "缩放(_Z)"
 
-#: ../src/viewer.glade.h:21
-msgid "_Send key"
-msgstr "发送组合键(_S)"
+#~ msgid "page 1"
+#~ msgstr "第一页"
 
-#: ../src/viewer.glade.h:22
-msgid "_View"
-msgstr "查看(_V)"
-
-#: ../src/viewer.glade.h:23
-msgid "_Zoom"
-msgstr "缩放(_Z)"
-
-#: ../src/viewer.glade.h:24
-msgid "gtk-about"
-msgstr ""
-
-#: ../src/viewer.glade.h:25
-msgid "gtk-quit"
-msgstr ""
-
-#: ../src/viewer.glade.h:26
-msgid "page 1"
-msgstr "第一页"
-
-#: ../src/viewer.glade.h:27
-msgid "page 2"
-msgstr "第二页"
+#~ msgid "page 2"
+#~ msgstr "第二页"

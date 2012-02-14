@@ -49,6 +49,26 @@
                       </object>
                     </child>
                     <child>
+                      <object class="GtkMenuItem" id="menu-file-smartcard-insert">
+                        <property name="can_focus">False</property>
+                        <property name="use_action_appearance">False</property>
+                        <property name="accel_path">&lt;virt-viewer&gt;/file/smartcard-insert</property>
+                        <property name="label" translatable="yes">Smartcard insertion</property>
+                        <property name="use_underline">True</property>
+                        <signal name="activate" handler="virt_viewer_window_menu_file_smartcard_insert" swapped="no"/>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkMenuItem" id="menu-file-smartcard-remove">
+                        <property name="can_focus">False</property>
+                        <property name="use_action_appearance">False</property>
+                        <property name="accel_path">&lt;virt-viewer&gt;/file/smartcard-remove</property>
+                        <property name="label" translatable="yes">Smartcard removal</property>
+                        <property name="use_underline">True</property>
+                        <signal name="activate" handler="virt_viewer_window_menu_file_smartcard_remove" swapped="no"/>
+                      </object>
+                    </child>
+                    <child>
                       <object class="GtkSeparatorMenuItem" id="separatormenuitem1">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
@@ -87,6 +107,7 @@
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
                         <property name="use_action_appearance">False</property>
+                        <property name="accel_path">&lt;virt-viewer&gt;/view/fullscreen</property>
                         <property name="label" translatable="yes">Full screen</property>
                         <property name="use_underline">True</property>
                         <accelerator key="F11" signal="activate"/>
@@ -167,6 +188,16 @@
                         <property name="use_action_appearance">False</property>
                         <property name="label" translatable="yes">Displays</property>
                         <property name="use_underline">True</property>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkMenuItem" id="menu-view-release-cursor">
+                        <property name="can_focus">False</property>
+                        <property name="use_action_appearance">False</property>
+                        <property name="accel_path">&lt;virt-viewer&gt;/view/release-cursor</property>
+                        <property name="label" translatable="yes">Release cursor</property>
+                        <property name="use_underline">True</property>
+                        <signal name="activate" handler="virt_viewer_window_menu_view_release_cursor" swapped="no"/>
                       </object>
                     </child>
                   </object>

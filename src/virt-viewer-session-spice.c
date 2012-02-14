@@ -71,7 +71,8 @@ static void virt_viewer_session_spice_channel_new(SpiceSession *s,
 static void virt_viewer_session_spice_channel_destroy(SpiceSession *s,
                                                       SpiceChannel *channel,
                                                       VirtViewerSession *session);
-
+static void virt_viewer_session_spice_smartcard_insert(VirtViewerSession *session);
+static void virt_viewer_session_spice_smartcard_remove(VirtViewerSession *session);
 
 static void
 virt_viewer_session_spice_get_property(GObject *object, guint property_id,
@@ -136,6 +137,8 @@ virt_viewer_session_spice_class_init(VirtViewerSessionSpiceClass *klass)
     dclass->channel_open_fd = virt_viewer_session_spice_channel_open_fd;
     dclass->has_usb = virt_viewer_session_spice_has_usb;
     dclass->usb_device_selection = virt_viewer_session_spice_usb_device_selection;
+    dclass->smartcard_insert = virt_viewer_session_spice_smartcard_insert;
+    dclass->smartcard_remove = virt_viewer_session_spice_smartcard_remove;
 
     g_type_class_add_private(klass, sizeof(VirtViewerSessionSpicePrivate));
 
@@ -348,8 +351,7 @@ virt_viewer_session_spice_usb_device_selection(VirtViewerSession *session,
     GtkWidget *dialog, *area, *usb_device_widget;
 
     /* Create the widgets */
-    dialog = gtk_dialog_new_with_buttons(
-                                         _("Select USB devices for redirection"), parent,
+    dialog = gtk_dialog_new_with_buttons(_("Select USB devices for redirection"), parent,
                                          GTK_DIALOG_MODAL | GTK_DIALOG_DESTROY_WITH_PARENT,
                                          GTK_STOCK_OK, GTK_RESPONSE_ACCEPT,
                                          NULL);
@@ -473,6 +475,18 @@ virt_viewer_session_spice_get_main_channel(VirtViewerSessionSpice *self)
     g_return_val_if_fail(VIRT_VIEWER_IS_SESSION_SPICE(self), NULL);
 
     return self->priv->main_channel;
+}
+
+static void
+virt_viewer_session_spice_smartcard_insert(VirtViewerSession *session G_GNUC_UNUSED)
+{
+    spice_smartcard_manager_insert_card(spice_smartcard_manager_get());
+}
+
+static void
+virt_viewer_session_spice_smartcard_remove(VirtViewerSession *session G_GNUC_UNUSED)
+{
+    spice_smartcard_manager_remove_card(spice_smartcard_manager_get());
 }
 
 /*

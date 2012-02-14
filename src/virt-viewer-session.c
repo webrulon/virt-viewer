@@ -378,6 +378,36 @@ void virt_viewer_session_usb_device_selection(VirtViewerSession   *self,
     klass->usb_device_selection(self, parent);
 }
 
+void virt_viewer_session_smartcard_insert(VirtViewerSession *self)
+{
+    VirtViewerSessionClass *klass;
+
+    g_return_if_fail(VIRT_VIEWER_IS_SESSION(self));
+
+    klass = VIRT_VIEWER_SESSION_GET_CLASS(self);
+    if (klass->smartcard_insert == NULL) {
+        g_debug("No session smartcard support");
+        return;
+    }
+
+    klass->smartcard_insert(self);
+}
+
+void virt_viewer_session_smartcard_remove(VirtViewerSession *self)
+{
+    VirtViewerSessionClass *klass;
+
+    g_return_if_fail(VIRT_VIEWER_IS_SESSION(self));
+
+    klass = VIRT_VIEWER_SESSION_GET_CLASS(self);
+    if (klass->smartcard_remove == NULL) {
+        g_debug("No session smartcard support");
+        return;
+    }
+
+    klass->smartcard_remove(self);
+}
+
 /*
  * Local variables:
  *  c-indent-level: 4

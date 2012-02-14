@@ -70,9 +70,10 @@ struct _VirtViewerDisplayClass {
     GtkBinClass parent_class;
 
     /* virtual methods */
-    void (*send_keys)(VirtViewerDisplay* display,
+    void (*send_keys)(VirtViewerDisplay *display,
                       const guint *keyvals, int nkeyvals);
-    GdkPixbuf *(*get_pixbuf)(VirtViewerDisplay* display);
+    GdkPixbuf *(*get_pixbuf)(VirtViewerDisplay *display);
+    void (*release_cursor)(VirtViewerDisplay *display);
 
     /* signals */
     void (*display_pointer_grab)(VirtViewerDisplay *display);
@@ -109,6 +110,8 @@ void virt_viewer_display_set_show_hint(VirtViewerDisplay *display, gint hint);
 VirtViewerSession* virt_viewer_display_get_session(VirtViewerDisplay *display);
 void virt_viewer_display_set_auto_resize(VirtViewerDisplay *display, gboolean auto_resize);
 gboolean virt_viewer_display_get_auto_resize(VirtViewerDisplay *display);
+void virt_viewer_display_release_cursor(VirtViewerDisplay *display);
+
 G_END_DECLS
 
 #endif /* _VIRT_VIEWER_DISPLAY_H */

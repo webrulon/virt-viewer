@@ -123,6 +123,8 @@ main(int argc, char **argv)
         goto cleanup;
     }
 
+    gtk_window_set_default_icon_name("virt-viewer");
+
     virt_viewer_app_set_debug(debug);
 
 #if HAVE_SPICE_GTK

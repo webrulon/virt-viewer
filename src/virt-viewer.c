@@ -332,8 +332,6 @@ virt_viewer_extract_connect_info(VirtViewer *self,
         free(xpath);
         xpath = g_strdup_printf("string(/domain/devices/graphics[@type='%s']/@listen)", type);
         ghost = virt_viewer_extract_xpath_string(xmldesc, xpath);
-        if (ghost == NULL)
-            ghost = g_strdup("localhost");
     }
 
     if (ghost && gport)
@@ -353,11 +351,11 @@ virt_viewer_extract_connect_info(VirtViewer *self,
      * from a remote host. Instead we fallback to the hostname used in
      * the libvirt URI. This isn't perfect but it is better than nothing
      */
-    if (ghost &&
+    if (!ghost ||
         (strcmp(ghost, "0.0.0.0") == 0 ||
          strcmp(ghost, "::") == 0)) {
-        DEBUG_LOG("Guest graphics listen '%s' is a wildcard, replacing with '%s'",
-                  ghost, host);
+        DEBUG_LOG("Guest graphics listen '%s' is NULL or a wildcard, replacing with '%s'",
+                  ghost ? ghost : "", host);
         g_free(ghost);
         ghost = g_strdup(host);
     }

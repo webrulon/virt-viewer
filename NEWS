@@ -1,6 +1,25 @@
   Virt Viewer News
   ================
 
+0.5.0: Feb 14, 2012
+-------------------
+
+  - Add a remote-viewer binary for connecting to a SPICE/VNC
+    server based on URI, instead of querying libvirt
+  - Add ability to attach to a local VM via libvirt instead of
+    connecting over UNIX sockets
+  - Add support for SPICE controller
+  - Allow build without libvirt, for remote-viewer only
+  - Automatically resize guest desktop when resizing window with SPICE
+  - Add support for redirecting host USB devices to remote guest
+  - Grab focus when first showing the display
+  - Register as a spice-xpi-client-remote alternative
+  - Add pretty icon for virt-viewer app
+  - Set transient window hints on all popups
+  - Activate password 'Ok' button when pressing Enter
+  - Support secure connections with SPICE
+  - Don't hardcode 'localhost' for hostname
+
 0.4.2: Nov  9, 2011
 -------------------
 

@@ -1666,6 +1666,14 @@ virt_viewer_app_get_enable_accel(VirtViewerApp *self)
     return self->priv->enable_accel;
 }
 
+VirtViewerSession*
+virt_viewer_app_get_session(VirtViewerApp *self)
+{
+    g_return_val_if_fail(VIRT_VIEWER_IS_APP(self), FALSE);
+
+    return self->priv->session;
+}
+
 GHashTable*
 virt_viewer_app_get_windows(VirtViewerApp *self)
 {

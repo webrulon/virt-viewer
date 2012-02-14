@@ -766,8 +766,8 @@ G_MODULE_EXPORT void
 virt_viewer_window_menu_file_usb_device_selection(GtkWidget *menu G_GNUC_UNUSED,
                                                   VirtViewerWindow *self)
 {
-    virt_viewer_app_usb_device_selection(self->priv->app,
-                                         GTK_WINDOW(self->priv->window));
+    virt_viewer_session_usb_device_selection(virt_viewer_app_get_session(self->priv->app),
+                                             GTK_WINDOW(self->priv->window));
 }
 
 G_MODULE_EXPORT void

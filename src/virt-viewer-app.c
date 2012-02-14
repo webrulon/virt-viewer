@@ -467,8 +467,8 @@ static void set_usb_options_sensitive(gpointer key G_GNUC_UNUSED,
                                       gpointer value,
                                       gpointer user_data)
 {
-    virt_viewer_window_set_usb_options_sensitive(
-                                                 VIRT_VIEWER_WINDOW(value), GPOINTER_TO_INT(user_data));
+    virt_viewer_window_set_usb_options_sensitive(VIRT_VIEWER_WINDOW(value),
+                                                 GPOINTER_TO_INT(user_data));
 }
 
 static void
@@ -1347,6 +1347,7 @@ virt_viewer_app_class_init (VirtViewerAppClass *klass)
                                                          G_PARAM_READABLE |
                                                          G_PARAM_WRITABLE |
                                                          G_PARAM_STATIC_STRINGS));
+
     g_object_class_install_property(object_class,
                                     PROP_TITLE,
                                     g_param_spec_string("title",
@@ -1684,15 +1685,6 @@ virt_viewer_app_get_windows(VirtViewerApp *self)
 {
     g_return_val_if_fail(VIRT_VIEWER_IS_APP(self), NULL);
     return self->priv->windows;
-}
-
-void virt_viewer_app_usb_device_selection(VirtViewerApp   *self,
-                                          GtkWindow       *parent)
-{
-    g_return_if_fail(VIRT_VIEWER_IS_APP(self));
-    g_return_if_fail(self->priv->session != NULL);
-
-    virt_viewer_session_usb_device_selection(self->priv->session, parent);
 }
 
 /*

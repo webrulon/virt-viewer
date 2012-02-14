@@ -91,9 +91,6 @@ gboolean virt_viewer_app_window_set_visible(VirtViewerApp *self, VirtViewerWindo
 void virt_viewer_app_show_status(VirtViewerApp *self, const gchar *fmt, ...);
 void virt_viewer_app_show_display(VirtViewerApp *self);
 GHashTable* virt_viewer_app_get_windows(VirtViewerApp *self);
-
-void virt_viewer_app_usb_device_selection(VirtViewerApp   *self,
-                                          GtkWindow       *parent);
 gboolean virt_viewer_app_get_enable_accel(VirtViewerApp *self);
 VirtViewerSession* virt_viewer_app_get_session(VirtViewerApp *self);
 

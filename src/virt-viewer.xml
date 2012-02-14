@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <interface>
   <!-- interface-requires gtk+ 2.6 -->
+  <object class="GtkAccelGroup" id="accelgroup"/>
   <object class="GtkWindow" id="viewer">
     <property name="can_focus">False</property>
     <property name="default_width">400</property>
@@ -25,6 +26,7 @@
                   <object class="GtkMenu" id="menu1">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
+                    <property name="accel_group">accelgroup</property>
                     <child>
                       <object class="GtkMenuItem" id="menu-file-screenshot">
                         <property name="visible">True</property>
@@ -79,6 +81,7 @@
                   <object class="GtkMenu" id="menu2">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
+                    <property name="accel_group">accelgroup</property>
                     <child>
                       <object class="GtkCheckMenuItem" id="menu-view-fullscreen">
                         <property name="visible">True</property>

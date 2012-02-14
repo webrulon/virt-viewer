@@ -414,7 +414,18 @@ virt_viewer_app_set_window_subtitle(VirtViewerApp *app,
                                     VirtViewerWindow *window,
                                     int nth)
 {
-    gchar *subtitle = app->priv->title ? g_strdup_printf("%s (%d)", app->priv->title, nth + 1) : NULL;
+    gchar *subtitle = NULL;
+
+    if (app->priv->title != NULL) {
+        gchar *d = strstr(app->priv->title, "%d");
+        if (d != NULL) {
+            *d = '\0';
+            subtitle = g_strdup_printf("%s%d%s", app->priv->title, nth + 1, d + 2);
+            *d = '%';
+        } else
+            subtitle = g_strdup_printf("%s (%d)", app->priv->title, nth + 1);
+    }
+
     g_object_set(window, "subtitle", subtitle, NULL);
     g_free(subtitle);
 }

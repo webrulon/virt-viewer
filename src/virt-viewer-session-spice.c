@@ -55,8 +55,8 @@ enum {
 
 static void virt_viewer_session_spice_close(VirtViewerSession *session);
 static gboolean virt_viewer_session_spice_open_fd(VirtViewerSession *session, int fd);
-static gboolean virt_viewer_session_spice_open_host(VirtViewerSession *session, char *host, char *port);
-static gboolean virt_viewer_session_spice_open_uri(VirtViewerSession *session, char *uri);
+static gboolean virt_viewer_session_spice_open_host(VirtViewerSession *session, const gchar *host, const gchar *port, const gchar *tlsport);
+static gboolean virt_viewer_session_spice_open_uri(VirtViewerSession *session, const gchar *uri);
 static gboolean virt_viewer_session_spice_channel_open_fd(VirtViewerSession *session, VirtViewerSessionChannel *channel, int fd);
 static gboolean virt_viewer_session_spice_has_usb(VirtViewerSession *session);
 static void virt_viewer_session_spice_usb_device_selection(VirtViewerSession *session, GtkWindow *parent);
@@ -216,8 +216,9 @@ virt_viewer_session_spice_close(VirtViewerSession *session)
 
 static gboolean
 virt_viewer_session_spice_open_host(VirtViewerSession *session,
-                                    char *host,
-                                    char *port)
+                                    const gchar *host,
+                                    const gchar *port,
+                                    const gchar *tlsport)
 {
     VirtViewerSessionSpice *self = VIRT_VIEWER_SESSION_SPICE(session);
 
@@ -227,6 +228,7 @@ virt_viewer_session_spice_open_host(VirtViewerSession *session,
     g_object_set(self->priv->session,
                  "host", host,
                  "port", port,
+                 "tls-port", tlsport,
                  NULL);
 
     return spice_session_connect(self->priv->session);
@@ -234,7 +236,7 @@ virt_viewer_session_spice_open_host(VirtViewerSession *session,
 
 static gboolean
 virt_viewer_session_spice_open_uri(VirtViewerSession *session,
-                                   char *uri)
+                                   const gchar *uri)
 {
     VirtViewerSessionSpice *self = VIRT_VIEWER_SESSION_SPICE(session);
 
@@ -283,7 +285,7 @@ virt_viewer_session_spice_main_channel_event(SpiceChannel *channel G_GNUC_UNUSED
                                              VirtViewerSession *session)
 {
     VirtViewerSessionSpice *self = VIRT_VIEWER_SESSION_SPICE(session);
-    char *password = NULL;
+    gchar *password = NULL;
 
     g_return_if_fail(self != NULL);
 

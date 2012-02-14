@@ -43,8 +43,8 @@ struct _VirtViewerSessionVncPrivate {
 
 static void virt_viewer_session_vnc_close(VirtViewerSession* session);
 static gboolean virt_viewer_session_vnc_open_fd(VirtViewerSession* session, int fd);
-static gboolean virt_viewer_session_vnc_open_host(VirtViewerSession* session, char *host, char *port);
-static gboolean virt_viewer_session_vnc_open_uri(VirtViewerSession* session, char *uri);
+static gboolean virt_viewer_session_vnc_open_host(VirtViewerSession* session, const gchar *host, const gchar *port, const gchar *tlsport);
+static gboolean virt_viewer_session_vnc_open_uri(VirtViewerSession* session, const gchar *uri);
 static gboolean virt_viewer_session_vnc_channel_open_fd(VirtViewerSession* session,
                                                         VirtViewerSessionChannel* channel, int fd);
 
@@ -119,7 +119,7 @@ virt_viewer_session_vnc_initialized(VncDisplay *vnc G_GNUC_UNUSED,
 
 static void
 virt_viewer_session_vnc_cut_text(VncDisplay *vnc G_GNUC_UNUSED,
-                                 const char *text,
+                                 const gchar *text,
                                  VirtViewerSession *session)
 {
     g_signal_emit_by_name(session, "session-cut-text", text);
@@ -137,15 +137,15 @@ virt_viewer_session_vnc_auth_unsupported(VncDisplay *vnc G_GNUC_UNUSED,
                                          unsigned int authType,
                                          VirtViewerSession *session)
 {
-    char *msg = g_strdup_printf(_("Unsupported authentication type %d"),
-                                authType);
+    gchar *msg = g_strdup_printf(_("Unsupported authentication type %d"),
+                                 authType);
     g_signal_emit_by_name(session, "session-auth-failed", msg);
     g_free(msg);
 }
 
 static void
 virt_viewer_session_vnc_auth_failure(VncDisplay *vnc G_GNUC_UNUSED,
-                                     const char *reason,
+                                     const gchar *reason,
                                      VirtViewerSession *session)
 {
 
@@ -177,8 +177,9 @@ virt_viewer_session_vnc_channel_open_fd(VirtViewerSession* session G_GNUC_UNUSED
 
 static gboolean
 virt_viewer_session_vnc_open_host(VirtViewerSession* session,
-                                  char *host,
-                                  char *port)
+                                  const gchar *host,
+                                  const gchar *port,
+                                  const gchar *tlsport G_GNUC_UNUSED)
 {
     VirtViewerSessionVnc *self = VIRT_VIEWER_SESSION_VNC(session);
 
@@ -190,7 +191,7 @@ virt_viewer_session_vnc_open_host(VirtViewerSession* session,
 
 static gboolean
 virt_viewer_session_vnc_open_uri(VirtViewerSession* session,
-                                 char *uristr)
+                                 const gchar *uristr)
 {
     VirtViewerSessionVnc *self = VIRT_VIEWER_SESSION_VNC(session);
     xmlURIPtr uri = NULL;

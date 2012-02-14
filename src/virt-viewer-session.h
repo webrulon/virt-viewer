@@ -65,8 +65,8 @@ struct _VirtViewerSessionClass {
     /* virtual methods */
     void (* close) (VirtViewerSession* session);
     gboolean (* open_fd) (VirtViewerSession* session, int fd);
-    gboolean (* open_host) (VirtViewerSession* session, char *host, char *port);
-    gboolean (* open_uri) (VirtViewerSession* session, char *uri);
+    gboolean (* open_host) (VirtViewerSession* session, const gchar *host, const gchar *port, const gchar *tlsport);
+    gboolean (* open_uri) (VirtViewerSession* session, const gchar *uri);
     gboolean (* channel_open_fd) (VirtViewerSession* session, VirtViewerSessionChannel *channel, int fd);
     gboolean (* has_usb) (VirtViewerSession* session);
     void (* usb_device_selection) (VirtViewerSession* session, GtkWindow *parent);
@@ -75,9 +75,9 @@ struct _VirtViewerSessionClass {
     void (*session_connected)(VirtViewerSession *session);
     void (*session_initialized)(VirtViewerSession *session);
     void (*session_disconnected)(VirtViewerSession *session);
-    void (*session_auth_refused)(VirtViewerSession *session, const char *msg);
-    void (*session_auth_failed)(VirtViewerSession *session, const char *msg);
-    void (*session_usb_failed)(VirtViewerSession *session, const char *msg);
+    void (*session_auth_refused)(VirtViewerSession *session, const gchar *msg);
+    void (*session_auth_failed)(VirtViewerSession *session, const gchar *msg);
+    void (*session_usb_failed)(VirtViewerSession *session, const gchar *msg);
 
     void (*session_channel_open)(VirtViewerSession *session, VirtViewerSessionChannel *channel);
 
@@ -86,7 +86,7 @@ struct _VirtViewerSessionClass {
     void (*session_display_removed)(VirtViewerSession *session,
                                     VirtViewerDisplay *display);
 
-    void (*session_cut_text)(VirtViewerSession *session, const char *str);
+    void (*session_cut_text)(VirtViewerSession *session, const gchar *str);
     void (*session_bell)(VirtViewerSession *session);
     void (*session_cancelled)(VirtViewerSession *session);
 };
@@ -103,11 +103,11 @@ void virt_viewer_session_clear_displays(VirtViewerSession *session);
 
 void virt_viewer_session_close(VirtViewerSession* session);
 gboolean virt_viewer_session_open_fd(VirtViewerSession* session, int fd);
-gboolean virt_viewer_session_open_host(VirtViewerSession* session, char *host, char *port);
+gboolean virt_viewer_session_open_host(VirtViewerSession* session, const gchar *host, const gchar *port, const gchar *tlsport);
 GObject* virt_viewer_session_get(VirtViewerSession* session);
 gboolean virt_viewer_session_channel_open_fd(VirtViewerSession* session,
                                              VirtViewerSessionChannel* channel, int fd);
-gboolean virt_viewer_session_open_uri(VirtViewerSession *session, gchar *uri);
+gboolean virt_viewer_session_open_uri(VirtViewerSession *session, const gchar *uri);
 
 void virt_viewer_session_set_auto_usbredir(VirtViewerSession* session, gboolean auto_usbredir);
 gboolean virt_viewer_session_get_auto_usbredir(VirtViewerSession* session);

@@ -125,6 +125,7 @@ struct _VirtViewerAppPrivate {
     char *guri; /* prefered over ghost:gport */
     char *ghost;
     char *gport;
+    char *gtlsport;
     char *host; /* ssh */
     int port;/* ssh */
     char *user; /* ssh */
@@ -785,10 +786,10 @@ virt_viewer_app_default_activate(VirtViewerApp *self)
         virt_viewer_app_trace(self, "Opening connection to display at %s\n", priv->guri);
         return virt_viewer_session_open_uri(VIRT_VIEWER_SESSION(priv->session), priv->guri);
     } else {
-        virt_viewer_app_trace(self, "Opening direct TCP connection to display at %s:%s\n",
-                              priv->ghost, priv->gport);
+        virt_viewer_app_trace(self, "Opening direct TCP connection to display at %s:%s:%s\n",
+                              priv->ghost, priv->gport, priv->gtlsport ? priv->gtlsport : "-1");
         return virt_viewer_session_open_host(VIRT_VIEWER_SESSION(priv->session),
-                                             priv->ghost, priv->gport);
+                                             priv->ghost, priv->gport, priv->gtlsport);
     }
 
     return -1;
@@ -1530,6 +1531,7 @@ virt_viewer_app_set_connect_info(VirtViewerApp *self,
                                  const gchar *host,
                                  const gchar *ghost,
                                  const gchar *gport,
+                                 const gchar *gtlsport,
                                  const gchar *transport,
                                  const gchar *unixsock,
                                  const gchar *user,
@@ -1539,12 +1541,13 @@ virt_viewer_app_set_connect_info(VirtViewerApp *self,
     g_return_if_fail(VIRT_VIEWER_IS_APP(self));
     VirtViewerAppPrivate *priv = self->priv;
 
-    DEBUG_LOG("Set connect info: %s,%s,%s,%s,%s,%s,%d",
-              host, ghost, gport, transport, unixsock, user, port);
+    DEBUG_LOG("Set connect info: %s,%s,%s,%s,%s,%s,%s,%d",
+              host, ghost, gport, gtlsport ? gtlsport : "-1", transport, unixsock, user, port);
 
     g_free(priv->host);
     g_free(priv->ghost);
     g_free(priv->gport);
+    g_free(priv->gtlsport);
     g_free(priv->transport);
     g_free(priv->unixsock);
     g_free(priv->user);
@@ -1553,6 +1556,7 @@ virt_viewer_app_set_connect_info(VirtViewerApp *self,
     priv->host = g_strdup(host);
     priv->ghost = g_strdup(ghost);
     priv->gport = g_strdup(gport);
+    priv->gtlsport = gtlsport ? g_strdup(gtlsport) : NULL;
     priv->transport = g_strdup(transport);
     priv->unixsock = g_strdup(unixsock);
     priv->user = g_strdup(user);
@@ -1567,7 +1571,7 @@ virt_viewer_app_free_connect_info(VirtViewerApp *self)
 {
     g_return_if_fail(VIRT_VIEWER_IS_APP(self));
 
-    virt_viewer_app_set_connect_info(self, NULL, NULL, NULL, NULL, NULL, NULL, 0, NULL);
+    virt_viewer_app_set_connect_info(self, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, NULL);
 }
 
 VirtViewerWindow*

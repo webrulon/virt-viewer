@@ -304,17 +304,17 @@ gboolean virt_viewer_session_open_fd(VirtViewerSession *session, int fd)
     return VIRT_VIEWER_SESSION_GET_CLASS(session)->open_fd(session, fd);
 }
 
-gboolean virt_viewer_session_open_host(VirtViewerSession *session, char *host, char *port)
+gboolean virt_viewer_session_open_host(VirtViewerSession *session, const gchar *host, const gchar *port, const gchar *tlsport)
 {
     VirtViewerSessionClass *klass;
 
     g_return_val_if_fail(VIRT_VIEWER_IS_SESSION(session), FALSE);
 
     klass = VIRT_VIEWER_SESSION_GET_CLASS(session);
-    return klass->open_host(session, host, port);
+    return klass->open_host(session, host, port, tlsport);
 }
 
-gboolean virt_viewer_session_open_uri(VirtViewerSession *session, gchar *uri)
+gboolean virt_viewer_session_open_uri(VirtViewerSession *session, const gchar *uri)
 {
     VirtViewerSessionClass *klass;
 

@@ -293,6 +293,7 @@ virt_viewer_extract_connect_info(VirtViewer *self,
     VirtViewerPrivate *priv = self->priv;
     VirtViewerApp *app = VIRT_VIEWER_APP(self);
     gchar *gport = NULL;
+    gchar *gtlsport = NULL;
     gchar *ghost = NULL;
     gchar *unixsock = NULL;
     gchar *host = NULL;
@@ -322,6 +323,12 @@ virt_viewer_extract_connect_info(VirtViewer *self,
             goto cleanup;
         }
     } else {
+        if (g_str_equal(type, "spice")) {
+            free(xpath);
+            xpath = g_strdup_printf("string(/domain/devices/graphics[@type='%s']/@tlsPort)", type);
+            gtlsport = virt_viewer_extract_xpath_string(xmldesc, xpath);
+        }
+
         free(xpath);
         xpath = g_strdup_printf("string(/domain/devices/graphics[@type='%s']/@listen)", type);
         ghost = virt_viewer_extract_xpath_string(xmldesc, xpath);
@@ -355,12 +362,13 @@ virt_viewer_extract_connect_info(VirtViewer *self,
         ghost = g_strdup(host);
     }
 
-    virt_viewer_app_set_connect_info(app, host, ghost, gport, transport, unixsock, user, port, NULL);
+    virt_viewer_app_set_connect_info(app, host, ghost, gport, gtlsport,transport, unixsock, user, port, NULL);
 
     retval = TRUE;
 
  cleanup:
     g_free(gport);
+    g_free(gtlsport);
     g_free(ghost);
     g_free(unixsock);
     g_free(host);

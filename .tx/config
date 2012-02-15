@@ -1,0 +1,7 @@
+[main]
+host = https://www.transifex.net
+
+[virt-viewer.virt-viewerpot]
+file_filter = po/<lang>.po
+source_file = po/virt-viewer.pot
+source_lang = en

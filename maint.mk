@@ -1062,7 +1062,9 @@ generated_files ?= $(srcdir)/lib/*.[ch]
 sc_po_check:
 	@if test -f $(po_file); then					\
 	  grep -E -v '^(#|$$)' $(po_file)				\
-	    | grep -v '^src/false\.c$$' | sort > $@-1;			\
+	    | grep -v '^src/false\.c$$'					\
+            | sed 's|\[type: gettext/glade\] ||'			\
+            | sort > $@-1;						\
 	  files=;							\
 	  for file in $$($(VC_LIST_EXCEPT)) $(generated_files); do	\
 	    test -r $$file || continue;					\

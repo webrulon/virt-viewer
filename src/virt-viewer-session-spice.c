@@ -34,6 +34,11 @@
 #include "virt-viewer-display-spice.h"
 #include "virt-viewer-auth.h"
 
+#if !GLIB_CHECK_VERSION(2, 26, 0)
+#include "gbinding.h"
+#include "gbinding.c"
+#endif
+
 G_DEFINE_TYPE (VirtViewerSessionSpice, virt_viewer_session_spice, VIRT_VIEWER_TYPE_SESSION)
 
 

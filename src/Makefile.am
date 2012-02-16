@@ -8,7 +8,9 @@ builderxml_DATA =				\
 	virt-viewer-auth.xml			\
 	$(NULL)
 
-EXTRA_DIST = $(builderxml_DATA)
+EXTRA_DIST = $(builderxml_DATA) \
+	gbinding.c \
+	gbinding.h
 
 COMMON_SOURCES =					\
 	virt-viewer-util.h virt-viewer-util.c		\

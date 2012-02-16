@@ -1,57 +1,51 @@
-# translation of virt-viewer.tip.virt-viewer.po to Bengali INDIA
+# SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-#
+# 
+# Translators:
 # Runa Bhattacharjee <runab@redhat.com>, 2010.
-#. translators: <ungrab empty>
-#: ../src/virt-viewer-window.c:865 ../src/virt-viewer-window.c:867
 msgid ""
 msgstr ""
-"Project-Id-Version: virt-viewer.tip.virt-viewer\n"
+"Project-Id-Version: virt-viewer\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-02-14 17:56+0000\n"
-"PO-Revision-Date: 2010-02-26 15:55+0530\n"
-"Last-Translator: Runa Bhattacharjee <runab@redhat.com>\n"
-"Language-Team: Bengali INDIA <anubad@lists.ankur.org.in>\n"
-"Language: \n"
+"PO-Revision-Date: 2012-02-14 17:57+0000\n"
+"Last-Translator: Daniel Berrange <dan-transifex@berrange.com>\n"
+"Language-Team: Bengali (India) <anubad@lists.ankur.org.in>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: KBabel 1.11.4\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Language: bn_IN\n"
+"Plural-Forms: nplurals=2; plural=(n != 1)\n"
 
 #: ../src/remote-viewer-main.c:42
-#, fuzzy, c-format
+#, c-format
 msgid "remote-viewer version %s\n"
-msgstr "%s সংস্করণ %s\n"
+msgstr ""
 
 #: ../src/remote-viewer-main.c:63 ../src/virt-viewer-main.c:60
 msgid "Run '"
 msgstr "সঞ্চালিত হবে '"
 
 #: ../src/remote-viewer-main.c:66 ../src/virt-viewer-main.c:63
-#, fuzzy
 msgid "Display version information"
-msgstr "সংস্করণ সংক্রান্ত তথ্য প্রদর্শন করা হবে"
+msgstr ""
 
 #: ../src/remote-viewer-main.c:68 ../src/virt-viewer-main.c:65
-#, fuzzy
 msgid "Display verbose information"
-msgstr "ভার্বোস তথ্য প্রদর্শন করা হবে"
+msgstr ""
 
 #: ../src/remote-viewer-main.c:70 ../src/virt-viewer-main.c:67
-#, fuzzy
 msgid "Direct connection with no automatic tunnels"
-msgstr "স্বয়ংক্রিয় টানেল বিনা কোনো সরাসরি যোগাযোগ নেই"
+msgstr ""
 
 #: ../src/remote-viewer-main.c:72 ../src/virt-viewer-main.c:77
 msgid "Zoom level of window, in percentage"
 msgstr ""
 
 #: ../src/remote-viewer-main.c:74 ../src/virt-viewer-main.c:79
-#, fuzzy
 msgid "Display debugging information"
-msgstr "ডিবাগ সংক্রান্ত তথ্য প্রদর্শন করা হবে"
+msgstr ""
 
 #: ../src/remote-viewer-main.c:76 ../src/virt-viewer-main.c:81
 msgid "Open in full screen mode"
@@ -67,7 +61,7 @@ msgid "- Remote viewer client"
 msgstr ""
 
 #: ../src/remote-viewer-main.c:117
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "\n"
 "Usage: %s [OPTIONS] URI\n"
@@ -75,11 +69,6 @@ msgid ""
 "%s\n"
 "\n"
 msgstr ""
-"\n"
-"ব্যবহার পদ্ধতি: %s [OPTIONS] DOMAIN-NAME|ID|UUID\n"
-"\n"
-"%s\n"
-"\n"
 
 #: ../src/remote-viewer-main.c:122 ../src/virt-viewer-main.c:121
 #, c-format
@@ -108,43 +97,37 @@ msgid "Setting up Spice session..."
 msgstr ""
 
 #: ../src/remote-viewer.c:472
-#, fuzzy
 msgid "Cannot determine the connection type from URI"
-msgstr "%s গেস্ট মেশিনের জন্য VNC পোর্ট নির্ধারণ করা সম্ভব নয়"
+msgstr ""
 
 #: ../src/remote-viewer.c:477
 #, c-format
 msgid "Couldn't create a session for this type: %s"
 msgstr ""
 
-#.
 #. * Local variables:
 #. *  c-indent-level: 4
 #. *  c-basic-offset: 4
 #. *  indent-tabs-mode: nil
 #. * End:
-#.
+#. 
 #: ../src/virt-viewer-about.xml.h:1
-#, fuzzy
 msgid "A remote desktop client built with GTK-VNC, SPICE-GTK and libvirt"
-msgstr "GTK-VNC ও libvirt সহযোগে নির্মিত একটি দূরবর্তী ডেস্কটপ ক্লায়েন্ট"
+msgstr ""
 
 #: ../src/virt-viewer-about.xml.h:2
 msgid "About Glade"
-msgstr "Glade পরিচিতি"
+msgstr ""
 
 #: ../src/virt-viewer-about.xml.h:3
-#, fuzzy
 msgid ""
 "Copyright (C) 2007-2012 Daniel P. Berrange\n"
 "Copyright (C) 2007-2012 Red Hat, Inc."
 msgstr ""
-"স্বত্বাধিকার ২০০৭-২০০৮ ডেনিয়েল পি. বেরাঞ্জ\n"
-"স্বত্বাধিকার ২০০৭-২০০৮ Red Hat, Inc."
 
 #: ../src/virt-viewer-about.xml.h:5
 msgid "The Fedora Translation Team"
-msgstr "Fedora অনুবাদের দল"
+msgstr ""
 
 #: ../src/virt-viewer-about.xml.h:6
 msgid ""
@@ -162,22 +145,10 @@ msgid ""
 "along with this program; if not, write to the Free Software\n"
 "Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA\n"
 msgstr ""
-"এই প্রোগ্রামটি একটি মুক্ত সফ্টওয়্যার; Free Software Foundation দ্বারা প্রকাশিত GNU\n"
-"General Public License-র শর্তানুযায়ী এটি বিতরণ ও পরিবর্তন করা যাবে; লাইসেন্সের\n"
-"সংস্করণ ২ অথবা (আপনার সুবিধানুযায়ী) ঊর্ধ্বতন কোনো সংস্করণের অধীন।\n"
-"\n"
-"এই প্রোগ্রামটি বিতরণ করার মূল উদ্দেশ্য যে ব্যবহারকারীরা এর দ্বারা উপকৃত হবেন, কিন্তু\n"
-"এটির জন্য কোনো সুস্পষ্ট ওয়ারেন্টি উপস্থিত নেই; বাণিজ্যিক ও কোনো সুনির্দিষ্ট কর্ম "
-"সাধনের\n"
-"জন্য অন্তর্নিহীত ওয়ারেন্টিও অনুপস্থিত। অধিক জানতে GNU General Public License পড়ুন।\n"
-"\n"
-"এটির সাথে GNU General Public License-র একটি প্রতিলিপি উপলব্ধ হওয়া উচিত;\n"
-"না থাকলে Free Software Foundation, Inc., 59 Temple Place, Suite 330, \n"
-"Boston, MA  02111-1307  USA থেকে তা প্রাপ্ত করুন\n"
 
 #: ../src/virt-viewer-about.xml.h:20
 msgid "virt-manager.org"
-msgstr "virt-manager.org"
+msgstr ""
 
 #: ../src/virt-viewer-app.c:259
 msgid "This is the last visible display. Do you want to quit?"
@@ -189,9 +160,9 @@ msgid "Waiting for display %d..."
 msgstr ""
 
 #: ../src/virt-viewer-app.c:655
-#, fuzzy, c-format
+#, c-format
 msgid "Unknown graphic type for the guest %s"
-msgstr "%s গেস্ট মেশিনের জন্য VNC পোর্ট নির্ধারণ করা সম্ভব নয়"
+msgstr ""
 
 #: ../src/virt-viewer-app.c:730
 msgid "Connect to ssh failed."
@@ -206,65 +177,60 @@ msgid "Connect to channel unsupported."
 msgstr ""
 
 #: ../src/virt-viewer-app.c:824
-#, fuzzy
 msgid "Connecting to graphic server"
-msgstr "হাইপার-ভাইসরের সাথে সংযোগ স্থাপন করুন"
+msgstr ""
 
 #: ../src/virt-viewer-app.c:954
 msgid "Guest domain has shutdown"
 msgstr ""
 
 #: ../src/virt-viewer-app.c:1004
-#, fuzzy
 msgid "Connected to graphic server"
-msgstr "হাইপার-ভাইসরের সাথে সংযোগ স্থাপন করুন"
+msgstr ""
 
 #: ../src/virt-viewer-app.c:1027
-#, fuzzy, c-format
+#, c-format
 msgid "Unable to connect to the graphic server %s"
-msgstr "%s VNC সার্ভারের সাথে সংযোগ স্থাপন করতে ব্যর্থ"
+msgstr ""
 
 #: ../src/virt-viewer-app.c:1056
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "Unable to authenticate with remote desktop server at %s: %s\n"
 "Retry connection again?"
 msgstr ""
-"%s-এ উপস্থিত VNC সার্ভারে অনুমোদন করতে ব্যর্থ: %s\n"
-"পুনরায় সংযোগের প্রচেষ্টা করা হবে কি?"
 
 #: ../src/virt-viewer-app.c:1076
-#, fuzzy, c-format
+#, c-format
 msgid "Unable to authenticate with remote desktop server: %s"
-msgstr "%s VNC সার্ভারের সাথে সংযোগ স্থাপন করতে ব্যর্থ"
+msgstr ""
 
 #: ../src/virt-viewer-app.c:1084
 #, c-format
 msgid "USB redirection error: %s"
 msgstr ""
 
-#.
 #. * Local variables:
 #. *  c-indent-level: 4
 #. *  c-basic-offset: 4
 #. *  indent-tabs-mode: nil
 #. * End:
-#.
+#. 
 #: ../src/virt-viewer-auth.xml.h:1
 msgid "Authentication required"
-msgstr "অনুমোদন প্রয়োজন"
+msgstr ""
 
 #: ../src/virt-viewer-auth.xml.h:2
 msgid "Password:"
-msgstr "পাসওয়ার্ড:"
+msgstr ""
 
 #: ../src/virt-viewer-auth.xml.h:3
 msgid "Username:"
-msgstr "ব্যবহারকারী নাম:"
+msgstr ""
 
 #: ../src/virt-viewer-auth.xml.h:4
 msgid "label"
-msgstr "label"
+msgstr ""
 
 #: ../src/virt-viewer-main.c:38
 #, c-format
@@ -276,19 +242,16 @@ msgid "Attach to the local display using libvirt"
 msgstr ""
 
 #: ../src/virt-viewer-main.c:71
-#, fuzzy
 msgid "Connect to hypervisor"
-msgstr "হাইপার-ভাইসরের সাথে সংযোগ স্থাপন করুন"
+msgstr ""
 
 #: ../src/virt-viewer-main.c:73
-#, fuzzy
 msgid "Wait for domain to start"
-msgstr "ডোমেইন আরম্ভের অপেক্ষা করা হবে"
+msgstr ""
 
 #: ../src/virt-viewer-main.c:75
-#, fuzzy
 msgid "Reconnect to domain upon restart"
-msgstr "পুনরারম্ভের পরে ডোমেইনের সাথে সংযোগ পুনরায় স্থাপন করা হবে"
+msgstr ""
 
 #: ../src/virt-viewer-main.c:92
 msgid "Virt Viewer"
@@ -307,41 +270,35 @@ msgid ""
 "\n"
 "%s\n"
 "\n"
-msgstr ""
-"\n"
-"ব্যবহার পদ্ধতি: %s [OPTIONS] DOMAIN-NAME|ID|UUID\n"
-"\n"
-"%s\n"
-"\n"
+msgstr "\nব্যবহার পদ্ধতি: %s [OPTIONS] DOMAIN-NAME|ID|UUID\n\n%s\n\n"
 
 #: ../src/virt-viewer-session-spice.c:347
 msgid "Select USB devices for redirection"
 msgstr ""
 
 #: ../src/virt-viewer-session-vnc.c:140
-#, fuzzy, c-format
+#, c-format
 msgid "Unsupported authentication type %d"
 msgstr ""
-"%s-এ উপস্থিত VNC সার্ভারে অনুমোদন করতে ব্যর্থ\n"
-"%d ধরনের অনুমোদন সমর্থিত নয়"
 
 #: ../src/virt-viewer-window.c:774
 msgid "Disconnect"
 msgstr ""
 
 #: ../src/virt-viewer-window.c:781 ../src/virt-viewer-window.c:782
-#, fuzzy
 msgid "Leave fullscreen"
-msgstr "সম্পূর্ণ পর্দায় প্রদর্শন"
+msgstr ""
 
 #: ../src/virt-viewer-window.c:854
 msgid "(Press Ctrl+Alt to release pointer)"
 msgstr ""
 
 #. translators:
-#. * This is "<ungrab (or empty)><space (or empty)><subtitle (or empty)> - <appname>"
-#. * Such as: "(Press Ctrl+Alt to release pointer) BigCorpTycoon MOTD - Virt Viewer"
-#.
+#. * This is "<ungrab (or empty)><space (or empty)><subtitle (or empty)> -
+#. <appname>"
+#. * Such as: "(Press Ctrl+Alt to release pointer) BigCorpTycoon MOTD - Virt
+#. Viewer"
+#. 
 #: ../src/virt-viewer-window.c:863
 #, c-format
 msgid "%s%s%s - %s"
@@ -353,34 +310,31 @@ msgid " "
 msgstr ""
 
 #: ../src/virt-viewer.c:144
-#, fuzzy
 msgid "Waiting for guest domain to re-start"
-msgstr "ডোমেইন আরম্ভের অপেক্ষা করা হবে"
+msgstr ""
 
 #: ../src/virt-viewer.c:308
-#, fuzzy, c-format
+#, c-format
 msgid "Cannot determine the graphic type for the guest %s"
-msgstr "%s গেস্ট মেশিনের জন্য VNC পোর্ট নির্ধারণ করা সম্ভব নয়"
+msgstr ""
 
 #: ../src/virt-viewer.c:321
-#, fuzzy, c-format
+#, c-format
 msgid "Cannot determine the graphic address for the guest %s"
-msgstr "%s গেস্ট মেশিনের জন্য VNC পোর্ট নির্ধারণ করা সম্ভব নয়"
+msgstr ""
 
 #: ../src/virt-viewer.c:344
-#, fuzzy, c-format
+#, c-format
 msgid "Cannot determine the host for the guest %s"
-msgstr "%s গেস্ট মেশিনের জন্য VNC হোস্ট নির্ধারণ করা সম্ভব নয়"
+msgstr ""
 
 #: ../src/virt-viewer.c:474
-#, fuzzy
 msgid "Finding guest domain"
-msgstr "%s গেস্ট ডোমেইন সন্ধান করতে ব্যর্থ"
+msgstr ""
 
 #: ../src/virt-viewer.c:478
-#, fuzzy
 msgid "Waiting for guest domain to be created"
-msgstr "ডোমেইন আরম্ভের অপেক্ষা করা হবে"
+msgstr ""
 
 #: ../src/virt-viewer.c:483
 #, c-format
@@ -388,19 +342,16 @@ msgid "Cannot find guest domain %s"
 msgstr "%s গেস্ট ডোমেইন সন্ধান করতে ব্যর্থ"
 
 #: ../src/virt-viewer.c:490
-#, fuzzy
 msgid "Checking guest domain status"
-msgstr "%s গেস্ট ডোমেইন সন্ধান করতে ব্যর্থ"
+msgstr ""
 
 #: ../src/virt-viewer.c:497
-#, fuzzy
 msgid "Waiting for guest domain to start"
-msgstr "ডোমেইন আরম্ভের অপেক্ষা করা হবে"
+msgstr ""
 
 #: ../src/virt-viewer.c:504
-#, fuzzy
 msgid "Waiting for guest domain to start server"
-msgstr "ডোমেইন আরম্ভের অপেক্ষা করা হবে"
+msgstr ""
 
 #: ../src/virt-viewer.c:624
 #, c-format
@@ -411,85 +362,83 @@ msgstr "URI %s সহযোগে libvirt-র সাথে সংযোগ ক�
 msgid "[none]"
 msgstr "[শূণ্য]"
 
-#.
 #. * Local variables:
 #. *  c-indent-level: 4
 #. *  c-basic-offset: 4
 #. *  indent-tabs-mode: nil
 #. * End:
-#.
+#. 
 #: ../src/virt-viewer.xml.h:1
 msgid "Automatically resize"
-msgstr "স্বয়ংক্রিয়ভাবে মাপ পরিবর্তন"
+msgstr ""
 
 #: ../src/virt-viewer.xml.h:2
 msgid "Ctrl+Alt+F11"
-msgstr "Ctrl+Alt+F11"
+msgstr ""
 
 #: ../src/virt-viewer.xml.h:3
 msgid "Ctrl+Alt+F12"
-msgstr "Ctrl+Alt+F12"
+msgstr ""
 
 #: ../src/virt-viewer.xml.h:4
 msgid "Ctrl+Alt+F1_0"
-msgstr "Ctrl+Alt+F1_0"
+msgstr ""
 
 #: ../src/virt-viewer.xml.h:5
 msgid "Ctrl+Alt+F_1"
-msgstr "Ctrl+Alt+F_1"
+msgstr ""
 
 #: ../src/virt-viewer.xml.h:6
 msgid "Ctrl+Alt+F_2"
-msgstr "Ctrl+Alt+F_2"
+msgstr ""
 
 #: ../src/virt-viewer.xml.h:7
 msgid "Ctrl+Alt+F_3"
-msgstr "Ctrl+Alt+F_3"
+msgstr ""
 
 #: ../src/virt-viewer.xml.h:8
 msgid "Ctrl+Alt+F_4"
-msgstr "Ctrl+Alt+F_4"
+msgstr ""
 
 #: ../src/virt-viewer.xml.h:9
 msgid "Ctrl+Alt+F_5"
-msgstr "Ctrl+Alt+F_5"
+msgstr ""
 
 #: ../src/virt-viewer.xml.h:10
 msgid "Ctrl+Alt+F_6"
-msgstr "Ctrl+Alt+F_6"
+msgstr ""
 
 #: ../src/virt-viewer.xml.h:11
 msgid "Ctrl+Alt+F_7"
-msgstr "Ctrl+Alt+F_7"
+msgstr ""
 
 #: ../src/virt-viewer.xml.h:12
 msgid "Ctrl+Alt+F_8"
-msgstr "Ctrl+Alt+F_8"
+msgstr ""
 
 #: ../src/virt-viewer.xml.h:13
 msgid "Ctrl+Alt+F_9"
-msgstr "Ctrl+Alt+F_9"
+msgstr ""
 
 #: ../src/virt-viewer.xml.h:14
 msgid "Ctrl+Alt+_Backspace"
-msgstr "Ctrl+Alt+_Backspace"
+msgstr ""
 
 #: ../src/virt-viewer.xml.h:15
 msgid "Ctrl+Alt+_Del"
-msgstr "Ctrl+Alt+_Del"
+msgstr ""
 
 #: ../src/virt-viewer.xml.h:16
 msgid "Displays"
 msgstr ""
 
 #: ../src/virt-viewer.xml.h:17
-#, fuzzy
 msgid "Full screen"
-msgstr "সম্পূর্ণ পর্দায় প্রদর্শন"
+msgstr ""
 
 #: ../src/virt-viewer.xml.h:18
 msgid "Screenshot"
-msgstr "পর্দার ছবি"
+msgstr ""
 
 #: ../src/virt-viewer.xml.h:19
 msgid "USB device selection"
@@ -497,42 +446,24 @@ msgstr ""
 
 #: ../src/virt-viewer.xml.h:20
 msgid "_File"
-msgstr "ফাইল (_F)"
+msgstr ""
 
 #: ../src/virt-viewer.xml.h:21
 msgid "_Help"
-msgstr "সাহায্য (_H)"
+msgstr ""
 
 #: ../src/virt-viewer.xml.h:22
 msgid "_PrintScreen"
-msgstr "পর্দার ছবি নিন (_P)"
+msgstr ""
 
 #: ../src/virt-viewer.xml.h:23
 msgid "_Send key"
-msgstr "কি প্রেরণ (_S)"
+msgstr ""
 
 #: ../src/virt-viewer.xml.h:24
 msgid "_View"
-msgstr "প্রদর্শন (_V)"
+msgstr ""
 
 #: ../src/virt-viewer.xml.h:25
 msgid "_Zoom"
 msgstr ""
-
-#~ msgid "gtk-cancel"
-#~ msgstr "gtk-cancel"
-
-#~ msgid "gtk-ok"
-#~ msgstr "gtk-ok"
-
-#~ msgid "gtk-about"
-#~ msgstr "gtk-about"
-
-#~ msgid "gtk-quit"
-#~ msgstr "gtk-quit"
-
-#~ msgid "page 1"
-#~ msgstr "পৃষ্ঠা ১"
-
-#~ msgid "page 2"
-#~ msgstr "পৃষ্ঠা ২"

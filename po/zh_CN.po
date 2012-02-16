@@ -1,58 +1,52 @@
-# translation of zh_CN.po to Simplified Chinese
-# Chinese translations for virt-viewer package
-# virt-viewer 软件包的简体中文翻译.
-# Copyright (C) 2010 Free Software Foundation, Inc.
-# This file is distributed under the same license as the virt-viewer package.
-#
-# Leah Liu <lliu@redhat.com>, 2010.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# 
+# Translators:
 # Aron Xu <aronxu@gnome.org>, 2010.
-#. translators: <ungrab empty>
-#: ../src/virt-viewer-window.c:865 ../src/virt-viewer-window.c:867
+# Leah Liu <lliu@redhat.com>, 2010.
 msgid ""
 msgstr ""
-"Project-Id-Version: zh_CN\n"
+"Project-Id-Version: virt-viewer\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-02-14 17:56+0000\n"
-"PO-Revision-Date: 2010-09-30 16:45+0800\n"
-"Last-Translator: Aron Xu <happyaron.xu@gmail.com>\n"
-"Language-Team: Chinese (simplified) <i18n-zh@googlegroups.com>\n"
-"Language: zh_CN\n"
+"PO-Revision-Date: 2012-02-14 17:57+0000\n"
+"Last-Translator: Daniel Berrange <dan-transifex@berrange.com>\n"
+"Language-Team: Chinese (China) (http://www.transifex.net/projects/p/fedora/language/zh_CN/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: zh_CN\n"
+"Plural-Forms: nplurals=1; plural=0\n"
 
 #: ../src/remote-viewer-main.c:42
-#, fuzzy, c-format
+#, c-format
 msgid "remote-viewer version %s\n"
-msgstr "%s 版本 %s\n"
+msgstr ""
 
 #: ../src/remote-viewer-main.c:63 ../src/virt-viewer-main.c:60
 msgid "Run '"
 msgstr "运行 '"
 
 #: ../src/remote-viewer-main.c:66 ../src/virt-viewer-main.c:63
-#, fuzzy
 msgid "Display version information"
-msgstr "显示版本信息"
+msgstr ""
 
 #: ../src/remote-viewer-main.c:68 ../src/virt-viewer-main.c:65
-#, fuzzy
 msgid "Display verbose information"
-msgstr "显示详细信息"
+msgstr ""
 
 #: ../src/remote-viewer-main.c:70 ../src/virt-viewer-main.c:67
-#, fuzzy
 msgid "Direct connection with no automatic tunnels"
-msgstr "无自动通道的直接连接"
+msgstr ""
 
 #: ../src/remote-viewer-main.c:72 ../src/virt-viewer-main.c:77
 msgid "Zoom level of window, in percentage"
 msgstr "窗口缩放级别，以百分比计"
 
 #: ../src/remote-viewer-main.c:74 ../src/virt-viewer-main.c:79
-#, fuzzy
 msgid "Display debugging information"
-msgstr "显示调试信息"
+msgstr ""
 
 #: ../src/remote-viewer-main.c:76 ../src/virt-viewer-main.c:81
 msgid "Open in full screen mode"
@@ -68,7 +62,7 @@ msgid "- Remote viewer client"
 msgstr ""
 
 #: ../src/remote-viewer-main.c:117
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "\n"
 "Usage: %s [OPTIONS] URI\n"
@@ -76,11 +70,6 @@ msgid ""
 "%s\n"
 "\n"
 msgstr ""
-"\n"
-"用法：%s [选项] 域名|ID|UUID\n"
-"\n"
-"%s\n"
-"\n"
 
 #: ../src/remote-viewer-main.c:122 ../src/virt-viewer-main.c:121
 #, c-format
@@ -109,43 +98,37 @@ msgid "Setting up Spice session..."
 msgstr ""
 
 #: ../src/remote-viewer.c:472
-#, fuzzy
 msgid "Cannot determine the connection type from URI"
-msgstr "无法为客户端 %s 确定 VNC 端口"
+msgstr ""
 
 #: ../src/remote-viewer.c:477
 #, c-format
 msgid "Couldn't create a session for this type: %s"
 msgstr ""
 
-#.
 #. * Local variables:
 #. *  c-indent-level: 4
 #. *  c-basic-offset: 4
 #. *  indent-tabs-mode: nil
 #. * End:
-#.
+#. 
 #: ../src/virt-viewer-about.xml.h:1
-#, fuzzy
 msgid "A remote desktop client built with GTK-VNC, SPICE-GTK and libvirt"
-msgstr "内置 GTK-VNC 和 libvirt 的远程桌面客户端"
+msgstr ""
 
 #: ../src/virt-viewer-about.xml.h:2
 msgid "About Glade"
-msgstr "关于 Glade"
+msgstr ""
 
 #: ../src/virt-viewer-about.xml.h:3
-#, fuzzy
 msgid ""
 "Copyright (C) 2007-2012 Daniel P. Berrange\n"
 "Copyright (C) 2007-2012 Red Hat, Inc."
 msgstr ""
-"版权所有 2007-2008 Daniel P. Berrange\n"
-"版权所有 2007-2008 红帽公司"
 
 #: ../src/virt-viewer-about.xml.h:5
 msgid "The Fedora Translation Team"
-msgstr "Fedora 翻译团队"
+msgstr ""
 
 #: ../src/virt-viewer-about.xml.h:6
 msgid ""
@@ -163,23 +146,10 @@ msgid ""
 "along with this program; if not, write to the Free Software\n"
 "Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA\n"
 msgstr ""
-"这个程序是免费软件。您可以根据自由软件基金\n"
-"发布的 GNU 通用公共许可证版本 2 或者之后的版本\n"
-"中的条款重新发布和/或者修改\n"
-"这个软件。 \n"
-"\n"
-"这个程序的发布是希望它能对您\n"
-"有所帮助，但并不保证对您有用，\n"
-"甚至不包含用于特殊目的的适销性或者适用性保证。\n"
-"详情请查看 GNU 通用公共许可证。\n"
-"\n"
-"这个程序应该附带有一份 GNU 通用公共许可证副本。\n"
-"如果没有，请致函自由软件基金有限公司，\n"
-"地址 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA\n"
 
 #: ../src/virt-viewer-about.xml.h:20
 msgid "virt-manager.org"
-msgstr "virt-manager.org"
+msgstr ""
 
 #: ../src/virt-viewer-app.c:259
 msgid "This is the last visible display. Do you want to quit?"
@@ -191,9 +161,9 @@ msgid "Waiting for display %d..."
 msgstr ""
 
 #: ../src/virt-viewer-app.c:655
-#, fuzzy, c-format
+#, c-format
 msgid "Unknown graphic type for the guest %s"
-msgstr "无法为客户端 %s 确定 VNC 端口"
+msgstr ""
 
 #: ../src/virt-viewer-app.c:730
 msgid "Connect to ssh failed."
@@ -208,65 +178,60 @@ msgid "Connect to channel unsupported."
 msgstr ""
 
 #: ../src/virt-viewer-app.c:824
-#, fuzzy
 msgid "Connecting to graphic server"
-msgstr "连接到管理程序"
+msgstr ""
 
 #: ../src/virt-viewer-app.c:954
 msgid "Guest domain has shutdown"
 msgstr ""
 
 #: ../src/virt-viewer-app.c:1004
-#, fuzzy
 msgid "Connected to graphic server"
-msgstr "连接到管理程序"
+msgstr ""
 
 #: ../src/virt-viewer-app.c:1027
-#, fuzzy, c-format
+#, c-format
 msgid "Unable to connect to the graphic server %s"
-msgstr "无法连接到 VNC 服务器 %s"
+msgstr ""
 
 #: ../src/virt-viewer-app.c:1056
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "Unable to authenticate with remote desktop server at %s: %s\n"
 "Retry connection again?"
 msgstr ""
-"无法在 %s: %s 使用 VNC 服务器验证\n"
-"重新尝试连接？"
 
 #: ../src/virt-viewer-app.c:1076
-#, fuzzy, c-format
+#, c-format
 msgid "Unable to authenticate with remote desktop server: %s"
-msgstr "无法连接到 VNC 服务器 %s"
+msgstr ""
 
 #: ../src/virt-viewer-app.c:1084
 #, c-format
 msgid "USB redirection error: %s"
 msgstr ""
 
-#.
 #. * Local variables:
 #. *  c-indent-level: 4
 #. *  c-basic-offset: 4
 #. *  indent-tabs-mode: nil
 #. * End:
-#.
+#. 
 #: ../src/virt-viewer-auth.xml.h:1
 msgid "Authentication required"
-msgstr "需要验证"
+msgstr ""
 
 #: ../src/virt-viewer-auth.xml.h:2
 msgid "Password:"
-msgstr "密码："
+msgstr ""
 
 #: ../src/virt-viewer-auth.xml.h:3
 msgid "Username:"
-msgstr "用户名："
+msgstr ""
 
 #: ../src/virt-viewer-auth.xml.h:4
 msgid "label"
-msgstr "标签"
+msgstr ""
 
 #: ../src/virt-viewer-main.c:38
 #, c-format
@@ -278,19 +243,16 @@ msgid "Attach to the local display using libvirt"
 msgstr ""
 
 #: ../src/virt-viewer-main.c:71
-#, fuzzy
 msgid "Connect to hypervisor"
-msgstr "连接到管理程序"
+msgstr ""
 
 #: ../src/virt-viewer-main.c:73
-#, fuzzy
 msgid "Wait for domain to start"
-msgstr "等待域启动"
+msgstr ""
 
 #: ../src/virt-viewer-main.c:75
-#, fuzzy
 msgid "Reconnect to domain upon restart"
-msgstr "重启后重新连接到该域"
+msgstr ""
 
 #: ../src/virt-viewer-main.c:92
 msgid "Virt Viewer"
@@ -309,41 +271,35 @@ msgid ""
 "\n"
 "%s\n"
 "\n"
-msgstr ""
-"\n"
-"用法：%s [选项] 域名|ID|UUID\n"
-"\n"
-"%s\n"
-"\n"
+msgstr "\n用法：%s [选项] 域名|ID|UUID\n\n%s\n\n"
 
 #: ../src/virt-viewer-session-spice.c:347
 msgid "Select USB devices for redirection"
 msgstr ""
 
 #: ../src/virt-viewer-session-vnc.c:140
-#, fuzzy, c-format
+#, c-format
 msgid "Unsupported authentication type %d"
 msgstr ""
-"无法在 %s 使用 VNC 服务器验证\n"
-"不支持验证类型 %d"
 
 #: ../src/virt-viewer-window.c:774
 msgid "Disconnect"
 msgstr ""
 
 #: ../src/virt-viewer-window.c:781 ../src/virt-viewer-window.c:782
-#, fuzzy
 msgid "Leave fullscreen"
-msgstr "全屏"
+msgstr ""
 
 #: ../src/virt-viewer-window.c:854
 msgid "(Press Ctrl+Alt to release pointer)"
 msgstr ""
 
 #. translators:
-#. * This is "<ungrab (or empty)><space (or empty)><subtitle (or empty)> - <appname>"
-#. * Such as: "(Press Ctrl+Alt to release pointer) BigCorpTycoon MOTD - Virt Viewer"
-#.
+#. * This is "<ungrab (or empty)><space (or empty)><subtitle (or empty)> -
+#. <appname>"
+#. * Such as: "(Press Ctrl+Alt to release pointer) BigCorpTycoon MOTD - Virt
+#. Viewer"
+#. 
 #: ../src/virt-viewer-window.c:863
 #, c-format
 msgid "%s%s%s - %s"
@@ -355,34 +311,31 @@ msgid " "
 msgstr ""
 
 #: ../src/virt-viewer.c:144
-#, fuzzy
 msgid "Waiting for guest domain to re-start"
-msgstr "等待域启动"
+msgstr ""
 
 #: ../src/virt-viewer.c:308
-#, fuzzy, c-format
+#, c-format
 msgid "Cannot determine the graphic type for the guest %s"
-msgstr "无法为客户端 %s 确定 VNC 端口"
+msgstr ""
 
 #: ../src/virt-viewer.c:321
-#, fuzzy, c-format
+#, c-format
 msgid "Cannot determine the graphic address for the guest %s"
-msgstr "无法为客户端 %s 确定 VNC 端口"
+msgstr ""
 
 #: ../src/virt-viewer.c:344
-#, fuzzy, c-format
+#, c-format
 msgid "Cannot determine the host for the guest %s"
-msgstr "无法为客户端 %s 确定 VNC 主机"
+msgstr ""
 
 #: ../src/virt-viewer.c:474
-#, fuzzy
 msgid "Finding guest domain"
-msgstr "无法找到客户端域 %s"
+msgstr ""
 
 #: ../src/virt-viewer.c:478
-#, fuzzy
 msgid "Waiting for guest domain to be created"
-msgstr "等待域启动"
+msgstr ""
 
 #: ../src/virt-viewer.c:483
 #, c-format
@@ -390,19 +343,16 @@ msgid "Cannot find guest domain %s"
 msgstr "无法找到客户端域 %s"
 
 #: ../src/virt-viewer.c:490
-#, fuzzy
 msgid "Checking guest domain status"
-msgstr "无法找到客户端域 %s"
+msgstr ""
 
 #: ../src/virt-viewer.c:497
-#, fuzzy
 msgid "Waiting for guest domain to start"
-msgstr "等待域启动"
+msgstr ""
 
 #: ../src/virt-viewer.c:504
-#, fuzzy
 msgid "Waiting for guest domain to start server"
-msgstr "等待域启动"
+msgstr ""
 
 #: ../src/virt-viewer.c:624
 #, c-format
@@ -413,85 +363,83 @@ msgstr "无法使用 URI %s 连接到 libvirt"
 msgid "[none]"
 msgstr "[无]"
 
-#.
 #. * Local variables:
 #. *  c-indent-level: 4
 #. *  c-basic-offset: 4
 #. *  indent-tabs-mode: nil
 #. * End:
-#.
+#. 
 #: ../src/virt-viewer.xml.h:1
 msgid "Automatically resize"
-msgstr "自动重新定义大小"
+msgstr ""
 
 #: ../src/virt-viewer.xml.h:2
 msgid "Ctrl+Alt+F11"
-msgstr "Ctrl+Alt+F11"
+msgstr ""
 
 #: ../src/virt-viewer.xml.h:3
 msgid "Ctrl+Alt+F12"
-msgstr "Ctrl+Alt+F12"
+msgstr ""
 
 #: ../src/virt-viewer.xml.h:4
 msgid "Ctrl+Alt+F1_0"
-msgstr "Ctrl+Alt+F1_0"
+msgstr ""
 
 #: ../src/virt-viewer.xml.h:5
 msgid "Ctrl+Alt+F_1"
-msgstr "Ctrl+Alt+F_1"
+msgstr ""
 
 #: ../src/virt-viewer.xml.h:6
 msgid "Ctrl+Alt+F_2"
-msgstr "Ctrl+Alt+F_2"
+msgstr ""
 
 #: ../src/virt-viewer.xml.h:7
 msgid "Ctrl+Alt+F_3"
-msgstr "Ctrl+Alt+F_3"
+msgstr ""
 
 #: ../src/virt-viewer.xml.h:8
 msgid "Ctrl+Alt+F_4"
-msgstr "Ctrl+Alt+F_4"
+msgstr ""
 
 #: ../src/virt-viewer.xml.h:9
 msgid "Ctrl+Alt+F_5"
-msgstr "Ctrl+Alt+F_5"
+msgstr ""
 
 #: ../src/virt-viewer.xml.h:10
 msgid "Ctrl+Alt+F_6"
-msgstr "Ctrl+Alt+F_6"
+msgstr ""
 
 #: ../src/virt-viewer.xml.h:11
 msgid "Ctrl+Alt+F_7"
-msgstr "Ctrl+Alt+F_7"
+msgstr ""
 
 #: ../src/virt-viewer.xml.h:12
 msgid "Ctrl+Alt+F_8"
-msgstr "Ctrl+Alt+F_8"
+msgstr ""
 
 #: ../src/virt-viewer.xml.h:13
 msgid "Ctrl+Alt+F_9"
-msgstr "Ctrl+Alt+F_9"
+msgstr ""
 
 #: ../src/virt-viewer.xml.h:14
 msgid "Ctrl+Alt+_Backspace"
-msgstr "Ctrl+Alt+_Backspace"
+msgstr ""
 
 #: ../src/virt-viewer.xml.h:15
 msgid "Ctrl+Alt+_Del"
-msgstr "Ctrl+Alt+_Del"
+msgstr ""
 
 #: ../src/virt-viewer.xml.h:16
 msgid "Displays"
 msgstr ""
 
 #: ../src/virt-viewer.xml.h:17
-#, fuzzy
 msgid "Full screen"
-msgstr "全屏"
+msgstr ""
 
 #: ../src/virt-viewer.xml.h:18
 msgid "Screenshot"
-msgstr "截屏"
+msgstr ""
 
 #: ../src/virt-viewer.xml.h:19
 msgid "USB device selection"
@@ -499,30 +447,24 @@ msgstr ""
 
 #: ../src/virt-viewer.xml.h:20
 msgid "_File"
-msgstr "文件(_F)"
+msgstr ""
 
 #: ../src/virt-viewer.xml.h:21
 msgid "_Help"
-msgstr "帮助(_H)"
+msgstr ""
 
 #: ../src/virt-viewer.xml.h:22
 msgid "_PrintScreen"
-msgstr "打印屏幕内容(_P)"
+msgstr ""
 
 #: ../src/virt-viewer.xml.h:23
 msgid "_Send key"
-msgstr "发送组合键(_S)"
+msgstr ""
 
 #: ../src/virt-viewer.xml.h:24
 msgid "_View"
-msgstr "查看(_V)"
+msgstr ""
 
 #: ../src/virt-viewer.xml.h:25
 msgid "_Zoom"
-msgstr "缩放(_Z)"
-
-#~ msgid "page 1"
-#~ msgstr "第一页"
-
-#~ msgid "page 2"
-#~ msgstr "第二页"
+msgstr ""

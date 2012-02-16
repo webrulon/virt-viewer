@@ -1,60 +1,52 @@
-# translation of ru.po to Russian
-# Russian translations for fedora package.
-# Copyright (C) 2010 THE fedora'S COPYRIGHT HOLDER
-# This file is distributed under the same license as the fedora package.
-#
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# 
+# Translators:
 # Automatically generated, 2010.
 # Yulia <ypoyarko@redhat.com>, 2010.
-#. translators: <ungrab empty>
-#: ../src/virt-viewer-window.c:865 ../src/virt-viewer-window.c:867
 msgid ""
 msgstr ""
-"Project-Id-Version: ru\n"
+"Project-Id-Version: virt-viewer\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-02-14 17:56+0000\n"
-"PO-Revision-Date: 2010-01-22 12:25+1100\n"
-"Last-Translator: Yulia <ypoyarko@redhat.com>\n"
-"Language-Team: Russian <fedora-trans-ru@redhat.com>\n"
-"Language: ru\n"
+"PO-Revision-Date: 2012-02-14 17:57+0000\n"
+"Last-Translator: Daniel Berrange <dan-transifex@berrange.com>\n"
+"Language-Team: Russian <trans-ru@lists.fedoraproject.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
-"%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
-"X-Generator: KBabel 1.11.4\n"
+"Language: ru\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2)\n"
 
 #: ../src/remote-viewer-main.c:42
-#, fuzzy, c-format
+#, c-format
 msgid "remote-viewer version %s\n"
-msgstr "%s версия %s\n"
+msgstr ""
 
 #: ../src/remote-viewer-main.c:63 ../src/virt-viewer-main.c:60
 msgid "Run '"
 msgstr "Выполнить '"
 
 #: ../src/remote-viewer-main.c:66 ../src/virt-viewer-main.c:63
-#, fuzzy
 msgid "Display version information"
-msgstr "показать версию"
+msgstr ""
 
 #: ../src/remote-viewer-main.c:68 ../src/virt-viewer-main.c:65
-#, fuzzy
 msgid "Display verbose information"
-msgstr "показать подробную информацию"
+msgstr ""
 
 #: ../src/remote-viewer-main.c:70 ../src/virt-viewer-main.c:67
-#, fuzzy
 msgid "Direct connection with no automatic tunnels"
-msgstr "прямое подключение без туннелей"
+msgstr ""
 
 #: ../src/remote-viewer-main.c:72 ../src/virt-viewer-main.c:77
 msgid "Zoom level of window, in percentage"
 msgstr "Уровень увеличения окна, в процентах"
 
 #: ../src/remote-viewer-main.c:74 ../src/virt-viewer-main.c:79
-#, fuzzy
 msgid "Display debugging information"
-msgstr "показать информацию отладки"
+msgstr ""
 
 #: ../src/remote-viewer-main.c:76 ../src/virt-viewer-main.c:81
 msgid "Open in full screen mode"
@@ -70,7 +62,7 @@ msgid "- Remote viewer client"
 msgstr ""
 
 #: ../src/remote-viewer-main.c:117
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "\n"
 "Usage: %s [OPTIONS] URI\n"
@@ -78,11 +70,6 @@ msgid ""
 "%s\n"
 "\n"
 msgstr ""
-"\n"
-"Формат: %s [ПАРАМЕТРЫ] ИМЯ_ДОМЕНА|ID|UUID\n"
-"\n"
-"%s\n"
-"\n"
 
 #: ../src/remote-viewer-main.c:122 ../src/virt-viewer-main.c:121
 #, c-format
@@ -111,43 +98,37 @@ msgid "Setting up Spice session..."
 msgstr ""
 
 #: ../src/remote-viewer.c:472
-#, fuzzy
 msgid "Cannot determine the connection type from URI"
-msgstr "Не удалось определить узел VNC для гостевой системы %s"
+msgstr ""
 
 #: ../src/remote-viewer.c:477
 #, c-format
 msgid "Couldn't create a session for this type: %s"
 msgstr ""
 
-#.
 #. * Local variables:
 #. *  c-indent-level: 4
 #. *  c-basic-offset: 4
 #. *  indent-tabs-mode: nil
 #. * End:
-#.
+#. 
 #: ../src/virt-viewer-about.xml.h:1
-#, fuzzy
 msgid "A remote desktop client built with GTK-VNC, SPICE-GTK and libvirt"
-msgstr "Клиент удалённого рабочего стола включает GTK-VNC и libvirt"
+msgstr ""
 
 #: ../src/virt-viewer-about.xml.h:2
 msgid "About Glade"
-msgstr "О Glade"
+msgstr ""
 
 #: ../src/virt-viewer-about.xml.h:3
-#, fuzzy
 msgid ""
 "Copyright (C) 2007-2012 Daniel P. Berrange\n"
 "Copyright (C) 2007-2012 Red Hat, Inc."
 msgstr ""
-"© 2007-2008 Daniel P. Berrange\n"
-"© 2007-2008 Red Hat, Inc."
 
 #: ../src/virt-viewer-about.xml.h:5
 msgid "The Fedora Translation Team"
-msgstr "Команда локализации Fedora"
+msgstr ""
 
 #: ../src/virt-viewer-about.xml.h:6
 msgid ""
@@ -165,26 +146,10 @@ msgid ""
 "along with this program; if not, write to the Free Software\n"
 "Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA\n"
 msgstr ""
-"Эта программа является свободным программным обеспечением. \n"
-"Разрешается её распространять и изменять в соответствии с условиями\n"
-"лицензии GNU General Public License версии 2 или любой более поздней "
-"версии,\n"
-"опубликованной Фондом свободного программного обеспечения. \n"
-"\n"
-"Эта программа распространяется в надежде, что она может быть полезной, \n"
-"но БЕЗ КАКИХ-ЛИБО ГАРАНТИЙ, ПОДРАЗУМЕВАЕМЫХ ИЛИ ВЫРАЖЕННЫХ ЯВНО,\n"
-"ВКЛЮЧАЯ ГАРАНТИИ КОММЕРЧЕСКОЙ ЦЕННОСТИ И ПРИГОДНОСТИ \n"
-"ДЛЯ КОНКРЕТНОЙ ЦЕЛИ. Для получения дополнительных сведений\n"
-"обратитесь к лицензии GNU General Public License.\n"
-"\n"
-"Копия лицензии GNU GPL предоставляется вместе с этой программой. \n"
-"Если лицензия отсутствует, отправьте письменный запрос по адресу:\n"
-"Free Software Foundation, Inc., \n"
-"59 Temple Place, Suite 330, Boston, MA  02111-1307  USA\n"
 
 #: ../src/virt-viewer-about.xml.h:20
 msgid "virt-manager.org"
-msgstr "virt-manager.org"
+msgstr ""
 
 #: ../src/virt-viewer-app.c:259
 msgid "This is the last visible display. Do you want to quit?"
@@ -196,9 +161,9 @@ msgid "Waiting for display %d..."
 msgstr ""
 
 #: ../src/virt-viewer-app.c:655
-#, fuzzy, c-format
+#, c-format
 msgid "Unknown graphic type for the guest %s"
-msgstr "Не удалось определить порт VNC для гостевой системы %s"
+msgstr ""
 
 #: ../src/virt-viewer-app.c:730
 msgid "Connect to ssh failed."
@@ -213,65 +178,60 @@ msgid "Connect to channel unsupported."
 msgstr "Подключение к каналу не поддерживается."
 
 #: ../src/virt-viewer-app.c:824
-#, fuzzy
 msgid "Connecting to graphic server"
-msgstr "Не удалось подключиться к VNC-серверу %s"
+msgstr ""
 
 #: ../src/virt-viewer-app.c:954
 msgid "Guest domain has shutdown"
 msgstr ""
 
 #: ../src/virt-viewer-app.c:1004
-#, fuzzy
 msgid "Connected to graphic server"
-msgstr "Не удалось подключиться к VNC-серверу %s"
+msgstr ""
 
 #: ../src/virt-viewer-app.c:1027
-#, fuzzy, c-format
+#, c-format
 msgid "Unable to connect to the graphic server %s"
-msgstr "Не удалось подключиться к VNC-серверу %s"
+msgstr ""
 
 #: ../src/virt-viewer-app.c:1056
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "Unable to authenticate with remote desktop server at %s: %s\n"
 "Retry connection again?"
 msgstr ""
-"Не удалось авторизоваться на VNC-сервере %s: %s\n"
-"Повторить попытку подключения?"
 
 #: ../src/virt-viewer-app.c:1076
-#, fuzzy, c-format
+#, c-format
 msgid "Unable to authenticate with remote desktop server: %s"
-msgstr "Не удалось подключиться к VNC-серверу %s"
+msgstr ""
 
 #: ../src/virt-viewer-app.c:1084
 #, c-format
 msgid "USB redirection error: %s"
 msgstr ""
 
-#.
 #. * Local variables:
 #. *  c-indent-level: 4
 #. *  c-basic-offset: 4
 #. *  indent-tabs-mode: nil
 #. * End:
-#.
+#. 
 #: ../src/virt-viewer-auth.xml.h:1
 msgid "Authentication required"
-msgstr "Требуется авторизация"
+msgstr ""
 
 #: ../src/virt-viewer-auth.xml.h:2
 msgid "Password:"
-msgstr "Пароль:"
+msgstr ""
 
 #: ../src/virt-viewer-auth.xml.h:3
 msgid "Username:"
-msgstr "Имя пользователя:"
+msgstr ""
 
 #: ../src/virt-viewer-auth.xml.h:4
 msgid "label"
-msgstr "метка"
+msgstr ""
 
 #: ../src/virt-viewer-main.c:38
 #, c-format
@@ -283,19 +243,16 @@ msgid "Attach to the local display using libvirt"
 msgstr ""
 
 #: ../src/virt-viewer-main.c:71
-#, fuzzy
 msgid "Connect to hypervisor"
-msgstr "подключиться к гипервизору"
+msgstr ""
 
 #: ../src/virt-viewer-main.c:73
-#, fuzzy
 msgid "Wait for domain to start"
-msgstr "ждать запуска домена"
+msgstr ""
 
 #: ../src/virt-viewer-main.c:75
-#, fuzzy
 msgid "Reconnect to domain upon restart"
-msgstr "заново подключиться к домену после перезапуска"
+msgstr ""
 
 #: ../src/virt-viewer-main.c:92
 msgid "Virt Viewer"
@@ -314,41 +271,35 @@ msgid ""
 "\n"
 "%s\n"
 "\n"
-msgstr ""
-"\n"
-"Формат: %s [ПАРАМЕТРЫ] ИМЯ_ДОМЕНА|ID|UUID\n"
-"\n"
-"%s\n"
-"\n"
+msgstr "\nФормат: %s [ПАРАМЕТРЫ] ИМЯ_ДОМЕНА|ID|UUID\n\n%s\n\n"
 
 #: ../src/virt-viewer-session-spice.c:347
 msgid "Select USB devices for redirection"
 msgstr ""
 
 #: ../src/virt-viewer-session-vnc.c:140
-#, fuzzy, c-format
+#, c-format
 msgid "Unsupported authentication type %d"
 msgstr ""
-"Не удалось авторизоваться на VNC-сервере %s\n"
-"Тип аутентификации %d"
 
 #: ../src/virt-viewer-window.c:774
 msgid "Disconnect"
 msgstr ""
 
 #: ../src/virt-viewer-window.c:781 ../src/virt-viewer-window.c:782
-#, fuzzy
 msgid "Leave fullscreen"
-msgstr "На весь экран"
+msgstr ""
 
 #: ../src/virt-viewer-window.c:854
 msgid "(Press Ctrl+Alt to release pointer)"
 msgstr ""
 
 #. translators:
-#. * This is "<ungrab (or empty)><space (or empty)><subtitle (or empty)> - <appname>"
-#. * Such as: "(Press Ctrl+Alt to release pointer) BigCorpTycoon MOTD - Virt Viewer"
-#.
+#. * This is "<ungrab (or empty)><space (or empty)><subtitle (or empty)> -
+#. <appname>"
+#. * Such as: "(Press Ctrl+Alt to release pointer) BigCorpTycoon MOTD - Virt
+#. Viewer"
+#. 
 #: ../src/virt-viewer-window.c:863
 #, c-format
 msgid "%s%s%s - %s"
@@ -360,34 +311,31 @@ msgid " "
 msgstr ""
 
 #: ../src/virt-viewer.c:144
-#, fuzzy
 msgid "Waiting for guest domain to re-start"
-msgstr "ждать запуска домена"
+msgstr ""
 
 #: ../src/virt-viewer.c:308
-#, fuzzy, c-format
+#, c-format
 msgid "Cannot determine the graphic type for the guest %s"
-msgstr "Не удалось определить порт VNC для гостевой системы %s"
+msgstr ""
 
 #: ../src/virt-viewer.c:321
-#, fuzzy, c-format
+#, c-format
 msgid "Cannot determine the graphic address for the guest %s"
-msgstr "Не удалось определить порт VNC для гостевой системы %s"
+msgstr ""
 
 #: ../src/virt-viewer.c:344
-#, fuzzy, c-format
+#, c-format
 msgid "Cannot determine the host for the guest %s"
-msgstr "Не удалось определить узел VNC для гостевой системы %s"
+msgstr ""
 
 #: ../src/virt-viewer.c:474
-#, fuzzy
 msgid "Finding guest domain"
-msgstr "Не удалось найти гостевой домен %s"
+msgstr ""
 
 #: ../src/virt-viewer.c:478
-#, fuzzy
 msgid "Waiting for guest domain to be created"
-msgstr "ждать запуска домена"
+msgstr ""
 
 #: ../src/virt-viewer.c:483
 #, c-format
@@ -395,19 +343,16 @@ msgid "Cannot find guest domain %s"
 msgstr "Не удалось найти гостевой домен %s"
 
 #: ../src/virt-viewer.c:490
-#, fuzzy
 msgid "Checking guest domain status"
-msgstr "Не удалось найти гостевой домен %s"
+msgstr ""
 
 #: ../src/virt-viewer.c:497
-#, fuzzy
 msgid "Waiting for guest domain to start"
-msgstr "ждать запуска домена"
+msgstr ""
 
 #: ../src/virt-viewer.c:504
-#, fuzzy
 msgid "Waiting for guest domain to start server"
-msgstr "ждать запуска домена"
+msgstr ""
 
 #: ../src/virt-viewer.c:624
 #, c-format
@@ -418,85 +363,83 @@ msgstr "Не удалось подключиться к libvirt через URI %
 msgid "[none]"
 msgstr "[нет]"
 
-#.
 #. * Local variables:
 #. *  c-indent-level: 4
 #. *  c-basic-offset: 4
 #. *  indent-tabs-mode: nil
 #. * End:
-#.
+#. 
 #: ../src/virt-viewer.xml.h:1
 msgid "Automatically resize"
-msgstr "Изменить размер автоматически"
+msgstr ""
 
 #: ../src/virt-viewer.xml.h:2
 msgid "Ctrl+Alt+F11"
-msgstr "Ctrl+Alt+F11"
+msgstr ""
 
 #: ../src/virt-viewer.xml.h:3
 msgid "Ctrl+Alt+F12"
-msgstr "Ctrl+Alt+F12"
+msgstr ""
 
 #: ../src/virt-viewer.xml.h:4
 msgid "Ctrl+Alt+F1_0"
-msgstr "Ctrl+Alt+F1_0"
+msgstr ""
 
 #: ../src/virt-viewer.xml.h:5
 msgid "Ctrl+Alt+F_1"
-msgstr "Ctrl+Alt+F_1"
+msgstr ""
 
 #: ../src/virt-viewer.xml.h:6
 msgid "Ctrl+Alt+F_2"
-msgstr "Ctrl+Alt+F_2"
+msgstr ""
 
 #: ../src/virt-viewer.xml.h:7
 msgid "Ctrl+Alt+F_3"
-msgstr "Ctrl+Alt+F_3"
+msgstr ""
 
 #: ../src/virt-viewer.xml.h:8
 msgid "Ctrl+Alt+F_4"
-msgstr "Ctrl+Alt+F_4"
+msgstr ""
 
 #: ../src/virt-viewer.xml.h:9
 msgid "Ctrl+Alt+F_5"
-msgstr "Ctrl+Alt+F_5"
+msgstr ""
 
 #: ../src/virt-viewer.xml.h:10
 msgid "Ctrl+Alt+F_6"
-msgstr "Ctrl+Alt+F_6"
+msgstr ""
 
 #: ../src/virt-viewer.xml.h:11
 msgid "Ctrl+Alt+F_7"
-msgstr "Ctrl+Alt+F_7"
+msgstr ""
 
 #: ../src/virt-viewer.xml.h:12
 msgid "Ctrl+Alt+F_8"
-msgstr "Ctrl+Alt+F_8"
+msgstr ""
 
 #: ../src/virt-viewer.xml.h:13
 msgid "Ctrl+Alt+F_9"
-msgstr "Ctrl+Alt+F_9"
+msgstr ""
 
 #: ../src/virt-viewer.xml.h:14
 msgid "Ctrl+Alt+_Backspace"
-msgstr "Ctrl+Alt+_Backspace"
+msgstr ""
 
 #: ../src/virt-viewer.xml.h:15
 msgid "Ctrl+Alt+_Del"
-msgstr "Ctrl+Alt+_Del"
+msgstr ""
 
 #: ../src/virt-viewer.xml.h:16
 msgid "Displays"
 msgstr ""
 
 #: ../src/virt-viewer.xml.h:17
-#, fuzzy
 msgid "Full screen"
-msgstr "На весь экран"
+msgstr ""
 
 #: ../src/virt-viewer.xml.h:18
 msgid "Screenshot"
-msgstr "Снимок экрана"
+msgstr ""
 
 #: ../src/virt-viewer.xml.h:19
 msgid "USB device selection"
@@ -504,49 +447,24 @@ msgstr ""
 
 #: ../src/virt-viewer.xml.h:20
 msgid "_File"
-msgstr "_Файл"
+msgstr ""
 
 #: ../src/virt-viewer.xml.h:21
 msgid "_Help"
-msgstr "_Справка"
+msgstr ""
 
 #: ../src/virt-viewer.xml.h:22
 msgid "_PrintScreen"
-msgstr "_PrintScreen"
+msgstr ""
 
 #: ../src/virt-viewer.xml.h:23
 msgid "_Send key"
-msgstr "Отправить _ключ"
+msgstr ""
 
 #: ../src/virt-viewer.xml.h:24
 msgid "_View"
-msgstr "_Вид"
+msgstr ""
 
 #: ../src/virt-viewer.xml.h:25
 msgid "_Zoom"
 msgstr ""
-
-#, fuzzy
-#~ msgid "Cannot determine the graphic port for the guest %s"
-#~ msgstr "Не удалось определить порт VNC для гостевой системы %s"
-
-#~ msgid "gtk-cancel"
-#~ msgstr "gtk-cancel"
-
-#~ msgid "gtk-ok"
-#~ msgstr "gtk-ok"
-
-#~ msgid "gtk-about"
-#~ msgstr "gtk-about"
-
-#~ msgid "gtk-quit"
-#~ msgstr "gtk-quit"
-
-#~ msgid "page 1"
-#~ msgstr "страница 1"
-
-#~ msgid "page 2"
-#~ msgstr "страница 2"
-
-#~ msgid "page 3"
-#~ msgstr "страница 3"

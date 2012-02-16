@@ -1,56 +1,51 @@
+# SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-#
+# 
+# Translators:
 # Shankar Prasad <svenkate@redhat.com>, 2010.
-#. translators: <ungrab empty>
-#: ../src/virt-viewer-window.c:865 ../src/virt-viewer-window.c:867
 msgid ""
 msgstr ""
-"Project-Id-Version: \n"
+"Project-Id-Version: virt-viewer\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-02-14 17:56+0000\n"
-"PO-Revision-Date: 2010-01-28 18:07+0530\n"
-"Last-Translator: Shankar Prasad <svenkate@redhat.com>\n"
-"Language-Team: kn-IN <>\n"
-"Language: \n"
+"PO-Revision-Date: 2012-02-14 17:57+0000\n"
+"Last-Translator: Daniel Berrange <dan-transifex@berrange.com>\n"
+"Language-Team: Kannada (http://www.transifex.net/projects/p/fedora/language/kn/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Lokalize 1.0\n"
-"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"Language: kn\n"
+"Plural-Forms: nplurals=1; plural=0\n"
 
 #: ../src/remote-viewer-main.c:42
-#, fuzzy, c-format
+#, c-format
 msgid "remote-viewer version %s\n"
-msgstr "%s ಆವೃತ್ತಿ %s\n"
+msgstr ""
 
 #: ../src/remote-viewer-main.c:63 ../src/virt-viewer-main.c:60
 msgid "Run '"
 msgstr "ಚಲಾಯಿಸಿ '"
 
 #: ../src/remote-viewer-main.c:66 ../src/virt-viewer-main.c:63
-#, fuzzy
 msgid "Display version information"
-msgstr "ಆವೃತ್ತಿಯ ಮಾಹಿತಿಯನ್ನು ತೋರಿಸು"
+msgstr ""
 
 #: ../src/remote-viewer-main.c:68 ../src/virt-viewer-main.c:65
-#, fuzzy
 msgid "Display verbose information"
-msgstr "ವರ್ಬೋಸ್ ಮಾಹಿತಿಯನ್ನು ತೋರಿಸು"
+msgstr ""
 
 #: ../src/remote-viewer-main.c:70 ../src/virt-viewer-main.c:67
-#, fuzzy
 msgid "Direct connection with no automatic tunnels"
-msgstr "ಯಾವುದೆ ಸ್ವಯಂಚಾಲಿತ ಟನಲ್‌ಗಳಿಲ್ಲದೆ ನೇರ ಸಂಪರ್ಕ"
+msgstr ""
 
 #: ../src/remote-viewer-main.c:72 ../src/virt-viewer-main.c:77
 msgid "Zoom level of window, in percentage"
 msgstr ""
 
 #: ../src/remote-viewer-main.c:74 ../src/virt-viewer-main.c:79
-#, fuzzy
 msgid "Display debugging information"
-msgstr "ದೋಷನಿವಾರಣೆಯ ಮಾಹಿತಿಯನ್ನು ತೋರಿಸು"
+msgstr ""
 
 #: ../src/remote-viewer-main.c:76 ../src/virt-viewer-main.c:81
 msgid "Open in full screen mode"
@@ -66,7 +61,7 @@ msgid "- Remote viewer client"
 msgstr ""
 
 #: ../src/remote-viewer-main.c:117
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "\n"
 "Usage: %s [OPTIONS] URI\n"
@@ -74,11 +69,6 @@ msgid ""
 "%s\n"
 "\n"
 msgstr ""
-"\n"
-"ಬಳಕೆ: %s [OPTIONS] DOMAIN-NAME|ID|UUID\n"
-"\n"
-"%s\n"
-"\n"
 
 #: ../src/remote-viewer-main.c:122 ../src/virt-viewer-main.c:121
 #, c-format
@@ -107,43 +97,37 @@ msgid "Setting up Spice session..."
 msgstr ""
 
 #: ../src/remote-viewer.c:472
-#, fuzzy
 msgid "Cannot determine the connection type from URI"
-msgstr "ಅತಿಥಿ %s ಗಾಗಿನ VNC ಸಂಪರ್ಕಸ್ಥಾನವನ್ನು ನಿರ್ಧರಿಸಲು ಸಾಧ್ಯವಾಗಿಲ್ಲ"
+msgstr ""
 
 #: ../src/remote-viewer.c:477
 #, c-format
 msgid "Couldn't create a session for this type: %s"
 msgstr ""
 
-#.
 #. * Local variables:
 #. *  c-indent-level: 4
 #. *  c-basic-offset: 4
 #. *  indent-tabs-mode: nil
 #. * End:
-#.
+#. 
 #: ../src/virt-viewer-about.xml.h:1
-#, fuzzy
 msgid "A remote desktop client built with GTK-VNC, SPICE-GTK and libvirt"
-msgstr "GTK-VNC ಹಾಗು libvirt ಯೊಂದಿಗೆ ನಿರ್ಮಿತಗೊಂಡ ಒಂದು ದೂರಸ್ಥ ಗಣಕತೆರೆ"
+msgstr ""
 
 #: ../src/virt-viewer-about.xml.h:2
 msgid "About Glade"
-msgstr "ಗ್ಲೇಡ್‌ನ ಕುರಿತು"
+msgstr ""
 
 #: ../src/virt-viewer-about.xml.h:3
-#, fuzzy
 msgid ""
 "Copyright (C) 2007-2012 Daniel P. Berrange\n"
 "Copyright (C) 2007-2012 Red Hat, Inc."
 msgstr ""
-"ಹಕ್ಕು 2007-2008 Daniel P. Berrange\n"
-"ಹಕ್ಕು 2007-2008 Red Hat, Inc."
 
 #: ../src/virt-viewer-about.xml.h:5
 msgid "The Fedora Translation Team"
-msgstr "ಫೆಡೋರ ಅನುವಾದ ತಂಡ"
+msgstr ""
 
 #: ../src/virt-viewer-about.xml.h:6
 msgid ""
@@ -161,25 +145,10 @@ msgid ""
 "along with this program; if not, write to the Free Software\n"
 "Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA\n"
 msgstr ""
-"ಈ ಪ್ರೊಗ್ರಾಮ್  ಉಚಿತ ತಂತ್ರಾಂಶವಾಗಿದೆ; ಇದನ್ನು ನೀವು ಮರುವಿತರಿಸಬಹುದಾಗಿರುತ್ತದೆ ಹಾಗು/ಅಥವ \n"
-"ಫ್ರೀ ಸಾಫ್ಟೇವೇರ್ ಫೌಂಡೇಶನ್‌ನಿಂದ ಪ್ರಕಟಿಸಲಾದ ಆವೃತ್ತಿ 2, ಅಥವ ನಂತರದ ಆವೃತ್ತಿಯ(ನಿಮ್ಮ ಇಚ್ಛೆಗೆ "
-"ಬಿಟ್ಟಿದ್ದು)\n"
-"ಲೈಸೆನ್ಸಿನಲ್ಲಿನ GNU ಜನರಲ್ ಪಬ್ಲಿಕ್ ಲೈಸೆನ್ಸಿನ ನಿಯಮಗಳಿಗನುಗುಣವಾಗಿ ನೀವಿದನ್ನು "
-"ಮಾರ್ಪಡಿಸಬಹುದಾಗಿರುತ್ತದೆ. \n"
-"\n"
-"ಈ ಪ್ರೊಗ್ರಾಮ್ ಒಂದು ಉಪಯುಕ್ತವಾದ ತಂತ್ರಾಂಶವಾಗಬಹುದೆಂಬ ಆಶಯದಿಂದ ವಿತರಿಸಲಾಗಿದೆ,\n"
-"ಆದರೆ ಇದಕ್ಕೆ ಯಾವುದೆ ಯಾವುದೆ ವ್ಯಾರಂಟಿ ಇರುವುದಿಲ್ಲ; ಯಾವುದೆ ವಾಣಿಜ್ಯಾತ್ಮಕ ಅಥವ ಯಾವುದೆ\n"
-"ನಿರ್ದಿಷ್ಟ ಉದ್ದೇಶಗಳಿಗೆ ಬೆಂಬಲ ಸೂಚಿಸುವ ಯಾವುದೆ ಸೂಚ್ಯ ವಾರಂಟಿಯನ್ನೂ ಸಹ ಒದಗಿಸುವುದಿಲ್ಲ.\n"
-"ಹೆಚ್ಚಿನ ವಿವರಗಳಿಗಾಗಿ GNU ಜನರಲ್ ಪಬ್ಲಿಕ್ ಲೈಸೆನ್ಸನ್ನು ನೋಡಿ.\n"
-"\n"
-"ಈ ಪ್ರೊಗ್ರಾಮಿನೊಂದಿಗೆ ನಿಮಗೆ GNU ಜನರಲ್ ಪಬ್ಲಿಕ್ ಲೈಸೆನ್ಸಿನ ಒಂದು ಪ್ರತಿಯನ್ನೂ ಸಹ "
-"ಒದಗಿಸಿರಬೇಕು,\n"
-"ಇಲ್ಲದೆ ಹೋದಲ್ಲಿ ಈ ವಿಳಾಸಕ್ಕೆ ಬರೆಯಿರಿ: Free Software\n"
-"Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA\n"
 
 #: ../src/virt-viewer-about.xml.h:20
 msgid "virt-manager.org"
-msgstr "virt-manager.org"
+msgstr ""
 
 #: ../src/virt-viewer-app.c:259
 msgid "This is the last visible display. Do you want to quit?"
@@ -191,9 +160,9 @@ msgid "Waiting for display %d..."
 msgstr ""
 
 #: ../src/virt-viewer-app.c:655
-#, fuzzy, c-format
+#, c-format
 msgid "Unknown graphic type for the guest %s"
-msgstr "ಅತಿಥಿ %s ಗಾಗಿನ VNC ಸಂಪರ್ಕಸ್ಥಾನವನ್ನು ನಿರ್ಧರಿಸಲು ಸಾಧ್ಯವಾಗಿಲ್ಲ"
+msgstr ""
 
 #: ../src/virt-viewer-app.c:730
 msgid "Connect to ssh failed."
@@ -208,65 +177,60 @@ msgid "Connect to channel unsupported."
 msgstr ""
 
 #: ../src/virt-viewer-app.c:824
-#, fuzzy
 msgid "Connecting to graphic server"
-msgstr "ಹೈಪರ್ವೈಸರ್ ಆಗಿ ಮಾರ್ಪಡಿಸು"
+msgstr ""
 
 #: ../src/virt-viewer-app.c:954
 msgid "Guest domain has shutdown"
 msgstr ""
 
 #: ../src/virt-viewer-app.c:1004
-#, fuzzy
 msgid "Connected to graphic server"
-msgstr "ಹೈಪರ್ವೈಸರ್ ಆಗಿ ಮಾರ್ಪಡಿಸು"
+msgstr ""
 
 #: ../src/virt-viewer-app.c:1027
-#, fuzzy, c-format
+#, c-format
 msgid "Unable to connect to the graphic server %s"
-msgstr "VNC ಪರಿಚಾರಕ %s ದೊಂದಿಗೆ ಸಂಪರ್ಕ ಸಾಧಿಸಲು ಸಾಧ್ಯವಾಗಿಲ್ಲ "
+msgstr ""
 
 #: ../src/virt-viewer-app.c:1056
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "Unable to authenticate with remote desktop server at %s: %s\n"
 "Retry connection again?"
 msgstr ""
-"%s ದಲ್ಲಿ VNC ಪರಿಚಾರಕವನ್ನು ದೃಢೀಕರಿಸಲು ಸಾಧ್ಯವಾಗಿಲ್ಲ: %s\n"
-"ಸಂಪರ್ಕವನ್ನು ಇನ್ನೊಮ್ಮೆ ಪ್ರಯತ್ನಿಸಬೇಕೆ?"
 
 #: ../src/virt-viewer-app.c:1076
-#, fuzzy, c-format
+#, c-format
 msgid "Unable to authenticate with remote desktop server: %s"
-msgstr "VNC ಪರಿಚಾರಕ %s ದೊಂದಿಗೆ ಸಂಪರ್ಕ ಸಾಧಿಸಲು ಸಾಧ್ಯವಾಗಿಲ್ಲ "
+msgstr ""
 
 #: ../src/virt-viewer-app.c:1084
 #, c-format
 msgid "USB redirection error: %s"
 msgstr ""
 
-#.
 #. * Local variables:
 #. *  c-indent-level: 4
 #. *  c-basic-offset: 4
 #. *  indent-tabs-mode: nil
 #. * End:
-#.
+#. 
 #: ../src/virt-viewer-auth.xml.h:1
 msgid "Authentication required"
-msgstr "ದೃಢೀಕರಣದ ಅಗತ್ಯವಿದೆ"
+msgstr ""
 
 #: ../src/virt-viewer-auth.xml.h:2
 msgid "Password:"
-msgstr "ಗುಪ್ತಪದ:"
+msgstr ""
 
 #: ../src/virt-viewer-auth.xml.h:3
 msgid "Username:"
-msgstr "ಬಳಕೆದಾರ ಹೆಸರು:"
+msgstr ""
 
 #: ../src/virt-viewer-auth.xml.h:4
 msgid "label"
-msgstr "ಲೇಬಲ್"
+msgstr ""
 
 #: ../src/virt-viewer-main.c:38
 #, c-format
@@ -278,19 +242,16 @@ msgid "Attach to the local display using libvirt"
 msgstr ""
 
 #: ../src/virt-viewer-main.c:71
-#, fuzzy
 msgid "Connect to hypervisor"
-msgstr "ಹೈಪರ್ವೈಸರ್ ಆಗಿ ಮಾರ್ಪಡಿಸು"
+msgstr ""
 
 #: ../src/virt-viewer-main.c:73
-#, fuzzy
 msgid "Wait for domain to start"
-msgstr "ಡೊಮೈನ್ ಆರಂಭಗೊಳ್ಳುವವರೆಗೂ ನಿರೀಕ್ಷಿಸು"
+msgstr ""
 
 #: ../src/virt-viewer-main.c:75
-#, fuzzy
 msgid "Reconnect to domain upon restart"
-msgstr "ಡೊಮೈನ್ ಮರಳಿ ಆರಂಭಗೊಂಡಾಗ ಮರಳಿ ಸಂಪರ್ಕಸಾಧಿಸು"
+msgstr ""
 
 #: ../src/virt-viewer-main.c:92
 msgid "Virt Viewer"
@@ -309,41 +270,35 @@ msgid ""
 "\n"
 "%s\n"
 "\n"
-msgstr ""
-"\n"
-"ಬಳಕೆ: %s [OPTIONS] DOMAIN-NAME|ID|UUID\n"
-"\n"
-"%s\n"
-"\n"
+msgstr "\nಬಳಕೆ: %s [OPTIONS] DOMAIN-NAME|ID|UUID\n\n%s\n\n"
 
 #: ../src/virt-viewer-session-spice.c:347
 msgid "Select USB devices for redirection"
 msgstr ""
 
 #: ../src/virt-viewer-session-vnc.c:140
-#, fuzzy, c-format
+#, c-format
 msgid "Unsupported authentication type %d"
 msgstr ""
-"%s ದಲ್ಲಿ VNC ಪರಿಚಾರಕವನ್ನು ದೃಢೀಕರಿಸಲು ಸಾಧ್ಯವಾಗಿಲ್ಲ\n"
-"ದೃಢೀಕರಣದ ಬಗೆ %d ಗೆ ಬೆಂಬಲವಿಲ್ಲ"
 
 #: ../src/virt-viewer-window.c:774
 msgid "Disconnect"
 msgstr ""
 
 #: ../src/virt-viewer-window.c:781 ../src/virt-viewer-window.c:782
-#, fuzzy
 msgid "Leave fullscreen"
-msgstr "ಪೂರ್ಣ ಪರದೆ"
+msgstr ""
 
 #: ../src/virt-viewer-window.c:854
 msgid "(Press Ctrl+Alt to release pointer)"
 msgstr ""
 
 #. translators:
-#. * This is "<ungrab (or empty)><space (or empty)><subtitle (or empty)> - <appname>"
-#. * Such as: "(Press Ctrl+Alt to release pointer) BigCorpTycoon MOTD - Virt Viewer"
-#.
+#. * This is "<ungrab (or empty)><space (or empty)><subtitle (or empty)> -
+#. <appname>"
+#. * Such as: "(Press Ctrl+Alt to release pointer) BigCorpTycoon MOTD - Virt
+#. Viewer"
+#. 
 #: ../src/virt-viewer-window.c:863
 #, c-format
 msgid "%s%s%s - %s"
@@ -355,34 +310,31 @@ msgid " "
 msgstr ""
 
 #: ../src/virt-viewer.c:144
-#, fuzzy
 msgid "Waiting for guest domain to re-start"
-msgstr "ಡೊಮೈನ್ ಆರಂಭಗೊಳ್ಳುವವರೆಗೂ ನಿರೀಕ್ಷಿಸು"
+msgstr ""
 
 #: ../src/virt-viewer.c:308
-#, fuzzy, c-format
+#, c-format
 msgid "Cannot determine the graphic type for the guest %s"
-msgstr "ಅತಿಥಿ %s ಗಾಗಿನ VNC ಸಂಪರ್ಕಸ್ಥಾನವನ್ನು ನಿರ್ಧರಿಸಲು ಸಾಧ್ಯವಾಗಿಲ್ಲ"
+msgstr ""
 
 #: ../src/virt-viewer.c:321
-#, fuzzy, c-format
+#, c-format
 msgid "Cannot determine the graphic address for the guest %s"
-msgstr "ಅತಿಥಿ %s ಗಾಗಿನ VNC ಸಂಪರ್ಕಸ್ಥಾನವನ್ನು ನಿರ್ಧರಿಸಲು ಸಾಧ್ಯವಾಗಿಲ್ಲ"
+msgstr ""
 
 #: ../src/virt-viewer.c:344
-#, fuzzy, c-format
+#, c-format
 msgid "Cannot determine the host for the guest %s"
-msgstr "ಅತಿಥೇಯ %s ಗಾಗಿನ VNC ಸಂಪರ್ಕಸ್ಥಾನವನ್ನು ನಿರ್ಧರಿಸಲು ಸಾಧ್ಯವಾಗಿಲ್ಲ"
+msgstr ""
 
 #: ../src/virt-viewer.c:474
-#, fuzzy
 msgid "Finding guest domain"
-msgstr "ಅತಿಥಿ ಡೊಮೈನ್ %s ಕಂಡುಬಂದಿಲ್ಲ"
+msgstr ""
 
 #: ../src/virt-viewer.c:478
-#, fuzzy
 msgid "Waiting for guest domain to be created"
-msgstr "ಡೊಮೈನ್ ಆರಂಭಗೊಳ್ಳುವವರೆಗೂ ನಿರೀಕ್ಷಿಸು"
+msgstr ""
 
 #: ../src/virt-viewer.c:483
 #, c-format
@@ -390,19 +342,16 @@ msgid "Cannot find guest domain %s"
 msgstr "ಅತಿಥಿ ಡೊಮೈನ್ %s ಕಂಡುಬಂದಿಲ್ಲ"
 
 #: ../src/virt-viewer.c:490
-#, fuzzy
 msgid "Checking guest domain status"
-msgstr "ಅತಿಥಿ ಡೊಮೈನ್ %s ಕಂಡುಬಂದಿಲ್ಲ"
+msgstr ""
 
 #: ../src/virt-viewer.c:497
-#, fuzzy
 msgid "Waiting for guest domain to start"
-msgstr "ಡೊಮೈನ್ ಆರಂಭಗೊಳ್ಳುವವರೆಗೂ ನಿರೀಕ್ಷಿಸು"
+msgstr ""
 
 #: ../src/virt-viewer.c:504
-#, fuzzy
 msgid "Waiting for guest domain to start server"
-msgstr "ಡೊಮೈನ್ ಆರಂಭಗೊಳ್ಳುವವರೆಗೂ ನಿರೀಕ್ಷಿಸು"
+msgstr ""
 
 #: ../src/virt-viewer.c:624
 #, c-format
@@ -413,85 +362,83 @@ msgstr "URI %s ಯೊಂದಿಗೆ libvirt ಗೆ ಸಂಪರ್ಕ ಸಾಧ
 msgid "[none]"
 msgstr "[ಯಾವುದೂ ಇಲ್ಲ]"
 
-#.
 #. * Local variables:
 #. *  c-indent-level: 4
 #. *  c-basic-offset: 4
 #. *  indent-tabs-mode: nil
 #. * End:
-#.
+#. 
 #: ../src/virt-viewer.xml.h:1
 msgid "Automatically resize"
-msgstr "ಸ್ವಯಂಚಾಲಿತವಾಗಿ ಗಾತ್ರ ಬದಲಿಸು"
+msgstr ""
 
 #: ../src/virt-viewer.xml.h:2
 msgid "Ctrl+Alt+F11"
-msgstr "Ctrl+Alt+F11"
+msgstr ""
 
 #: ../src/virt-viewer.xml.h:3
 msgid "Ctrl+Alt+F12"
-msgstr "Ctrl+Alt+F12"
+msgstr ""
 
 #: ../src/virt-viewer.xml.h:4
 msgid "Ctrl+Alt+F1_0"
-msgstr "Ctrl+Alt+F1_0"
+msgstr ""
 
 #: ../src/virt-viewer.xml.h:5
 msgid "Ctrl+Alt+F_1"
-msgstr "Ctrl+Alt+F_1"
+msgstr ""
 
 #: ../src/virt-viewer.xml.h:6
 msgid "Ctrl+Alt+F_2"
-msgstr "Ctrl+Alt+F_2"
+msgstr ""
 
 #: ../src/virt-viewer.xml.h:7
 msgid "Ctrl+Alt+F_3"
-msgstr "Ctrl+Alt+F_3"
+msgstr ""
 
 #: ../src/virt-viewer.xml.h:8
 msgid "Ctrl+Alt+F_4"
-msgstr "Ctrl+Alt+F_4"
+msgstr ""
 
 #: ../src/virt-viewer.xml.h:9
 msgid "Ctrl+Alt+F_5"
-msgstr "Ctrl+Alt+F_5"
+msgstr ""
 
 #: ../src/virt-viewer.xml.h:10
 msgid "Ctrl+Alt+F_6"
-msgstr "Ctrl+Alt+F_6"
+msgstr ""
 
 #: ../src/virt-viewer.xml.h:11
 msgid "Ctrl+Alt+F_7"
-msgstr "Ctrl+Alt+F_7"
+msgstr ""
 
 #: ../src/virt-viewer.xml.h:12
 msgid "Ctrl+Alt+F_8"
-msgstr "Ctrl+Alt+F_8"
+msgstr ""
 
 #: ../src/virt-viewer.xml.h:13
 msgid "Ctrl+Alt+F_9"
-msgstr "Ctrl+Alt+F_9"
+msgstr ""
 
 #: ../src/virt-viewer.xml.h:14
 msgid "Ctrl+Alt+_Backspace"
-msgstr "Ctrl+Alt+_Backspace"
+msgstr ""
 
 #: ../src/virt-viewer.xml.h:15
 msgid "Ctrl+Alt+_Del"
-msgstr "Ctrl+Alt+_Del"
+msgstr ""
 
 #: ../src/virt-viewer.xml.h:16
 msgid "Displays"
 msgstr ""
 
 #: ../src/virt-viewer.xml.h:17
-#, fuzzy
 msgid "Full screen"
-msgstr "ಪೂರ್ಣ ಪರದೆ"
+msgstr ""
 
 #: ../src/virt-viewer.xml.h:18
 msgid "Screenshot"
-msgstr "ತೆರೆಚಿತ್ರ"
+msgstr ""
 
 #: ../src/virt-viewer.xml.h:19
 msgid "USB device selection"
@@ -499,42 +446,24 @@ msgstr ""
 
 #: ../src/virt-viewer.xml.h:20
 msgid "_File"
-msgstr "ಕಡತ(_F)"
+msgstr ""
 
 #: ../src/virt-viewer.xml.h:21
 msgid "_Help"
-msgstr "ನೆರವು(_H)"
+msgstr ""
 
 #: ../src/virt-viewer.xml.h:22
 msgid "_PrintScreen"
-msgstr "ತೆರೆಯನ್ನು ಮುದ್ರಿಸು(_P)"
+msgstr ""
 
 #: ../src/virt-viewer.xml.h:23
 msgid "_Send key"
-msgstr "ಕಳುಹಿಸುವ ಕೀಲಿ(_S)"
+msgstr ""
 
 #: ../src/virt-viewer.xml.h:24
 msgid "_View"
-msgstr "ನೋಟ(_V)"
+msgstr ""
 
 #: ../src/virt-viewer.xml.h:25
 msgid "_Zoom"
 msgstr ""
-
-#~ msgid "gtk-cancel"
-#~ msgstr "gtk-cancel"
-
-#~ msgid "gtk-ok"
-#~ msgstr "gtk-ok"
-
-#~ msgid "gtk-about"
-#~ msgstr "gtk-about"
-
-#~ msgid "gtk-quit"
-#~ msgstr "gtk-quit"
-
-#~ msgid "page 1"
-#~ msgstr "ಪುಟ 1"
-
-#~ msgid "page 2"
-#~ msgstr "ಪುಟ 2"

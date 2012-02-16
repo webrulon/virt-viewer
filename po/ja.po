@@ -1,150 +1,135 @@
-# translation of ja.po to Japanese
+# SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-#
+# 
+# Translators:
+# Hajime Taira <htaira@redhat.com>, 2012.
 # Kiyoto Hashida <khashida@redhat.com>, 2010.
-#. translators: <ungrab empty>
-#: ../src/virt-viewer-window.c:865 ../src/virt-viewer-window.c:867
+# Tomoyuki KATO <tomo@dream.daynight.jp>, 2012.
 msgid ""
 msgstr ""
-"Project-Id-Version: ja\n"
+"Project-Id-Version: virt-viewer\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-02-14 17:56+0000\n"
-"PO-Revision-Date: 2010-06-25 13:31+0900\n"
+"PO-Revision-Date: 2012-02-15 06:12+0000\n"
 "Last-Translator: Hajime Taira <htaira@redhat.com>\n"
-"Language-Team: Japanese <jp@li.org>\n"
-"Language: ja\n"
+"Language-Team: Japanese <trans-ja@lists.fedoraproject.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: KBabel 1.11.4\n"
-"Plural-Forms: Plural-Forms: nplurals=1; plural=0;\n"
+"Language: ja\n"
+"Plural-Forms: nplurals=1; plural=0\n"
 
 #: ../src/remote-viewer-main.c:42
-#, fuzzy, c-format
+#, c-format
 msgid "remote-viewer version %s\n"
-msgstr "%sバージョン %s\n"
+msgstr "remote-viewer バージョン %s\n"
 
 #: ../src/remote-viewer-main.c:63 ../src/virt-viewer-main.c:60
 msgid "Run '"
 msgstr "実行"
 
 #: ../src/remote-viewer-main.c:66 ../src/virt-viewer-main.c:63
-#, fuzzy
 msgid "Display version information"
-msgstr "バージョン情報の表示"
+msgstr "バージョン情報の表示します"
 
 #: ../src/remote-viewer-main.c:68 ../src/virt-viewer-main.c:65
-#, fuzzy
 msgid "Display verbose information"
-msgstr "詳細情報の表示"
+msgstr "詳細情報の表示します"
 
 #: ../src/remote-viewer-main.c:70 ../src/virt-viewer-main.c:67
-#, fuzzy
 msgid "Direct connection with no automatic tunnels"
-msgstr "自動的にトンネルせず直接接続する"
+msgstr "自動的にトンネリングせず直接接続する"
 
 #: ../src/remote-viewer-main.c:72 ../src/virt-viewer-main.c:77
 msgid "Zoom level of window, in percentage"
-msgstr ""
+msgstr "ウィンドウのズームレベル（パーセント単位）"
 
 #: ../src/remote-viewer-main.c:74 ../src/virt-viewer-main.c:79
-#, fuzzy
 msgid "Display debugging information"
 msgstr "デバッグ情報の表示"
 
 #: ../src/remote-viewer-main.c:76 ../src/virt-viewer-main.c:81
 msgid "Open in full screen mode"
-msgstr ""
+msgstr "フルスクリーンモードで開く"
 
 #: ../src/remote-viewer-main.c:79
 msgid "Open connection using Spice controller communication"
-msgstr ""
+msgstr "Spice コントローラー通信を使用して接続を開く"
 
 #. Setup command line options
 #: ../src/remote-viewer-main.c:92
 msgid "- Remote viewer client"
-msgstr ""
+msgstr "- リモートビューアークライアント"
 
 #: ../src/remote-viewer-main.c:117
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "\n"
 "Usage: %s [OPTIONS] URI\n"
 "\n"
 "%s\n"
 "\n"
-msgstr ""
-"\n"
-"使用法: %s [オプション] ドメイン名|ID|UUID\n"
-"\n"
-"%s\n"
-"\n"
+msgstr "\n使用法: %s [OPTIONS] URI\n\n%s\n\n"
 
 #: ../src/remote-viewer-main.c:122 ../src/virt-viewer-main.c:121
 #, c-format
 msgid "Zoom level must be within 10-200\n"
-msgstr ""
+msgstr "ズームレベルは 10-200 の範囲内でなければいけません\n"
 
 #: ../src/remote-viewer.c:185 ../src/remote-viewer.c:482
 msgid "Failed to initiate connection"
-msgstr ""
+msgstr "接続の初期化に失敗しました"
 
 #: ../src/remote-viewer.c:198
 msgid "Display disabled by controller"
-msgstr ""
+msgstr "ディスプレイがコントローラーにより無効化されました"
 
 #: ../src/remote-viewer.c:398
 #, c-format
 msgid "Controller connection failed: %s"
-msgstr ""
+msgstr "コントローラーの接続に失敗しました: %s"
 
 #: ../src/remote-viewer.c:452
 msgid "Couldn't create a Spice session"
-msgstr ""
+msgstr "Spice セッションを作成できませんでした"
 
 #: ../src/remote-viewer.c:462
 msgid "Setting up Spice session..."
-msgstr ""
+msgstr "Spice セッションのセットアップ中..."
 
 #: ../src/remote-viewer.c:472
-#, fuzzy
 msgid "Cannot determine the connection type from URI"
-msgstr "ゲスト %s 用の VNC ポートを決定できません"
+msgstr "URI から接続の種類を決定できません"
 
 #: ../src/remote-viewer.c:477
 #, c-format
 msgid "Couldn't create a session for this type: %s"
-msgstr ""
+msgstr "この種類のセッションを作成できませんでした: %s"
 
-#.
 #. * Local variables:
 #. *  c-indent-level: 4
 #. *  c-basic-offset: 4
 #. *  indent-tabs-mode: nil
 #. * End:
-#.
+#. 
 #: ../src/virt-viewer-about.xml.h:1
-#, fuzzy
 msgid "A remote desktop client built with GTK-VNC, SPICE-GTK and libvirt"
-msgstr "GTK-VNC と libvirt で構成したリモートデスクトップクライアント"
+msgstr "GTK-VNC, SPICE-GTK および libvirt でビルドされたリモートデスクトップクライアント"
 
 #: ../src/virt-viewer-about.xml.h:2
 msgid "About Glade"
-msgstr "Glade の情報"
+msgstr "Glade について"
 
 #: ../src/virt-viewer-about.xml.h:3
-#, fuzzy
 msgid ""
 "Copyright (C) 2007-2012 Daniel P. Berrange\n"
 "Copyright (C) 2007-2012 Red Hat, Inc."
-msgstr ""
-"Copyright 2007-2008 Daniel P. Berrange\n"
-"Copyright 2007-2008 Red Hat, Inc."
+msgstr "Copyright (C) 2007-2012 Daniel P. Berrange\nCopyright (C) 2007-2012 Red Hat, Inc."
 
 #: ../src/virt-viewer-about.xml.h:5
 msgid "The Fedora Translation Team"
-msgstr "Fedora 翻訳チーム"
+msgstr "The Fedora Translation Team"
 
 #: ../src/virt-viewer-about.xml.h:6
 msgid ""
@@ -161,20 +146,7 @@ msgid ""
 "You should have received a copy of the GNU General Public License\n"
 "along with this program; if not, write to the Free Software\n"
 "Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA\n"
-msgstr ""
-"This program is free software; you can redistribute it and/or modify\n"
-"it under the terms of the GNU General Public License as published by\n"
-"the Free Software Foundation; either version 2 of the License, or\n"
-"(at your option) any later version.\n"
-"\n"
-"This program is distributed in the hope that it will be useful,\n"
-"but WITHOUT ANY WARRANTY; without even the implied warranty of\n"
-"MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\n"
-"GNU General Public License for more details.\n"
-"\n"
-"You should have received a copy of the GNU General Public License\n"
-"along with this program; if not, write to the Free Software\n"
-"Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA\n"
+msgstr "This program is free software; you can redistribute it and/or modify\nit under the terms of the GNU General Public License as published by\nthe Free Software Foundation; either version 2 of the License, or\n(at your option) any later version.\n\nThis program is distributed in the hope that it will be useful,\nbut WITHOUT ANY WARRANTY; without even the implied warranty of\nMERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\nGNU General Public License for more details.\n\nYou should have received a copy of the GNU General Public License\nalong with this program; if not, write to the Free Software\nFoundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA\n"
 
 #: ../src/virt-viewer-about.xml.h:20
 msgid "virt-manager.org"
@@ -182,75 +154,70 @@ msgstr "virt-manager.org"
 
 #: ../src/virt-viewer-app.c:259
 msgid "This is the last visible display. Do you want to quit?"
-msgstr ""
+msgstr "これは表示可能な最後のディスプレイです。本当に終了しますか？"
 
 #: ../src/virt-viewer-app.c:573
 #, c-format
 msgid "Waiting for display %d..."
-msgstr ""
+msgstr "ディスプレイ %d を待機中..."
 
 #: ../src/virt-viewer-app.c:655
-#, fuzzy, c-format
+#, c-format
 msgid "Unknown graphic type for the guest %s"
-msgstr "ゲスト %s 用の VNC ポートを決定できません"
+msgstr "仮想マシン %s のグラフィックの種類が未知の種類です"
 
 #: ../src/virt-viewer-app.c:730
 msgid "Connect to ssh failed."
-msgstr ""
+msgstr "SSH への接続に失敗しました。"
 
 #: ../src/virt-viewer-app.c:732
 msgid "Can't connect to channel, SSH only supported."
-msgstr ""
+msgstr "チャンネルに接続できません、SSH のみがサポートされます。"
 
 #: ../src/virt-viewer-app.c:744
 msgid "Connect to channel unsupported."
-msgstr ""
+msgstr "サポートされないチャネルに接続します。"
 
 #: ../src/virt-viewer-app.c:824
-#, fuzzy
 msgid "Connecting to graphic server"
-msgstr "ハイパーバイザーに接続"
+msgstr "グラフィックサーバーに接続中"
 
 #: ../src/virt-viewer-app.c:954
 msgid "Guest domain has shutdown"
-msgstr ""
+msgstr "仮想マシンがシャットダウンしました"
 
 #: ../src/virt-viewer-app.c:1004
-#, fuzzy
 msgid "Connected to graphic server"
-msgstr "ハイパーバイザーに接続"
+msgstr "グラフィックサーバーに接続"
 
 #: ../src/virt-viewer-app.c:1027
-#, fuzzy, c-format
+#, c-format
 msgid "Unable to connect to the graphic server %s"
-msgstr "VNC サーバー %s へ接続できません"
+msgstr "グラフィックサーバー %s に接続できません"
 
 #: ../src/virt-viewer-app.c:1056
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "Unable to authenticate with remote desktop server at %s: %s\n"
 "Retry connection again?"
-msgstr ""
-"%s にある VNC サーバーに対して認証が失敗しました。 %s\n"
-"再度接続を試しますか ?"
+msgstr "%s のリモートデスクトップサーバーに認証できません: %s\n再び接続を試行しますか？"
 
 #: ../src/virt-viewer-app.c:1076
-#, fuzzy, c-format
+#, c-format
 msgid "Unable to authenticate with remote desktop server: %s"
-msgstr "VNC サーバー %s へ接続できません"
+msgstr "リモートデスクトップサーバーに認証できません: %s"
 
 #: ../src/virt-viewer-app.c:1084
 #, c-format
 msgid "USB redirection error: %s"
-msgstr ""
+msgstr "USB リダイレクトエラー: %s"
 
-#.
 #. * Local variables:
 #. *  c-indent-level: 4
 #. *  c-basic-offset: 4
 #. *  indent-tabs-mode: nil
 #. * End:
-#.
+#. 
 #: ../src/virt-viewer-auth.xml.h:1
 msgid "Authentication required"
 msgstr "認証が必要です"
@@ -274,26 +241,23 @@ msgstr "%sバージョン %s\n"
 
 #: ../src/virt-viewer-main.c:69
 msgid "Attach to the local display using libvirt"
-msgstr ""
+msgstr "libvirt を使用してローカルディスプレイに接続"
 
 #: ../src/virt-viewer-main.c:71
-#, fuzzy
 msgid "Connect to hypervisor"
 msgstr "ハイパーバイザーに接続"
 
 #: ../src/virt-viewer-main.c:73
-#, fuzzy
 msgid "Wait for domain to start"
-msgstr "ドメインの起動を待つ"
+msgstr "仮想マシンの起動を待つ"
 
 #: ../src/virt-viewer-main.c:75
-#, fuzzy
 msgid "Reconnect to domain upon restart"
-msgstr "再起動時にゲストへ再接続"
+msgstr "再起動時に仮想マシンに再接続"
 
 #: ../src/virt-viewer-main.c:92
 msgid "Virt Viewer"
-msgstr ""
+msgstr "仮想マシンビューアー"
 
 #. Setup command line options
 #: ../src/virt-viewer-main.c:95
@@ -308,80 +272,71 @@ msgid ""
 "\n"
 "%s\n"
 "\n"
-msgstr ""
-"\n"
-"使用法: %s [オプション] ドメイン名|ID|UUID\n"
-"\n"
-"%s\n"
-"\n"
+msgstr "\n使用法: %s [オプション] ドメイン名|ID|UUID\n\n%s\n\n"
 
 #: ../src/virt-viewer-session-spice.c:347
 msgid "Select USB devices for redirection"
-msgstr ""
+msgstr "リダイレクトする USB デバイスを選択"
 
 #: ../src/virt-viewer-session-vnc.c:140
-#, fuzzy, c-format
+#, c-format
 msgid "Unsupported authentication type %d"
-msgstr ""
-"%s にある VNC サーバーで認証ができません\n"
-"サポートしていない認証タイプです %d "
+msgstr "サポートしていない認証の種類 %d"
 
 #: ../src/virt-viewer-window.c:774
 msgid "Disconnect"
-msgstr ""
+msgstr "切断"
 
 #: ../src/virt-viewer-window.c:781 ../src/virt-viewer-window.c:782
-#, fuzzy
 msgid "Leave fullscreen"
-msgstr "フルスクリーン"
+msgstr "フルスクリーンの解除"
 
 #: ../src/virt-viewer-window.c:854
 msgid "(Press Ctrl+Alt to release pointer)"
-msgstr ""
+msgstr "(ポインターを解放するには Ctrl+Alt を押してください)"
 
 #. translators:
-#. * This is "<ungrab (or empty)><space (or empty)><subtitle (or empty)> - <appname>"
-#. * Such as: "(Press Ctrl+Alt to release pointer) BigCorpTycoon MOTD - Virt Viewer"
-#.
+#. * This is "<ungrab (or empty)><space (or empty)><subtitle (or empty)> -
+#. <appname>"
+#. * Such as: "(Press Ctrl+Alt to release pointer) BigCorpTycoon MOTD - Virt
+#. Viewer"
+#. 
 #: ../src/virt-viewer-window.c:863
 #, c-format
 msgid "%s%s%s - %s"
-msgstr ""
+msgstr "%s%s%s - %s"
 
 #. translators: <space>
 #: ../src/virt-viewer-window.c:867
 msgid " "
-msgstr ""
+msgstr " "
 
 #: ../src/virt-viewer.c:144
-#, fuzzy
 msgid "Waiting for guest domain to re-start"
-msgstr "ドメインの起動を待つ"
+msgstr "仮想マシンが再起動するのを待機中"
 
 #: ../src/virt-viewer.c:308
-#, fuzzy, c-format
+#, c-format
 msgid "Cannot determine the graphic type for the guest %s"
-msgstr "ゲスト %s 用の VNC ポートを決定できません"
+msgstr "仮想マシン %s のグラフィックの種類を決定できません"
 
 #: ../src/virt-viewer.c:321
-#, fuzzy, c-format
+#, c-format
 msgid "Cannot determine the graphic address for the guest %s"
-msgstr "ゲスト %s 用の VNC ポートを決定できません"
+msgstr "仮想マシン %s のグラフィックのアドレスを決定できません"
 
 #: ../src/virt-viewer.c:344
-#, fuzzy, c-format
+#, c-format
 msgid "Cannot determine the host for the guest %s"
-msgstr "ゲスト %s 用の VNC ホストを決定できません"
+msgstr "仮想マシン %s のホストを決定できません"
 
 #: ../src/virt-viewer.c:474
-#, fuzzy
 msgid "Finding guest domain"
-msgstr "ゲスト %s が見付かりません"
+msgstr "仮想マシンを検索中"
 
 #: ../src/virt-viewer.c:478
-#, fuzzy
 msgid "Waiting for guest domain to be created"
-msgstr "ドメインの起動を待つ"
+msgstr "仮想マシンが作成されるのを待機中"
 
 #: ../src/virt-viewer.c:483
 #, c-format
@@ -389,19 +344,16 @@ msgid "Cannot find guest domain %s"
 msgstr "ゲスト %s が見付かりません"
 
 #: ../src/virt-viewer.c:490
-#, fuzzy
 msgid "Checking guest domain status"
-msgstr "ゲスト %s が見付かりません"
+msgstr "仮想マシンの状態を確認中"
 
 #: ../src/virt-viewer.c:497
-#, fuzzy
 msgid "Waiting for guest domain to start"
-msgstr "ドメインの起動を待つ"
+msgstr "ゲストドメインが開始するのを待機中"
 
 #: ../src/virt-viewer.c:504
-#, fuzzy
 msgid "Waiting for guest domain to start server"
-msgstr "ドメインの起動を待つ"
+msgstr "ゲストドメインがサーバーを開始するのを待機中"
 
 #: ../src/virt-viewer.c:624
 #, c-format
@@ -412,16 +364,15 @@ msgstr "URI %s で libvirt に接続できません"
 msgid "[none]"
 msgstr "[なし]"
 
-#.
 #. * Local variables:
 #. *  c-indent-level: 4
 #. *  c-basic-offset: 4
 #. *  indent-tabs-mode: nil
 #. * End:
-#.
+#. 
 #: ../src/virt-viewer.xml.h:1
 msgid "Automatically resize"
-msgstr "自動的にサイズ変更"
+msgstr "自動的に画面サイズを変更"
 
 #: ../src/virt-viewer.xml.h:2
 msgid "Ctrl+Alt+F11"
@@ -433,68 +384,67 @@ msgstr "Ctrl+Alt+F12"
 
 #: ../src/virt-viewer.xml.h:4
 msgid "Ctrl+Alt+F1_0"
-msgstr "Ctrl+Alt+F1_0"
+msgstr "Ctrl+Alt+F10(_0)"
 
 #: ../src/virt-viewer.xml.h:5
 msgid "Ctrl+Alt+F_1"
-msgstr "Ctrl+Alt+F_1"
+msgstr "Ctrl+Alt+F1(_1)"
 
 #: ../src/virt-viewer.xml.h:6
 msgid "Ctrl+Alt+F_2"
-msgstr "Ctrl+Alt+F_2"
+msgstr "Ctrl+Alt+F2(_2)"
 
 #: ../src/virt-viewer.xml.h:7
 msgid "Ctrl+Alt+F_3"
-msgstr "Ctrl+Alt+F_3"
+msgstr "Ctrl+Alt+F3(_3)"
 
 #: ../src/virt-viewer.xml.h:8
 msgid "Ctrl+Alt+F_4"
-msgstr "Ctrl+Alt+F_4"
+msgstr "Ctrl+Alt+F4(_4)"
 
 #: ../src/virt-viewer.xml.h:9
 msgid "Ctrl+Alt+F_5"
-msgstr "Ctrl+Alt+F_5"
+msgstr "Ctrl+Alt+F5(_5)"
 
 #: ../src/virt-viewer.xml.h:10
 msgid "Ctrl+Alt+F_6"
-msgstr "Ctrl+Alt+F_6"
+msgstr "Ctrl+Alt+F6(_6)"
 
 #: ../src/virt-viewer.xml.h:11
 msgid "Ctrl+Alt+F_7"
-msgstr "Ctrl+Alt+F_7"
+msgstr "Ctrl+Alt+F7(_7)"
 
 #: ../src/virt-viewer.xml.h:12
 msgid "Ctrl+Alt+F_8"
-msgstr "Ctrl+Alt+F_8"
+msgstr "Ctrl+Alt+F8(_8)"
 
 #: ../src/virt-viewer.xml.h:13
 msgid "Ctrl+Alt+F_9"
-msgstr "Ctrl+Alt+F_9"
+msgstr "Ctrl+Alt+F9(_9)"
 
 #: ../src/virt-viewer.xml.h:14
 msgid "Ctrl+Alt+_Backspace"
-msgstr "Ctrl+Alt+_Backspace"
+msgstr "Ctrl+Alt+Backspace(_B)"
 
 #: ../src/virt-viewer.xml.h:15
 msgid "Ctrl+Alt+_Del"
-msgstr "Ctrl+Alt+_Del"
+msgstr "Ctrl+Alt+Del(_D)"
 
 #: ../src/virt-viewer.xml.h:16
 msgid "Displays"
-msgstr ""
+msgstr "ディスプレイ"
 
 #: ../src/virt-viewer.xml.h:17
-#, fuzzy
 msgid "Full screen"
 msgstr "フルスクリーン"
 
 #: ../src/virt-viewer.xml.h:18
 msgid "Screenshot"
-msgstr "スクリーンショット取得"
+msgstr "スクリーンショット"
 
 #: ../src/virt-viewer.xml.h:19
 msgid "USB device selection"
-msgstr ""
+msgstr "USB デバイスの選択"
 
 #: ../src/virt-viewer.xml.h:20
 msgid "_File"
@@ -510,7 +460,7 @@ msgstr "PrintScreen(_P)"
 
 #: ../src/virt-viewer.xml.h:23
 msgid "_Send key"
-msgstr "キー送信(_S)"
+msgstr "キーを送信(_S)"
 
 #: ../src/virt-viewer.xml.h:24
 msgid "_View"
@@ -518,22 +468,4 @@ msgstr "表示(_V)"
 
 #: ../src/virt-viewer.xml.h:25
 msgid "_Zoom"
-msgstr ""
-
-#~ msgid "gtk-cancel"
-#~ msgstr "gtk-cancel"
-
-#~ msgid "gtk-ok"
-#~ msgstr "gtk-ok"
-
-#~ msgid "gtk-about"
-#~ msgstr "gtk-about"
-
-#~ msgid "gtk-quit"
-#~ msgstr "gtk-quit"
-
-#~ msgid "page 1"
-#~ msgstr "ページ１"
-
-#~ msgid "page 2"
-#~ msgstr "ページ２"
+msgstr "ズーム(_Z)"

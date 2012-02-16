@@ -40,9 +40,9 @@ BuildRequires: gtk2-devel >= 2.12.0
 BuildRequires: libvirt-devel >= 0.6.0
 BuildRequires: libxml2-devel
 %if %{with_gtk3}
-BuildRequires: gtk-vnc2-devel >= 0.4.3
+BuildRequires: gtk-vnc2-devel >= 0.4.0
 %else
-BuildRequires: gtk-vnc-devel >= 0.4.3
+BuildRequires: gtk-vnc-devel >= 0.3.8
 %endif
 %if %{with_spice}
 %if %{with_gtk3}

@@ -1,6 +1,15 @@
   Virt Viewer News
   ================
 
+0.5.1: Feb 17, 2012
+-------------------
+
+  - Import newer translations from transifex
+  - Fix build system to ensure we don't loose GNU_RELRO
+    security feature
+  - Don't link virt-viewer binary against spice controller
+  - Add back compat for GObject 2.22 which lacks GBinding
+
 0.5.0: Feb 14, 2012
 -------------------
 

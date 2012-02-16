@@ -120,12 +120,12 @@ AC_ARG_WITH([spice-gtk],
 
 AS_IF([test "x$with_spice_gtk" != "xno"],
       [PKG_CHECK_MODULES(SPICE_GTK,
-                         [spice-client-gtk-$SPICE_GTK_API_VERSION >= $SPICE_GTK_REQUIRED
-                          spice-controller],
+                         [spice-client-gtk-$SPICE_GTK_API_VERSION >= $SPICE_GTK_REQUIRED],
                          [have_spice_gtk=yes], [have_spice_gtk=no])],
       [have_spice_gtk=no])
 
 AS_IF([test "x$have_spice_gtk" = "xyes"],
+      [PKG_CHECK_MODULES(SPICE_CONTROLLER, [spice-controller])]
       [AC_DEFINE([HAVE_SPICE_GTK], 1, [Have spice-gtk?])],
       [AS_IF([test "x$with_spice_gtk" = "xyes"],
              [AC_MSG_ERROR([spice-gtk requested but not found])

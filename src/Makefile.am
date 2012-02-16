@@ -99,6 +99,6 @@ remote_viewer_LDFLAGS += $(GTK_VNC_LIBS)
 remote_viewer_CFLAGS += $(GTK_VNC_CFLAGS)
 endif
 if HAVE_SPICE_GTK
-remote_viewer_LDFLAGS += $(SPICE_GTK_LIBS)
-remote_viewer_CFLAGS += $(SPICE_GTK_CFLAGS)
+remote_viewer_LDFLAGS += $(SPICE_GTK_LIBS) $(SPICE_CONTROLLER_LIBS)
+remote_viewer_CFLAGS += $(SPICE_GTK_CFLAGS) $(SPICE_CONTROLLER_CFLAGS)
 endif

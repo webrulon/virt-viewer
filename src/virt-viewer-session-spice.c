@@ -347,6 +347,13 @@ virt_viewer_session_spice_has_usb(VirtViewerSession *session)
                                        SPICE_CHANNEL_USBREDIR);
 }
 
+static void remove_cb(GtkContainer   *container G_GNUC_UNUSED,
+                      GtkWidget      *widget G_GNUC_UNUSED,
+                      void           *user_data)
+{
+    gtk_window_resize(GTK_WINDOW(user_data), 1, 1);
+}
+
 static void
 virt_viewer_session_spice_usb_device_selection(VirtViewerSession *session,
                                                GtkWindow *parent)
@@ -368,6 +375,10 @@ virt_viewer_session_spice_usb_device_selection(VirtViewerSession *session,
     g_signal_connect(usb_device_widget, "connect-failed",
                      G_CALLBACK(usb_connect_failed), self);
     gtk_box_pack_start(GTK_BOX(area), usb_device_widget, TRUE, TRUE, 5);
+
+    /* This shrinks the dialog when USB devices are unplugged */
+    g_signal_connect(usb_device_widget, "remove",
+                     G_CALLBACK(remove_cb), dialog);
 
     /* show and run */
     gtk_widget_show_all(dialog);

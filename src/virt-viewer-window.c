@@ -89,6 +89,7 @@ struct _VirtViewerWindowPrivate {
     GtkWidget *window;
     GtkWidget *layout;
     GtkWidget *toolbar;
+    GtkAccelGroup *accel_group;
     VirtViewerNotebook *notebook;
     VirtViewerDisplay *display;
 
@@ -291,6 +292,8 @@ virt_viewer_window_init (VirtViewerWindow *self)
 
     gtk_builder_connect_signals(priv->builder, self);
 
+    priv->accel_group = GTK_ACCEL_GROUP(gtk_builder_get_object(priv->builder, "accelgroup"));
+
     vbox = GTK_WIDGET(gtk_builder_get_object(priv->builder, "viewer-box"));
     virt_viewer_window_toolbar_setup(self);
 
@@ -299,6 +302,7 @@ virt_viewer_window_init (VirtViewerWindow *self)
     gtk_widget_modify_bg(priv->layout, GTK_STATE_NORMAL, &color);
 
     priv->window = GTK_WIDGET(gtk_builder_get_object(priv->builder, "viewer"));
+    gtk_window_add_accel_group(GTK_WINDOW(priv->window), priv->accel_group);
 
     virt_viewer_window_update_title(self);
     gtk_window_set_resizable(GTK_WINDOW(priv->window), TRUE);
@@ -587,6 +591,9 @@ virt_viewer_window_disable_modifiers(VirtViewerWindow *self)
 
     /* This stops global accelerators like Ctrl+Q == Quit */
     for (accels = priv->accel_list ; accels ; accels = accels->next) {
+        if (virt_viewer_app_get_enable_accel(priv->app) &&
+            priv->accel_group == accels->data)
+            continue;
         gtk_window_remove_accel_group(GTK_WINDOW(priv->window), accels->data);
     }
 
@@ -620,6 +627,9 @@ virt_viewer_window_enable_modifiers(VirtViewerWindow *self)
 
     /* This allows global accelerators like Ctrl+Q == Quit */
     for (accels = priv->accel_list ; accels ; accels = accels->next) {
+        if (virt_viewer_app_get_enable_accel(priv->app) &&
+            priv->accel_group == accels->data)
+            continue;
         gtk_window_add_accel_group(GTK_WINDOW(priv->window), accels->data);
     }
 

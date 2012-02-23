@@ -153,6 +153,8 @@ Section "virt-viewer"
   nsExec::ExecToLog '$0 /C bin\pango-querymodules.exe > etc\pango\pango.modules'
   nsExec::ExecToLog 'echo gtk-theme-name = "MS-Windows" > etc\gtk-2.0\gtkrc'
 
+  WriteRegStr HKCU "Software\spice-space.org\spicex" "client" "$INSTDIR\bin\remote-viewer.exe --spice-controller"
+
 SectionEnd
 
 Section "Start Menu Shortcuts"
@@ -170,6 +172,8 @@ Section "Uninstall"
 #  Delete /rebootok "$SMPROGRAMS\virt-viewer\virt-viewer.exe.lnk"
   Delete /rebootok "$SMPROGRAMS\virt-viewer\Uninstall virt-viewer.lnk"
   RMDir "$SMPROGRAMS\virt-viewer"
+
+  DeleteRegKey HKCU "Software\spice-space.org\spicex\client"
 
   RMDir /r "$INSTDIR\lib\pango"
 

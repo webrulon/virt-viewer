@@ -35,6 +35,7 @@
 #include <glib/gprintf.h>
 #include <glib/gi18n.h>
 
+#include "virt-gtk-compat.h"
 #include "virt-viewer-window.h"
 #include "virt-viewer-session.h"
 #include "virt-viewer-app.h"
@@ -110,26 +111,6 @@ struct _VirtViewerWindowPrivate {
     gboolean fullscreen;
     gchar *subtitle;
 };
-
-#if GTK_CHECK_VERSION(3, 0, 0)
-#define GDK_Control_L GDK_KEY_Control_L
-#define GDK_Alt_L GDK_KEY_Alt_L
-#define GDK_Delete GDK_KEY_Delete
-#define GDK_BackSpace GDK_KEY_BackSpace
-#define GDK_Print GDK_KEY_Print
-#define GDK_F1 GDK_KEY_F1
-#define GDK_F2 GDK_KEY_F2
-#define GDK_F3 GDK_KEY_F3
-#define GDK_F4 GDK_KEY_F4
-#define GDK_F5 GDK_KEY_F5
-#define GDK_F6 GDK_KEY_F6
-#define GDK_F7 GDK_KEY_F7
-#define GDK_F8 GDK_KEY_F8
-#define GDK_F9 GDK_KEY_F9
-#define GDK_F10 GDK_KEY_F10
-#define GDK_F11 GDK_KEY_F11
-#define GDK_F12 GDK_KEY_F12
-#endif
 
 static void
 virt_viewer_window_get_property (GObject *object, guint property_id,

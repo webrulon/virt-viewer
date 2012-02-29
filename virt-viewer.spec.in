@@ -46,9 +46,9 @@ BuildRequires: gtk-vnc-devel >= 0.3.8
 %endif
 %if %{with_spice}
 %if %{with_gtk3}
-BuildRequires: spice-gtk3-devel >= 0.9
+BuildRequires: spice-gtk3-devel >= 0.10.3
 %else
-BuildRequires: spice-gtk-devel >= 0.9
+BuildRequires: spice-gtk-devel >= 0.10.3
 %endif
 %endif
 BuildRequires: /usr/bin/pod2man

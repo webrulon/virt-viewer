@@ -316,8 +316,15 @@ virt_viewer_session_spice_main_channel_event(SpiceChannel *channel G_GNUC_UNUSED
         if (ret < 0) {
             g_signal_emit_by_name(session, "session-cancelled");
         } else {
+            gboolean openfd;
+
             g_object_set(self->priv->session, "password", password, NULL);
-            spice_session_connect(self->priv->session);
+            g_object_get(self->priv->session, "client-sockets", &openfd, NULL);
+
+            if (openfd)
+                spice_session_open_fd(self->priv->session, -1);
+            else
+                spice_session_connect(self->priv->session);
         }
         break;
     default:

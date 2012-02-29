@@ -111,8 +111,6 @@ virt_viewer_session_spice_dispose(GObject *obj)
     }
     if (spice->priv->audio)
         g_object_unref(spice->priv->audio);
-    if (spice->priv->main_channel)
-        g_object_unref(spice->priv->main_channel);
     if (spice->priv->main_window)
         g_object_unref(spice->priv->main_window);
 
@@ -386,16 +384,13 @@ virt_viewer_session_spice_channel_new(SpiceSession *s,
     g_object_get(channel, "channel-id", &id, NULL);
 
     if (SPICE_IS_MAIN_CHANNEL(channel)) {
-        if (self->priv->main_channel != NULL) {
-            /* FIXME: use telepathy-glib g_signal_connect_object to automatically disconnect.. */
+        if (self->priv->main_channel != NULL)
             g_signal_handlers_disconnect_by_func(self->priv->main_channel,
                                                  virt_viewer_session_spice_main_channel_event, self);
-            g_object_unref(self->priv->main_channel);
-        }
 
         g_signal_connect(channel, "channel-event",
                          G_CALLBACK(virt_viewer_session_spice_main_channel_event), self);
-        self->priv->main_channel = g_object_ref(channel);
+        self->priv->main_channel = SPICE_MAIN_CHANNEL(channel);
     }
 
     if (SPICE_IS_DISPLAY_CHANNEL(channel)) {
@@ -439,10 +434,8 @@ virt_viewer_session_spice_channel_destroy(G_GNUC_UNUSED SpiceSession *s,
     g_object_get(channel, "channel-id", &id, NULL);
     if (SPICE_IS_MAIN_CHANNEL(channel)) {
         DEBUG_LOG("zap main channel");
-        if (channel == SPICE_CHANNEL(self->priv->main_channel)) {
-            g_object_unref(self->priv->main_channel);
+        if (channel == SPICE_CHANNEL(self->priv->main_channel))
             self->priv->main_channel = NULL;
-        }
     }
 
     if (SPICE_IS_DISPLAY_CHANNEL(channel)) {

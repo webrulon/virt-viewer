@@ -13,7 +13,7 @@ EXTRA_DIST = $(builderxml_DATA) \
 	gbinding.h
 
 COMMON_SOURCES =					\
-	gtk-compat.h					\
+	virt-gtk-compat.h				\
 	virt-viewer-util.h virt-viewer-util.c		\
 	virt-viewer-auth.h virt-viewer-auth.c		\
 	virt-viewer-app.h virt-viewer-app.c		\

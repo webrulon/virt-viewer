@@ -1,6 +1,15 @@
   Virt Viewer News
   ================
 
+0.5.2: Mar 01, 2012
+-------------------
+
+  - Import newer translations from transifex
+  - remote-viewer learned Spice controller customizable key bindings,
+    smartcard property, and foreign menu
+  - Fix Spice crash on re-connection
+  - Fix connecting via ssh to a password-protected server
+
 0.5.1: Feb 17, 2012
 -------------------
 

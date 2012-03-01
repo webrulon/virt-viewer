@@ -59,4 +59,3 @@ G_END_DECLS
  *  indent-tabs-mode: nil
  * End:
  */
-

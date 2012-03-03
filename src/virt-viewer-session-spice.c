@@ -368,13 +368,16 @@ virt_viewer_session_spice_usb_device_selection(VirtViewerSession *session,
                                          GTK_STOCK_OK, GTK_RESPONSE_ACCEPT,
                                          NULL);
     gtk_dialog_set_default_response(GTK_DIALOG(dialog), GTK_RESPONSE_ACCEPT);
+    gtk_container_set_border_width(GTK_CONTAINER(dialog), 12);
+    gtk_box_set_spacing(GTK_BOX(gtk_bin_get_child(GTK_BIN(dialog))), 12);
+
     area = gtk_dialog_get_content_area(GTK_DIALOG(dialog));
 
     usb_device_widget = spice_usb_device_widget_new(priv->session,
                                                     "%s %s");
     g_signal_connect(usb_device_widget, "connect-failed",
                      G_CALLBACK(usb_connect_failed), self);
-    gtk_box_pack_start(GTK_BOX(area), usb_device_widget, TRUE, TRUE, 5);
+    gtk_box_pack_start(GTK_BOX(area), usb_device_widget, TRUE, TRUE, 0);
 
     /* This shrinks the dialog when USB devices are unplugged */
     g_signal_connect(usb_device_widget, "remove",

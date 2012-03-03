@@ -114,7 +114,7 @@ virt_viewer_session_spice_dispose(GObject *obj)
     if (spice->priv->main_window)
         g_object_unref(spice->priv->main_window);
 
-    G_OBJECT_CLASS(virt_viewer_session_spice_parent_class)->finalize(obj);
+    G_OBJECT_CLASS(virt_viewer_session_spice_parent_class)->dispose(obj);
 }
 
 

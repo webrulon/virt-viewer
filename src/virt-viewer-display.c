@@ -268,7 +268,7 @@ virt_viewer_display_set_property(GObject *object,
         break;
     case PROP_SESSION:
         g_warn_if_fail(priv->session == NULL);
-        priv->session = g_value_dup_object(value);
+        priv->session = g_value_get_object(value);
         break;
 
     default:

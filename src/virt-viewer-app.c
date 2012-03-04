@@ -1231,6 +1231,11 @@ virt_viewer_app_dispose (GObject *object)
         g_object_unref(priv->container);
         priv->container = NULL;
     }
+
+    if (priv->session) {
+        g_object_unref(priv->session);
+        priv->session = NULL;
+    }
     g_free(priv->title);
 
     virt_viewer_app_free_connect_info(self);

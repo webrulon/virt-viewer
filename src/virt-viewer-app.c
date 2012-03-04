@@ -117,6 +117,7 @@ struct _VirtViewerAppPrivate {
     gboolean started;
     gboolean fullscreen;
     gboolean attach;
+    gboolean quiting;
 
     VirtViewerSession *session;
     gboolean active;
@@ -209,8 +210,14 @@ virt_viewer_app_quit(VirtViewerApp *self)
     g_return_if_fail(VIRT_VIEWER_IS_APP(self));
     VirtViewerAppPrivate *priv = self->priv;
 
-    if (priv->session)
+    if (priv->session) {
         virt_viewer_session_close(VIRT_VIEWER_SESSION(priv->session));
+        if (priv->connected) {
+            priv->quiting = TRUE;
+            return;
+        }
+    }
+
     gtk_main_quit();
 }
 
@@ -1054,6 +1061,9 @@ virt_viewer_app_disconnected(VirtViewerSession *session G_GNUC_UNUSED,
                              VirtViewerApp *self)
 {
     VirtViewerAppPrivate *priv = self->priv;
+
+    if (priv->quiting)
+        gtk_main_quit();
 
     if (!priv->connected && !priv->cancelled) {
         virt_viewer_app_simple_message_dialog(self,

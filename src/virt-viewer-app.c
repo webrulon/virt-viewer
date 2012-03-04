@@ -450,7 +450,6 @@ set_title(gpointer key,
 static void
 virt_viewer_app_set_all_window_subtitles(VirtViewerApp *app)
 {
-    virt_viewer_app_set_window_subtitle(app, app->priv->main_window, 0);
     g_hash_table_foreach(app->priv->windows, set_title, app);
 }
 
@@ -1225,10 +1224,6 @@ virt_viewer_app_dispose (GObject *object)
     if (priv->windows) {
         g_hash_table_unref(priv->windows);
         priv->windows = NULL;
-    }
-
-    if (priv->main_window) {
-        g_object_unref(priv->main_window);
         priv->main_window = NULL;
     }
 

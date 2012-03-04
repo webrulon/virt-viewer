@@ -164,7 +164,7 @@ virt_viewer_window_set_property (GObject *object, guint property_id,
 
     case PROP_APP:
         g_return_if_fail(priv->app == NULL);
-        priv->app = g_value_dup_object(value);
+        priv->app = g_value_get_object(value);
         break;
 
     default:
@@ -181,11 +181,6 @@ virt_viewer_window_dispose (GObject *object)
     if (priv->display) {
         g_object_unref(priv->display);
         priv->display = NULL;
-    }
-
-    if (priv->app) {
-        g_object_unref(priv->app);
-        priv->app = NULL;
     }
 
     g_free(priv->subtitle);

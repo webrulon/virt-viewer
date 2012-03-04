@@ -94,6 +94,7 @@ struct _VirtViewerWindowPrivate {
     GtkWidget *window;
     GtkWidget *layout;
     GtkWidget *toolbar;
+    GtkWidget *toolbar_usb_device_selection;
     GtkAccelGroup *accel_group;
     VirtViewerNotebook *notebook;
     VirtViewerDisplay *display;
@@ -805,6 +806,14 @@ virt_viewer_window_toolbar_setup(VirtViewerWindow *self)
     gtk_toolbar_insert(GTK_TOOLBAR(priv->toolbar), GTK_TOOL_ITEM (button), 0);
     g_signal_connect(button, "clicked", G_CALLBACK(virt_viewer_window_menu_file_quit), self);
 
+    /* USB Device selection */
+    button = GTK_WIDGET(gtk_tool_button_new_from_stock(GTK_STOCK_PREFERENCES));
+    gtk_tool_button_set_label(GTK_TOOL_BUTTON(button), _("USB device selection"));
+    gtk_tool_item_set_tooltip_text(GTK_TOOL_ITEM(button), _("USB device selection"));
+    gtk_toolbar_insert(GTK_TOOLBAR(priv->toolbar), GTK_TOOL_ITEM(button), 0);
+    g_signal_connect(button, "clicked", G_CALLBACK(virt_viewer_window_menu_file_usb_device_selection), self);
+    priv->toolbar_usb_device_selection = button;
+
     /* Leave fullscreen */
     button = GTK_WIDGET(gtk_tool_button_new_from_stock(GTK_STOCK_LEAVE_FULLSCREEN));
     gtk_tool_button_set_label(GTK_TOOL_BUTTON(button), _("Leave fullscreen"));
@@ -913,6 +922,7 @@ virt_viewer_window_set_usb_options_sensitive(VirtViewerWindow *self, gboolean se
     priv = self->priv;
     menu = GTK_WIDGET(gtk_builder_get_object(priv->builder, "menu-file-usb-device-selection"));
     gtk_widget_set_sensitive(menu, sensitive);
+    gtk_widget_set_visible(priv->toolbar_usb_device_selection, sensitive);
 }
 
 void

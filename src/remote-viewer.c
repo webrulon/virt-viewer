@@ -28,7 +28,7 @@
 #include <glib/gi18n.h>
 
 #ifdef HAVE_SPICE_GTK
-#include <spice-controller/spice-controller.h>
+#include <spice-controller.h>
 #endif
 
 #ifdef HAVE_SPICE_GTK

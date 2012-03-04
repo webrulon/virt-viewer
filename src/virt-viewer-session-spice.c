@@ -48,6 +48,7 @@ struct _VirtViewerSessionSpicePrivate {
     SpiceGtkSession *gtk_session;
     SpiceMainChannel *main_channel;
     SpiceAudio *audio;
+    int channel_count;
 };
 
 #define VIRT_VIEWER_SESSION_SPICE_GET_PRIVATE(o) (G_TYPE_INSTANCE_GET_PRIVATE((o), VIRT_VIEWER_TYPE_SESSION_SPICE, VirtViewerSessionSpicePrivate))
@@ -301,7 +302,10 @@ virt_viewer_session_spice_main_channel_event(SpiceChannel *channel G_GNUC_UNUSED
         break;
     case SPICE_CHANNEL_CLOSED:
         DEBUG_LOG("main channel: closed");
-        g_signal_emit_by_name(session, "session-disconnected");
+        /* Ensure the other channels get closed too */
+        virt_viewer_session_clear_displays(session);
+        if (self->priv->session)
+            spice_session_disconnect(self->priv->session);
         break;
     case SPICE_CHANNEL_ERROR_CONNECT:
         DEBUG_LOG("main channel: failed to connect");
@@ -436,10 +440,11 @@ virt_viewer_session_spice_channel_new(SpiceSession *s,
 
     if (SPICE_IS_PLAYBACK_CHANNEL(channel)) {
         DEBUG_LOG("new audio channel");
-        if (self->priv->audio != NULL)
-            return;
-        self->priv->audio = spice_audio_new(s, NULL, NULL);
+        if (self->priv->audio == NULL)
+            self->priv->audio = spice_audio_new(s, NULL, NULL);
     }
+
+    self->priv->channel_count++;
 }
 
 static void
@@ -468,6 +473,10 @@ virt_viewer_session_spice_channel_destroy(G_GNUC_UNUSED SpiceSession *s,
         g_object_unref(self->priv->audio);
         self->priv->audio = NULL;
     }
+
+    self->priv->channel_count--;
+    if (self->priv->channel_count == 0)
+        g_signal_emit_by_name(self, "session-disconnected");
 }
 
 VirtViewerSession *

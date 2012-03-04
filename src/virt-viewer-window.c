@@ -896,9 +896,9 @@ virt_viewer_window_update_title(VirtViewerWindow *self)
          */
         title = g_strdup_printf(_("%s%s%s - %s"),
                                 /* translators: <ungrab empty> */
-                                ungrab ? ungrab : _(""),
+                                ungrab ? ungrab : "",
                                 /* translators: <space> */
-                                ungrab && priv->subtitle ? _(" ") : _(""),
+                                ungrab && priv->subtitle ? _(" ") : "",
                                 priv->subtitle,
                                 g_get_application_name());
 

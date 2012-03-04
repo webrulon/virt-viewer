@@ -803,7 +803,7 @@ virt_viewer_window_toolbar_setup(VirtViewerWindow *self)
     gtk_tool_item_set_tooltip_text(GTK_TOOL_ITEM(button), _("Disconnect"));
     gtk_widget_show(GTK_WIDGET(button));
     gtk_toolbar_insert(GTK_TOOLBAR(priv->toolbar), GTK_TOOL_ITEM (button), 0);
-    g_signal_connect(button, "clicked", G_CALLBACK(gtk_main_quit), NULL);
+    g_signal_connect(button, "clicked", G_CALLBACK(virt_viewer_window_menu_file_quit), self);
 
     /* Leave fullscreen */
     button = GTK_WIDGET(gtk_tool_button_new_from_stock(GTK_STOCK_LEAVE_FULLSCREEN));

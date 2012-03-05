@@ -324,7 +324,7 @@ virt_viewer_window_desktop_resize(VirtViewerDisplay *display G_GNUC_UNUSED,
                                   VirtViewerWindow *self)
 {
     VirtViewerWindowPrivate *priv = self->priv;
-    if (priv->auto_resize && priv->window && !priv->fullscreen)
+    if (priv->auto_resize && !priv->fullscreen)
         virt_viewer_window_resize(self);
 }
 
@@ -576,9 +576,6 @@ virt_viewer_window_disable_modifiers(VirtViewerWindow *self)
     GSList *accels;
     int i;
 
-    if (!priv->window)
-        return;
-
     if (!priv->accel_enabled)
         return;
 
@@ -614,9 +611,6 @@ virt_viewer_window_enable_modifiers(VirtViewerWindow *self)
     VirtViewerWindowPrivate *priv = self->priv;
     GSList *accels;
     int i;
-
-    if (!priv->window)
-        return;
 
     if (priv->accel_enabled)
         return;

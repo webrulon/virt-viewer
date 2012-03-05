@@ -323,9 +323,7 @@ static void
 virt_viewer_window_desktop_resize(VirtViewerDisplay *display G_GNUC_UNUSED,
                                   VirtViewerWindow *self)
 {
-    VirtViewerWindowPrivate *priv = self->priv;
-    if (priv->auto_resize && !priv->fullscreen)
-        virt_viewer_window_resize(self);
+    virt_viewer_window_resize(self);
 }
 
 
@@ -392,6 +390,9 @@ virt_viewer_window_resize(VirtViewerWindow *self)
     guint desktopWidth;
     guint desktopHeight;
     VirtViewerWindowPrivate *priv = self->priv;
+
+    if (!priv->auto_resize || priv->fullscreen)
+        return;
 
     DEBUG_LOG("Preparing main window resize");
     if (!priv->display) {
@@ -679,8 +680,7 @@ virt_viewer_window_menu_view_resize(GtkWidget *menu,
 
     if (gtk_check_menu_item_get_active(GTK_CHECK_MENU_ITEM(menu))) {
         priv->auto_resize = TRUE;
-        if (!priv->fullscreen)
-            virt_viewer_window_resize(self);
+        virt_viewer_window_resize(self);
     } else {
         priv->auto_resize = FALSE;
     }

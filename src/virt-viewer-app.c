@@ -248,24 +248,22 @@ virt_viewer_app_get_n_windows(VirtViewerApp *self)
 
 gboolean
 virt_viewer_app_window_set_visible(VirtViewerApp *self,
-                                   VirtViewerWindow *vwin,
+                                   VirtViewerWindow *window,
                                    gboolean visible)
 {
-    GtkWidget *window;
     g_return_val_if_fail(VIRT_VIEWER_IS_APP(self), FALSE);
-    g_return_val_if_fail(VIRT_VIEWER_IS_WINDOW(vwin), FALSE);
+    g_return_val_if_fail(VIRT_VIEWER_IS_WINDOW(window), FALSE);
 
-    window = GTK_WIDGET(virt_viewer_window_get_window(vwin));
     if (visible) {
-        gtk_widget_show(window);
+        virt_viewer_window_show(window);
         return TRUE;
     } else {
         if (virt_viewer_app_get_n_windows_visible(self) > 1) {
-            gtk_widget_hide(window);
+            virt_viewer_window_hide(window);
             return FALSE;
         } else if (virt_viewer_app_get_n_windows(self) > 1) {
             GtkWidget *dialog =
-                gtk_message_dialog_new (GTK_WINDOW(window),
+                gtk_message_dialog_new (virt_viewer_window_get_window(window),
                                         GTK_DIALOG_DESTROY_WITH_PARENT,
                                         GTK_MESSAGE_QUESTION,
                                         GTK_BUTTONS_OK_CANCEL,
@@ -595,7 +593,6 @@ display_show_hint(VirtViewerDisplay *display,
 {
     VirtViewerApp *self;
     VirtViewerNotebook *nb = virt_viewer_window_get_notebook(win);
-    GtkWindow *w = virt_viewer_window_get_window(win);
     gint nth, hint;
 
     g_object_get(win,
@@ -609,12 +606,12 @@ display_show_hint(VirtViewerDisplay *display,
     if (hint == VIRT_VIEWER_DISPLAY_SHOW_HINT_HIDE) {
         if (win != self->priv->main_window &&
             g_getenv("VIRT_VIEWER_HIDE"))
-            gtk_widget_hide(GTK_WIDGET(w));
+            virt_viewer_window_hide(win);
         virt_viewer_notebook_show_status(nb, _("Waiting for display %d..."), nth + 1);
     } else {
         virt_viewer_notebook_show_display(nb);
-        gtk_widget_show(GTK_WIDGET(w));
-        gtk_window_present(w);
+        virt_viewer_window_show(win);
+        gtk_window_present(virt_viewer_window_get_window(win));
     }
 
     g_object_unref(self);
@@ -1256,18 +1253,7 @@ virt_viewer_app_dispose (GObject *object)
 static gboolean
 virt_viewer_app_default_start(VirtViewerApp *self)
 {
-    VirtViewerAppPrivate *priv;
-    GtkWindow *win;
-    priv = self->priv;
-
-    win = virt_viewer_window_get_window(priv->main_window);
-    if (win)
-        gtk_widget_show(GTK_WIDGET(win));
-    else {
-        gtk_box_pack_end(GTK_BOX(priv->container), priv->main_notebook, TRUE, TRUE, 0);
-        gtk_widget_show(GTK_WIDGET(priv->main_notebook));
-    }
-
+    virt_viewer_window_show(self->priv->main_window);
     return TRUE;
 }
 

@@ -957,6 +957,18 @@ virt_viewer_window_set_display(VirtViewerWindow *self, VirtViewerDisplay *displa
 }
 
 void
+virt_viewer_window_show(VirtViewerWindow *self)
+{
+    gtk_widget_show(self->priv->window);
+}
+
+void
+virt_viewer_window_hide(VirtViewerWindow *self)
+{
+    gtk_widget_hide(self->priv->window);
+}
+
+void
 virt_viewer_window_set_zoom_level(VirtViewerWindow *self, gint zoom_level)
 {
     g_return_if_fail(VIRT_VIEWER_IS_WINDOW(self));

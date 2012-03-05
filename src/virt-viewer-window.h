@@ -65,6 +65,8 @@ VirtViewerNotebook* virt_viewer_window_get_notebook (VirtViewerWindow* window);
 void virt_viewer_window_set_display(VirtViewerWindow *self, VirtViewerDisplay *display);
 void virt_viewer_window_set_usb_options_sensitive(VirtViewerWindow *self, gboolean sensitive);
 void virt_viewer_window_update_title(VirtViewerWindow *self);
+void virt_viewer_window_show(VirtViewerWindow *self);
+void virt_viewer_window_hide(VirtViewerWindow *self);
 void virt_viewer_window_set_zoom_level(VirtViewerWindow *self, gint zoom_level);
 gint virt_viewer_window_get_zoom_level(VirtViewerWindow *self);
 void virt_viewer_window_leave_fullscreen(VirtViewerWindow *self);

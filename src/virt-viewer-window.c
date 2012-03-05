@@ -106,6 +106,7 @@ struct _VirtViewerWindowPrivate {
     gboolean grabbed;
     gboolean before_saved;
     GdkRectangle before_fullscreen;
+    gboolean desktop_resize_pending;
 
     gint zoomlevel;
     gboolean auto_resize;
@@ -323,6 +324,10 @@ static void
 virt_viewer_window_desktop_resize(VirtViewerDisplay *display G_GNUC_UNUSED,
                                   VirtViewerWindow *self)
 {
+    if (!gtk_widget_get_visible(self->priv->window)) {
+        self->priv->desktop_resize_pending = TRUE;
+        return;
+    }
     virt_viewer_window_resize(self);
 }
 
@@ -960,6 +965,11 @@ void
 virt_viewer_window_show(VirtViewerWindow *self)
 {
     gtk_widget_show(self->priv->window);
+
+    if (self->priv->desktop_resize_pending) {
+        virt_viewer_window_resize(self);
+        self->priv->desktop_resize_pending = FALSE;
+    }
 }
 
 void

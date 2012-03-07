@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: virt-viewer\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-02-14 17:56+0000\n"
-"PO-Revision-Date: 2012-02-20 09:01+0000\n"
+"POT-Creation-Date: 2012-03-07 10:17+0000\n"
+"PO-Revision-Date: 2012-02-29 05:31+0000\n"
 "Last-Translator: sweta <swkothar@redhat.com>\n"
 "Language-Team: Gujarati <trans-gu@lists.fedoraproject.org>\n"
 "MIME-Version: 1.0\n"
@@ -17,6 +17,46 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Language: gu\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
+
+#: ../src/gbinding.c:637
+msgid "Source"
+msgstr "સ્ત્રોત"
+
+#: ../src/gbinding.c:638
+msgid "The source of the binding"
+msgstr "બાઇન્ડીંગનુ સ્ત્રોત"
+
+#: ../src/gbinding.c:652
+msgid "Target"
+msgstr "લક્ષ્ય"
+
+#: ../src/gbinding.c:653
+msgid "The target of the binding"
+msgstr "બાઇન્ડીંગનુ લક્ષ્ય"
+
+#: ../src/gbinding.c:668
+msgid "Source Property"
+msgstr "સ્ત્રોત ગુણધર્મ"
+
+#: ../src/gbinding.c:669
+msgid "The property on the source to bind"
+msgstr "બાઇન્ડ કરવા માટે સ્ત્રોત પર ગુણધર્મ"
+
+#: ../src/gbinding.c:684
+msgid "Target Property"
+msgstr "લક્ષ્ય ગુણધર્મ"
+
+#: ../src/gbinding.c:685
+msgid "The property on the target to bind"
+msgstr "બાઇન્ડ કરવા માટે લક્ષ્ય પર ગુણધર્મ"
+
+#: ../src/gbinding.c:699
+msgid "Flags"
+msgstr "ફ્લેગ"
+
+#: ../src/gbinding.c:700
+msgid "The binding flags"
+msgstr "બાઇન્ડિંગ ફ્લેગ"
 
 #: ../src/remote-viewer-main.c:42
 #, c-format
@@ -75,32 +115,32 @@ msgstr "\nવપરાશ: %s [OPTIONS] URI\n\n%s\n\n"
 msgid "Zoom level must be within 10-200\n"
 msgstr "નાનુંમોટુ કરવાનું સ્તર 10-200 માં હોવુ જ જોઇએ\n"
 
-#: ../src/remote-viewer.c:185 ../src/remote-viewer.c:482
+#: ../src/remote-viewer.c:210 ../src/remote-viewer.c:742
 msgid "Failed to initiate connection"
 msgstr "જોડાણને પ્રારંભ કરવાનુ નિષ્ફળ"
 
-#: ../src/remote-viewer.c:198
+#: ../src/remote-viewer.c:223
 msgid "Display disabled by controller"
 msgstr "નિયંત્રક દ્દારા નિષ્ક્રિય થયેલ બતાવો"
 
-#: ../src/remote-viewer.c:398
+#: ../src/remote-viewer.c:654
 #, c-format
 msgid "Controller connection failed: %s"
 msgstr "નિયંત્રક જોડાણ નિષ્ફળ: %s"
 
-#: ../src/remote-viewer.c:452
+#: ../src/remote-viewer.c:708
 msgid "Couldn't create a Spice session"
 msgstr "Spice સત્રને બનાવી શક્યા નહિં"
 
-#: ../src/remote-viewer.c:462
+#: ../src/remote-viewer.c:722
 msgid "Setting up Spice session..."
 msgstr "Spice સત્રને સુયોજિત કરી રહ્યા છે..."
 
-#: ../src/remote-viewer.c:472
+#: ../src/remote-viewer.c:732
 msgid "Cannot determine the connection type from URI"
 msgstr "URI માંથી જોડાણ પ્રકારને નક્કી કરી શકાતુ નથી"
 
-#: ../src/remote-viewer.c:477
+#: ../src/remote-viewer.c:737
 #, c-format
 msgid "Couldn't create a session for this type: %s"
 msgstr "આ પ્રકાર માટે સત્રને બનાવી શક્યા નહિં: %s"
@@ -150,62 +190,62 @@ msgstr "This program is free software; you can redistribute it and/or modify\nit
 msgid "virt-manager.org"
 msgstr "virt-manager.org"
 
-#: ../src/virt-viewer-app.c:259
+#: ../src/virt-viewer-app.c:272
 msgid "This is the last visible display. Do you want to quit?"
 msgstr "આ છેલ્લુ દૃશ્યમાન દર્શાવ છે. શું તમે બહાર નીકળવા માંગો છો?"
 
-#: ../src/virt-viewer-app.c:573
+#: ../src/virt-viewer-app.c:613
 #, c-format
 msgid "Waiting for display %d..."
 msgstr "%d ને દર્શાવવા માટે રાહ જોઇ રહ્યા છે..."
 
-#: ../src/virt-viewer-app.c:655
+#: ../src/virt-viewer-app.c:695
 #, c-format
 msgid "Unknown graphic type for the guest %s"
 msgstr "મહેમાન %s માટે અજ્ઞાત ગ્રાફિક પ્રકાર"
 
-#: ../src/virt-viewer-app.c:730
+#: ../src/virt-viewer-app.c:770
 msgid "Connect to ssh failed."
 msgstr "ssh સાથે જોડાવાનું નિષ્ફળ."
 
-#: ../src/virt-viewer-app.c:732
+#: ../src/virt-viewer-app.c:772
 msgid "Can't connect to channel, SSH only supported."
 msgstr "ચેનલમાં જોડાઇ શકતા નથી, SSH ફક્ત આધારભૂત છે."
 
-#: ../src/virt-viewer-app.c:744
+#: ../src/virt-viewer-app.c:784
 msgid "Connect to channel unsupported."
 msgstr "ચેનલમાં જોડાવાનુ બિનઆધારભૂત છે."
 
-#: ../src/virt-viewer-app.c:824
+#: ../src/virt-viewer-app.c:864
 msgid "Connecting to graphic server"
 msgstr "ગ્રાફિક સર્વરમાં જોડાઇ રહ્યા છે"
 
-#: ../src/virt-viewer-app.c:954
+#: ../src/virt-viewer-app.c:994
 msgid "Guest domain has shutdown"
 msgstr "મહેમાન ડોમેઇન બંધ થઇ ગયો"
 
-#: ../src/virt-viewer-app.c:1004
+#: ../src/virt-viewer-app.c:1044
 msgid "Connected to graphic server"
 msgstr "ગ્રાફિક સર્વરમાં જોડાયેલ છે"
 
-#: ../src/virt-viewer-app.c:1027
+#: ../src/virt-viewer-app.c:1070
 #, c-format
 msgid "Unable to connect to the graphic server %s"
 msgstr "ગ્રાફિક સર્વર %s માં જોડાવામાં અસમર્થ"
 
-#: ../src/virt-viewer-app.c:1056
+#: ../src/virt-viewer-app.c:1099
 #, c-format
 msgid ""
 "Unable to authenticate with remote desktop server at %s: %s\n"
 "Retry connection again?"
 msgstr "%s પર દૂરસ્થ ડેસ્કટોપ સાથે સત્તાધિકરણ કરવાનું અસમર્થ: %s\nફરીથી જોડાણનો પુન:પ્રયત્ન કરો?"
 
-#: ../src/virt-viewer-app.c:1076
+#: ../src/virt-viewer-app.c:1119
 #, c-format
 msgid "Unable to authenticate with remote desktop server: %s"
 msgstr "દૂરસ્થ ડેસ્કટોપ સર્વર સાથે સત્તાધિકરણ કરવાનું અસમર્થ: %s"
 
-#: ../src/virt-viewer-app.c:1084
+#: ../src/virt-viewer-app.c:1127
 #, c-format
 msgid "USB redirection error: %s"
 msgstr "USB પુનર્નિર્દેશન ભૂલ: %s"
@@ -272,7 +312,8 @@ msgid ""
 "\n"
 msgstr "\nવપરાશ: %s [OPTIONS] DOMAIN-NAME|ID|UUID\n\n%s\n\n"
 
-#: ../src/virt-viewer-session-spice.c:347
+#. Create the widgets
+#: ../src/virt-viewer-session-spice.c:370
 msgid "Select USB devices for redirection"
 msgstr "પુનર્નિર્દેશન માટે USB ઉપકરણોને પસંદ કરો"
 
@@ -281,15 +322,20 @@ msgstr "પુનર્નિર્દેશન માટે USB ઉપકરણ
 msgid "Unsupported authentication type %d"
 msgstr "બિનઆધારભૂત સત્તાધિકરણ પ્રકાર %d"
 
-#: ../src/virt-viewer-window.c:774
+#: ../src/virt-viewer-window.c:804
 msgid "Disconnect"
 msgstr "જોડાણ તોડી નાંખો"
 
-#: ../src/virt-viewer-window.c:781 ../src/virt-viewer-window.c:782
+#: ../src/virt-viewer-window.c:811 ../src/virt-viewer-window.c:812
+#: ../src/virt-viewer.xml.h:22
+msgid "USB device selection"
+msgstr "USB ઉપકરણ પસંદગી"
+
+#: ../src/virt-viewer-window.c:819 ../src/virt-viewer-window.c:820
 msgid "Leave fullscreen"
 msgstr "પૂર્ણસ્ક્રીન છોડો"
 
-#: ../src/virt-viewer-window.c:854
+#: ../src/virt-viewer-window.c:892
 msgid "(Press Ctrl+Alt to release pointer)"
 msgstr "(પોઇંટરને પ્રકાશિત કરવા માટે Ctrl+Alt દબાવો)"
 
@@ -299,13 +345,13 @@ msgstr "(પોઇંટરને પ્રકાશિત કરવા મા�
 #. * Such as: "(Press Ctrl+Alt to release pointer) BigCorpTycoon MOTD - Virt
 #. Viewer"
 #. 
-#: ../src/virt-viewer-window.c:863
+#: ../src/virt-viewer-window.c:901
 #, c-format
 msgid "%s%s%s - %s"
 msgstr "%s%s%s - %s"
 
 #. translators: <space>
-#: ../src/virt-viewer-window.c:867
+#: ../src/virt-viewer-window.c:905
 msgid " "
 msgstr " "
 
@@ -437,33 +483,41 @@ msgid "Full screen"
 msgstr "પૂર્ણ સ્ક્રીન"
 
 #: ../src/virt-viewer.xml.h:18
+msgid "Release cursor"
+msgstr "પ્રકાશન કર્સર"
+
+#: ../src/virt-viewer.xml.h:19
 msgid "Screenshot"
 msgstr "સ્ક્રીનશોટ"
 
-#: ../src/virt-viewer.xml.h:19
-msgid "USB device selection"
-msgstr "USB ઉપકરણ પસંદગી"
-
 #: ../src/virt-viewer.xml.h:20
+msgid "Smartcard insertion"
+msgstr "સ્માર્ટકાર્ડ નિવેશ"
+
+#: ../src/virt-viewer.xml.h:21
+msgid "Smartcard removal"
+msgstr "સ્માર્ટકાર્ડ નિરાકરણ"
+
+#: ../src/virt-viewer.xml.h:23
 msgid "_File"
 msgstr "ફાઇલ (_F)"
 
-#: ../src/virt-viewer.xml.h:21
+#: ../src/virt-viewer.xml.h:24
 msgid "_Help"
 msgstr "મદદ (_H)"
 
-#: ../src/virt-viewer.xml.h:22
+#: ../src/virt-viewer.xml.h:25
 msgid "_PrintScreen"
 msgstr "PrintScreen (_P)"
 
-#: ../src/virt-viewer.xml.h:23
+#: ../src/virt-viewer.xml.h:26
 msgid "_Send key"
 msgstr "કી મોકલો (_S)"
 
-#: ../src/virt-viewer.xml.h:24
+#: ../src/virt-viewer.xml.h:27
 msgid "_View"
 msgstr "દૃશ્ય (_V)"
 
-#: ../src/virt-viewer.xml.h:25
+#: ../src/virt-viewer.xml.h:28
 msgid "_Zoom"
 msgstr "નાનુંમોટુ કરો (_Z)"

@@ -4,13 +4,14 @@
 # 
 # Translators:
 # Runa Bhattacharjee <runab@redhat.com>, 2010.
+#   <runabh@gmail.com>, 2012.
 msgid ""
 msgstr ""
 "Project-Id-Version: virt-viewer\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-02-14 17:56+0000\n"
-"PO-Revision-Date: 2012-02-14 17:57+0000\n"
-"Last-Translator: Daniel Berrange <dan-transifex@berrange.com>\n"
+"POT-Creation-Date: 2012-03-07 10:17+0000\n"
+"PO-Revision-Date: 2012-03-07 10:19+0000\n"
+"Last-Translator: runa <runabh@gmail.com>\n"
 "Language-Team: Bengali (India) <anubad@lists.ankur.org.in>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -18,10 +19,50 @@ msgstr ""
 "Language: bn_IN\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
 
+#: ../src/gbinding.c:637
+msgid "Source"
+msgstr "উৎস"
+
+#: ../src/gbinding.c:638
+msgid "The source of the binding"
+msgstr "বাইন্ডিংয়ের উৎস"
+
+#: ../src/gbinding.c:652
+msgid "Target"
+msgstr "উদ্দিষ্ট"
+
+#: ../src/gbinding.c:653
+msgid "The target of the binding"
+msgstr "বাইন্ডিংয়ের উদ্দিষ্টবস্তু"
+
+#: ../src/gbinding.c:668
+msgid "Source Property"
+msgstr ""
+
+#: ../src/gbinding.c:669
+msgid "The property on the source to bind"
+msgstr ""
+
+#: ../src/gbinding.c:684
+msgid "Target Property"
+msgstr ""
+
+#: ../src/gbinding.c:685
+msgid "The property on the target to bind"
+msgstr ""
+
+#: ../src/gbinding.c:699
+msgid "Flags"
+msgstr ""
+
+#: ../src/gbinding.c:700
+msgid "The binding flags"
+msgstr ""
+
 #: ../src/remote-viewer-main.c:42
 #, c-format
 msgid "remote-viewer version %s\n"
-msgstr ""
+msgstr "remote-viewer সংস্করণ %s\n"
 
 #: ../src/remote-viewer-main.c:63 ../src/virt-viewer-main.c:60
 msgid "Run '"
@@ -29,15 +70,15 @@ msgstr "সঞ্চালিত হবে '"
 
 #: ../src/remote-viewer-main.c:66 ../src/virt-viewer-main.c:63
 msgid "Display version information"
-msgstr ""
+msgstr "সংস্করণ সংক্রান্ত তথ্য প্রদর্শন করা হবে"
 
 #: ../src/remote-viewer-main.c:68 ../src/virt-viewer-main.c:65
 msgid "Display verbose information"
-msgstr ""
+msgstr "ভার্বোস তথ্য প্রদর্শন করা হবে"
 
 #: ../src/remote-viewer-main.c:70 ../src/virt-viewer-main.c:67
 msgid "Direct connection with no automatic tunnels"
-msgstr ""
+msgstr "স্বয়ংক্রিয় টানেল বিনা কোনো সরাসরি যোগাযোগ নেই"
 
 #: ../src/remote-viewer-main.c:72 ../src/virt-viewer-main.c:77
 msgid "Zoom level of window, in percentage"
@@ -45,7 +86,7 @@ msgstr ""
 
 #: ../src/remote-viewer-main.c:74 ../src/virt-viewer-main.c:79
 msgid "Display debugging information"
-msgstr ""
+msgstr "ডিবাগ সংক্রান্ত তথ্য প্রদর্শন করা হবে"
 
 #: ../src/remote-viewer-main.c:76 ../src/virt-viewer-main.c:81
 msgid "Open in full screen mode"
@@ -68,39 +109,39 @@ msgid ""
 "\n"
 "%s\n"
 "\n"
-msgstr ""
+msgstr "\nব্যবহারপ্রণালী: %s [OPTIONS] URI\n\n%s\n\n"
 
 #: ../src/remote-viewer-main.c:122 ../src/virt-viewer-main.c:121
 #, c-format
 msgid "Zoom level must be within 10-200\n"
 msgstr ""
 
-#: ../src/remote-viewer.c:185 ../src/remote-viewer.c:482
+#: ../src/remote-viewer.c:210 ../src/remote-viewer.c:742
 msgid "Failed to initiate connection"
 msgstr ""
 
-#: ../src/remote-viewer.c:198
+#: ../src/remote-viewer.c:223
 msgid "Display disabled by controller"
 msgstr ""
 
-#: ../src/remote-viewer.c:398
+#: ../src/remote-viewer.c:654
 #, c-format
 msgid "Controller connection failed: %s"
 msgstr ""
 
-#: ../src/remote-viewer.c:452
+#: ../src/remote-viewer.c:708
 msgid "Couldn't create a Spice session"
 msgstr ""
 
-#: ../src/remote-viewer.c:462
+#: ../src/remote-viewer.c:722
 msgid "Setting up Spice session..."
 msgstr ""
 
-#: ../src/remote-viewer.c:472
+#: ../src/remote-viewer.c:732
 msgid "Cannot determine the connection type from URI"
 msgstr ""
 
-#: ../src/remote-viewer.c:477
+#: ../src/remote-viewer.c:737
 #, c-format
 msgid "Couldn't create a session for this type: %s"
 msgstr ""
@@ -150,62 +191,62 @@ msgstr ""
 msgid "virt-manager.org"
 msgstr ""
 
-#: ../src/virt-viewer-app.c:259
+#: ../src/virt-viewer-app.c:272
 msgid "This is the last visible display. Do you want to quit?"
 msgstr ""
 
-#: ../src/virt-viewer-app.c:573
+#: ../src/virt-viewer-app.c:613
 #, c-format
 msgid "Waiting for display %d..."
 msgstr ""
 
-#: ../src/virt-viewer-app.c:655
+#: ../src/virt-viewer-app.c:695
 #, c-format
 msgid "Unknown graphic type for the guest %s"
 msgstr ""
 
-#: ../src/virt-viewer-app.c:730
+#: ../src/virt-viewer-app.c:770
 msgid "Connect to ssh failed."
 msgstr ""
 
-#: ../src/virt-viewer-app.c:732
+#: ../src/virt-viewer-app.c:772
 msgid "Can't connect to channel, SSH only supported."
 msgstr ""
 
-#: ../src/virt-viewer-app.c:744
+#: ../src/virt-viewer-app.c:784
 msgid "Connect to channel unsupported."
 msgstr ""
 
-#: ../src/virt-viewer-app.c:824
+#: ../src/virt-viewer-app.c:864
 msgid "Connecting to graphic server"
 msgstr ""
 
-#: ../src/virt-viewer-app.c:954
+#: ../src/virt-viewer-app.c:994
 msgid "Guest domain has shutdown"
 msgstr ""
 
-#: ../src/virt-viewer-app.c:1004
+#: ../src/virt-viewer-app.c:1044
 msgid "Connected to graphic server"
 msgstr ""
 
-#: ../src/virt-viewer-app.c:1027
+#: ../src/virt-viewer-app.c:1070
 #, c-format
 msgid "Unable to connect to the graphic server %s"
 msgstr ""
 
-#: ../src/virt-viewer-app.c:1056
+#: ../src/virt-viewer-app.c:1099
 #, c-format
 msgid ""
 "Unable to authenticate with remote desktop server at %s: %s\n"
 "Retry connection again?"
 msgstr ""
 
-#: ../src/virt-viewer-app.c:1076
+#: ../src/virt-viewer-app.c:1119
 #, c-format
 msgid "Unable to authenticate with remote desktop server: %s"
 msgstr ""
 
-#: ../src/virt-viewer-app.c:1084
+#: ../src/virt-viewer-app.c:1127
 #, c-format
 msgid "USB redirection error: %s"
 msgstr ""
@@ -272,7 +313,8 @@ msgid ""
 "\n"
 msgstr "\nব্যবহার পদ্ধতি: %s [OPTIONS] DOMAIN-NAME|ID|UUID\n\n%s\n\n"
 
-#: ../src/virt-viewer-session-spice.c:347
+#. Create the widgets
+#: ../src/virt-viewer-session-spice.c:370
 msgid "Select USB devices for redirection"
 msgstr ""
 
@@ -281,15 +323,20 @@ msgstr ""
 msgid "Unsupported authentication type %d"
 msgstr ""
 
-#: ../src/virt-viewer-window.c:774
+#: ../src/virt-viewer-window.c:804
 msgid "Disconnect"
 msgstr ""
 
-#: ../src/virt-viewer-window.c:781 ../src/virt-viewer-window.c:782
+#: ../src/virt-viewer-window.c:811 ../src/virt-viewer-window.c:812
+#: ../src/virt-viewer.xml.h:22
+msgid "USB device selection"
+msgstr "USB ডিভাইস নির্বাচন"
+
+#: ../src/virt-viewer-window.c:819 ../src/virt-viewer-window.c:820
 msgid "Leave fullscreen"
 msgstr ""
 
-#: ../src/virt-viewer-window.c:854
+#: ../src/virt-viewer-window.c:892
 msgid "(Press Ctrl+Alt to release pointer)"
 msgstr ""
 
@@ -299,42 +346,42 @@ msgstr ""
 #. * Such as: "(Press Ctrl+Alt to release pointer) BigCorpTycoon MOTD - Virt
 #. Viewer"
 #. 
-#: ../src/virt-viewer-window.c:863
+#: ../src/virt-viewer-window.c:901
 #, c-format
 msgid "%s%s%s - %s"
 msgstr ""
 
 #. translators: <space>
-#: ../src/virt-viewer-window.c:867
+#: ../src/virt-viewer-window.c:905
 msgid " "
-msgstr ""
+msgstr " "
 
 #: ../src/virt-viewer.c:144
 msgid "Waiting for guest domain to re-start"
-msgstr ""
+msgstr "গেস্ট ডোমেইন পুনরায় আরম্ভের অপেক্ষা করা হচ্ছে"
 
 #: ../src/virt-viewer.c:308
 #, c-format
 msgid "Cannot determine the graphic type for the guest %s"
-msgstr ""
+msgstr "%s গেস্ট মেশিনের জন্য গ্রাফিকের ধরন নির্ধারণ করা সম্ভব নয়"
 
 #: ../src/virt-viewer.c:321
 #, c-format
 msgid "Cannot determine the graphic address for the guest %s"
-msgstr ""
+msgstr "%s গেস্ট মেশিনের জন্য গ্রাফিক ঠিকানা নির্ধারণ করা সম্ভব নয়"
 
 #: ../src/virt-viewer.c:344
 #, c-format
 msgid "Cannot determine the host for the guest %s"
-msgstr ""
+msgstr "%s গেস্ট মেশিনের জন্য হোস্ট নির্ধারণ করা সম্ভব নয়"
 
 #: ../src/virt-viewer.c:474
 msgid "Finding guest domain"
-msgstr ""
+msgstr "গেস্ট ডোমেইন সন্ধান করা হচ্ছে"
 
 #: ../src/virt-viewer.c:478
 msgid "Waiting for guest domain to be created"
-msgstr ""
+msgstr "গেস্ট ডোমেইন প্রস্তুতির অপেক্ষা করা হচ্ছে"
 
 #: ../src/virt-viewer.c:483
 #, c-format
@@ -343,7 +390,7 @@ msgstr "%s গেস্ট ডোমেইন সন্ধান করতে �
 
 #: ../src/virt-viewer.c:490
 msgid "Checking guest domain status"
-msgstr ""
+msgstr "গেস্ট ডোমেইনের অবস্থা পরীক্ষা করতে ব্যর্থ"
 
 #: ../src/virt-viewer.c:497
 msgid "Waiting for guest domain to start"
@@ -378,92 +425,100 @@ msgstr ""
 
 #: ../src/virt-viewer.xml.h:3
 msgid "Ctrl+Alt+F12"
-msgstr ""
+msgstr "Ctrl+Alt+F12"
 
 #: ../src/virt-viewer.xml.h:4
 msgid "Ctrl+Alt+F1_0"
-msgstr ""
+msgstr "Ctrl+Alt+F1_0"
 
 #: ../src/virt-viewer.xml.h:5
 msgid "Ctrl+Alt+F_1"
-msgstr ""
+msgstr "Ctrl+Alt+F_1"
 
 #: ../src/virt-viewer.xml.h:6
 msgid "Ctrl+Alt+F_2"
-msgstr ""
+msgstr "Ctrl+Alt+F_2"
 
 #: ../src/virt-viewer.xml.h:7
 msgid "Ctrl+Alt+F_3"
-msgstr ""
+msgstr "Ctrl+Alt+F_3"
 
 #: ../src/virt-viewer.xml.h:8
 msgid "Ctrl+Alt+F_4"
-msgstr ""
+msgstr "Ctrl+Alt+F_4"
 
 #: ../src/virt-viewer.xml.h:9
 msgid "Ctrl+Alt+F_5"
-msgstr ""
+msgstr "Ctrl+Alt+F_5"
 
 #: ../src/virt-viewer.xml.h:10
 msgid "Ctrl+Alt+F_6"
-msgstr ""
+msgstr "Ctrl+Alt+F_6"
 
 #: ../src/virt-viewer.xml.h:11
 msgid "Ctrl+Alt+F_7"
-msgstr ""
+msgstr "Ctrl+Alt+F_7"
 
 #: ../src/virt-viewer.xml.h:12
 msgid "Ctrl+Alt+F_8"
-msgstr ""
+msgstr "Ctrl+Alt+F_8"
 
 #: ../src/virt-viewer.xml.h:13
 msgid "Ctrl+Alt+F_9"
-msgstr ""
+msgstr "Ctrl+Alt+F_9"
 
 #: ../src/virt-viewer.xml.h:14
 msgid "Ctrl+Alt+_Backspace"
-msgstr ""
+msgstr "Ctrl+Alt+_Backspace"
 
 #: ../src/virt-viewer.xml.h:15
 msgid "Ctrl+Alt+_Del"
-msgstr ""
+msgstr "Ctrl+Alt+_Del"
 
 #: ../src/virt-viewer.xml.h:16
 msgid "Displays"
-msgstr ""
+msgstr "প্রদর্শনক্ষেত্র"
 
 #: ../src/virt-viewer.xml.h:17
 msgid "Full screen"
-msgstr ""
+msgstr "সম্পূর্ণ পর্দায় প্রদর্শন"
 
 #: ../src/virt-viewer.xml.h:18
-msgid "Screenshot"
+msgid "Release cursor"
 msgstr ""
 
 #: ../src/virt-viewer.xml.h:19
-msgid "USB device selection"
-msgstr ""
+msgid "Screenshot"
+msgstr "স্ক্রিন-শট"
 
 #: ../src/virt-viewer.xml.h:20
-msgid "_File"
+msgid "Smartcard insertion"
 msgstr ""
 
 #: ../src/virt-viewer.xml.h:21
-msgid "_Help"
-msgstr ""
-
-#: ../src/virt-viewer.xml.h:22
-msgid "_PrintScreen"
+msgid "Smartcard removal"
 msgstr ""
 
 #: ../src/virt-viewer.xml.h:23
-msgid "_Send key"
-msgstr ""
+msgid "_File"
+msgstr "ফাইল (_F)"
 
 #: ../src/virt-viewer.xml.h:24
-msgid "_View"
-msgstr ""
+msgid "_Help"
+msgstr "সহায়তা (_H)"
 
 #: ../src/virt-viewer.xml.h:25
+msgid "_PrintScreen"
+msgstr "_PrintScreen"
+
+#: ../src/virt-viewer.xml.h:26
+msgid "_Send key"
+msgstr "কি পাঠিয়ে দিন (_S)"
+
+#: ../src/virt-viewer.xml.h:27
+msgid "_View"
+msgstr "প্রদর্শন (_V)"
+
+#: ../src/virt-viewer.xml.h:28
 msgid "_Zoom"
-msgstr ""
+msgstr "প্রদর্শনের নাম (_Z)"

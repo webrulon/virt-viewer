@@ -3,14 +3,14 @@
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
-# Sandeep Shedmake <sshedmak@redhat.com>, 2010.
+# Sandeep Shedmake <sshedmak@redhat.com>, 2010, 2012.
 msgid ""
 msgstr ""
 "Project-Id-Version: virt-viewer\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-02-14 17:56+0000\n"
-"PO-Revision-Date: 2012-02-14 17:57+0000\n"
-"Last-Translator: Daniel Berrange <dan-transifex@berrange.com>\n"
+"POT-Creation-Date: 2012-03-07 10:17+0000\n"
+"PO-Revision-Date: 2012-02-29 11:47+0000\n"
+"Last-Translator: sandeeps <sshedmak@redhat.com>\n"
 "Language-Team: Marathi (http://www.transifex.net/projects/p/fedora/language/mr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -18,10 +18,50 @@ msgstr ""
 "Language: mr\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
 
+#: ../src/gbinding.c:637
+msgid "Source"
+msgstr "स्रोत"
+
+#: ../src/gbinding.c:638
+msgid "The source of the binding"
+msgstr "बाइंडिंगचे स्रोत"
+
+#: ../src/gbinding.c:652
+msgid "Target"
+msgstr "लक्ष्य"
+
+#: ../src/gbinding.c:653
+msgid "The target of the binding"
+msgstr "बाइंडिंगचे लक्ष्य"
+
+#: ../src/gbinding.c:668
+msgid "Source Property"
+msgstr "स्रोत गुणधर्म"
+
+#: ../src/gbinding.c:669
+msgid "The property on the source to bind"
+msgstr "बाइंडकरण्यासाठी स्रोतवरील गुणधर्म"
+
+#: ../src/gbinding.c:684
+msgid "Target Property"
+msgstr "लक्ष्य गुणधर्म"
+
+#: ../src/gbinding.c:685
+msgid "The property on the target to bind"
+msgstr "बाइंडकरीता लक्ष्यवरील गुणधर्म"
+
+#: ../src/gbinding.c:699
+msgid "Flags"
+msgstr "फ्लॅग्स्"
+
+#: ../src/gbinding.c:700
+msgid "The binding flags"
+msgstr "बाइंडिंगसाठीचे फ्लॅग्स्"
+
 #: ../src/remote-viewer-main.c:42
 #, c-format
 msgid "remote-viewer version %s\n"
-msgstr ""
+msgstr "remote-viewer आवृत्ती %s\n"
 
 #: ../src/remote-viewer-main.c:63 ../src/virt-viewer-main.c:60
 msgid "Run '"
@@ -29,36 +69,36 @@ msgstr "चालवा '"
 
 #: ../src/remote-viewer-main.c:66 ../src/virt-viewer-main.c:63
 msgid "Display version information"
-msgstr ""
+msgstr "आवृत्तीविषयी माहिती दाखवा"
 
 #: ../src/remote-viewer-main.c:68 ../src/virt-viewer-main.c:65
 msgid "Display verbose information"
-msgstr ""
+msgstr "शब्दात्मक माहिती दाखवा"
 
 #: ../src/remote-viewer-main.c:70 ../src/virt-viewer-main.c:67
 msgid "Direct connection with no automatic tunnels"
-msgstr ""
+msgstr "स्वयं टनल्स् विना प्रत्यक्ष जोडणी"
 
 #: ../src/remote-viewer-main.c:72 ../src/virt-viewer-main.c:77
 msgid "Zoom level of window, in percentage"
-msgstr ""
+msgstr "पटलाचे झूम स्तर, टक्केवारित"
 
 #: ../src/remote-viewer-main.c:74 ../src/virt-viewer-main.c:79
 msgid "Display debugging information"
-msgstr ""
+msgstr "डिबगिंग माहिती दाखवत आहे"
 
 #: ../src/remote-viewer-main.c:76 ../src/virt-viewer-main.c:81
 msgid "Open in full screen mode"
-msgstr ""
+msgstr "पूर्ण पडदाभर मोडमध्ये उघडा"
 
 #: ../src/remote-viewer-main.c:79
 msgid "Open connection using Spice controller communication"
-msgstr ""
+msgstr "स्पाइस कंट्रोलर संपर्काचा वापर करून जोडणी उघडा"
 
 #. Setup command line options
 #: ../src/remote-viewer-main.c:92
 msgid "- Remote viewer client"
-msgstr ""
+msgstr "- रिमोट व्युअर क्लाएंट"
 
 #: ../src/remote-viewer-main.c:117
 #, c-format
@@ -68,42 +108,42 @@ msgid ""
 "\n"
 "%s\n"
 "\n"
-msgstr ""
+msgstr "\nवापर: %s [OPTIONS] URI\n\n%s\n\n"
 
 #: ../src/remote-viewer-main.c:122 ../src/virt-viewer-main.c:121
 #, c-format
 msgid "Zoom level must be within 10-200\n"
-msgstr ""
+msgstr "झूम स्तर 10-200 अंतर्गत पाहिजे\n"
 
-#: ../src/remote-viewer.c:185 ../src/remote-viewer.c:482
+#: ../src/remote-viewer.c:210 ../src/remote-viewer.c:742
 msgid "Failed to initiate connection"
-msgstr ""
+msgstr "जोडणी सुरू करण्यास अपयशी"
 
-#: ../src/remote-viewer.c:198
+#: ../src/remote-viewer.c:223
 msgid "Display disabled by controller"
-msgstr ""
+msgstr "कंट्रोलरतर्फे डिस्पले बंद केले"
 
-#: ../src/remote-viewer.c:398
+#: ../src/remote-viewer.c:654
 #, c-format
 msgid "Controller connection failed: %s"
-msgstr ""
+msgstr "कंट्रोलर जोडणी अपयशी: %s"
 
-#: ../src/remote-viewer.c:452
+#: ../src/remote-viewer.c:708
 msgid "Couldn't create a Spice session"
-msgstr ""
+msgstr "स्पाइस सत्र निर्माण करणे अशक्य"
 
-#: ../src/remote-viewer.c:462
+#: ../src/remote-viewer.c:722
 msgid "Setting up Spice session..."
-msgstr ""
+msgstr "स्पाइस सत्राची मांडणी अशक्य..."
 
-#: ../src/remote-viewer.c:472
+#: ../src/remote-viewer.c:732
 msgid "Cannot determine the connection type from URI"
-msgstr ""
+msgstr "URI पासून जोडणी प्रकार ओळखणे अशक्य"
 
-#: ../src/remote-viewer.c:477
+#: ../src/remote-viewer.c:737
 #, c-format
 msgid "Couldn't create a session for this type: %s"
-msgstr ""
+msgstr "या प्रकारकरीता सत्र निर्माण करणे अशक्य: %s"
 
 #. * Local variables:
 #. *  c-indent-level: 4
@@ -113,21 +153,21 @@ msgstr ""
 #. 
 #: ../src/virt-viewer-about.xml.h:1
 msgid "A remote desktop client built with GTK-VNC, SPICE-GTK and libvirt"
-msgstr ""
+msgstr "GTK-VNC, SPICE-GTK व libvirt सह रिमोट डेस्कटॉप क्लाएंट निर्मीत केले"
 
 #: ../src/virt-viewer-about.xml.h:2
 msgid "About Glade"
-msgstr ""
+msgstr "ग्लेड विषयी"
 
 #: ../src/virt-viewer-about.xml.h:3
 msgid ""
 "Copyright (C) 2007-2012 Daniel P. Berrange\n"
 "Copyright (C) 2007-2012 Red Hat, Inc."
-msgstr ""
+msgstr "सर्वहक्काधिकार (C) 2007-2012 Daniel P. Berrange\nसर्वहक्काधिकार (C) 2007-2012 Red Hat, Inc."
 
 #: ../src/virt-viewer-about.xml.h:5
 msgid "The Fedora Translation Team"
-msgstr ""
+msgstr "Fedora भाषांतरन गट"
 
 #: ../src/virt-viewer-about.xml.h:6
 msgid ""
@@ -144,71 +184,71 @@ msgid ""
 "You should have received a copy of the GNU General Public License\n"
 "along with this program; if not, write to the Free Software\n"
 "Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA\n"
-msgstr ""
+msgstr "This program is free software; you can redistribute it and/or modify\nit under the terms of the GNU General Public License as published by\nthe Free Software Foundation; either version 2 of the License, or\n(at your option) any later version.\n\nThis program is distributed in the hope that it will be useful,\nbut WITHOUT ANY WARRANTY; without even the implied warranty of\nMERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\nGNU General Public License for more details.\n\nYou should have received a copy of the GNU General Public License\nalong with this program; if not, write to the Free Software\nFoundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA\n"
 
 #: ../src/virt-viewer-about.xml.h:20
 msgid "virt-manager.org"
-msgstr ""
+msgstr "virt-manager.org"
 
-#: ../src/virt-viewer-app.c:259
+#: ../src/virt-viewer-app.c:272
 msgid "This is the last visible display. Do you want to quit?"
-msgstr ""
+msgstr "हे शेवटचे दृष्यास्पद डिस्पले आहे. तुम्हाला येथून बाहेर पडायचे?"
 
-#: ../src/virt-viewer-app.c:573
+#: ../src/virt-viewer-app.c:613
 #, c-format
 msgid "Waiting for display %d..."
-msgstr ""
+msgstr "डिस्पले %d करीता प्रतिक्षा करत आहे..."
 
-#: ../src/virt-viewer-app.c:655
+#: ../src/virt-viewer-app.c:695
 #, c-format
 msgid "Unknown graphic type for the guest %s"
-msgstr ""
+msgstr "अतिथी %s करीता अपरिचीत ग्राफिक प्रकार"
 
-#: ../src/virt-viewer-app.c:730
+#: ../src/virt-viewer-app.c:770
 msgid "Connect to ssh failed."
-msgstr ""
+msgstr "ssh सह जोडणी अपयशी."
 
-#: ../src/virt-viewer-app.c:732
+#: ../src/virt-viewer-app.c:772
 msgid "Can't connect to channel, SSH only supported."
-msgstr ""
+msgstr "वाहिनीसह जोडणी करणे अशक्य, SSH फक्त याकरीता समर्थन पुरवतो."
 
-#: ../src/virt-viewer-app.c:744
+#: ../src/virt-viewer-app.c:784
 msgid "Connect to channel unsupported."
-msgstr ""
+msgstr "वाहिनीसह जोडणी असमर्थीत आहे."
 
-#: ../src/virt-viewer-app.c:824
+#: ../src/virt-viewer-app.c:864
 msgid "Connecting to graphic server"
-msgstr ""
+msgstr "ग्राफिक सर्व्हरसह जोडणी करत आहे"
 
-#: ../src/virt-viewer-app.c:954
+#: ../src/virt-viewer-app.c:994
 msgid "Guest domain has shutdown"
-msgstr ""
+msgstr "अतिथी डोमैन बंद झाले"
 
-#: ../src/virt-viewer-app.c:1004
+#: ../src/virt-viewer-app.c:1044
 msgid "Connected to graphic server"
-msgstr ""
+msgstr "ग्राफिक सर्व्हरसह जोडणी केली"
 
-#: ../src/virt-viewer-app.c:1027
+#: ../src/virt-viewer-app.c:1070
 #, c-format
 msgid "Unable to connect to the graphic server %s"
-msgstr ""
+msgstr "ग्राफिक सर्व्हर %s सह जोडणी अशक्य"
 
-#: ../src/virt-viewer-app.c:1056
+#: ../src/virt-viewer-app.c:1099
 #, c-format
 msgid ""
 "Unable to authenticate with remote desktop server at %s: %s\n"
 "Retry connection again?"
-msgstr ""
+msgstr "%s: %s येथे रिमोट डेस्कटॉप सर्व्हरसह ओळख पटवणे अशक्य\nजोडणीकरीता पुन्हा प्रयत्न करायचे?"
 
-#: ../src/virt-viewer-app.c:1076
+#: ../src/virt-viewer-app.c:1119
 #, c-format
 msgid "Unable to authenticate with remote desktop server: %s"
-msgstr ""
+msgstr "रिमोट डेस्कटॉप सर्व्हरसह ओळख पटवणे अशक्य: %s"
 
-#: ../src/virt-viewer-app.c:1084
+#: ../src/virt-viewer-app.c:1127
 #, c-format
 msgid "USB redirection error: %s"
-msgstr ""
+msgstr "USB पुनःनिर्देशन त्रुटी: %s"
 
 #. * Local variables:
 #. *  c-indent-level: 4
@@ -218,19 +258,19 @@ msgstr ""
 #. 
 #: ../src/virt-viewer-auth.xml.h:1
 msgid "Authentication required"
-msgstr ""
+msgstr "ओळख पटवणे आवश्यक"
 
 #: ../src/virt-viewer-auth.xml.h:2
 msgid "Password:"
-msgstr ""
+msgstr "पासवर्ड:"
 
 #: ../src/virt-viewer-auth.xml.h:3
 msgid "Username:"
-msgstr ""
+msgstr "वापरकर्तानाव:"
 
 #: ../src/virt-viewer-auth.xml.h:4
 msgid "label"
-msgstr ""
+msgstr "लेबल"
 
 #: ../src/virt-viewer-main.c:38
 #, c-format
@@ -239,23 +279,23 @@ msgstr "%s आवृत्ती %s\n"
 
 #: ../src/virt-viewer-main.c:69
 msgid "Attach to the local display using libvirt"
-msgstr ""
+msgstr "libvirt चा वापर करून स्थानीय डिस्पलेसह जोडणी करा"
 
 #: ../src/virt-viewer-main.c:71
 msgid "Connect to hypervisor"
-msgstr ""
+msgstr "हायपरवाइजरसह जोडणी करा"
 
 #: ../src/virt-viewer-main.c:73
 msgid "Wait for domain to start"
-msgstr ""
+msgstr "डोमैन सुरू होण्याकरीता वाट पहा"
 
 #: ../src/virt-viewer-main.c:75
 msgid "Reconnect to domain upon restart"
-msgstr ""
+msgstr "पुनःसुरू केल्यानंतर डोमैनसह पुनःजोडणी करा"
 
 #: ../src/virt-viewer-main.c:92
 msgid "Virt Viewer"
-msgstr ""
+msgstr "वर्ट व्युअर"
 
 #. Setup command line options
 #: ../src/virt-viewer-main.c:95
@@ -272,26 +312,32 @@ msgid ""
 "\n"
 msgstr "\nवापर: %s [OPTIONS] DOMAIN-NAME|ID|UUID\n\n%s\n\n"
 
-#: ../src/virt-viewer-session-spice.c:347
+#. Create the widgets
+#: ../src/virt-viewer-session-spice.c:370
 msgid "Select USB devices for redirection"
-msgstr ""
+msgstr "रिडायरेक्शनकरीता USB साधने पसंत करा"
 
 #: ../src/virt-viewer-session-vnc.c:140
 #, c-format
 msgid "Unsupported authentication type %d"
-msgstr ""
+msgstr "असमर्थीत ओळखपटवणे प्रकार %d"
 
-#: ../src/virt-viewer-window.c:774
+#: ../src/virt-viewer-window.c:804
 msgid "Disconnect"
-msgstr ""
+msgstr "जोडणी खंडीत करा"
 
-#: ../src/virt-viewer-window.c:781 ../src/virt-viewer-window.c:782
+#: ../src/virt-viewer-window.c:811 ../src/virt-viewer-window.c:812
+#: ../src/virt-viewer.xml.h:22
+msgid "USB device selection"
+msgstr "USB साधनची निवड"
+
+#: ../src/virt-viewer-window.c:819 ../src/virt-viewer-window.c:820
 msgid "Leave fullscreen"
-msgstr ""
+msgstr "पडदाभर सोडा"
 
-#: ../src/virt-viewer-window.c:854
+#: ../src/virt-viewer-window.c:892
 msgid "(Press Ctrl+Alt to release pointer)"
-msgstr ""
+msgstr "(पॉइंटर सोडण्याकरीता Ctrl+Alt दाबा)"
 
 #. translators:
 #. * This is "<ungrab (or empty)><space (or empty)><subtitle (or empty)> -
@@ -299,42 +345,42 @@ msgstr ""
 #. * Such as: "(Press Ctrl+Alt to release pointer) BigCorpTycoon MOTD - Virt
 #. Viewer"
 #. 
-#: ../src/virt-viewer-window.c:863
+#: ../src/virt-viewer-window.c:901
 #, c-format
 msgid "%s%s%s - %s"
-msgstr ""
+msgstr "%s%s%s - %s"
 
 #. translators: <space>
-#: ../src/virt-viewer-window.c:867
+#: ../src/virt-viewer-window.c:905
 msgid " "
-msgstr ""
+msgstr " "
 
 #: ../src/virt-viewer.c:144
 msgid "Waiting for guest domain to re-start"
-msgstr ""
+msgstr "अतिथी डोमैनला पुनःसुरू करण्यासाठी वाट पहात आहे"
 
 #: ../src/virt-viewer.c:308
 #, c-format
 msgid "Cannot determine the graphic type for the guest %s"
-msgstr ""
+msgstr "अतिथी %s करीता ग्राफिक प्रकार ओळखणे अशक्य"
 
 #: ../src/virt-viewer.c:321
 #, c-format
 msgid "Cannot determine the graphic address for the guest %s"
-msgstr ""
+msgstr "अतिथी %s करीता ग्राफिक ॲड्रेस ओळखणे अशक्य"
 
 #: ../src/virt-viewer.c:344
 #, c-format
 msgid "Cannot determine the host for the guest %s"
-msgstr ""
+msgstr "अतिथी %s करीता यजमान ओळखणे अशक्य"
 
 #: ../src/virt-viewer.c:474
 msgid "Finding guest domain"
-msgstr ""
+msgstr "अतिथी डोमैन शोधत आहे"
 
 #: ../src/virt-viewer.c:478
 msgid "Waiting for guest domain to be created"
-msgstr ""
+msgstr "अतिथी डोमैन निर्माण करण्यास वाट पहात आहे"
 
 #: ../src/virt-viewer.c:483
 #, c-format
@@ -343,15 +389,15 @@ msgstr "अतिथी क्षेत्र %s शोधणे अशक्य
 
 #: ../src/virt-viewer.c:490
 msgid "Checking guest domain status"
-msgstr ""
+msgstr "अतिथी डोमैन स्थिती तपासत आहे"
 
 #: ../src/virt-viewer.c:497
 msgid "Waiting for guest domain to start"
-msgstr ""
+msgstr "अतिथी डोमैनला पुनःसुरू करण्यास वाट पहात आहे"
 
 #: ../src/virt-viewer.c:504
 msgid "Waiting for guest domain to start server"
-msgstr ""
+msgstr "अतिथी डोमैनला पुनःसुरू करण्यास वाट पहात आहे"
 
 #: ../src/virt-viewer.c:624
 #, c-format
@@ -370,100 +416,108 @@ msgstr "[काहिच नाही]"
 #. 
 #: ../src/virt-viewer.xml.h:1
 msgid "Automatically resize"
-msgstr ""
+msgstr "स्वयं पुनःआकार द्या"
 
 #: ../src/virt-viewer.xml.h:2
 msgid "Ctrl+Alt+F11"
-msgstr ""
+msgstr "Ctrl+Alt+F11"
 
 #: ../src/virt-viewer.xml.h:3
 msgid "Ctrl+Alt+F12"
-msgstr ""
+msgstr "Ctrl+Alt+F12"
 
 #: ../src/virt-viewer.xml.h:4
 msgid "Ctrl+Alt+F1_0"
-msgstr ""
+msgstr "Ctrl+Alt+F10 (_0)"
 
 #: ../src/virt-viewer.xml.h:5
 msgid "Ctrl+Alt+F_1"
-msgstr ""
+msgstr "Ctrl+Alt+F1 (_1)"
 
 #: ../src/virt-viewer.xml.h:6
 msgid "Ctrl+Alt+F_2"
-msgstr ""
+msgstr "Ctrl+Alt+F2 (_2)"
 
 #: ../src/virt-viewer.xml.h:7
 msgid "Ctrl+Alt+F_3"
-msgstr ""
+msgstr "Ctrl+Alt+F3 (_3)"
 
 #: ../src/virt-viewer.xml.h:8
 msgid "Ctrl+Alt+F_4"
-msgstr ""
+msgstr "Ctrl+Alt+F4 (_4)"
 
 #: ../src/virt-viewer.xml.h:9
 msgid "Ctrl+Alt+F_5"
-msgstr ""
+msgstr "Ctrl+Alt+F5 (_5)"
 
 #: ../src/virt-viewer.xml.h:10
 msgid "Ctrl+Alt+F_6"
-msgstr ""
+msgstr "Ctrl+Alt+F6 (_6)"
 
 #: ../src/virt-viewer.xml.h:11
 msgid "Ctrl+Alt+F_7"
-msgstr ""
+msgstr "Ctrl+Alt+F7 (_7)"
 
 #: ../src/virt-viewer.xml.h:12
 msgid "Ctrl+Alt+F_8"
-msgstr ""
+msgstr "Ctrl+Alt+F8 (_8)"
 
 #: ../src/virt-viewer.xml.h:13
 msgid "Ctrl+Alt+F_9"
-msgstr ""
+msgstr "Ctrl+Alt+F9 (_9)"
 
 #: ../src/virt-viewer.xml.h:14
 msgid "Ctrl+Alt+_Backspace"
-msgstr ""
+msgstr "Ctrl+Alt+Backspace (_B)"
 
 #: ../src/virt-viewer.xml.h:15
 msgid "Ctrl+Alt+_Del"
-msgstr ""
+msgstr "Ctrl+Alt+Del (_D)"
 
 #: ../src/virt-viewer.xml.h:16
 msgid "Displays"
-msgstr ""
+msgstr "डिस्प्लेज्"
 
 #: ../src/virt-viewer.xml.h:17
 msgid "Full screen"
-msgstr ""
+msgstr "पडदाभर"
 
 #: ../src/virt-viewer.xml.h:18
-msgid "Screenshot"
-msgstr ""
+msgid "Release cursor"
+msgstr "रिलिज् कर्सर"
 
 #: ../src/virt-viewer.xml.h:19
-msgid "USB device selection"
-msgstr ""
+msgid "Screenshot"
+msgstr "स्क्रीनशॉट"
 
 #: ../src/virt-viewer.xml.h:20
-msgid "_File"
-msgstr ""
+msgid "Smartcard insertion"
+msgstr "स्मार्टकार्ड अंतर्भुत करणे"
 
 #: ../src/virt-viewer.xml.h:21
-msgid "_Help"
-msgstr ""
-
-#: ../src/virt-viewer.xml.h:22
-msgid "_PrintScreen"
-msgstr ""
+msgid "Smartcard removal"
+msgstr "स्मार्टकार्ड काढून टाकणे"
 
 #: ../src/virt-viewer.xml.h:23
-msgid "_Send key"
-msgstr ""
+msgid "_File"
+msgstr "फाइल (_F)"
 
 #: ../src/virt-viewer.xml.h:24
-msgid "_View"
-msgstr ""
+msgid "_Help"
+msgstr "मदत (_H)"
 
 #: ../src/virt-viewer.xml.h:25
+msgid "_PrintScreen"
+msgstr "प्रिंटस्क्रिन (_P)"
+
+#: ../src/virt-viewer.xml.h:26
+msgid "_Send key"
+msgstr "सेंड कि (_S)"
+
+#: ../src/virt-viewer.xml.h:27
+msgid "_View"
+msgstr "अवलोकन (_V)"
+
+#: ../src/virt-viewer.xml.h:28
 msgid "_Zoom"
-msgstr ""
+msgstr "झूम करा (_Z)"

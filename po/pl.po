@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: virt-viewer\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-02-14 17:56+0000\n"
-"PO-Revision-Date: 2012-02-14 18:17+0000\n"
+"POT-Creation-Date: 2012-03-07 10:17+0000\n"
+"PO-Revision-Date: 2012-03-06 22:45+0000\n"
 "Last-Translator: Piotr Drąg <piotrdrag@gmail.com>\n"
 "Language-Team: Polish (http://www.transifex.net/projects/p/fedora/language/pl/)\n"
 "MIME-Version: 1.0\n"
@@ -17,6 +17,46 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Language: pl\n"
 "Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2)\n"
+
+#: ../src/gbinding.c:637
+msgid "Source"
+msgstr "Źródło"
+
+#: ../src/gbinding.c:638
+msgid "The source of the binding"
+msgstr "Źródło dowiązania"
+
+#: ../src/gbinding.c:652
+msgid "Target"
+msgstr "Cel"
+
+#: ../src/gbinding.c:653
+msgid "The target of the binding"
+msgstr "Cel dowiązania"
+
+#: ../src/gbinding.c:668
+msgid "Source Property"
+msgstr "Właściwość źródła"
+
+#: ../src/gbinding.c:669
+msgid "The property on the source to bind"
+msgstr "Właściwość źródła do dowiązania"
+
+#: ../src/gbinding.c:684
+msgid "Target Property"
+msgstr "Właściwość celu"
+
+#: ../src/gbinding.c:685
+msgid "The property on the target to bind"
+msgstr "Właściwość celu do dowiązania"
+
+#: ../src/gbinding.c:699
+msgid "Flags"
+msgstr "Flagi"
+
+#: ../src/gbinding.c:700
+msgid "The binding flags"
+msgstr "Flagi dowiązania"
 
 #: ../src/remote-viewer-main.c:42
 #, c-format
@@ -75,32 +115,32 @@ msgstr "\nUżycie: %s [OPCJE] URI\n\n%s\n\n"
 msgid "Zoom level must be within 10-200\n"
 msgstr "Poziom powiększenia musi być w zakresie 10-200\n"
 
-#: ../src/remote-viewer.c:185 ../src/remote-viewer.c:482
+#: ../src/remote-viewer.c:210 ../src/remote-viewer.c:742
 msgid "Failed to initiate connection"
 msgstr "Zainicjowanie połączenia się nie powiodło"
 
-#: ../src/remote-viewer.c:198
+#: ../src/remote-viewer.c:223
 msgid "Display disabled by controller"
 msgstr "Ekran został wyłączony przez kontroler"
 
-#: ../src/remote-viewer.c:398
+#: ../src/remote-viewer.c:654
 #, c-format
 msgid "Controller connection failed: %s"
 msgstr "Połączenie kontrolera się nie powiodło: %s"
 
-#: ../src/remote-viewer.c:452
+#: ../src/remote-viewer.c:708
 msgid "Couldn't create a Spice session"
 msgstr "Nie można utworzyć sesji Spice"
 
-#: ../src/remote-viewer.c:462
+#: ../src/remote-viewer.c:722
 msgid "Setting up Spice session..."
 msgstr "Ustawianie sesji Spice..."
 
-#: ../src/remote-viewer.c:472
+#: ../src/remote-viewer.c:732
 msgid "Cannot determine the connection type from URI"
 msgstr "Nie można ustalić typu połączenia z adresu URI"
 
-#: ../src/remote-viewer.c:477
+#: ../src/remote-viewer.c:737
 #, c-format
 msgid "Couldn't create a session for this type: %s"
 msgstr "Nie można utworzyć sesji dla tego typu: %s"
@@ -150,62 +190,62 @@ msgstr "Niniejszy program jest wolnym oprogramowaniem; można go rozprowadzać d
 msgid "virt-manager.org"
 msgstr "virt-manager.org"
 
-#: ../src/virt-viewer-app.c:259
+#: ../src/virt-viewer-app.c:272
 msgid "This is the last visible display. Do you want to quit?"
 msgstr "To jest ostatni widoczny ekran. Zakończyć?"
 
-#: ../src/virt-viewer-app.c:573
+#: ../src/virt-viewer-app.c:613
 #, c-format
 msgid "Waiting for display %d..."
 msgstr "Oczekiwanie na ekran %d..."
 
-#: ../src/virt-viewer-app.c:655
+#: ../src/virt-viewer-app.c:695
 #, c-format
 msgid "Unknown graphic type for the guest %s"
 msgstr "Nieznany typ grafiki dla gościa %s"
 
-#: ../src/virt-viewer-app.c:730
+#: ../src/virt-viewer-app.c:770
 msgid "Connect to ssh failed."
 msgstr "Połączenie z ssh się nie powiodło."
 
-#: ../src/virt-viewer-app.c:732
+#: ../src/virt-viewer-app.c:772
 msgid "Can't connect to channel, SSH only supported."
 msgstr "Nie można połączyć się z kanałem, obsługiwane jest tylko SSH."
 
-#: ../src/virt-viewer-app.c:744
+#: ../src/virt-viewer-app.c:784
 msgid "Connect to channel unsupported."
 msgstr "Łączenie z kanałem jest nieobsługiwane."
 
-#: ../src/virt-viewer-app.c:824
+#: ../src/virt-viewer-app.c:864
 msgid "Connecting to graphic server"
 msgstr "Łączenie z serwerem grafiki"
 
-#: ../src/virt-viewer-app.c:954
+#: ../src/virt-viewer-app.c:994
 msgid "Guest domain has shutdown"
 msgstr "Domena gościa została wyłączona"
 
-#: ../src/virt-viewer-app.c:1004
+#: ../src/virt-viewer-app.c:1044
 msgid "Connected to graphic server"
 msgstr "Połączono z serwerem grafiki"
 
-#: ../src/virt-viewer-app.c:1027
+#: ../src/virt-viewer-app.c:1070
 #, c-format
 msgid "Unable to connect to the graphic server %s"
 msgstr "Nie można połączyć się z serwerem grafiki %s"
 
-#: ../src/virt-viewer-app.c:1056
+#: ../src/virt-viewer-app.c:1099
 #, c-format
 msgid ""
 "Unable to authenticate with remote desktop server at %s: %s\n"
 "Retry connection again?"
 msgstr "Nie można uwierzytelnić z serwerem zdalnego pulpitu w %s: %s\nPonowić połączenie?"
 
-#: ../src/virt-viewer-app.c:1076
+#: ../src/virt-viewer-app.c:1119
 #, c-format
 msgid "Unable to authenticate with remote desktop server: %s"
 msgstr "Nie można uwierzytelnić z serwerem zdalnego pulpitu: %s"
 
-#: ../src/virt-viewer-app.c:1084
+#: ../src/virt-viewer-app.c:1127
 #, c-format
 msgid "USB redirection error: %s"
 msgstr "Błąd przekierowania USB: %s"
@@ -272,7 +312,8 @@ msgid ""
 "\n"
 msgstr "\nUżycie: %s [OPCJE] NAZWA-DOMENY|IDENTYFIKATOR|UUID\n\n%s\n\n"
 
-#: ../src/virt-viewer-session-spice.c:347
+#. Create the widgets
+#: ../src/virt-viewer-session-spice.c:370
 msgid "Select USB devices for redirection"
 msgstr "Wybór urządzeń USB do przekierowania"
 
@@ -281,15 +322,20 @@ msgstr "Wybór urządzeń USB do przekierowania"
 msgid "Unsupported authentication type %d"
 msgstr "Nieobsługiwany typ uwierzytelnienia %d"
 
-#: ../src/virt-viewer-window.c:774
+#: ../src/virt-viewer-window.c:804
 msgid "Disconnect"
 msgstr "Rozłącza"
 
-#: ../src/virt-viewer-window.c:781 ../src/virt-viewer-window.c:782
+#: ../src/virt-viewer-window.c:811 ../src/virt-viewer-window.c:812
+#: ../src/virt-viewer.xml.h:22
+msgid "USB device selection"
+msgstr "Wybór urządzenia USB"
+
+#: ../src/virt-viewer-window.c:819 ../src/virt-viewer-window.c:820
 msgid "Leave fullscreen"
 msgstr "Opuszcza pełny ekran"
 
-#: ../src/virt-viewer-window.c:854
+#: ../src/virt-viewer-window.c:892
 msgid "(Press Ctrl+Alt to release pointer)"
 msgstr "(Naciśnięcie klawiszy Ctrl+Alt uwalnia wskaźnik)"
 
@@ -299,13 +345,13 @@ msgstr "(Naciśnięcie klawiszy Ctrl+Alt uwalnia wskaźnik)"
 #. * Such as: "(Press Ctrl+Alt to release pointer) BigCorpTycoon MOTD - Virt
 #. Viewer"
 #. 
-#: ../src/virt-viewer-window.c:863
+#: ../src/virt-viewer-window.c:901
 #, c-format
 msgid "%s%s%s - %s"
 msgstr "%s%s%s - %s"
 
 #. translators: <space>
-#: ../src/virt-viewer-window.c:867
+#: ../src/virt-viewer-window.c:905
 msgid " "
 msgstr " "
 
@@ -437,33 +483,41 @@ msgid "Full screen"
 msgstr "Pełny ekran"
 
 #: ../src/virt-viewer.xml.h:18
+msgid "Release cursor"
+msgstr "Zwolnienie kursora"
+
+#: ../src/virt-viewer.xml.h:19
 msgid "Screenshot"
 msgstr "Zrzut ekranu"
 
-#: ../src/virt-viewer.xml.h:19
-msgid "USB device selection"
-msgstr "Wybór urządzenia USB"
-
 #: ../src/virt-viewer.xml.h:20
+msgid "Smartcard insertion"
+msgstr "Włożenie karty smart card"
+
+#: ../src/virt-viewer.xml.h:21
+msgid "Smartcard removal"
+msgstr "Usunięcie karty smart card"
+
+#: ../src/virt-viewer.xml.h:23
 msgid "_File"
 msgstr "_Plik"
 
-#: ../src/virt-viewer.xml.h:21
+#: ../src/virt-viewer.xml.h:24
 msgid "_Help"
 msgstr "Pomo_c"
 
-#: ../src/virt-viewer.xml.h:22
+#: ../src/virt-viewer.xml.h:25
 msgid "_PrintScreen"
 msgstr "Z_rzut ekranu"
 
-#: ../src/virt-viewer.xml.h:23
+#: ../src/virt-viewer.xml.h:26
 msgid "_Send key"
 msgstr "Wyślij klawi_sz"
 
-#: ../src/virt-viewer.xml.h:24
+#: ../src/virt-viewer.xml.h:27
 msgid "_View"
 msgstr "_Widok"
 
-#: ../src/virt-viewer.xml.h:25
+#: ../src/virt-viewer.xml.h:28
 msgid "_Zoom"
 msgstr "P_owiększenie"

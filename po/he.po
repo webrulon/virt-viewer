@@ -3,8 +3,6 @@
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
-# Boris BARNIER <b.barnier@gmail.com>, 2010.
-# Sam Friedmann <sam.friedmann@redhat.com>, 2010.
 msgid ""
 msgstr ""
 "Project-Id-Version: virt-viewer\n"
@@ -12,12 +10,12 @@ msgstr ""
 "POT-Creation-Date: 2012-03-07 10:17+0000\n"
 "PO-Revision-Date: 2012-02-28 16:07+0000\n"
 "Last-Translator: Daniel Berrange <dan-transifex@berrange.com>\n"
-"Language-Team: French <trans-fr@lists.fedoraproject.org>\n"
+"Language-Team: Hebrew <he-users@lists.fedoraproject.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: fr\n"
-"Plural-Forms: nplurals=2; plural=(n > 1)\n"
+"Language: he\n"
+"Plural-Forms: nplurals=2; plural=(n != 1)\n"
 
 #: ../src/gbinding.c:637
 msgid "Source"
@@ -66,7 +64,7 @@ msgstr ""
 
 #: ../src/remote-viewer-main.c:63 ../src/virt-viewer-main.c:60
 msgid "Run '"
-msgstr "Exécuter '"
+msgstr ""
 
 #: ../src/remote-viewer-main.c:66 ../src/virt-viewer-main.c:63
 msgid "Display version information"
@@ -82,7 +80,7 @@ msgstr ""
 
 #: ../src/remote-viewer-main.c:72 ../src/virt-viewer-main.c:77
 msgid "Zoom level of window, in percentage"
-msgstr "Niveau de zoom de la fenêtre, en pourcentage"
+msgstr ""
 
 #: ../src/remote-viewer-main.c:74 ../src/virt-viewer-main.c:79
 msgid "Display debugging information"
@@ -276,7 +274,7 @@ msgstr ""
 #: ../src/virt-viewer-main.c:38
 #, c-format
 msgid "%s version %s\n"
-msgstr "%s version %s\n"
+msgstr ""
 
 #: ../src/virt-viewer-main.c:69
 msgid "Attach to the local display using libvirt"
@@ -301,7 +299,7 @@ msgstr ""
 #. Setup command line options
 #: ../src/virt-viewer-main.c:95
 msgid "- Virtual machine graphical console"
-msgstr "- Console graphique de la machine virtuelle"
+msgstr ""
 
 #: ../src/virt-viewer-main.c:116
 #, c-format
@@ -311,7 +309,7 @@ msgid ""
 "\n"
 "%s\n"
 "\n"
-msgstr "\nUsage : %s [OPTIONS] DOMAIN-NAME|ID|UUID\n\n%s\n\n"
+msgstr ""
 
 #. Create the widgets
 #: ../src/virt-viewer-session-spice.c:370
@@ -386,7 +384,7 @@ msgstr ""
 #: ../src/virt-viewer.c:483
 #, c-format
 msgid "Cannot find guest domain %s"
-msgstr "Impossible de trouver le domaine invité %s"
+msgstr ""
 
 #: ../src/virt-viewer.c:490
 msgid "Checking guest domain status"
@@ -403,11 +401,11 @@ msgstr ""
 #: ../src/virt-viewer.c:624
 #, c-format
 msgid "Unable to connect to libvirt with URI %s"
-msgstr "Impossible de se connecter à libvirt avec URI %s"
+msgstr ""
 
 #: ../src/virt-viewer.c:625
 msgid "[none]"
-msgstr "[aucun]"
+msgstr ""
 
 #. * Local variables:
 #. *  c-indent-level: 4

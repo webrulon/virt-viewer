@@ -1,9 +1,12 @@
  Virt Viewer Authors
  ===================
 
-The Virt Viewer application is written by
+The Virt Viewer application is maintained by
 
-    Daniel P. Berrange <berrange@redhat.com>
+    Daniel P. Berrange <berrange@redhat.com> (Original author)
+    Christophe Fergeau <cfergeau@redhat.com>
+    Marc-André Lureau <marcandre.lureau@redhat.com>
+    Hans de Goede <hdegoede@redhat.com>
 
 With additional patches from:
 
@@ -14,7 +17,6 @@ With additional patches from:
     Hans de Goede <hdegoede@redhat.com>
     Hiroyuki Kaguchi <fj7025cf@aa.jp.fujitsu.com>
     Jiri Denemark <Jiri.Denemark@gmail.com>
-    Marc-André Lureau <marcandre.lureau@redhat.com>
     Pavel Raiskup <praiskup@redhat.com>
     Richard W.M. Jones <rjones@redhat.com>
     Ronnie Sahlberg <ronniesahlberg@gmail.com>
@@ -62,5 +64,9 @@ Translations have been provided by
     <ypoyarko@fedoraproject.org>
     <yurchor@fedoraproject.org>
     <zoltanh721@fedoraproject.org>
+    ...and more...
+
+For full translation credits see the header of the individual
+files in the po/ directory.
 
 -- End

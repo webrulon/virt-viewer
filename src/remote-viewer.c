@@ -641,16 +641,19 @@ spice_ctrl_listen_async_cb(GObject *object,
                            gpointer user_data)
 {
     GError *error = NULL;
+    VirtViewerApp *app = VIRT_VIEWER_APP(user_data);
 
     if (SPICE_CTRL_IS_CONTROLLER(object))
         spice_ctrl_controller_listen_finish(SPICE_CTRL_CONTROLLER(object), res, &error);
-    else if (SPICE_CTRL_IS_FOREIGN_MENU(object))
+    else if (SPICE_CTRL_IS_FOREIGN_MENU(object)) {
         spice_ctrl_foreign_menu_listen_finish(SPICE_CTRL_FOREIGN_MENU(object), res, &error);
-    else
+        if (!error)
+            g_object_notify(G_OBJECT(app), "has-focus");
+    } else
         g_warn_if_reached();
 
     if (error != NULL) {
-        virt_viewer_app_simple_message_dialog(VIRT_VIEWER_APP(user_data),
+        virt_viewer_app_simple_message_dialog(app,
                                               _("Controller connection failed: %s"),
                                               error->message);
         g_clear_error(&error);
@@ -701,7 +704,6 @@ remote_viewer_start(VirtViewerApp *app)
 
 #if HAVE_SPICE_GTK
     g_signal_connect(app, "notify", G_CALLBACK(app_notified), self);
-    g_object_notify(G_OBJECT(app), "has-focus");
 
     if (priv->controller) {
         if (virt_viewer_app_create_session(app, "spice") < 0) {

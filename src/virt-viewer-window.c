@@ -63,6 +63,7 @@ static void virt_viewer_window_enable_modifiers(VirtViewerWindow *self);
 static void virt_viewer_window_disable_modifiers(VirtViewerWindow *self);
 static void virt_viewer_window_resize(VirtViewerWindow *self);
 static void virt_viewer_window_toolbar_setup(VirtViewerWindow *self);
+static GtkMenu* virt_viewer_window_get_keycombo_menu(VirtViewerWindow *self);
 
 G_DEFINE_TYPE (VirtViewerWindow, virt_viewer_window, G_TYPE_OBJECT)
 
@@ -95,6 +96,7 @@ struct _VirtViewerWindowPrivate {
     GtkWidget *layout;
     GtkWidget *toolbar;
     GtkWidget *toolbar_usb_device_selection;
+    GtkWidget *toolbar_send_key;
     GtkAccelGroup *accel_group;
     VirtViewerNotebook *notebook;
     VirtViewerDisplay *display;
@@ -541,7 +543,7 @@ static const struct keyComboDef keyCombos[] = {
 };
 
 G_MODULE_EXPORT void
-virt_viewer_window_menu_send(GtkWidget *menu G_GNUC_UNUSED,
+virt_viewer_window_menu_send(GtkWidget *menu,
                              VirtViewerWindow *self)
 {
     int i;
@@ -559,6 +561,27 @@ virt_viewer_window_menu_send(GtkWidget *menu G_GNUC_UNUSED,
         }
     }
     DEBUG_LOG("Failed to find key combo %s", gtk_label_get_text(GTK_LABEL(label)));
+}
+
+static GtkMenu*
+virt_viewer_window_get_keycombo_menu(VirtViewerWindow *self)
+{
+    gint i;
+    GtkMenu *menu = GTK_MENU(gtk_menu_new());
+
+    for (i = 0 ; i < G_N_ELEMENTS(keyCombos) ; i++) {
+        GtkWidget *item;
+        if (keyCombos[i].nkeys == 0) {
+            item = gtk_separator_menu_item_new ();
+        } else {
+            item = gtk_menu_item_new_with_mnemonic(keyCombos[i].label);
+            g_signal_connect(item, "activate", G_CALLBACK(virt_viewer_window_menu_send), self);
+        }
+        gtk_container_add(GTK_CONTAINER(menu), item);
+    }
+
+    gtk_widget_show_all(GTK_WIDGET(menu));
+    return g_object_ref_sink(menu);
 }
 
 static gboolean
@@ -665,6 +688,30 @@ virt_viewer_window_toolbar_leave_fullscreen(GtkWidget *button G_GNUC_UNUSED,
                                             VirtViewerWindow *self)
 {
     g_object_set(self->priv->app, "fullscreen", FALSE, NULL);
+}
+
+static void keycombo_menu_location(GtkMenu *menu G_GNUC_UNUSED, gint *x, gint *y,
+                                   gboolean *push_in, gpointer user_data)
+{
+    VirtViewerWindow *self = user_data;
+    GtkAllocation allocation;
+
+    *push_in = TRUE;
+    gdk_window_get_origin(gtk_widget_get_window(self->priv->toolbar_send_key), x, y);
+    gtk_widget_translate_coordinates(self->priv->toolbar_send_key, gtk_widget_get_toplevel(self->priv->toolbar_send_key),
+                                     0, 0, x, y);
+    gtk_widget_get_allocation(self->priv->toolbar_send_key, &allocation);
+    *y += allocation.height;
+}
+
+static void
+virt_viewer_window_toolbar_send_key(GtkWidget *button G_GNUC_UNUSED,
+                                    VirtViewerWindow *self)
+{
+    GtkMenu *menu = virt_viewer_window_get_keycombo_menu(self);
+    gtk_menu_popup(menu, NULL, NULL, keycombo_menu_location, self,
+                   0, gtk_get_current_event_time());
+    g_object_unref(menu);
 }
 
 
@@ -812,6 +859,15 @@ virt_viewer_window_toolbar_setup(VirtViewerWindow *self)
     gtk_toolbar_insert(GTK_TOOLBAR(priv->toolbar), GTK_TOOL_ITEM(button), 0);
     g_signal_connect(button, "clicked", G_CALLBACK(virt_viewer_window_menu_file_usb_device_selection), self);
     priv->toolbar_usb_device_selection = button;
+
+    /* Send key */
+    button = GTK_WIDGET(gtk_tool_button_new(NULL, NULL));
+    gtk_tool_button_set_icon_name(GTK_TOOL_BUTTON(button), "preferences-desktop-keyboard-shortcuts");
+    gtk_tool_item_set_tooltip_text(GTK_TOOL_ITEM(button), _("Send key combination"));
+    gtk_widget_show(GTK_WIDGET(button));
+    gtk_toolbar_insert(GTK_TOOLBAR(priv->toolbar), GTK_TOOL_ITEM(button), 0);
+    g_signal_connect(button, "clicked", G_CALLBACK(virt_viewer_window_toolbar_send_key), self);
+    priv->toolbar_send_key = button;
 
     /* Leave fullscreen */
     button = GTK_WIDGET(gtk_tool_button_new_from_stock(GTK_STOCK_LEAVE_FULLSCREEN));

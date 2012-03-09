@@ -52,15 +52,15 @@ virt_viewer_SOURCES =					\
 	virt-viewer.h virt-viewer.c			\
 	virt-viewer-main.c				\
 	$(NULL)
-virt_viewer_LDFLAGS = 				\
-	$(GMODULE2_LIBS)			\
+virt_viewer_LDFLAGS =				\
+	$(GLIB2_LIBS)				\
 	$(GTK_LIBS)				\
 	$(LIBXML2_LIBS)				\
 	$(LIBVIRT_LIBS)				\
 	$(NULL)
 virt_viewer_CFLAGS = 				\
 	-DLOCALE_DIR=\""$(datadir)/locale"\"	\
-	$(GMODULE2_CFLAGS) 			\
+	$(GLIB2_CFLAGS) 			\
 	$(GTK_CFLAGS)				\
 	$(LIBXML2_CFLAGS)			\
 	$(LIBVIRT_CFLAGS)			\
@@ -84,14 +84,14 @@ remote_viewer_SOURCES =				\
 	remote-viewer.h remote-viewer.c		\
 	remote-viewer-main.c			\
 	$(NULL)
-remote_viewer_LDFLAGS = 			\
-	$(GMODULE2_LIBS)			\
+remote_viewer_LDFLAGS =				\
+	$(GLIB2_LIBS)				\
 	$(GTK_LIBS)				\
 	$(LIBXML2_LIBS)				\
 	$(NULL)
 remote_viewer_CFLAGS =				\
 	-DLOCALE_DIR=\""$(datadir)/locale"\"	\
-	$(GMODULE2_CFLAGS) 			\
+	$(GLIB2_CFLAGS) 			\
 	$(GTK_CFLAGS)				\
 	$(LIBXML2_CFLAGS)			\
 	$(WARN_CFLAGS)				\

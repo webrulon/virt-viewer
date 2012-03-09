@@ -13,12 +13,13 @@ AM_SILENT_RULES([yes])
 
 GMODULE2_REQUIRED=2.12.0
 LIBXML2_REQUIRED="2.6.0"
-LIBVIRT_REQUIRED="0.6.0"
+LIBVIRT_REQUIRED="0.9.7"
 GTK2_REQUIRED="2.18.0"
 GTK3_REQUIRED="3.0"
 GTK_VNC1_REQUIRED="0.3.8"
 GTK_VNC2_REQUIRED="0.4.0"
-SPICE_GTK_REQUIRED="0.10.6"
+SPICE_GTK_REQUIRED="0.11"
+SPICE_PROTOCOL_REQUIRED="0.10.1"
 
 AC_PROG_CC
 AM_PROG_CC_C_O
@@ -130,6 +131,7 @@ AS_IF([test "x$with_spice_gtk" != "xno"],
 
 AS_IF([test "x$have_spice_gtk" = "xyes"],
       [PKG_CHECK_MODULES(SPICE_CONTROLLER, [spice-controller])]
+      [PKG_CHECK_MODULES(SPICE_PROTOCOL, [spice-protocol >= $SPICE_PROTOCOL_REQUIRED])]
       [AC_DEFINE([HAVE_SPICE_GTK], 1, [Have spice-gtk?])],
       [AS_IF([test "x$with_spice_gtk" = "xyes"],
              [AC_MSG_ERROR([spice-gtk requested but not found])

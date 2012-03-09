@@ -4,14 +4,15 @@
 # 
 # Translators:
 # Automatically generated, 2010.
+# Eun-Ju Kim <eukim@redhat.com>, 2012.
 # Hyunsok Oh <hoh@redhat.com>, 2010.
 msgid ""
 msgstr ""
 "Project-Id-Version: virt-viewer\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-03-07 10:17+0000\n"
-"PO-Revision-Date: 2012-02-28 16:07+0000\n"
-"Last-Translator: Daniel Berrange <dan-transifex@berrange.com>\n"
+"PO-Revision-Date: 2012-03-08 03:27+0000\n"
+"Last-Translator: eukim <eukim@redhat.com>\n"
 "Language-Team: Korean (http://www.transifex.net/projects/p/fedora/language/ko/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -21,48 +22,48 @@ msgstr ""
 
 #: ../src/gbinding.c:637
 msgid "Source"
-msgstr ""
+msgstr "소스 "
 
 #: ../src/gbinding.c:638
 msgid "The source of the binding"
-msgstr ""
+msgstr "바인딩 소스 "
 
 #: ../src/gbinding.c:652
 msgid "Target"
-msgstr ""
+msgstr "대상 "
 
 #: ../src/gbinding.c:653
 msgid "The target of the binding"
-msgstr ""
+msgstr "바인딩 대상 "
 
 #: ../src/gbinding.c:668
 msgid "Source Property"
-msgstr ""
+msgstr "소스 속성 "
 
 #: ../src/gbinding.c:669
 msgid "The property on the source to bind"
-msgstr ""
+msgstr "바인드할 소스 속성 "
 
 #: ../src/gbinding.c:684
 msgid "Target Property"
-msgstr ""
+msgstr "대상 속성 "
 
 #: ../src/gbinding.c:685
 msgid "The property on the target to bind"
-msgstr ""
+msgstr "바인드할 대상 속성 "
 
 #: ../src/gbinding.c:699
 msgid "Flags"
-msgstr ""
+msgstr "플래그 "
 
 #: ../src/gbinding.c:700
 msgid "The binding flags"
-msgstr ""
+msgstr "바인딩 플래그 "
 
 #: ../src/remote-viewer-main.c:42
 #, c-format
 msgid "remote-viewer version %s\n"
-msgstr ""
+msgstr "remote-viewer 버전 %s\n"
 
 #: ../src/remote-viewer-main.c:63 ../src/virt-viewer-main.c:60
 msgid "Run '"
@@ -70,36 +71,36 @@ msgstr "실행 "
 
 #: ../src/remote-viewer-main.c:66 ../src/virt-viewer-main.c:63
 msgid "Display version information"
-msgstr ""
+msgstr "버전 정보 보기 "
 
 #: ../src/remote-viewer-main.c:68 ../src/virt-viewer-main.c:65
 msgid "Display verbose information"
-msgstr ""
+msgstr "상세 정보 보기 "
 
 #: ../src/remote-viewer-main.c:70 ../src/virt-viewer-main.c:67
 msgid "Direct connection with no automatic tunnels"
-msgstr ""
+msgstr "자동으로 터널링하지 않고 직접 연결 "
 
 #: ../src/remote-viewer-main.c:72 ../src/virt-viewer-main.c:77
 msgid "Zoom level of window, in percentage"
-msgstr ""
+msgstr "윈도우의 줌 레벨 (백분율) "
 
 #: ../src/remote-viewer-main.c:74 ../src/virt-viewer-main.c:79
 msgid "Display debugging information"
-msgstr ""
+msgstr "디버그 정보 보기 "
 
 #: ../src/remote-viewer-main.c:76 ../src/virt-viewer-main.c:81
 msgid "Open in full screen mode"
-msgstr ""
+msgstr "전체 화면 모드로 열기 "
 
 #: ../src/remote-viewer-main.c:79
 msgid "Open connection using Spice controller communication"
-msgstr ""
+msgstr "Spice 컨트롤러 통신을 사용하여 연결을 오픈합니다 "
 
 #. Setup command line options
 #: ../src/remote-viewer-main.c:92
 msgid "- Remote viewer client"
-msgstr ""
+msgstr "- 원격 뷰어 클라이언트 "
 
 #: ../src/remote-viewer-main.c:117
 #, c-format
@@ -109,42 +110,42 @@ msgid ""
 "\n"
 "%s\n"
 "\n"
-msgstr ""
+msgstr "\n사용법: %s [OPTIONS] URI\n\n%s\n\n"
 
 #: ../src/remote-viewer-main.c:122 ../src/virt-viewer-main.c:121
 #, c-format
 msgid "Zoom level must be within 10-200\n"
-msgstr ""
+msgstr "줌 레벨은 10-200 범위 내에 있어야 합니다\n"
 
 #: ../src/remote-viewer.c:210 ../src/remote-viewer.c:742
 msgid "Failed to initiate connection"
-msgstr ""
+msgstr "연결 초기화 실패 "
 
 #: ../src/remote-viewer.c:223
 msgid "Display disabled by controller"
-msgstr ""
+msgstr "컨트롤러에 의해 디스플레이가 비활성화됨 "
 
 #: ../src/remote-viewer.c:654
 #, c-format
 msgid "Controller connection failed: %s"
-msgstr ""
+msgstr "컨트롤러 연결에 실패함: %s"
 
 #: ../src/remote-viewer.c:708
 msgid "Couldn't create a Spice session"
-msgstr ""
+msgstr "Spice 세션을 생성할 수 없음 "
 
 #: ../src/remote-viewer.c:722
 msgid "Setting up Spice session..."
-msgstr ""
+msgstr "Spice 세션 설정 중..."
 
 #: ../src/remote-viewer.c:732
 msgid "Cannot determine the connection type from URI"
-msgstr ""
+msgstr "URI에서 연결 유형을 지정할 수 없음 "
 
 #: ../src/remote-viewer.c:737
 #, c-format
 msgid "Couldn't create a session for this type: %s"
-msgstr ""
+msgstr "이러한 유형의 세션을 생성할 수 없음: %s"
 
 #. * Local variables:
 #. *  c-indent-level: 4
@@ -154,21 +155,21 @@ msgstr ""
 #. 
 #: ../src/virt-viewer-about.xml.h:1
 msgid "A remote desktop client built with GTK-VNC, SPICE-GTK and libvirt"
-msgstr ""
+msgstr "GTK-VNC, SPICE-GTK, libvirt로 빌드된 원격 데스크톱 클라이언트 "
 
 #: ../src/virt-viewer-about.xml.h:2
 msgid "About Glade"
-msgstr ""
+msgstr "Glade에 관하여 "
 
 #: ../src/virt-viewer-about.xml.h:3
 msgid ""
 "Copyright (C) 2007-2012 Daniel P. Berrange\n"
 "Copyright (C) 2007-2012 Red Hat, Inc."
-msgstr ""
+msgstr "Copyright (C) 2007-2012 Daniel P. Berrange\nCopyright (C) 2007-2012 Red Hat, Inc."
 
 #: ../src/virt-viewer-about.xml.h:5
 msgid "The Fedora Translation Team"
-msgstr ""
+msgstr "Fedora 번역팀 "
 
 #: ../src/virt-viewer-about.xml.h:6
 msgid ""
@@ -185,71 +186,71 @@ msgid ""
 "You should have received a copy of the GNU General Public License\n"
 "along with this program; if not, write to the Free Software\n"
 "Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA\n"
-msgstr ""
+msgstr "This program is free software; you can redistribute it and/or modify\nit under the terms of the GNU General Public License as published by\nthe Free Software Foundation; either version 2 of the License, or\n(at your option) any later version.\n\nThis program is distributed in the hope that it will be useful,\nbut WITHOUT ANY WARRANTY; without even the implied warranty of\nMERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\nGNU General Public License for more details.\n\nYou should have received a copy of the GNU General Public License\nalong with this program; if not, write to the Free Software\nFoundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA\n"
 
 #: ../src/virt-viewer-about.xml.h:20
 msgid "virt-manager.org"
-msgstr ""
+msgstr "virt-manager.org"
 
 #: ../src/virt-viewer-app.c:272
 msgid "This is the last visible display. Do you want to quit?"
-msgstr ""
+msgstr "이것이 볼 수 있는 마지막 디스플레이 화면입니다. 정말로 종료하시겠습니까? "
 
 #: ../src/virt-viewer-app.c:613
 #, c-format
 msgid "Waiting for display %d..."
-msgstr ""
+msgstr "디스플레이 %d를 기다리는 중..."
 
 #: ../src/virt-viewer-app.c:695
 #, c-format
 msgid "Unknown graphic type for the guest %s"
-msgstr ""
+msgstr "게스트 %s의 그래픽 유형을 알 수 없습니다 "
 
 #: ../src/virt-viewer-app.c:770
 msgid "Connect to ssh failed."
-msgstr ""
+msgstr "ssh 연결을 실패했습니다. "
 
 #: ../src/virt-viewer-app.c:772
 msgid "Can't connect to channel, SSH only supported."
-msgstr ""
+msgstr "채널에 연결할 수 없습니다, SSH만 지원됩니다. "
 
 #: ../src/virt-viewer-app.c:784
 msgid "Connect to channel unsupported."
-msgstr ""
+msgstr "지원되지 않는 채널에 연결합니다. "
 
 #: ../src/virt-viewer-app.c:864
 msgid "Connecting to graphic server"
-msgstr ""
+msgstr "그래픽 서버에 연결 중 "
 
 #: ../src/virt-viewer-app.c:994
 msgid "Guest domain has shutdown"
-msgstr ""
+msgstr "게스트 도메인이 종료되었습니다 "
 
 #: ../src/virt-viewer-app.c:1044
 msgid "Connected to graphic server"
-msgstr ""
+msgstr "그래픽 서버에 연결 "
 
 #: ../src/virt-viewer-app.c:1070
 #, c-format
 msgid "Unable to connect to the graphic server %s"
-msgstr ""
+msgstr "그래픽 서버 %s에 연결할 수 없음 "
 
 #: ../src/virt-viewer-app.c:1099
 #, c-format
 msgid ""
 "Unable to authenticate with remote desktop server at %s: %s\n"
 "Retry connection again?"
-msgstr ""
+msgstr "%s의 원격 데스크톱 서버에 인증할 수 없습니다: %s\n연결을 다시 시도 하시겠습니까? "
 
 #: ../src/virt-viewer-app.c:1119
 #, c-format
 msgid "Unable to authenticate with remote desktop server: %s"
-msgstr ""
+msgstr "원격 데스크탑 서버로 인증할 수 없음: %s"
 
 #: ../src/virt-viewer-app.c:1127
 #, c-format
 msgid "USB redirection error: %s"
-msgstr ""
+msgstr "USB 리디렉션 오류: %s"
 
 #. * Local variables:
 #. *  c-indent-level: 4
@@ -259,19 +260,19 @@ msgstr ""
 #. 
 #: ../src/virt-viewer-auth.xml.h:1
 msgid "Authentication required"
-msgstr ""
+msgstr "인증이 필요함 "
 
 #: ../src/virt-viewer-auth.xml.h:2
 msgid "Password:"
-msgstr ""
+msgstr "암호: "
 
 #: ../src/virt-viewer-auth.xml.h:3
 msgid "Username:"
-msgstr ""
+msgstr "사용자 이름 "
 
 #: ../src/virt-viewer-auth.xml.h:4
 msgid "label"
-msgstr ""
+msgstr "레이블 "
 
 #: ../src/virt-viewer-main.c:38
 #, c-format
@@ -280,23 +281,23 @@ msgstr "%s 버전 %s\n"
 
 #: ../src/virt-viewer-main.c:69
 msgid "Attach to the local display using libvirt"
-msgstr ""
+msgstr "libvirt를 사용하여 로컬 디스플레이에 연결 "
 
 #: ../src/virt-viewer-main.c:71
 msgid "Connect to hypervisor"
-msgstr ""
+msgstr "하이퍼바이저에 연결 "
 
 #: ../src/virt-viewer-main.c:73
 msgid "Wait for domain to start"
-msgstr ""
+msgstr "도메인 시작을 기다립니다 "
 
 #: ../src/virt-viewer-main.c:75
 msgid "Reconnect to domain upon restart"
-msgstr ""
+msgstr "다시 시작시 도메인에 다시 연결 "
 
 #: ../src/virt-viewer-main.c:92
 msgid "Virt Viewer"
-msgstr ""
+msgstr "가상 머신 뷰어 "
 
 #. Setup command line options
 #: ../src/virt-viewer-main.c:95
@@ -316,29 +317,29 @@ msgstr "\n사용법: %s [OPTIONS] DOMAIN-NAME|ID|UUID\n\n%s\n\n"
 #. Create the widgets
 #: ../src/virt-viewer-session-spice.c:370
 msgid "Select USB devices for redirection"
-msgstr ""
+msgstr "리디렉션을 위한 USB 장치 선택 "
 
 #: ../src/virt-viewer-session-vnc.c:140
 #, c-format
 msgid "Unsupported authentication type %d"
-msgstr ""
+msgstr "지원되지 않는 인증 유형 %d"
 
 #: ../src/virt-viewer-window.c:804
 msgid "Disconnect"
-msgstr ""
+msgstr "연결 해제 "
 
 #: ../src/virt-viewer-window.c:811 ../src/virt-viewer-window.c:812
 #: ../src/virt-viewer.xml.h:22
 msgid "USB device selection"
-msgstr ""
+msgstr "USB 장치 선택 "
 
 #: ../src/virt-viewer-window.c:819 ../src/virt-viewer-window.c:820
 msgid "Leave fullscreen"
-msgstr ""
+msgstr "전체 화면 해제 "
 
 #: ../src/virt-viewer-window.c:892
 msgid "(Press Ctrl+Alt to release pointer)"
-msgstr ""
+msgstr "(포인터를 해제하려면 Ctrl+Alt를 누룹니다) "
 
 #. translators:
 #. * This is "<ungrab (or empty)><space (or empty)><subtitle (or empty)> -
@@ -349,61 +350,61 @@ msgstr ""
 #: ../src/virt-viewer-window.c:901
 #, c-format
 msgid "%s%s%s - %s"
-msgstr ""
+msgstr "%s%s%s - %s"
 
 #. translators: <space>
 #: ../src/virt-viewer-window.c:905
 msgid " "
-msgstr ""
+msgstr " "
 
 #: ../src/virt-viewer.c:144
 msgid "Waiting for guest domain to re-start"
-msgstr ""
+msgstr "다시 시작할 게스트 도메인을 기다리는 중 "
 
 #: ../src/virt-viewer.c:308
 #, c-format
 msgid "Cannot determine the graphic type for the guest %s"
-msgstr ""
+msgstr "게스트 %s의 그래픽 유형을 지정할 수 없음 "
 
 #: ../src/virt-viewer.c:321
 #, c-format
 msgid "Cannot determine the graphic address for the guest %s"
-msgstr ""
+msgstr "게스트 %s의 그래픽 주소를 지정할 수 없음 "
 
 #: ../src/virt-viewer.c:344
 #, c-format
 msgid "Cannot determine the host for the guest %s"
-msgstr ""
+msgstr "게스트 %s의 호스트를 지정할 수 없음 "
 
 #: ../src/virt-viewer.c:474
 msgid "Finding guest domain"
-msgstr ""
+msgstr "게스트 도메인 검색 중 "
 
 #: ../src/virt-viewer.c:478
 msgid "Waiting for guest domain to be created"
-msgstr ""
+msgstr "게스트 도메인이 생성되기를 기다리는 중 "
 
 #: ../src/virt-viewer.c:483
 #, c-format
 msgid "Cannot find guest domain %s"
-msgstr "게스트 도메인 %s를 찾을 수 없습니다"
+msgstr "게스트 도메인 %s를 찾을 수 없음 "
 
 #: ../src/virt-viewer.c:490
 msgid "Checking guest domain status"
-msgstr ""
+msgstr "게스트 도메인 상태 확인 중 "
 
 #: ../src/virt-viewer.c:497
 msgid "Waiting for guest domain to start"
-msgstr ""
+msgstr "시작할 게스트 도메인을 기다리는 중 "
 
 #: ../src/virt-viewer.c:504
 msgid "Waiting for guest domain to start server"
-msgstr ""
+msgstr "서버를 시작할 게스트 도메인을 기다리는 중 "
 
 #: ../src/virt-viewer.c:624
 #, c-format
 msgid "Unable to connect to libvirt with URI %s"
-msgstr "URI %s로 libvirt에 연결할 수 없습니다"
+msgstr "URI %s로 libvirt에 연결할 수 없음 "
 
 #: ../src/virt-viewer.c:625
 msgid "[none]"
@@ -417,108 +418,108 @@ msgstr "[없음]"
 #. 
 #: ../src/virt-viewer.xml.h:1
 msgid "Automatically resize"
-msgstr ""
+msgstr "자동 크기 조정 "
 
 #: ../src/virt-viewer.xml.h:2
 msgid "Ctrl+Alt+F11"
-msgstr ""
+msgstr "Ctrl+Alt+F11"
 
 #: ../src/virt-viewer.xml.h:3
 msgid "Ctrl+Alt+F12"
-msgstr ""
+msgstr "Ctrl+Alt+F12"
 
 #: ../src/virt-viewer.xml.h:4
 msgid "Ctrl+Alt+F1_0"
-msgstr ""
+msgstr "Ctrl+Alt+F1_0"
 
 #: ../src/virt-viewer.xml.h:5
 msgid "Ctrl+Alt+F_1"
-msgstr ""
+msgstr "Ctrl+Alt+F_1"
 
 #: ../src/virt-viewer.xml.h:6
 msgid "Ctrl+Alt+F_2"
-msgstr ""
+msgstr "Ctrl+Alt+F_2"
 
 #: ../src/virt-viewer.xml.h:7
 msgid "Ctrl+Alt+F_3"
-msgstr ""
+msgstr "Ctrl+Alt+F_3"
 
 #: ../src/virt-viewer.xml.h:8
 msgid "Ctrl+Alt+F_4"
-msgstr ""
+msgstr "Ctrl+Alt+F_4"
 
 #: ../src/virt-viewer.xml.h:9
 msgid "Ctrl+Alt+F_5"
-msgstr ""
+msgstr "Ctrl+Alt+F_5"
 
 #: ../src/virt-viewer.xml.h:10
 msgid "Ctrl+Alt+F_6"
-msgstr ""
+msgstr "Ctrl+Alt+F_6"
 
 #: ../src/virt-viewer.xml.h:11
 msgid "Ctrl+Alt+F_7"
-msgstr ""
+msgstr "Ctrl+Alt+F_7"
 
 #: ../src/virt-viewer.xml.h:12
 msgid "Ctrl+Alt+F_8"
-msgstr ""
+msgstr "Ctrl+Alt+F_8"
 
 #: ../src/virt-viewer.xml.h:13
 msgid "Ctrl+Alt+F_9"
-msgstr ""
+msgstr "Ctrl+Alt+F_9"
 
 #: ../src/virt-viewer.xml.h:14
 msgid "Ctrl+Alt+_Backspace"
-msgstr ""
+msgstr "Ctrl+Alt+Backspace(_B)"
 
 #: ../src/virt-viewer.xml.h:15
 msgid "Ctrl+Alt+_Del"
-msgstr ""
+msgstr "Ctrl+Alt+Del(_D) "
 
 #: ../src/virt-viewer.xml.h:16
 msgid "Displays"
-msgstr ""
+msgstr "디스플레이 "
 
 #: ../src/virt-viewer.xml.h:17
 msgid "Full screen"
-msgstr ""
+msgstr "전체 화면 "
 
 #: ../src/virt-viewer.xml.h:18
 msgid "Release cursor"
-msgstr ""
+msgstr "커서 개방 "
 
 #: ../src/virt-viewer.xml.h:19
 msgid "Screenshot"
-msgstr ""
+msgstr "스크린샷 "
 
 #: ../src/virt-viewer.xml.h:20
 msgid "Smartcard insertion"
-msgstr ""
+msgstr "스마트카드 삽입 "
 
 #: ../src/virt-viewer.xml.h:21
 msgid "Smartcard removal"
-msgstr ""
+msgstr "스마트카드 제거 "
 
 #: ../src/virt-viewer.xml.h:23
 msgid "_File"
-msgstr ""
+msgstr "파일(_F)"
 
 #: ../src/virt-viewer.xml.h:24
 msgid "_Help"
-msgstr ""
+msgstr "도움말(_H) "
 
 #: ../src/virt-viewer.xml.h:25
 msgid "_PrintScreen"
-msgstr ""
+msgstr "PrintScreen(_P) "
 
 #: ../src/virt-viewer.xml.h:26
 msgid "_Send key"
-msgstr ""
+msgstr "키 전송(_S)"
 
 #: ../src/virt-viewer.xml.h:27
 msgid "_View"
-msgstr ""
+msgstr "보기(_V)"
 
 #: ../src/virt-viewer.xml.h:28
 msgid "_Zoom"
-msgstr ""
+msgstr "줌(_Z) "

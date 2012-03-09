@@ -4,6 +4,7 @@
 # 
 # Translators:
 # Adolfo Jayme Barrientos <fitoschido@gmail.com>, 2012.
+#   <gguerrer@redhat.com>, 2012.
 # Manuel Eduardo Ospina Sarmiento <mospina@localhost.localdomain>, 2010.
 # Manuel Ospina <mospina@redhat.com>, 2010.
 msgid ""
@@ -11,8 +12,8 @@ msgstr ""
 "Project-Id-Version: virt-viewer\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-03-07 10:17+0000\n"
-"PO-Revision-Date: 2012-02-28 16:07+0000\n"
-"Last-Translator: Daniel Berrange <dan-transifex@berrange.com>\n"
+"PO-Revision-Date: 2012-03-09 04:14+0000\n"
+"Last-Translator: gguerrer <gguerrer@redhat.com>\n"
 "Language-Team: Spanish (Castilian) <trans-es@lists.fedoraproject.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -22,43 +23,43 @@ msgstr ""
 
 #: ../src/gbinding.c:637
 msgid "Source"
-msgstr ""
+msgstr "Fuente"
 
 #: ../src/gbinding.c:638
 msgid "The source of the binding"
-msgstr ""
+msgstr "La fuente de la conexión"
 
 #: ../src/gbinding.c:652
 msgid "Target"
-msgstr ""
+msgstr "Destino"
 
 #: ../src/gbinding.c:653
 msgid "The target of the binding"
-msgstr ""
+msgstr "El destino de la conexión"
 
 #: ../src/gbinding.c:668
 msgid "Source Property"
-msgstr ""
+msgstr "Propiedad de fuente"
 
 #: ../src/gbinding.c:669
 msgid "The property on the source to bind"
-msgstr ""
+msgstr "La propiedad en la fuente que va a conectar"
 
 #: ../src/gbinding.c:684
 msgid "Target Property"
-msgstr ""
+msgstr "Propiedad de destino"
 
 #: ../src/gbinding.c:685
 msgid "The property on the target to bind"
-msgstr ""
+msgstr "La propiedad en la fuente que va a conectar"
 
 #: ../src/gbinding.c:699
 msgid "Flags"
-msgstr ""
+msgstr "Indicadores"
 
 #: ../src/gbinding.c:700
 msgid "The binding flags"
-msgstr ""
+msgstr "Indicadores de conexión"
 
 #: ../src/remote-viewer-main.c:42
 #, c-format
@@ -95,7 +96,7 @@ msgstr "Abrir en modo a pantalla completa"
 
 #: ../src/remote-viewer-main.c:79
 msgid "Open connection using Spice controller communication"
-msgstr ""
+msgstr "Abra la conexión mediante el controlador de comunicación Spice "
 
 #. Setup command line options
 #: ../src/remote-viewer-main.c:92
@@ -115,7 +116,7 @@ msgstr "\nUso: %s [OPCIONES] URI\n\n%s\n\n"
 #: ../src/remote-viewer-main.c:122 ../src/virt-viewer-main.c:121
 #, c-format
 msgid "Zoom level must be within 10-200\n"
-msgstr ""
+msgstr "El nivel de amplificación debe ser de 10-200⏎\n"
 
 #: ../src/remote-viewer.c:210 ../src/remote-viewer.c:742
 msgid "Failed to initiate connection"
@@ -155,7 +156,7 @@ msgstr "No se pudo crear una sesión para este tipo: %s"
 #. 
 #: ../src/virt-viewer-about.xml.h:1
 msgid "A remote desktop client built with GTK-VNC, SPICE-GTK and libvirt"
-msgstr ""
+msgstr "Un cliente de escritorio remoto creado con GTK-VNC, SPICE-GTK y libvirt"
 
 #: ../src/virt-viewer-about.xml.h:2
 msgid "About Glade"
@@ -186,7 +187,7 @@ msgid ""
 "You should have received a copy of the GNU General Public License\n"
 "along with this program; if not, write to the Free Software\n"
 "Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA\n"
-msgstr ""
+msgstr "Este programa es de software libre; puede distribuirlo y modificarlo bajo los términos de la Licencia Pública General de GNU publicada por la Free Software Foundation, ya sea la versiṕn 2 de la licencia o (su opción) una versión posterior.\n\nEste programa se distribuye con la esperanza de que será útil, pero SIN NINGUNA GARANTÍA, incluso sin la garantía implícita de comerciabilidad o IDONEIDAD PARA UN PROPÓSITO PARTICULAR. Ver la GNU General Public License para más detalles. ⏎ \n\nDebe de haber recibido una copia de la Licencia Pública General de GNU junto con este programa, si no, escriba a la Free Software  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 EE.UU. \n"
 
 #: ../src/virt-viewer-about.xml.h:20
 msgid "virt-manager.org"
@@ -224,7 +225,7 @@ msgstr "Conectando al servidor gráfico"
 
 #: ../src/virt-viewer-app.c:994
 msgid "Guest domain has shutdown"
-msgstr ""
+msgstr "Dominio de huéspedes se ha apagado"
 
 #: ../src/virt-viewer-app.c:1044
 msgid "Connected to graphic server"
@@ -240,7 +241,7 @@ msgstr "No se pudo conectar al servidor gráfico %s"
 msgid ""
 "Unable to authenticate with remote desktop server at %s: %s\n"
 "Retry connection again?"
-msgstr ""
+msgstr "No se puede autenticar con el servidor de escritorio remoto en %s: %s⏎ \n¿Reintentar la conexión?"
 
 #: ../src/virt-viewer-app.c:1119
 #, c-format
@@ -281,7 +282,7 @@ msgstr "%s versión %s\n"
 
 #: ../src/virt-viewer-main.c:69
 msgid "Attach to the local display using libvirt"
-msgstr ""
+msgstr "Añadir a la pantalla local mediante libvirt"
 
 #: ../src/virt-viewer-main.c:71
 msgid "Connect to hypervisor"
@@ -293,11 +294,11 @@ msgstr "Esperando a que inicie el dominio"
 
 #: ../src/virt-viewer-main.c:75
 msgid "Reconnect to domain upon restart"
-msgstr ""
+msgstr "Reconéctese al dominio tras el reinicio"
 
 #: ../src/virt-viewer-main.c:92
 msgid "Virt Viewer"
-msgstr ""
+msgstr "Virt Viewer"
 
 #. Setup command line options
 #: ../src/virt-viewer-main.c:95
@@ -331,7 +332,7 @@ msgstr "Desconectar"
 #: ../src/virt-viewer-window.c:811 ../src/virt-viewer-window.c:812
 #: ../src/virt-viewer.xml.h:22
 msgid "USB device selection"
-msgstr ""
+msgstr "Selección de dispositivos USB"
 
 #: ../src/virt-viewer-window.c:819 ../src/virt-viewer-window.c:820
 msgid "Leave fullscreen"
@@ -339,7 +340,7 @@ msgstr "Salir de pantalla completa"
 
 #: ../src/virt-viewer-window.c:892
 msgid "(Press Ctrl+Alt to release pointer)"
-msgstr ""
+msgstr "(Presione Ctrl+Alt para liberar el cursor)"
 
 #. translators:
 #. * This is "<ungrab (or empty)><space (or empty)><subtitle (or empty)> -
@@ -359,7 +360,7 @@ msgstr " "
 
 #: ../src/virt-viewer.c:144
 msgid "Waiting for guest domain to re-start"
-msgstr ""
+msgstr "Esperando que el dominio de huéspedes reinicie"
 
 #: ../src/virt-viewer.c:308
 #, c-format
@@ -378,11 +379,11 @@ msgstr "No se puede determinar el anfitrión para el huésped %s"
 
 #: ../src/virt-viewer.c:474
 msgid "Finding guest domain"
-msgstr ""
+msgstr "Buscando dominio de huéspedes"
 
 #: ../src/virt-viewer.c:478
 msgid "Waiting for guest domain to be created"
-msgstr ""
+msgstr "Esperando a que el dominio de huéspedes sea creado"
 
 #: ../src/virt-viewer.c:483
 #, c-format
@@ -391,15 +392,15 @@ msgstr "No se pudo encontrar el dominio huésped %s"
 
 #: ../src/virt-viewer.c:490
 msgid "Checking guest domain status"
-msgstr ""
+msgstr "Comprobando el estatus del dominio de huéspedes"
 
 #: ../src/virt-viewer.c:497
 msgid "Waiting for guest domain to start"
-msgstr ""
+msgstr "Esperando a que dominio de huéspedes inicie"
 
 #: ../src/virt-viewer.c:504
 msgid "Waiting for guest domain to start server"
-msgstr ""
+msgstr "Esperando a que el servidor del dominio de huéspedes inicie"
 
 #: ../src/virt-viewer.c:624
 #, c-format
@@ -486,7 +487,7 @@ msgstr "Pantalla completa"
 
 #: ../src/virt-viewer.xml.h:18
 msgid "Release cursor"
-msgstr ""
+msgstr "Libere el cursor"
 
 #: ../src/virt-viewer.xml.h:19
 msgid "Screenshot"
@@ -494,11 +495,11 @@ msgstr "Captura de pantalla"
 
 #: ../src/virt-viewer.xml.h:20
 msgid "Smartcard insertion"
-msgstr ""
+msgstr "Inserción de Smartcard"
 
 #: ../src/virt-viewer.xml.h:21
 msgid "Smartcard removal"
-msgstr ""
+msgstr "Retiro de Smartcard"
 
 #: ../src/virt-viewer.xml.h:23
 msgid "_File"
@@ -514,7 +515,7 @@ msgstr "_ImprPant"
 
 #: ../src/virt-viewer.xml.h:26
 msgid "_Send key"
-msgstr ""
+msgstr "_Enviar llave"
 
 #: ../src/virt-viewer.xml.h:27
 msgid "_View"
@@ -522,4 +523,4 @@ msgstr "_Ver"
 
 #: ../src/virt-viewer.xml.h:28
 msgid "_Zoom"
-msgstr ""
+msgstr "_Zoom"

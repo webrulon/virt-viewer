@@ -1,14 +1,18 @@
   Virt Viewer News
   ================
 
-0.5.2: Mar 01, 2012
+0.5.2: Mar 09, 2012
 -------------------
 
+  - Require libvirt >= 0.9.7, spice-gtk >= 0.11, spice-protocol >= 0.10.1
   - Import newer translations from transifex
   - remote-viewer learned Spice controller customizable key bindings,
     smartcard property, and foreign menu
   - Fix Spice crash on re-connection
   - Fix connecting via ssh to a password-protected server
+  - Add a sendkey menu in fullscreen mode
+  - Add USB device selection in fullscreen mode
+  - Misc reference leak / crash bugs fixed
 
 0.5.1: Feb 17, 2012
 -------------------

@@ -6,13 +6,14 @@
 # Francesco Tombolini <tombo@adamantio.net>, 2010.
 #   <fvalen@redhat.com>, 2012.
 # Gianluca Sforna <giallu@fedoraproject.org>, 2010.
+# silvio pierro <perplesso82@gmail.com>, 2012.
 msgid ""
 msgstr ""
 "Project-Id-Version: virt-viewer\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-03-07 10:17+0000\n"
-"PO-Revision-Date: 2012-03-08 00:38+0000\n"
-"Last-Translator: fvalen <fvalen@redhat.com>\n"
+"PO-Revision-Date: 2012-03-11 13:07+0000\n"
+"Last-Translator: Silvio Pierro <perplesso82@gmail.com>\n"
 "Language-Team: Italian <trans-it@lists.fedoraproject.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -63,7 +64,7 @@ msgstr "I flag per l'associazione"
 #: ../src/remote-viewer-main.c:42
 #, c-format
 msgid "remote-viewer version %s\n"
-msgstr "versione visualizzatore-remoto %s\n"
+msgstr "versione del visualizzatore-remoto %s\n"
 
 #: ../src/remote-viewer-main.c:63 ../src/virt-viewer-main.c:60
 msgid "Run '"
@@ -91,7 +92,7 @@ msgstr "Mostra le informazioni di debugging"
 
 #: ../src/remote-viewer-main.c:76 ../src/virt-viewer-main.c:81
 msgid "Open in full screen mode"
-msgstr "Apri in modalità schermo completo"
+msgstr "Apri in modalità schermo intero"
 
 #: ../src/remote-viewer-main.c:79
 msgid "Open connection using Spice controller communication"
@@ -110,7 +111,7 @@ msgid ""
 "\n"
 "%s\n"
 "\n"
-msgstr "\nUtilizzo: %s [OPTIONS] URI\n\n%s\n\n"
+msgstr "\nUtilizzo: %s [OPZIONI] URI\n\n%s\n\n"
 
 #: ../src/remote-viewer-main.c:122 ../src/virt-viewer-main.c:121
 #, c-format
@@ -123,7 +124,7 @@ msgstr "Inizializzazione connessione fallita"
 
 #: ../src/remote-viewer.c:223
 msgid "Display disabled by controller"
-msgstr "Mostra disabilitati dal controller"
+msgstr "Mostra disabilitato dal controller"
 
 #: ../src/remote-viewer.c:654
 #, c-format
@@ -140,7 +141,7 @@ msgstr "Impostazione sessione Spice in corso..."
 
 #: ../src/remote-viewer.c:732
 msgid "Cannot determine the connection type from URI"
-msgstr "Impossibile determinare il tipo di connession da URI"
+msgstr "Impossibile determinare il tipo di connessione da URI"
 
 #: ../src/remote-viewer.c:737
 #, c-format
@@ -194,12 +195,12 @@ msgstr "virt-manager.org"
 
 #: ../src/virt-viewer-app.c:272
 msgid "This is the last visible display. Do you want to quit?"
-msgstr "Questo è l'ultimo display visibile. Vuoi uscire?"
+msgstr "Questo è l'ultimo display visibile. Si desidera uscire?"
 
 #: ../src/virt-viewer-app.c:613
 #, c-format
 msgid "Waiting for display %d..."
-msgstr "In attessa del display %d..."
+msgstr "In attesa del display %d..."
 
 #: ../src/virt-viewer-app.c:695
 #, c-format
@@ -208,15 +209,15 @@ msgstr "Impossibile determinare il tipo grafico per il guest %s"
 
 #: ../src/virt-viewer-app.c:770
 msgid "Connect to ssh failed."
-msgstr "Connessione a ssh fallita"
+msgstr "Connessione a ssh fallita."
 
 #: ../src/virt-viewer-app.c:772
 msgid "Can't connect to channel, SSH only supported."
-msgstr "Impossibile connettersi al canale, solo SSH è supportato."
+msgstr "Impossibile connettersi al canale, è supportato solo SSH."
 
 #: ../src/virt-viewer-app.c:784
 msgid "Connect to channel unsupported."
-msgstr "Connessione al canale non supportata"
+msgstr "Connessione al canale non supportata."
 
 #: ../src/virt-viewer-app.c:864
 msgid "Connecting to graphic server"
@@ -335,7 +336,7 @@ msgstr "Selezione dispositivo USB"
 
 #: ../src/virt-viewer-window.c:819 ../src/virt-viewer-window.c:820
 msgid "Leave fullscreen"
-msgstr "Lascia lo schermo completo"
+msgstr "Lascia a schermo intero"
 
 #: ../src/virt-viewer-window.c:892
 msgid "(Press Ctrl+Alt to release pointer)"
@@ -359,7 +360,7 @@ msgstr " "
 
 #: ../src/virt-viewer.c:144
 msgid "Waiting for guest domain to re-start"
-msgstr "In atteso del riavvio del dominio guest"
+msgstr "In attesa del riavvio del dominio guest"
 
 #: ../src/virt-viewer.c:308
 #, c-format
@@ -482,7 +483,7 @@ msgstr "Display"
 
 #: ../src/virt-viewer.xml.h:17
 msgid "Full screen"
-msgstr "Schermo completo"
+msgstr "Schermo intero"
 
 #: ../src/virt-viewer.xml.h:18
 msgid "Release cursor"

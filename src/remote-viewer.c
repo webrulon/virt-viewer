@@ -730,7 +730,7 @@ remote_viewer_start(VirtViewerApp *app)
         DEBUG_LOG("Opening display to %s", guri);
         g_object_set(app, "title", guri, NULL);
 
-        if (virt_viewer_util_extract_host(guri, &type, NULL, NULL, NULL, NULL) < 0) {
+        if (virt_viewer_util_extract_host(guri, &type, NULL, NULL, NULL, NULL) < 0 || type == NULL) {
             virt_viewer_app_simple_message_dialog(app, _("Cannot determine the connection type from URI"));
             goto cleanup;
         }

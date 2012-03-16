@@ -81,7 +81,7 @@ virt_viewer_util_extract_host(const char *uristr,
                               int *port)
 {
     xmlURIPtr uri;
-    char *offset;
+    char *offset = NULL;
 
     if (uristr == NULL ||
         !g_ascii_strcasecmp(uristr, "xen"))
@@ -107,16 +107,17 @@ virt_viewer_util_extract_host(const char *uristr,
     if (port)
         *port = uri->port;
 
-    offset = strchr(uri->scheme, '+');
+    if (uri->scheme)
+        offset = strchr(uri->scheme, '+');
 
     if (transport) {
         if (offset)
-            *transport = g_strdup(offset+1);
+            *transport = g_strdup(offset + 1);
         else
             *transport = NULL;
     }
 
-    if (scheme) {
+    if (scheme && uri->scheme) {
         if (offset)
             *scheme = g_strndup(uri->scheme, offset - uri->scheme);
         else

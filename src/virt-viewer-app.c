@@ -669,6 +669,7 @@ virt_viewer_app_create_session(VirtViewerApp *self, const gchar *type)
     g_return_val_if_fail(VIRT_VIEWER_IS_APP(self), -1);
     VirtViewerAppPrivate *priv = self->priv;
     g_return_val_if_fail(priv->session == NULL, -1);
+    g_return_val_if_fail(type != NULL, -1);
 
 #ifdef HAVE_GTK_VNC
     if (g_ascii_strcasecmp(type, "vnc") == 0) {

@@ -116,6 +116,7 @@ struct _VirtViewerAppPrivate {
     gboolean authretry;
     gboolean started;
     gboolean fullscreen;
+    gboolean fullscreen_auto_conf;
     gboolean attach;
     gboolean quiting;
 
@@ -157,6 +158,7 @@ enum {
     PROP_TITLE,
     PROP_ENABLE_ACCEL,
     PROP_HAS_FOCUS,
+    PROP_FULLSCREEN_AUTO_CONF,
 };
 
 enum {
@@ -684,7 +686,7 @@ virt_viewer_app_create_session(VirtViewerApp *self, const gchar *type)
         GtkWindow *window = virt_viewer_window_get_window(priv->main_window);
         virt_viewer_app_trace(self, "Guest %s has a %s display\n",
                               priv->guest_name, type);
-        priv->session = virt_viewer_session_spice_new(window);
+        priv->session = virt_viewer_session_spice_new(self, window);
     } else
 #endif
     {
@@ -1170,6 +1172,10 @@ virt_viewer_app_get_property (GObject *object, guint property_id,
         g_value_set_boolean(value, priv->focused > 0);
         break;
 
+    case PROP_FULLSCREEN_AUTO_CONF:
+        g_value_set_boolean(value, priv->fullscreen_auto_conf);
+        break;
+
     default:
         G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
     }
@@ -1216,6 +1222,10 @@ virt_viewer_app_set_property (GObject *object, guint property_id,
 
     case PROP_ENABLE_ACCEL:
         priv->enable_accel = g_value_get_boolean(value);
+        break;
+
+    case PROP_FULLSCREEN_AUTO_CONF:
+        priv->fullscreen_auto_conf = g_value_get_boolean(value);
         break;
 
     default:
@@ -1377,8 +1387,16 @@ virt_viewer_app_class_init (VirtViewerAppClass *klass)
                                                          "Fullscreen",
                                                          "Fullscreen",
                                                          FALSE,
-                                                         G_PARAM_READABLE |
-                                                         G_PARAM_WRITABLE |
+                                                         G_PARAM_READWRITE |
+                                                         G_PARAM_STATIC_STRINGS));
+
+    g_object_class_install_property(object_class,
+                                    PROP_FULLSCREEN_AUTO_CONF,
+                                    g_param_spec_boolean("fullscreen-auto-conf",
+                                                         "auto conf",
+                                                         "Automatic display configuration in full screen",
+                                                         FALSE,
+                                                         G_PARAM_READWRITE |
                                                          G_PARAM_STATIC_STRINGS));
 
     g_object_class_install_property(object_class,
@@ -1503,7 +1521,7 @@ static void fullscreen_cb(gpointer key,
 
     DEBUG_LOG("fullscreen display %d: %d", nth, options->fullscreen);
     if (options->fullscreen) {
-        GdkScreen *screen = gdk_screen_get_default ();
+        GdkScreen *screen = gdk_screen_get_default();
         GdkRectangle mon;
 
         if (nth >= gdk_screen_get_n_monitors(screen)) {
@@ -1522,12 +1540,14 @@ virt_viewer_app_set_fullscreen(VirtViewerApp *self, gboolean fullscreen)
     VirtViewerAppPrivate *priv = self->priv;
     FullscreenOptions options  = {
         .fullscreen = fullscreen,
-        .move = virt_viewer_app_get_n_windows_visible(self) > 1,
+        .move = virt_viewer_app_get_n_windows_visible(self) > 1 || self->priv->fullscreen_auto_conf,
     };
 
     /* we iterate unconditionnaly, even if it was set before to update new windows */
     priv->fullscreen = fullscreen;
     g_hash_table_foreach(priv->windows, fullscreen_cb, &options);
+
+    g_object_notify(G_OBJECT(self), "fullscreen");
 }
 
 static void

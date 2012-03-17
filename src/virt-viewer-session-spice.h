@@ -65,7 +65,7 @@ struct _VirtViewerSessionSpiceClass {
 
 GType virt_viewer_session_spice_get_type(void);
 
-VirtViewerSession* virt_viewer_session_spice_new(GtkWindow *main_window);
+VirtViewerSession* virt_viewer_session_spice_new(VirtViewerApp *app, GtkWindow *main_window);
 SpiceMainChannel* virt_viewer_session_spice_get_main_channel(VirtViewerSessionSpice *self);
 
 G_END_DECLS

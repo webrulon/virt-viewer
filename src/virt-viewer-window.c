@@ -493,15 +493,17 @@ virt_viewer_window_enter_fullscreen(VirtViewerWindow *self, gboolean move, gint 
         priv->before_saved = TRUE;
     }
 
-    if (!priv->fullscreen) {
-        gtk_check_menu_item_set_active(check, TRUE);
-        priv->fullscreen = TRUE;
-        gtk_widget_hide(menu);
-        gtk_widget_show(priv->toolbar);
-        ViewAutoDrawer_SetActive(VIEW_AUTODRAWER(priv->layout), TRUE);
-        ViewAutoDrawer_Close(VIEW_AUTODRAWER(priv->layout));
-    }
+    if (priv->fullscreen)
+        return;
+    priv->fullscreen = TRUE;
 
+    gtk_check_menu_item_set_active(check, TRUE);
+    gtk_widget_hide(menu);
+    gtk_widget_show(priv->toolbar);
+    ViewAutoDrawer_SetActive(VIEW_AUTODRAWER(priv->layout), TRUE);
+    ViewAutoDrawer_Close(VIEW_AUTODRAWER(priv->layout));
+
+    /* g_debug("enter fullscreen move:%d %d+%d", move, x, y); */
     if (move)
         gtk_window_move(GTK_WINDOW(priv->window), x, y);
 

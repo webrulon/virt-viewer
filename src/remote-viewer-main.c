@@ -43,6 +43,28 @@ remote_viewer_version(void)
     exit(EXIT_SUCCESS);
 }
 
+gboolean fullscreen = FALSE;
+gboolean fullscreen_auto_conf = FALSE;
+
+static gboolean
+option_fullscreen(G_GNUC_UNUSED const gchar *option_name,
+                  const gchar *value,
+                  G_GNUC_UNUSED gpointer data, GError **error)
+{
+    fullscreen = TRUE;
+
+    if (value == NULL)
+        return TRUE;
+
+    if (g_str_equal(value, "auto-conf")) {
+        fullscreen_auto_conf = TRUE;
+        return TRUE;
+    }
+
+    g_set_error(error, G_OPTION_ERROR, G_OPTION_ERROR_FAILED, _("Invalid full-screen argument: %s"), value);
+    return FALSE;
+}
+
 int
 main(int argc, char **argv)
 {
@@ -54,7 +76,6 @@ main(int argc, char **argv)
     gboolean verbose = FALSE;
     gboolean debug = FALSE;
     gboolean direct = FALSE;
-    gboolean fullscreen = FALSE;
     RemoteViewer *viewer = NULL;
 #if HAVE_SPICE_GTK
     gboolean controller = FALSE;
@@ -72,8 +93,8 @@ main(int argc, char **argv)
           N_("Zoom level of window, in percentage"), "ZOOM" },
         { "debug", '\0', 0, G_OPTION_ARG_NONE, &debug,
           N_("Display debugging information"), NULL },
-        { "full-screen", 'f', 0, G_OPTION_ARG_NONE, &fullscreen,
-          N_("Open in full screen mode"), NULL },
+        { "full-screen", 'f', G_OPTION_FLAG_OPTIONAL_ARG, G_OPTION_ARG_CALLBACK, option_fullscreen,
+          N_("Open in full screen mode (=<auto-conf>)"), NULL },
 #if HAVE_SPICE_GTK
         { "spice-controller", '\0', 0, G_OPTION_ARG_NONE, &controller,
           N_("Open connection using Spice controller communication"), NULL },
@@ -144,7 +165,10 @@ main(int argc, char **argv)
         goto cleanup;
 
     app = VIRT_VIEWER_APP(viewer);
-    g_object_set(app, "fullscreen", fullscreen, NULL);
+    g_object_set(app,
+                 "fullscreen", fullscreen,
+                 "fullscreen-auto-conf", fullscreen_auto_conf,
+                 NULL);
     virt_viewer_window_set_zoom_level(virt_viewer_app_get_main_window(app), zoom);
     virt_viewer_app_set_direct(app, direct);
 

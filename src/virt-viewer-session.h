@@ -26,6 +26,7 @@
 
 #include <gtk/gtk.h>
 
+#include "virt-viewer-app.h"
 #include "virt-viewer-display.h"
 
 G_BEGIN_DECLS
@@ -118,6 +119,7 @@ gboolean virt_viewer_session_has_usb(VirtViewerSession *self);
 void virt_viewer_session_usb_device_selection(VirtViewerSession *self, GtkWindow *parent);
 void virt_viewer_session_smartcard_insert(VirtViewerSession *self);
 void virt_viewer_session_smartcard_remove(VirtViewerSession *self);
+VirtViewerApp* virt_viewer_session_get_app(VirtViewerSession *self);
 
 G_END_DECLS
 

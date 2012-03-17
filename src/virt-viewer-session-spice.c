@@ -74,6 +74,7 @@ static void virt_viewer_session_spice_channel_destroy(SpiceSession *s,
                                                       VirtViewerSession *session);
 static void virt_viewer_session_spice_smartcard_insert(VirtViewerSession *session);
 static void virt_viewer_session_spice_smartcard_remove(VirtViewerSession *session);
+static gboolean virt_viewer_session_spice_fullscreen_auto_conf(VirtViewerSessionSpice *self);
 
 static void
 virt_viewer_session_spice_get_property(GObject *object, guint property_id,
@@ -394,6 +395,15 @@ virt_viewer_session_spice_usb_device_selection(VirtViewerSession *session,
 }
 
 static void
+agent_connected_changed(SpiceChannel *cmain,
+                        GParamSpec *pspec G_GNUC_UNUSED,
+                        VirtViewerSessionSpice *self)
+{
+    if (virt_viewer_session_spice_fullscreen_auto_conf(self))
+        g_signal_handlers_disconnect_by_func(cmain, agent_connected_changed, self);
+}
+
+static void
 virt_viewer_session_spice_channel_new(SpiceSession *s,
                                       SpiceChannel *channel,
                                       VirtViewerSession *session)
@@ -416,6 +426,9 @@ virt_viewer_session_spice_channel_new(SpiceSession *s,
         g_signal_connect(channel, "channel-event",
                          G_CALLBACK(virt_viewer_session_spice_main_channel_event), self);
         self->priv->main_channel = SPICE_MAIN_CHANNEL(channel);
+
+        g_signal_connect(channel, "notify::agent-connected", G_CALLBACK(agent_connected_changed),  self);
+        agent_connected_changed(channel, NULL, self);
     }
 
     if (SPICE_IS_DISPLAY_CHANNEL(channel)) {
@@ -445,6 +458,41 @@ virt_viewer_session_spice_channel_new(SpiceSession *s,
     }
 
     self->priv->channel_count++;
+}
+
+static gboolean
+virt_viewer_session_spice_fullscreen_auto_conf(VirtViewerSessionSpice *self)
+{
+    GdkScreen *screen = gdk_screen_get_default();
+    SpiceMainChannel* cmain = virt_viewer_session_spice_get_main_channel(self);
+    VirtViewerApp *app = NULL;
+    GdkRectangle dest;
+    gboolean auto_conf, agent_connected;
+    gint i;
+
+    app = virt_viewer_session_get_app(VIRT_VIEWER_SESSION(self));
+    g_return_val_if_fail(VIRT_VIEWER_IS_APP(app), TRUE);
+
+    g_object_get(app, "fullscreen-auto-conf", &auto_conf, NULL);
+    if (!auto_conf)
+        return TRUE;
+
+    if (cmain == NULL)
+        return FALSE;
+
+    g_object_get(cmain, "agent-connected", &agent_connected, NULL);
+    if (!agent_connected)
+        return FALSE;
+
+    spice_main_set_display_enabled(cmain, -1, FALSE);
+    for (i = 0; i < gdk_screen_get_n_monitors(screen); i++) {
+        gdk_screen_get_monitor_geometry(screen, i, &dest);
+        spice_main_set_display(cmain, i, dest.x, dest.y, dest.width, dest.height);
+        spice_main_set_display_enabled(cmain, i, TRUE);
+    }
+
+    spice_main_send_monitor_config(cmain);
+    return TRUE;
 }
 
 static void
@@ -479,15 +527,25 @@ virt_viewer_session_spice_channel_destroy(G_GNUC_UNUSED SpiceSession *s,
         g_signal_emit_by_name(self, "session-disconnected");
 }
 
+static void
+fullscreen_changed(GObject *gobject G_GNUC_UNUSED,
+                   GParamSpec *pspec G_GNUC_UNUSED,
+                   VirtViewerSessionSpice *self)
+{
+    virt_viewer_session_spice_fullscreen_auto_conf(self);
+}
+
 VirtViewerSession *
-virt_viewer_session_spice_new(GtkWindow *main_window)
+virt_viewer_session_spice_new(VirtViewerApp *app, GtkWindow *main_window)
 {
     VirtViewerSessionSpice *self;
 
-    self = g_object_new(VIRT_VIEWER_TYPE_SESSION_SPICE, NULL);
+    self = g_object_new(VIRT_VIEWER_TYPE_SESSION_SPICE, "app", app, NULL);
 
     create_spice_session(self);
     self->priv->main_window = g_object_ref(main_window);
+
+    g_signal_connect(app, "notify::fullscreen", G_CALLBACK(fullscreen_changed),  self);
 
     return VIRT_VIEWER_SESSION(self);
 }

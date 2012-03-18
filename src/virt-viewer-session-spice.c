@@ -47,7 +47,7 @@ struct _VirtViewerSessionSpicePrivate {
     SpiceSession *session;
     SpiceGtkSession *gtk_session;
     SpiceMainChannel *main_channel;
-    SpiceAudio *audio;
+    const SpiceAudio *audio;
     int channel_count;
 };
 
@@ -110,9 +110,11 @@ virt_viewer_session_spice_dispose(GObject *obj)
     if (spice->priv->session) {
         spice_session_disconnect(spice->priv->session);
         g_object_unref(spice->priv->session);
+        spice->priv->session = NULL;
     }
-    if (spice->priv->audio)
-        g_object_unref(spice->priv->audio);
+
+    spice->priv->audio = NULL;
+
     if (spice->priv->main_window)
         g_object_unref(spice->priv->main_window);
 
@@ -212,9 +214,6 @@ virt_viewer_session_spice_close(VirtViewerSession *session)
         g_object_unref(self->priv->session);
         self->priv->session = NULL;
         self->priv->gtk_session = NULL;
-
-        if (self->priv->audio)
-            g_object_unref(self->priv->audio);
         self->priv->audio = NULL;
     }
 
@@ -454,7 +453,7 @@ virt_viewer_session_spice_channel_new(SpiceSession *s,
     if (SPICE_IS_PLAYBACK_CHANNEL(channel)) {
         DEBUG_LOG("new audio channel");
         if (self->priv->audio == NULL)
-            self->priv->audio = spice_audio_new(s, NULL, NULL);
+            self->priv->audio = spice_audio_get(s, NULL);
     }
 
     self->priv->channel_count++;
@@ -518,7 +517,6 @@ virt_viewer_session_spice_channel_destroy(G_GNUC_UNUSED SpiceSession *s,
 
     if (SPICE_IS_PLAYBACK_CHANNEL(channel) && self->priv->audio) {
         DEBUG_LOG("zap audio channel");
-        g_object_unref(self->priv->audio);
         self->priv->audio = NULL;
     }
 

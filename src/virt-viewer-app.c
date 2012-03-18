@@ -680,20 +680,20 @@ virt_viewer_app_create_session(VirtViewerApp *self, const gchar *type)
     } else
 #endif
 #ifdef HAVE_SPICE_GTK
-        if (g_ascii_strcasecmp(type, "spice") == 0) {
-            GtkWindow *window = virt_viewer_window_get_window(priv->main_window);
-            virt_viewer_app_trace(self, "Guest %s has a %s display\n",
-                                  priv->guest_name, type);
-            priv->session = virt_viewer_session_spice_new(window);
-        } else
+    if (g_ascii_strcasecmp(type, "spice") == 0) {
+        GtkWindow *window = virt_viewer_window_get_window(priv->main_window);
+        virt_viewer_app_trace(self, "Guest %s has a %s display\n",
+                              priv->guest_name, type);
+        priv->session = virt_viewer_session_spice_new(window);
+    } else
 #endif
-            {
-                virt_viewer_app_trace(self, "Guest %s has unsupported %s display type\n",
-                                      priv->guest_name, type);
-                virt_viewer_app_simple_message_dialog(self, _("Unknown graphic type for the guest %s"),
-                                                      priv->guest_name);
-                return -1;
-            }
+    {
+        virt_viewer_app_trace(self, "Guest %s has unsupported %s display type\n",
+                              priv->guest_name, type);
+        virt_viewer_app_simple_message_dialog(self, _("Unknown graphic type for the guest %s"),
+                                              priv->guest_name);
+        return -1;
+    }
 
     g_signal_connect(priv->session, "session-initialized",
                      G_CALLBACK(virt_viewer_app_initialized), self);

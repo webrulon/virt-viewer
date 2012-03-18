@@ -943,10 +943,22 @@ virt_viewer_window_update_title(VirtViewerWindow *self)
 {
     VirtViewerWindowPrivate *priv = self->priv;
     char *title;
-    const char *ungrab = NULL;
+    gchar *ungrab = NULL;
 
-    if (priv->grabbed)
-        ungrab = _("(Press Ctrl+Alt to release pointer)");
+    if (priv->grabbed) {
+        gchar *label;
+
+        if (virt_viewer_app_get_enable_accel(priv->app)) {
+            GtkAccelKey key;
+            gtk_accel_map_lookup_entry("<virt-viewer>/view/release-cursor", &key);
+            label = gtk_accelerator_get_label(key.accel_key, key.accel_mods);
+        } else {
+            label = g_strdup(_("Ctrl+Alt"));
+        }
+
+        ungrab = g_strdup_printf(_("(Press %s to release pointer)"), label);
+        g_free(label);
+    }
 
     if (!ungrab && !priv->subtitle)
         title = g_strdup(g_get_application_name());
@@ -966,6 +978,7 @@ virt_viewer_window_update_title(VirtViewerWindow *self)
     gtk_window_set_title(GTK_WINDOW(priv->window), title);
 
     g_free(title);
+    g_free(ungrab);
 }
 
 void

@@ -181,6 +181,19 @@ virt_viewer_display_spice_size_allocate(VirtViewerDisplaySpice *self,
                            0, 0, dw, dh);
 }
 
+static void
+enable_accel_changed(VirtViewerApp *app,
+                     GParamSpec *pspec G_GNUC_UNUSED,
+                     VirtViewerDisplaySpice *self)
+{
+    if (virt_viewer_app_get_enable_accel(app)) {
+        /* disable default grab sequence */
+        spice_display_set_grab_keys(self->priv->display,
+                                    spice_grab_sequence_new(0, NULL));
+    } else {
+        spice_display_set_grab_keys(self->priv->display, NULL);
+    }
+}
 
 GtkWidget *
 virt_viewer_display_spice_new(VirtViewerSessionSpice *session,
@@ -188,6 +201,7 @@ virt_viewer_display_spice_new(VirtViewerSessionSpice *session,
                               SpiceDisplay *display)
 {
     VirtViewerDisplaySpice *self;
+    VirtViewerApp *app;
     gint channelid;
 
     g_return_val_if_fail(SPICE_IS_DISPLAY_CHANNEL(channel), NULL);
@@ -226,6 +240,10 @@ virt_viewer_display_spice_new(VirtViewerSessionSpice *session,
                      "size-allocate",
                      G_CALLBACK(virt_viewer_display_spice_size_allocate), self);
 
+
+    app = virt_viewer_session_get_app(VIRT_VIEWER_SESSION(session));
+    g_signal_connect(app, "notify::enable-accel", G_CALLBACK(enable_accel_changed), self);
+    enable_accel_changed(app, NULL, self);
 
     return GTK_WIDGET(self);
 }

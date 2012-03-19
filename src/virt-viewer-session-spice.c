@@ -307,9 +307,8 @@ virt_viewer_session_spice_main_channel_event(SpiceChannel *channel G_GNUC_UNUSED
         if (self->priv->session)
             spice_session_disconnect(self->priv->session);
         break;
-    case SPICE_CHANNEL_ERROR_CONNECT:
-        DEBUG_LOG("main channel: failed to connect");
-        g_signal_emit_by_name(session, "session-disconnected");
+    case SPICE_CHANNEL_SWITCHING:
+        DEBUG_LOG("main channel: switching host");
         break;
     case SPICE_CHANNEL_ERROR_AUTH:
         DEBUG_LOG("main channel: auth failure (wrong password?)");
@@ -331,9 +330,17 @@ virt_viewer_session_spice_main_channel_event(SpiceChannel *channel G_GNUC_UNUSED
                 spice_session_connect(self->priv->session);
         }
         break;
-    default:
-        g_message("unhandled spice main channel event: %d", event);
+    case SPICE_CHANNEL_ERROR_CONNECT:
+        DEBUG_LOG("main channel: failed to connect");
         g_signal_emit_by_name(session, "session-disconnected");
+        break;
+    case SPICE_CHANNEL_ERROR_IO:
+    case SPICE_CHANNEL_ERROR_LINK:
+    case SPICE_CHANNEL_ERROR_TLS:
+        g_signal_emit_by_name(session, "session-disconnected");
+        break;
+    default:
+        g_warning("unhandled spice main channel event: %d", event);
         break;
     }
 
@@ -435,7 +442,7 @@ virt_viewer_session_spice_channel_new(SpiceSession *s,
 
         g_signal_emit_by_name(session, "session-connected");
 
-        DEBUG_LOG("new session channel (#%d)", id);
+        DEBUG_LOG("new display channel (#%d)", id);
         display = virt_viewer_display_spice_new(self,
                                                 channel,
                                                 spice_display_new(s, id));

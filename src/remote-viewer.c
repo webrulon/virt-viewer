@@ -320,7 +320,9 @@ spice_menu_update(RemoteViewer *self, VirtViewerWindow *win)
             ctrlmenu_to_gtkmenu(self, menu, G_OBJECT(self->priv->controller)));
         gtk_widget_set_visible(menuitem, TRUE);
     }
-    g_object_unref(menu);
+
+    if (menu != NULL)
+        g_object_unref(menu);
 }
 
 static void

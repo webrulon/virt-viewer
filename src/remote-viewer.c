@@ -37,6 +37,10 @@
 #include "virt-viewer-app.h"
 #include "remote-viewer.h"
 
+#ifndef G_VALUE_INIT /* see bug https://bugzilla.gnome.org/show_bug.cgi?id=654793 */
+#define G_VALUE_INIT  { 0, { { 0 } } }
+#endif
+
 struct _RemoteViewerPrivate {
 #ifdef HAVE_SPICE_GTK
     SpiceCtrlController *controller;
@@ -62,6 +66,7 @@ static gboolean remote_viewer_start(VirtViewerApp *self);
 #if HAVE_SPICE_GTK
 static int remote_viewer_activate(VirtViewerApp *self);
 static void remote_viewer_window_added(VirtViewerApp *self, VirtViewerWindow *win);
+static void spice_foreign_menu_updated(RemoteViewer *self);
 #endif
 
 #if HAVE_SPICE_GTK
@@ -185,6 +190,24 @@ remote_viewer_new(const gchar *uri, gboolean verbose)
 }
 
 #if HAVE_SPICE_GTK
+static void
+foreign_menu_title_changed(SpiceCtrlForeignMenu *menu G_GNUC_UNUSED,
+                           GParamSpec *pspec G_GNUC_UNUSED,
+                           RemoteViewer *self)
+{
+    gboolean has_focus;
+
+    g_object_get(G_OBJECT(self), "has-focus", &has_focus, NULL);
+    /* FIXME: use a proper "new client connected" event
+    ** a foreign menu client set the title when connecting,
+    ** inform of focus state at that time.
+    */
+    spice_ctrl_foreign_menu_app_activated_msg(self->priv->ctrl_foreign_menu, has_focus);
+
+    /* update menu title */
+    spice_foreign_menu_updated(self);
+}
+
 RemoteViewer *
 remote_viewer_new_with_controller(gboolean verbose)
 {
@@ -197,6 +220,9 @@ remote_viewer_new_with_controller(gboolean verbose)
                          "foreign-menu", menu,
                          "verbose", verbose,
                          NULL);
+    g_signal_connect(menu, "notify::title",
+                     G_CALLBACK(foreign_menu_title_changed),
+                     self);
     g_object_unref(ctrl);
     g_object_unref(menu);
 
@@ -407,10 +433,6 @@ remote_viewer_get_spice_session(RemoteViewer *self)
 
     return session;
 }
-
-#ifndef G_VALUE_INIT /* see bug https://bugzilla.gnome.org/show_bug.cgi?id=654793 */
-#define G_VALUE_INIT  { 0, { { 0 } } }
-#endif
 
 static gchar *
 ctrl_key_to_gtk_key(const gchar *key)
@@ -650,8 +672,6 @@ spice_ctrl_listen_async_cb(GObject *object,
         spice_ctrl_controller_listen_finish(SPICE_CTRL_CONTROLLER(object), res, &error);
     else if (SPICE_CTRL_IS_FOREIGN_MENU(object)) {
         spice_ctrl_foreign_menu_listen_finish(SPICE_CTRL_FOREIGN_MENU(object), res, &error);
-        if (!error)
-            g_object_notify(G_OBJECT(app), "has-focus");
     } else
         g_warn_if_reached();
 

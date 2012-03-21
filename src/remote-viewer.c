@@ -198,6 +198,7 @@ remote_viewer_new_with_controller(gboolean verbose)
                          "verbose", verbose,
                          NULL);
     g_object_unref(ctrl);
+    g_object_unref(menu);
 
     return self;
 }

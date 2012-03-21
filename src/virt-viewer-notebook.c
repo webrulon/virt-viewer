@@ -129,8 +129,10 @@ virt_viewer_notebook_show_display(VirtViewerNotebook *self)
     g_return_if_fail(VIRT_VIEWER_IS_NOTEBOOK(self));
 
     display = gtk_notebook_get_nth_page(GTK_NOTEBOOK(self), 1);
-    g_warn_if_fail(display != NULL);
-    gtk_widget_grab_focus(display);
+    if (display == NULL)
+        DEBUG_LOG("FIXME: showing display although it's not ready yet");
+    else
+        gtk_widget_grab_focus(display);
 
     gtk_notebook_set_current_page(GTK_NOTEBOOK(self), 1);
     gtk_widget_show_all(GTK_WIDGET(self));

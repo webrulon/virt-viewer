@@ -35,6 +35,7 @@
 
 #include "remote-viewer.h"
 #include "virt-viewer-app.h"
+#include "virt-viewer-session.h"
 
 static void
 remote_viewer_version(void)
@@ -65,6 +66,121 @@ option_fullscreen(G_GNUC_UNUSED const gchar *option_name,
     return FALSE;
 }
 
+static void recent_selection_changed_dialog_cb(GtkRecentChooser *chooser, gpointer data)
+{
+    GtkRecentInfo *info;
+    GtkWidget *entry = data;
+    const gchar *uri;
+
+    info = gtk_recent_chooser_get_current_item(chooser);
+    if (info == NULL)
+        return;
+
+    uri = gtk_recent_info_get_uri(info);
+    g_return_if_fail(uri != NULL);
+
+    gtk_entry_set_text(GTK_ENTRY(entry), uri);
+
+    gtk_recent_info_unref(info);
+}
+
+static void recent_item_activated_dialog_cb(GtkRecentChooser *chooser G_GNUC_UNUSED, gpointer data)
+{
+   gtk_dialog_response (GTK_DIALOG (data), GTK_RESPONSE_ACCEPT);
+}
+
+static int connect_dialog(gchar **uri)
+{
+    GtkWidget *dialog, *area, *label, *entry, *recent;
+    GtkRecentFilter *rfilter;
+    GtkTable *table;
+    int i, retval;
+
+    /* Create the widgets */
+    dialog = gtk_dialog_new_with_buttons(_("Connection details"),
+                                         NULL,
+                                         GTK_DIALOG_DESTROY_WITH_PARENT,
+                                         GTK_STOCK_CANCEL,
+                                         GTK_RESPONSE_REJECT,
+                                         GTK_STOCK_CONNECT,
+                                         GTK_RESPONSE_ACCEPT,
+                                         NULL);
+    gtk_dialog_set_default_response(GTK_DIALOG(dialog), GTK_RESPONSE_ACCEPT);
+    area = gtk_dialog_get_content_area(GTK_DIALOG(dialog));
+    table = GTK_TABLE(gtk_table_new(1, 2, 0));
+    gtk_box_pack_start(GTK_BOX(area), GTK_WIDGET(table), TRUE, TRUE, 0);
+    gtk_table_set_row_spacings(table, 5);
+    gtk_table_set_col_spacings(table, 5);
+
+    label = gtk_label_new(_("URL:"));
+    gtk_misc_set_alignment(GTK_MISC(label), 0, 0.5);
+    gtk_table_attach_defaults(table, label, 0, 1, 0, 1);
+    entry = GTK_WIDGET(gtk_entry_new());
+    g_object_set(entry, "width-request", 200, NULL);
+    gtk_table_attach_defaults(table, entry, 1, 2, 0, 1);
+
+    label = gtk_label_new(_("Recent connections:"));
+    gtk_box_pack_start(GTK_BOX(area), label, TRUE, TRUE, 0);
+    gtk_misc_set_alignment(GTK_MISC(label), 0, 0.5);
+
+    recent = GTK_WIDGET(gtk_recent_chooser_widget_new());
+    gtk_recent_chooser_set_show_icons(GTK_RECENT_CHOOSER(recent), FALSE);
+    gtk_recent_chooser_set_sort_type(GTK_RECENT_CHOOSER(recent), GTK_RECENT_SORT_MRU);
+    gtk_box_pack_start(GTK_BOX(area), recent, TRUE, TRUE, 0);
+
+    rfilter = gtk_recent_filter_new();
+    gtk_recent_filter_add_mime_type(rfilter, "application/x-spice");
+    gtk_recent_filter_add_mime_type(rfilter, "application/x-vnc");
+    gtk_recent_chooser_set_filter(GTK_RECENT_CHOOSER(recent), rfilter);
+    gtk_recent_chooser_set_local_only(GTK_RECENT_CHOOSER(recent), FALSE);
+    g_signal_connect(recent, "selection-changed",
+                     G_CALLBACK(recent_selection_changed_dialog_cb), entry);
+    g_signal_connect(recent, "item-activated",
+                     G_CALLBACK(recent_item_activated_dialog_cb), dialog);
+
+    /* show and wait for response */
+    gtk_widget_show_all(dialog);
+    if (gtk_dialog_run(GTK_DIALOG(dialog)) == GTK_RESPONSE_ACCEPT) {
+        *uri = g_strdup(gtk_entry_get_text(GTK_ENTRY(entry)));
+        retval = 0;
+    } else {
+        *uri = NULL;
+        retval = -1;
+    }
+    gtk_widget_destroy(dialog);
+
+    return retval;
+}
+
+static void
+recent_add(gchar *uri)
+{
+    GtkRecentManager *recent;
+    GtkRecentData meta = {
+        .mime_type    = (char*)"application/x-spice",
+        .app_name     = (char*)"remote-viewer",
+        .app_exec     = (char*)"remote-viewer %u",
+    };
+
+    if (uri == NULL)
+        return;
+
+    g_return_if_fail(g_str_has_prefix(uri, "spice://") || g_str_has_prefix(uri, "vnc://"));
+
+    recent = gtk_recent_manager_get_default();
+    meta.display_name = uri;
+    if (!gtk_recent_manager_add_full(recent, uri, &meta))
+        g_warning("Recent item couldn't be added");
+}
+
+static void connected(VirtViewerSession *session,
+                      VirtViewerApp *self G_GNUC_UNUSED)
+{
+    gchar *uri = virt_viewer_session_get_uri(session);
+
+    recent_add(uri);
+}
+
 int
 main(int argc, char **argv)
 {
@@ -73,6 +189,7 @@ main(int argc, char **argv)
     int ret = 1;
     int zoom = 100;
     gchar **args = NULL;
+    gchar *uri = NULL;
     gboolean verbose = FALSE;
     gboolean debug = FALSE;
     gboolean direct = FALSE;
@@ -139,8 +256,10 @@ main(int argc, char **argv)
         && !controller
 #endif
         ) {
-        g_printerr(_("\nUsage: %s [OPTIONS] URI\n\n%s\n\n"), argv[0], help_msg);
-        goto cleanup;
+        if (connect_dialog(&uri) == -1)
+            goto cleanup;
+    } else {
+        uri = g_strdup(args[0]);
     }
 
     if (zoom < 10 || zoom > 200) {
@@ -158,8 +277,8 @@ main(int argc, char **argv)
         g_object_set(viewer, "guest-name", "defined by Spice controller", NULL);
     } else {
 #endif
-        viewer = remote_viewer_new(args[0], verbose);
-        g_object_set(viewer, "guest-name", args[0], NULL);
+        viewer = remote_viewer_new(uri, verbose);
+        g_object_set(viewer, "guest-name", uri, NULL);
 #if HAVE_SPICE_GTK
     }
 #endif
@@ -177,11 +296,15 @@ main(int argc, char **argv)
     if (!virt_viewer_app_start(app))
         goto cleanup;
 
+    g_signal_connect(virt_viewer_app_get_session(app), "session-connected",
+                     G_CALLBACK(connected), app);
+
     gtk_main();
 
     ret = 0;
 
  cleanup:
+    g_free(uri);
     if (viewer)
         g_object_unref(viewer);
     g_strfreev(args);

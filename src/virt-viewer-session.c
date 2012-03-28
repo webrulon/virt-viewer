@@ -37,6 +37,7 @@ struct _VirtViewerSessionPrivate
     GList *displays;
     VirtViewerApp *app;
     gboolean auto_usbredir;
+    gchar *uri;
 };
 
 G_DEFINE_ABSTRACT_TYPE(VirtViewerSession, virt_viewer_session, G_TYPE_OBJECT)
@@ -59,6 +60,8 @@ virt_viewer_session_finalize(GObject *obj)
         tmp = tmp->next;
     }
     g_list_free(session->priv->displays);
+
+    g_free(session->priv->uri);
 
     G_OBJECT_CLASS(virt_viewer_session_parent_class)->finalize(obj);
 }
@@ -344,6 +347,8 @@ gboolean virt_viewer_session_open_uri(VirtViewerSession *session, const gchar *u
     klass = VIRT_VIEWER_SESSION_GET_CLASS(session);
     g_return_val_if_fail(klass->open_uri != NULL, FALSE);
 
+    session->priv->uri = g_strdup(uri);
+
     return klass->open_uri(session, uri);
 }
 
@@ -435,6 +440,14 @@ VirtViewerApp* virt_viewer_session_get_app(VirtViewerSession *self)
 
     return self->priv->app;
 }
+
+gchar* virt_viewer_session_get_uri(VirtViewerSession *self)
+{
+    g_return_val_if_fail(VIRT_VIEWER_IS_SESSION(self), FALSE);
+
+    return g_strdup(self->priv->uri);
+}
+
 
 /*
  * Local variables:

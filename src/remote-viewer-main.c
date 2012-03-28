@@ -104,7 +104,9 @@ main(int argc, char **argv)
         { NULL, 0, 0, G_OPTION_ARG_NONE, NULL, NULL, NULL }
     };
 
+#if !GLIB_CHECK_VERSION(2,31,0)
     g_thread_init(NULL);
+#endif
 
     setlocale(LC_ALL, "");
     bindtextdomain(GETTEXT_PACKAGE, LOCALE_DIR);

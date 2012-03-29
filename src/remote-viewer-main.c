@@ -252,13 +252,20 @@ main(int argc, char **argv)
 
     g_option_context_free(context);
 
-    if ((!args || (g_strv_length(args) != 1))
 #if HAVE_SPICE_GTK
-        && !controller
+    if (controller) {
+        if (args) {
+            g_printerr(_("Error: extra arguments given while using Spice controller\n"));
+            goto cleanup;
+        }
+    } else
 #endif
-        ) {
+    if (!args || g_strv_length(args) == 0) {
         if (connect_dialog(&uri) != 0)
             goto cleanup;
+    } else if (g_strv_length(args) > 1) {
+        g_printerr(_("Error: can't handle multiple URIs\n"));
+        goto cleanup;
     } else {
         uri = g_strdup(args[0]);
     }

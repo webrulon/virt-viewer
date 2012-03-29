@@ -89,12 +89,12 @@ static void recent_item_activated_dialog_cb(GtkRecentChooser *chooser G_GNUC_UNU
    gtk_dialog_response (GTK_DIALOG (data), GTK_RESPONSE_ACCEPT);
 }
 
-static int connect_dialog(gchar **uri)
+static gint connect_dialog(gchar **uri)
 {
     GtkWidget *dialog, *area, *label, *entry, *recent;
     GtkRecentFilter *rfilter;
     GtkTable *table;
-    int i, retval;
+    gint retval;
 
     /* Create the widgets */
     dialog = gtk_dialog_new_with_buttons(_("Connection details"),
@@ -256,7 +256,7 @@ main(int argc, char **argv)
         && !controller
 #endif
         ) {
-        if (connect_dialog(&uri) == -1)
+        if (connect_dialog(&uri) != 0)
             goto cleanup;
     } else {
         uri = g_strdup(args[0]);

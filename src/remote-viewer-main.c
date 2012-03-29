@@ -116,6 +116,7 @@ static gint connect_dialog(gchar **uri)
     gtk_misc_set_alignment(GTK_MISC(label), 0, 0.5);
     gtk_table_attach_defaults(table, label, 0, 1, 0, 1);
     entry = GTK_WIDGET(gtk_entry_new());
+    gtk_entry_set_activates_default(GTK_ENTRY(entry), TRUE);
     g_object_set(entry, "width-request", 200, NULL);
     gtk_table_attach_defaults(table, entry, 1, 2, 0, 1);
 

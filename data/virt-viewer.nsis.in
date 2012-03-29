@@ -7,28 +7,42 @@
 # which will generate the output file 'virt-viewer-@VERSION@.exe' which is a Windows
 # installer containing your program.
 
-Name "virt-viewer"
+Name "VirtViewer @VERSION@"
 OutFile "virt-viewer-@VERSION@.exe"
-InstallDir "c:\virt-viewer"
-InstallDirRegKey HKLM SOFTWARE\virt-viewer "Install_Dir"
+InstallDir "$LOCALAPPDATA\virt-viewer"
+InstallDirRegKey HKCU "Software\virt-viewer" ""
 
+RequestExecutionLevel user
+SetCompressor bzip2
 ShowInstDetails hide
 ShowUninstDetails hide
-
-SetCompressor bzip2
-
 XPStyle on
 
-# Page components
 Page directory
 Page instfiles
 
-ComponentText "Select which optional components you want to install."
+!define REG_UNINSTALL "Software\Microsoft\Windows\CurrentVersion\Uninstall\virt-viewer"
 
-DirText "Please select the installation folder."
+Function RegisterApplication
+    ;Register uninstaller into Add/Remove panel (for local user only)
+    WriteRegStr HKCU "${REG_UNINSTALL}" "DisplayName" "VirtViewer @VERSION@"
+    WriteRegStr HKCU "${REG_UNINSTALL}" "DisplayIcon" "$\"$INSTDIR\bin\virt-viewer.exe$\""
+    WriteRegStr HKCU "${REG_UNINSTALL}" "Publisher" "virt-manager.org"
+    WriteRegStr HKCU "${REG_UNINSTALL}" "DisplayVersion" "@VERSION@"
+    WriteRegDWord HKCU "${REG_UNINSTALL}" "EstimatedSize" 32000 ;KB
+    WriteRegStr HKCU "${REG_UNINSTALL}" "HelpLink" "http://www.virt-manager.org"
+    WriteRegStr HKCU "${REG_UNINSTALL}" "URLInfoAbout" "http://www.virt-manager.org"
+    WriteRegStr HKCU "${REG_UNINSTALL}" "InstallLocation" "$\"$INSTDIR$\""
+    WriteRegStr HKCU "${REG_UNINSTALL}" "InstallSource" "$\"$EXEDIR$\""
+    WriteRegDWord HKCU "${REG_UNINSTALL}" "NoModify" 1
+    WriteRegDWord HKCU "${REG_UNINSTALL}" "NoRepair" 1
+    WriteRegStr HKCU "${REG_UNINSTALL}" "UninstallString" "$\"$INSTDIR\Uninstall.exe$\""
+    WriteRegStr HKCU "${REG_UNINSTALL}" "Comments" "Uninstalls VirtViewer."
+FunctionEnd
 
-Section "virt-viewer"
+Section "VirtViewer"
   SectionIn RO
+  WriteRegStr HKCU "Software\virt-viewer" "" $INSTDIR
 
   SetOutPath "$INSTDIR\bin"
   File "@prefix@/bin/gst-discoverer-0.10.exe"
@@ -153,27 +167,27 @@ Section "virt-viewer"
   nsExec::ExecToLog '$0 /C bin\pango-querymodules.exe > etc\pango\pango.modules'
   nsExec::ExecToLog 'echo gtk-theme-name = "MS-Windows" > etc\gtk-2.0\gtkrc'
 
+  # make virt-viewer the default spice-x client
   WriteRegStr HKCU "Software\spice-space.org\spicex" "client" "$INSTDIR\bin\remote-viewer.exe --spice-controller"
 
 SectionEnd
 
 Section "Start Menu Shortcuts"
-  CreateDirectory "$SMPROGRAMS\virt-viewer"
-  CreateShortCut "$SMPROGRAMS\virt-viewer\Uninstall virt-viewer.lnk" "$INSTDIR\Uninstall virt-viewer.exe" "" "$INSTDIR\Uninstall virt-viewer.exe" 0
-#  CreateShortCut "$SMPROGRAMS\virt-viewer\virt-viewer.exe.lnk" "$INSTDIR\bin\virt-viewer.exe" "" "$INSTDIR\bin\virt-viewer.exe" 0
-SectionEnd
-
-Section "Desktop Icons"
-#  CreateShortCut "$DESKTOP\virt-viewer.exe.lnk" "$INSTDIR\bin\virt-viewer.exe" "" "$INSTDIR\bin\virt-viewer.exe" 0
+  CreateDirectory "$SMPROGRAMS\VirtViewer"
+  CreateShortCut "$SMPROGRAMS\VirtViewer\Remote Viewer.lnk" "$INSTDIR\bin\remote-viewer.exe" "" "$INSTDIR\bin\remote-viewer.exe" 0
+  CreateShortCut "$SMPROGRAMS\VirtViewer\Uninstall.lnk" "$INSTDIR\Uninstall.exe" "" "$INSTDIR\Uninstall.exe" 0
 SectionEnd
 
 Section "Uninstall"
-#  Delete /rebootok "$DESKTOP\virt-viewer.exe.lnk"
-#  Delete /rebootok "$SMPROGRAMS\virt-viewer\virt-viewer.exe.lnk"
-  Delete /rebootok "$SMPROGRAMS\virt-viewer\Uninstall virt-viewer.lnk"
+  Delete /rebootok "$SMPROGRAMS\VirtViewer\Uninstall.lnk"
+  Delete /rebootok "$SMPROGRAMS\VirtViewer\Remote Viewer.lnk"
   RMDir "$SMPROGRAMS\virt-viewer"
 
   DeleteRegKey HKCU "Software\spice-space.org\spicex\client"
+  DeleteRegKey /ifempty HKCU "Software\spice-space.org\spicex"
+  DeleteRegKey /ifempty HKCU "Software\spice-space.org"
+  DeleteRegKey HKCU "Software\virt-viewer"
+  DeleteRegKey HKCU "${REG_UNINSTALL}"
 
   RMDir /r "$INSTDIR\lib\pango"
 
@@ -267,5 +281,6 @@ Section "Uninstall"
 SectionEnd
 
 Section -post
-  WriteUninstaller "$INSTDIR\Uninstall virt-viewer.exe"
+  WriteUninstaller "$INSTDIR\Uninstall.exe"
+  Call RegisterApplication
 SectionEnd

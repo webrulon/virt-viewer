@@ -191,9 +191,12 @@ create_spice_session(VirtViewerSessionSpice *self)
                      G_CALLBACK(virt_viewer_session_spice_channel_destroy), self);
 
     manager = spice_usb_device_manager_get(self->priv->session, NULL);
-    if (manager)
+    if (manager) {
         g_signal_connect(manager, "auto-connect-failed",
                          G_CALLBACK(usb_connect_failed), self);
+        g_signal_connect(manager, "device-error",
+                         G_CALLBACK(usb_connect_failed), self);
+    }
 
     g_object_bind_property(self, "auto-usbredir",
                            self->priv->gtk_session, "auto-usbredir",

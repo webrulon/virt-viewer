@@ -281,6 +281,8 @@ virt_viewer_window_init (VirtViewerWindow *self)
 
     menu = GTK_WIDGET(gtk_builder_get_object(priv->builder, "menu-view-resize"));
     gtk_check_menu_item_set_active(GTK_CHECK_MENU_ITEM(menu), TRUE);
+    gtk_widget_set_sensitive(GTK_WIDGET(gtk_builder_get_object(self->priv->builder, "menu-send")), FALSE);
+    gtk_widget_set_sensitive(GTK_WIDGET(gtk_builder_get_object(self->priv->builder, "menu-file-screenshot")), FALSE);
 
     gtk_builder_connect_signals(priv->builder, self);
 
@@ -869,6 +871,7 @@ virt_viewer_window_toolbar_setup(VirtViewerWindow *self)
     gtk_widget_show(GTK_WIDGET(button));
     gtk_toolbar_insert(GTK_TOOLBAR(priv->toolbar), GTK_TOOL_ITEM(button), 0);
     g_signal_connect(button, "clicked", G_CALLBACK(virt_viewer_window_toolbar_send_key), self);
+    gtk_widget_set_sensitive(button, FALSE);
     priv->toolbar_send_key = button;
 
     /* Leave fullscreen */
@@ -995,6 +998,19 @@ virt_viewer_window_set_usb_options_sensitive(VirtViewerWindow *self, gboolean se
     gtk_widget_set_visible(priv->toolbar_usb_device_selection, sensitive);
 }
 
+static void
+display_show_hint(VirtViewerDisplay *display,
+                  GParamSpec *pspec G_GNUC_UNUSED,
+                  VirtViewerWindow *self)
+{
+    gboolean hint;
+
+    g_object_get(display, "show-hint", &hint, NULL);
+    gtk_widget_set_sensitive(GTK_WIDGET(gtk_builder_get_object(self->priv->builder, "menu-send")), hint);
+    gtk_widget_set_sensitive(GTK_WIDGET(gtk_builder_get_object(self->priv->builder, "menu-file-screenshot")), hint);
+    gtk_widget_set_sensitive(self->priv->toolbar_send_key, hint);
+}
+
 void
 virt_viewer_window_set_display(VirtViewerWindow *self, VirtViewerDisplay *display)
 {
@@ -1029,6 +1045,8 @@ virt_viewer_window_set_display(VirtViewerWindow *self, VirtViewerDisplay *displa
                          G_CALLBACK(virt_viewer_window_keyboard_ungrab), self);
         g_signal_connect(display, "display-desktop-resize",
                          G_CALLBACK(virt_viewer_window_desktop_resize), self);
+        g_signal_connect(display, "notify::show-hint",
+                         G_CALLBACK(display_show_hint), self);
     }
 }
 

@@ -40,3 +40,5 @@ install-data-hook:
 CLEANFILES = virt-viewer-plugin.so
 
 endif
+
+-include $(top_srcdir)/git.mk

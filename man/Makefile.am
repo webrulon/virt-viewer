@@ -14,3 +14,5 @@ DISTCLEANFILES = $(man_MANS)
 
 %.1: %.pod
 	pod2man $< > $@
+
+-include $(top_srcdir)/git.mk

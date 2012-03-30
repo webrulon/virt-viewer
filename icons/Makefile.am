@@ -10,3 +10,5 @@ ico_sizes = 16 32 48 256
 	$(AM_V_GEN)$(ICOTOOL) -c -o $@ $^
 
 CLEANFILES = virt-viewer.ico
+
+-include $(top_srcdir)/git.mk

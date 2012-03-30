@@ -122,3 +122,5 @@ virt-viewer_rc.$(OBJEXT): $(VIRT_VIEWER_RES) $(top_builddir)/icons/virt-viewer.i
 LDADD += virt-viewer_rc.$(OBJEXT)
 MAINTAINERCLEANFILES += virt-viewer_rc.$(OBJEXT)
 endif
+
+-include $(top_srcdir)/git.mk

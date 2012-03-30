@@ -21,9 +21,26 @@ GTK_VNC2_REQUIRED="0.4.0"
 SPICE_GTK_REQUIRED="0.11"
 SPICE_PROTOCOL_REQUIRED="0.10.1"
 
+AC_MSG_CHECKING([for native Win32])
+case "$host_os" in
+     *mingw*|*cygwin*)
+        os_win32=yes
+        ;;
+     *)
+        os_win32=no
+        ;;
+esac
+AC_MSG_RESULT([$os_win32])
+AM_CONDITIONAL([OS_WIN32],[test "$os_win32" = "yes"])
+
 AC_PROG_CC
 AM_PROG_CC_C_O
 AC_PROG_LIBTOOL
+
+AS_IF([test "x$os_win32" = "xyes"], [
+     AC_CHECK_TOOL(WINDRES, [windres])
+     AC_CHECK_PROGS(ICOTOOL, [icotool])
+])
 
 AC_CONFIG_LIBOBJ_DIR([src])
 
@@ -182,6 +199,7 @@ AC_OUTPUT([
     plugin/Makefile
     po/Makefile.in
     src/Makefile
+    src/virt-viewer.rc
     virt-viewer.spec
 ])
 

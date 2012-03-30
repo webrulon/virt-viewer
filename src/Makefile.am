@@ -1,4 +1,6 @@
 NULL =
+LDADD =
+MAINTAINERCLEANFILES =
 bin_PROGRAMS =
 
 builderxmldir = $(pkgdatadir)/ui
@@ -104,4 +106,19 @@ endif
 if HAVE_SPICE_GTK
 remote_viewer_LDFLAGS += $(SPICE_GTK_LIBS) $(SPICE_CONTROLLER_LIBS)
 remote_viewer_CFLAGS += $(SPICE_GTK_CFLAGS) $(SPICE_CONTROLLER_CFLAGS)
+endif
+
+VIRT_VIEWER_RES = virt-viewer.rc virt-viewer.manifest
+ICONDIR = $(top_builddir)/icons
+MANIFESTDIR = $(srcdir)
+EXTRA_DIST += $(VIRT_VIEWER_RES)
+
+if OS_WIN32
+virt-viewer_rc.$(OBJEXT): $(VIRT_VIEWER_RES) $(top_builddir)/icons/virt-viewer.ico
+	$(AM_V_GEN)$(WINDRES)				\
+		-DICONDIR='\"$(ICONDIR)\"'		\
+		-DMANIFESTDIR='\"$(MANIFESTDIR)\"'	\
+		-i $< -o $@
+LDADD += virt-viewer_rc.$(OBJEXT)
+MAINTAINERCLEANFILES += virt-viewer_rc.$(OBJEXT)
 endif

@@ -79,14 +79,6 @@ enum {
     PROP_APP,
 };
 
-enum menuNums {
-    FILE_MENU,
-    VIEW_MENU,
-    SEND_KEY_MENU,
-    HELP_MENU,
-    LAST_MENU // sentinel
-};
-
 struct _VirtViewerWindowPrivate {
     VirtViewerApp *app;
     GtkContainer *container; /* if any, then there is no window */
@@ -104,7 +96,7 @@ struct _VirtViewerWindowPrivate {
     gboolean accel_enabled;
     GValue accel_setting;
     GSList *accel_list;
-    int accel_menu_sig[LAST_MENU];
+    gboolean enable_mnemonics_save;
     gboolean grabbed;
     gboolean before_saved;
     GdkRectangle before_fullscreen;
@@ -588,18 +580,6 @@ virt_viewer_window_get_keycombo_menu(VirtViewerWindow *self)
     return g_object_ref_sink(menu);
 }
 
-static gboolean
-virt_viewer_window_ignore_accel(GtkWidget *menu G_GNUC_UNUSED,
-                                VirtViewerWindow *self G_GNUC_UNUSED)
-{
-    /* ignore accelerator */
-    return TRUE;
-}
-
-static const char * const menuNames[LAST_MENU] = {
-    "menu-file", "menu-view", "menu-send", "menu-help"
-};
-
 void
 virt_viewer_window_disable_modifiers(VirtViewerWindow *self)
 {
@@ -607,7 +587,6 @@ virt_viewer_window_disable_modifiers(VirtViewerWindow *self)
     VirtViewerWindowPrivate *priv = self->priv;
     GValue empty;
     GSList *accels;
-    int i;
 
     if (!priv->accel_enabled)
         return;
@@ -627,12 +606,12 @@ virt_viewer_window_disable_modifiers(VirtViewerWindow *self)
     }
 
     /* This stops menu bar shortcuts like Alt+F == File */
-    for (i = 0 ; i < LAST_MENU ; i++) {
-        GtkWidget *menu = GTK_WIDGET(gtk_builder_get_object(priv->builder, menuNames[i]));
-        priv->accel_menu_sig[i] =
-            g_signal_connect(menu, "mnemonic-activate",
-                             G_CALLBACK(virt_viewer_window_ignore_accel), self);
-    }
+    g_object_get(settings,
+                 "gtk-enable-mnemonics", &priv->enable_mnemonics_save,
+                 NULL);
+    g_object_set(settings,
+                 "gtk-enable-mnemonics", FALSE,
+                 NULL);
 
     priv->accel_enabled = FALSE;
 }
@@ -643,7 +622,6 @@ virt_viewer_window_enable_modifiers(VirtViewerWindow *self)
     GtkSettings *settings = gtk_settings_get_default();
     VirtViewerWindowPrivate *priv = self->priv;
     GSList *accels;
-    int i;
 
     if (priv->accel_enabled)
         return;
@@ -660,10 +638,9 @@ virt_viewer_window_enable_modifiers(VirtViewerWindow *self)
     }
 
     /* This allows menu bar shortcuts like Alt+F == File */
-    for (i = 0 ; i < LAST_MENU ; i++) {
-        GtkWidget *menu = GTK_WIDGET(gtk_builder_get_object(priv->builder, menuNames[i]));
-        g_signal_handler_disconnect(menu, priv->accel_menu_sig[i]);
-    }
+    g_object_set(settings,
+                 "gtk-enable-mnemonics", priv->enable_mnemonics_save,
+                 NULL);
 
     priv->accel_enabled = TRUE;
 }

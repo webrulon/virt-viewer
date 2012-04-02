@@ -25,6 +25,10 @@
 #include <gtk/gtk.h>
 #include <glib/gi18n.h>
 #include <stdlib.h>
+#ifdef G_OS_WIN32
+#include <windows.h>
+#include <io.h>
+#endif
 
 #ifdef HAVE_GTK_VNC
 #include <vncdisplay.h>
@@ -221,6 +225,17 @@ main(int argc, char **argv)
           NULL, "URI" },
         { NULL, 0, 0, G_OPTION_ARG_NONE, NULL, NULL, NULL }
     };
+
+#ifdef G_OS_WIN32
+    if (AttachConsole(ATTACH_PARENT_PROCESS) != 0) {
+        freopen("CONIN$", "r", stdin);
+        freopen("CONOUT$", "w", stdout);
+        freopen("CONERR$", "w", stderr);
+        dup2(fileno(stdin), STDIN_FILENO);
+        dup2(fileno(stdout), STDOUT_FILENO);
+        dup2(fileno(stderr), STDERR_FILENO);
+    }
+#endif
 
 #if !GLIB_CHECK_VERSION(2,31,0)
     g_thread_init(NULL);

@@ -87,6 +87,7 @@ remote_viewer_SOURCES =				\
 	remote-viewer-main.c			\
 	$(NULL)
 remote_viewer_LDFLAGS =				\
+	-Wl,--subsystem,windows			\
 	$(GLIB2_LIBS)				\
 	$(GTK_LIBS)				\
 	$(LIBXML2_LIBS)				\

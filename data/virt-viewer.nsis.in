@@ -119,6 +119,7 @@ Section "VirtViewer"
   File "@prefix@/bin/libgtk-vnc-1.0-0.dll"
 
   File "@prefix@/bin/pango-querymodules.exe"
+  File /oname=remote-viewer.com "${DESTDIR}@prefix@/bin/windows-cmdline-wrapper.exe"
   File "${DESTDIR}@prefix@/bin/remote-viewer.exe"
   File "${DESTDIR}@prefix@/bin/virt-viewer.exe"
   File "@prefix@/bin/zlib1.dll"
@@ -216,6 +217,7 @@ Section "Uninstall"
 
   RMDir /r "$INSTDIR\etc\fonts"
 
+  Delete /rebootok "$INSTDIR\bin\remote-viewer.com"
   Delete /rebootok "$INSTDIR\bin\remote-viewer.exe"
   Delete /rebootok "$INSTDIR\bin\pango-querymodules.exe"
   Delete /rebootok "$INSTDIR\bin\libpangoft2-1.0-0.dll"

@@ -163,10 +163,26 @@ Section "VirtViewer"
   SetOutPath "$INSTDIR\share\themes\MS-Windows\gtk-2.0"
   File "@prefix@/share/themes/MS-Windows/gtk-2.0/gtkrc"
 
+  SetOutPath "$INSTDIR\etc\gtk-2.0"
+  FileOpen $0 gtkrc w
+  FileWrite $0 "gtk-theme-name = $\"MS-Windows$\" $\n"
+  FileWrite $0 "gtk-icon-theme-name = $\"hicolor$\" $\n"
+  FileClose $0
+
+  SetOutPath "$INSTDIR\share\icons\hicolor"
+  File "/usr/share/icons/hicolor/index.theme"
+
+  SetOutPath "$INSTDIR\share\icons\hicolor\16x16\apps"
+  File "@prefix@/share/icons/hicolor/16x16/apps/virt-viewer.png"
+  File "/usr/share/icons/gnome/16x16/apps/preferences-desktop-keyboard-shortcuts.png"
+  SetOutPath "$INSTDIR\share\icons\hicolor\32x32\apps"
+  File "@prefix@/share/icons/hicolor/32x32/apps/virt-viewer.png"
+  SetOutPath "$INSTDIR\share\icons\hicolor\48x48\apps"
+  File "@prefix@/share/icons/hicolor/48x48/apps/virt-viewer.png"
+
   ReadEnvStr $0 COMSPEC
   SetOutPath "$INSTDIR"
   nsExec::ExecToLog '$0 /C bin\pango-querymodules.exe > etc\pango\pango.modules'
-  nsExec::ExecToLog 'echo gtk-theme-name = "MS-Windows" > etc\gtk-2.0\gtkrc'
 
   # make virt-viewer the default spice-x client
   WriteRegStr HKCU "Software\spice-space.org\spicex" "client" "$INSTDIR\bin\remote-viewer.exe --spice-controller"
@@ -193,6 +209,8 @@ Section "Uninstall"
   RMDir /r "$INSTDIR\lib\pango"
 
   RMDir /r "$INSTDIR\lib\gtk-2.0"
+
+  RMDir /r "$INSTDIR\share\icons\hicolor"
 
   Delete /rebootok "$INSTDIR\share\virt-viewer\ui\*.xml"
   Delete /rebootok "$INSTDIR\share\themes\MS-Windows\gtk-2.0\gtkrc"

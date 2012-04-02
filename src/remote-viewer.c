@@ -585,7 +585,8 @@ spice_ctrl_notified(SpiceCtrlController *ctrl,
         g_str_equal(pspec->name, "ca-file") ||
         g_str_equal(pspec->name, "enable-smartcard") ||
         g_str_equal(pspec->name, "color-depth") ||
-        g_str_equal(pspec->name, "disable-effects")) {
+        g_str_equal(pspec->name, "disable-effects") ||
+        g_str_equal(pspec->name, "enable-usbredir")) {
         g_object_set_property(G_OBJECT(session), pspec->name, &value);
     } else if (g_str_equal(pspec->name, "sport")) {
         g_object_set_property(G_OBJECT(session), "tls-port", &value);
@@ -593,6 +594,20 @@ spice_ctrl_notified(SpiceCtrlController *ctrl,
         g_object_set_property(G_OBJECT(session), "ciphers", &value);
     } else if (g_str_equal(pspec->name, "host-subject")) {
         g_object_set_property(G_OBJECT(session), "cert-subject", &value);
+    } else if (g_str_equal(pspec->name, "enable-usb-autoshare")) {
+        SpiceUsbDeviceManager *manager;
+        manager = spice_usb_device_manager_get(session, NULL);
+        if (manager != NULL) {
+            g_object_set_property(G_OBJECT(manager), "auto-connect", &value);
+        }
+    } else if (g_str_equal(pspec->name, "usb-filter")) {
+        SpiceUsbDeviceManager *manager;
+        manager = spice_usb_device_manager_get(session, NULL);
+        if (manager != NULL) {
+            g_object_set_property(G_OBJECT(manager),
+                                  "auto-connect-filter",
+                                  &value);
+        }
     } else if (g_str_equal(pspec->name, "title")) {
         g_object_set_property(G_OBJECT(app), "title", &value);
     } else if (g_str_equal(pspec->name, "display-flags")) {

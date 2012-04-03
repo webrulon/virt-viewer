@@ -87,7 +87,6 @@ remote_viewer_SOURCES =				\
 	remote-viewer-main.c			\
 	$(NULL)
 remote_viewer_LDFLAGS =				\
-	-Wl,--subsystem,windows			\
 	$(GLIB2_LIBS)				\
 	$(GTK_LIBS)				\
 	$(LIBXML2_LIBS)				\
@@ -107,6 +106,9 @@ endif
 if HAVE_SPICE_GTK
 remote_viewer_LDFLAGS += $(SPICE_GTK_LIBS) $(SPICE_CONTROLLER_LIBS)
 remote_viewer_CFLAGS += $(SPICE_GTK_CFLAGS) $(SPICE_CONTROLLER_CFLAGS)
+endif
+if OS_WIN32
+remote_viewer_LDFLAGS += -Wl,--subsystem,windows
 endif
 
 VIRT_VIEWER_RES = virt-viewer.rc virt-viewer.manifest

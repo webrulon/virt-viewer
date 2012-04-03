@@ -39,6 +39,7 @@ struct _VirtViewerDisplayVncPrivate {
 
 static void virt_viewer_display_vnc_send_keys(VirtViewerDisplay* display, const guint *keyvals, int nkeyvals);
 static GdkPixbuf *virt_viewer_display_vnc_get_pixbuf(VirtViewerDisplay* display);
+static void virt_viewer_display_vnc_close(VirtViewerDisplay *display);
 
 static void
 virt_viewer_display_vnc_finalize(GObject *obj)
@@ -61,6 +62,7 @@ virt_viewer_display_vnc_class_init(VirtViewerDisplayVncClass *klass)
 
     dclass->send_keys = virt_viewer_display_vnc_send_keys;
     dclass->get_pixbuf = virt_viewer_display_vnc_get_pixbuf;
+    dclass->close = virt_viewer_display_vnc_close;
 
     g_type_class_add_private(klass, sizeof(VirtViewerDisplayVncPrivate));
 }
@@ -153,7 +155,6 @@ virt_viewer_display_vnc_new(VncDisplay *vnc)
     display = g_object_new(VIRT_VIEWER_TYPE_DISPLAY_VNC, NULL);
 
     g_object_ref(vnc);
-    g_object_ref(vnc); /* Because gtk_container_add steals the first ref */
     display->priv->vnc = vnc;
 
     gtk_container_add(GTK_CONTAINER(display), GTK_WIDGET(display->priv->vnc));
@@ -186,6 +187,19 @@ virt_viewer_display_vnc_new(VncDisplay *vnc)
                      G_CALLBACK(virt_viewer_display_vnc_key_ungrab), display);
 
     return GTK_WIDGET(display);
+}
+
+
+static void
+virt_viewer_display_vnc_close(VirtViewerDisplay *display)
+{
+    VirtViewerDisplayVnc *vnc = VIRT_VIEWER_DISPLAY_VNC(display);
+
+    /* We're not the real owner, so we shouldn't be letting the container
+     * destroy the widget. There are still signals that need to be
+     * propagated to the VirtViewerSession
+     */
+    gtk_container_remove(GTK_CONTAINER(display), GTK_WIDGET(vnc->priv->vnc));
 }
 
 /*

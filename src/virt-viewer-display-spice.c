@@ -46,6 +46,7 @@ static void virt_viewer_display_spice_send_keys(VirtViewerDisplay *display,
                                                 int nkeyvals);
 static GdkPixbuf *virt_viewer_display_spice_get_pixbuf(VirtViewerDisplay *display);
 static void virt_viewer_display_spice_release_cursor(VirtViewerDisplay *display);
+static void virt_viewer_display_spice_close(VirtViewerDisplay *display G_GNUC_UNUSED);
 
 static void
 virt_viewer_display_spice_finalize(GObject *obj)
@@ -69,6 +70,7 @@ virt_viewer_display_spice_class_init(VirtViewerDisplaySpiceClass *klass)
     dclass->send_keys = virt_viewer_display_spice_send_keys;
     dclass->get_pixbuf = virt_viewer_display_spice_get_pixbuf;
     dclass->release_cursor = virt_viewer_display_spice_release_cursor;
+    dclass->close = virt_viewer_display_spice_close;
 
     g_type_class_add_private(klass, sizeof(VirtViewerDisplaySpicePrivate));
 }
@@ -254,6 +256,12 @@ virt_viewer_display_spice_release_cursor(VirtViewerDisplay *display)
     VirtViewerDisplaySpice *self = VIRT_VIEWER_DISPLAY_SPICE(display);
 
     spice_display_mouse_ungrab(self->priv->display);
+}
+
+
+static void
+virt_viewer_display_spice_close(VirtViewerDisplay *display G_GNUC_UNUSED)
+{
 }
 
 

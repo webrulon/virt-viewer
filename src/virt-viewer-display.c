@@ -579,6 +579,19 @@ void virt_viewer_display_release_cursor(VirtViewerDisplay *self)
     klass->release_cursor(self);
 }
 
+
+void virt_viewer_display_close(VirtViewerDisplay *self)
+{
+    VirtViewerDisplayClass *klass;
+
+    g_return_if_fail(VIRT_VIEWER_IS_DISPLAY(self));
+
+    klass = VIRT_VIEWER_DISPLAY_GET_CLASS(self);
+    g_return_if_fail(klass->close != NULL);
+
+    klass->close(self);
+}
+
 /*
  * Local variables:
  *  c-indent-level: 4

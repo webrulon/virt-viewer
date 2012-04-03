@@ -651,6 +651,7 @@ virt_viewer_window_delete(GtkWidget *src G_GNUC_UNUSED,
                           void *dummy G_GNUC_UNUSED,
                           VirtViewerWindow *self)
 {
+    DEBUG_LOG("Window closed");
     virt_viewer_app_window_set_visible(self->priv->app, self, FALSE);
     return TRUE;
 }

@@ -304,8 +304,10 @@ void virt_viewer_session_clear_displays(VirtViewerSession *session)
     GList *tmp = session->priv->displays;
 
     while (tmp) {
-        g_signal_emit_by_name(session, "session-display-removed", tmp->data);
-        g_object_unref(tmp->data);
+        VirtViewerDisplay *display = VIRT_VIEWER_DISPLAY(tmp->data);
+        g_signal_emit_by_name(session, "session-display-removed", display);
+        virt_viewer_display_close(display);
+        g_object_unref(display);
         tmp = tmp->next;
     }
     g_list_free(session->priv->displays);

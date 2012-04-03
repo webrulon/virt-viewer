@@ -104,6 +104,7 @@ static void
 virt_viewer_session_vnc_disconnected(VncDisplay *vnc G_GNUC_UNUSED,
                                      VirtViewerSessionVnc *session)
 {
+    DEBUG_LOG("Disconnected");
     g_signal_emit_by_name(session, "session-disconnected");
     /* TODO perhaps? */
     /* virt_viewer_display_set_show_hint(VIRT_VIEWER_DISPLAY(session->priv->vnc), */
@@ -234,6 +235,7 @@ virt_viewer_session_vnc_close(VirtViewerSession* session)
 
     g_return_if_fail(self != NULL);
 
+    DEBUG_LOG("close vnc=%p", self->priv->vnc);
     if (self->priv->vnc != NULL) {
         virt_viewer_session_clear_displays(session);
         vnc_display_close(self->priv->vnc);
@@ -241,6 +243,7 @@ virt_viewer_session_vnc_close(VirtViewerSession* session)
     }
 
     self->priv->vnc = VNC_DISPLAY(vnc_display_new());
+    g_object_ref_sink(self->priv->vnc);
 
     g_signal_connect(self->priv->vnc, "vnc-connected",
                      G_CALLBACK(virt_viewer_session_vnc_connected), session);
@@ -271,6 +274,7 @@ virt_viewer_session_vnc_new(GtkWindow *main_window)
     session = g_object_new(VIRT_VIEWER_TYPE_SESSION_VNC, NULL);
 
     session->priv->vnc = VNC_DISPLAY(vnc_display_new());
+    g_object_ref_sink(session->priv->vnc);
     session->priv->main_window = g_object_ref(main_window);
 
     g_signal_connect(session->priv->vnc, "vnc-connected",

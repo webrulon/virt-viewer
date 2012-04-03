@@ -75,6 +75,8 @@ struct _VirtViewerDisplayClass {
     GdkPixbuf *(*get_pixbuf)(VirtViewerDisplay *display);
     void (*release_cursor)(VirtViewerDisplay *display);
 
+    void (*close)(VirtViewerDisplay *display);
+
     /* signals */
     void (*display_pointer_grab)(VirtViewerDisplay *display);
     void (*display_pointer_ungrab)(VirtViewerDisplay *display);
@@ -111,6 +113,8 @@ VirtViewerSession* virt_viewer_display_get_session(VirtViewerDisplay *display);
 void virt_viewer_display_set_auto_resize(VirtViewerDisplay *display, gboolean auto_resize);
 gboolean virt_viewer_display_get_auto_resize(VirtViewerDisplay *display);
 void virt_viewer_display_release_cursor(VirtViewerDisplay *display);
+
+void virt_viewer_display_close(VirtViewerDisplay *display);
 
 G_END_DECLS
 

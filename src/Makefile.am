@@ -118,8 +118,8 @@ EXTRA_DIST += $(VIRT_VIEWER_RES)
 
 if OS_WIN32
 bin_PROGRAMS += windows-cmdline-wrapper
-window_cmdline_wrapper_SOURCES = windows-cmdline-wrapper.c
-window_cmdline_wrapper_LDFLAGS = -lpsapi
+windows_cmdline_wrapper_SOURCES = windows-cmdline-wrapper.c
+windows_cmdline_wrapper_LDFLAGS = -lpsapi
 
 virt-viewer_rc.$(OBJEXT): $(VIRT_VIEWER_RES) $(top_builddir)/icons/virt-viewer.ico
 	$(AM_V_GEN)$(WINDRES)				\

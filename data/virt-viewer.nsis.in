@@ -198,7 +198,7 @@ SectionEnd
 Section "Uninstall"
   Delete /rebootok "$SMPROGRAMS\VirtViewer\Uninstall.lnk"
   Delete /rebootok "$SMPROGRAMS\VirtViewer\Remote Viewer.lnk"
-  RMDir "$SMPROGRAMS\virt-viewer"
+  RMDir "$SMPROGRAMS\VirtViewer"
 
   DeleteRegKey HKCU "Software\spice-space.org\spicex\client"
   DeleteRegKey /ifempty HKCU "Software\spice-space.org\spicex"

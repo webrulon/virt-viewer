@@ -127,8 +127,11 @@ sc_check_author_list:
 
 exclude_file_name_regexp--sc_preprocessor_indentation = ^*/*.[ch]
 exclude_file_name_regexp--sc_prohibit_strcmp = ^*/*.[ch]
-exclude_file_name_regexp--sc_require_config_h = ^plugin/|src/gbinding\.c
-exclude_file_name_regexp--sc_require_config_h_first = ^plugin/|src/gbinding\.c
+exclude_file_name_regexp--sc_require_config_h = ^plugin/|src/gbinding\.c|src/windows-cmdline-wrapper.c
+exclude_file_name_regexp--sc_require_config_h_first = ^plugin/|src/gbinding\.c|src/windows-cmdline-wrapper.c
 
 exclude_file_name_regexp--sc_prohibit_empty_lines_at_EOF = ^icons/
 exclude_file_name_regexp--sc_trailing_blank = ^icons/
+
+exclude_file_name_regexp--sc_bindtextdomain = src/windows-cmdline-wrapper.c
+exclude_file_name_regexp--sc_prohibit_magic_number_exit = src/windows-cmdline-wrapper.c

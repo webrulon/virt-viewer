@@ -1,7 +1,7 @@
 # git.mk
 #
-# Copyright 2009, Red Hat, Inc.
-# Copyright 2010,2011 Behdad Esfahbod
+# Copyright (C) 2009, Red Hat, Inc.
+# Copyright (C) 2010,2011 Behdad Esfahbod
 # Written by Behdad Esfahbod
 #
 # Copying and distribution of this file, with or without modification,
@@ -87,7 +87,7 @@ git-mk-install:
 $(srcdir)/.gitignore: Makefile.am $(top_srcdir)/git.mk
 	$(AM_V_GEN) \
 	{ \
-		if test "x$(DOC_MODULE)" = x -o "x$(DOC_MAIN_SGML_FILE)" = x; then :; else \
+		if test "x$(DOC_MODULE)" = x || test "x$(DOC_MAIN_SGML_FILE)" = x; then :; else \
 			for x in \
 				$(DOC_MODULE)-decl-list.txt \
 				$(DOC_MODULE)-decl.txt \
@@ -96,7 +96,7 @@ $(srcdir)/.gitignore: Makefile.am $(top_srcdir)/git.mk
 				xml html \
 			; do echo /$$x; done; \
 		fi; \
-		if test "x$(DOC_MODULE)$(DOC_ID)" = x -o "x$(DOC_LINGUAS)" = x; then :; else \
+		if test "x$(DOC_MODULE)$(DOC_ID)" = x || test "x$(DOC_LINGUAS)" = x; then :; else \
 			for x in \
 				$(_DOC_C_DOCS) \
 				$(_DOC_LC_DOCS) \
@@ -110,7 +110,7 @@ $(srcdir)/.gitignore: Makefile.am $(top_srcdir)/git.mk
 				"*/*.omf.out" \
 			; do echo /$$x; done; \
 		fi; \
-		if test "x$(HELP_ID)" = x -o "x$(HELP_LINGUAS)" = x; then :; else \
+		if test "x$(HELP_ID)" = x || test "x$(HELP_LINGUAS)" = x; then :; else \
 			for x in \
 				$(_HELP_LC_FILES) \
 				$(_HELP_LC_STAMPS) \

@@ -10,7 +10,7 @@
 %endif
 
 %define with_spice 0
-%if 0%{?fedora} >= 16
+%if 0%{?fedora} >= 17
 %define with_spice 1
 %endif
 

@@ -595,11 +595,11 @@ spice_ctrl_notified(SpiceCtrlController *ctrl,
     } else if (g_str_equal(pspec->name, "host-subject")) {
         g_object_set_property(G_OBJECT(session), "cert-subject", &value);
     } else if (g_str_equal(pspec->name, "enable-usb-autoshare")) {
-        SpiceUsbDeviceManager *manager;
-        manager = spice_usb_device_manager_get(session, NULL);
-        if (manager != NULL) {
-            g_object_set_property(G_OBJECT(manager), "auto-connect", &value);
-        }
+        VirtViewerSession *vsession = NULL;
+
+        g_object_get(self, "session", &vsession, NULL);
+        g_object_set_property(G_OBJECT(vsession), "auto-usbredir", &value);
+        g_object_unref(G_OBJECT(vsession));
     } else if (g_str_equal(pspec->name, "usb-filter")) {
         SpiceUsbDeviceManager *manager;
         manager = spice_usb_device_manager_get(session, NULL);

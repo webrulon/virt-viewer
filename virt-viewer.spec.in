@@ -131,7 +131,7 @@ rm -rf $RPM_BUILD_ROOT
 %post
 /bin/touch --no-create %{_datadir}/icons/hicolor &>/dev/null || :
 %{_sbindir}/update-alternatives --install %{_libexecdir}/spice-xpi-client \
-  spice-xpi-client %{_libexecdir}/spice-xpi-client-remote-viewer 20
+  spice-xpi-client %{_libexecdir}/spice-xpi-client-remote-viewer 25
 
 %postun
 if [ $1 -eq 0 ] ; then

@@ -34,7 +34,7 @@ Display information about the connection
 
 Zoom level of the display window in percentage. Range 10-200.
 
-=item -f, --fullscreen
+=item -f, --full-screen
 
 Start with the window maximised to fullscreen
 

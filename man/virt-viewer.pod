@@ -57,6 +57,13 @@ Zoom level of the display window in percentage. Range 10-200.
 Do not attempt to tunnel the console over SSH, even if the main connection URI
 used SSH.
 
+=item -a, --attach
+
+Use libvirt to directly attach to a local display, instead of making a
+TCP/UNIX socket connection. This avoids the need to authentication with
+the remote display, if authentication with libvirt is already allowed.
+This option does not work with remote displays.
+
 =item -f, --full-screen
 
 Start with the window maximised to fullscreen

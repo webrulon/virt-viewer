@@ -197,6 +197,7 @@ virt_viewer_session_vnc_open_uri(VirtViewerSession* session,
     VirtViewerSessionVnc *self = VIRT_VIEWER_SESSION_VNC(session);
     xmlURIPtr uri = NULL;
     gchar *portstr;
+    gchar *hoststr = NULL;
     gboolean ret;
 
     g_return_val_if_fail(self != NULL, FALSE);
@@ -207,8 +208,22 @@ virt_viewer_session_vnc_open_uri(VirtViewerSession* session,
 
     portstr = g_strdup_printf("%d", uri->port);
 
-    ret = vnc_display_open_host(self->priv->vnc, uri->server, portstr);
+    if (uri->server) {
+        if (uri->server[0] == '[') {
+            gchar *tmp;
+            hoststr = g_strdup(uri->server + 1);
+            if ((tmp = strchr(hoststr, ']')))
+                *tmp = '\0';
+        } else {
+            hoststr = g_strdup(uri->server);
+        }
+    }
+
+    ret = vnc_display_open_host(self->priv->vnc,
+                                hoststr,
+                                portstr);
     g_free(portstr);
+    g_free(hoststr);
     xmlFreeURI(uri);
     return ret;
 }

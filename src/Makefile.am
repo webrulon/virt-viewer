@@ -55,6 +55,7 @@ virt_viewer_SOURCES =					\
 	virt-viewer-main.c				\
 	$(NULL)
 virt_viewer_LDFLAGS =				\
+	-lm					\
 	$(GLIB2_LIBS)				\
 	$(GTK_LIBS)				\
 	$(LIBXML2_LIBS)				\
@@ -87,6 +88,7 @@ remote_viewer_SOURCES =				\
 	remote-viewer-main.c			\
 	$(NULL)
 remote_viewer_LDFLAGS =				\
+	-lm					\
 	$(GLIB2_LIBS)				\
 	$(GTK_LIBS)				\
 	$(LIBXML2_LIBS)				\

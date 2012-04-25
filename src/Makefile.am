@@ -63,6 +63,7 @@ virt_viewer_LDFLAGS =				\
 	$(NULL)
 virt_viewer_CFLAGS = 				\
 	-DLOCALE_DIR=\""$(datadir)/locale"\"	\
+	-DG_LOG_DOMAIN=\"virt-viewer\"          \
 	$(GLIB2_CFLAGS) 			\
 	$(GTK_CFLAGS)				\
 	$(LIBXML2_CFLAGS)			\
@@ -95,6 +96,7 @@ remote_viewer_LDFLAGS =				\
 	$(NULL)
 remote_viewer_CFLAGS =				\
 	-DLOCALE_DIR=\""$(datadir)/locale"\"	\
+	-DG_LOG_DOMAIN=\"remote-viewer\"        \
 	$(GLIB2_CFLAGS) 			\
 	$(GTK_CFLAGS)				\
 	$(LIBXML2_CFLAGS)			\

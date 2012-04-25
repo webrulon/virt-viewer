@@ -8,9 +8,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: virt-viewer\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-03-07 10:17+0000\n"
-"PO-Revision-Date: 2012-03-07 07:39+0000\n"
-"Last-Translator: shanky <prasad.mvs@gmail.com>\n"
+"POT-Creation-Date: 2012-04-25 15:50+0100\n"
+"PO-Revision-Date: 2012-04-25 14:50+0000\n"
+"Last-Translator: Daniel Berrange <dan-transifex@berrange.com>\n"
 "Language-Team: Kannada (http://www.transifex.net/projects/p/fedora/language/kn/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -58,89 +58,111 @@ msgstr "ಗುರುತುಗಳು"
 msgid "The binding flags"
 msgstr "ಬೈಂಡಿಂಗ್ ಫ್ಲಾಗ್‌ಗಳು"
 
-#: ../src/remote-viewer-main.c:42
+#: ../src/remote-viewer-main.c:47
 #, c-format
 msgid "remote-viewer version %s\n"
 msgstr "ದೂರದ-ವೀಕ್ಷಕದ ಆವೃತ್ತಿ %s\n"
 
-#: ../src/remote-viewer-main.c:63 ../src/virt-viewer-main.c:60
+#: ../src/remote-viewer-main.c:69
+#, c-format
+msgid "Invalid full-screen argument: %s"
+msgstr ""
+
+#. Create the widgets
+#: ../src/remote-viewer-main.c:104
+msgid "Connection details"
+msgstr ""
+
+#: ../src/remote-viewer-main.c:119
+msgid "URL:"
+msgstr ""
+
+#: ../src/remote-viewer-main.c:127
+msgid "Recent connections:"
+msgstr ""
+
+#: ../src/remote-viewer-main.c:206 ../src/virt-viewer-main.c:60
 msgid "Run '"
 msgstr "ಚಲಾಯಿಸಿ '"
 
-#: ../src/remote-viewer-main.c:66 ../src/virt-viewer-main.c:63
+#: ../src/remote-viewer-main.c:209 ../src/virt-viewer-main.c:63
 msgid "Display version information"
 msgstr "ಪ್ರದರ್ಶನ ಆವೃತ್ತಿ ಮಾಹಿತಿ"
 
-#: ../src/remote-viewer-main.c:68 ../src/virt-viewer-main.c:65
+#: ../src/remote-viewer-main.c:211 ../src/virt-viewer-main.c:65
 msgid "Display verbose information"
 msgstr "ವರ್ಬೋಸ್ ಮಾಹಿತಿಯನ್ನು ತೋರಿಸು"
 
-#: ../src/remote-viewer-main.c:70 ../src/virt-viewer-main.c:67
+#: ../src/remote-viewer-main.c:213 ../src/virt-viewer-main.c:67
 msgid "Direct connection with no automatic tunnels"
 msgstr "ಯಾವುದೆ ಸ್ವಯಂಚಾಲಿತ ಟನಲ್‌ಗಳ ನೇರವಾದ ಸಂಪರ್ಕ "
 
-#: ../src/remote-viewer-main.c:72 ../src/virt-viewer-main.c:77
+#: ../src/remote-viewer-main.c:215 ../src/virt-viewer-main.c:77
 msgid "Zoom level of window, in percentage"
 msgstr "ಕಿಟಕಿಯ ಗಾತ್ರ ಬದಲಾವಣೆ, ಪ್ರತಿಶತದಲ್ಲಿ"
 
-#: ../src/remote-viewer-main.c:74 ../src/virt-viewer-main.c:79
+#: ../src/remote-viewer-main.c:217 ../src/virt-viewer-main.c:79
 msgid "Display debugging information"
 msgstr "ದೋಷನಿದಾನ ಮಾಹಿತಿಯನ್ನು ತೋರಿಸು"
 
-#: ../src/remote-viewer-main.c:76 ../src/virt-viewer-main.c:81
-msgid "Open in full screen mode"
-msgstr "ಪೂರ್ಣ ತೆರೆ ಕ್ರಮದಲ್ಲಿ ತೆರೆ"
+#: ../src/remote-viewer-main.c:219
+msgid "Open in full screen mode (=<auto-conf>)"
+msgstr ""
 
-#: ../src/remote-viewer-main.c:79
+#: ../src/remote-viewer-main.c:222
 msgid "Open connection using Spice controller communication"
 msgstr "ಸ್ಪೈಸ್ ನಿಯಂತ್ರಣ ವ್ಯವಹಾರವನ್ನು ಬಳಸಿಕೊಂಡು ಸಂಪರ್ಕವನ್ನು ತೆರೆ"
 
+#: ../src/remote-viewer-main.c:249
+msgid "Remote Viewer"
+msgstr ""
+
 #. Setup command line options
-#: ../src/remote-viewer-main.c:92
+#: ../src/remote-viewer-main.c:252
 msgid "- Remote viewer client"
 msgstr "- ದೂರದ ವೀಕ್ಷಕದ ಆವೃತ್ತಿ"
 
-#: ../src/remote-viewer-main.c:117
+#: ../src/remote-viewer-main.c:275
 #, c-format
-msgid ""
-"\n"
-"Usage: %s [OPTIONS] URI\n"
-"\n"
-"%s\n"
-"\n"
-msgstr "\nಬಳಕೆ: %s [OPTIONS] URI\n\n%s\n\n"
+msgid "Error: extra arguments given while using Spice controller\n"
+msgstr ""
 
-#: ../src/remote-viewer-main.c:122 ../src/virt-viewer-main.c:121
+#: ../src/remote-viewer-main.c:284
+#, c-format
+msgid "Error: can't handle multiple URIs\n"
+msgstr ""
+
+#: ../src/remote-viewer-main.c:291 ../src/virt-viewer-main.c:125
 #, c-format
 msgid "Zoom level must be within 10-200\n"
 msgstr "ಗಾತ್ರ ಬದಲಾವಣೆ ಮಟ್ಟವು 10-200ರ ನಡುವೆ ಇರಬೇಕು\n"
 
-#: ../src/remote-viewer.c:210 ../src/remote-viewer.c:742
+#: ../src/remote-viewer.c:237 ../src/remote-viewer.c:784
 msgid "Failed to initiate connection"
 msgstr "ಸಂಪರ್ಕವನ್ನು ಆರಂಭಿಸುವಲ್ಲಿ ವಿಫಲಗೊಂಡಿದೆ"
 
-#: ../src/remote-viewer.c:223
+#: ../src/remote-viewer.c:250
 msgid "Display disabled by controller"
 msgstr "ನಿಯಂತ್ರಕದಿಂದ ಪ್ರದರ್ಶಕವನ್ನು ನಿಷ್ಕ್ರಿಯಗೊಳಿಸಲಾಗಿದೆ"
 
-#: ../src/remote-viewer.c:654
+#: ../src/remote-viewer.c:697
 #, c-format
 msgid "Controller connection failed: %s"
 msgstr "ನಿಯಂತ್ರಕದ ಸಂಪರ್ಕವು ವಿಫಲಗೊಂಡಿದೆ: %s"
 
-#: ../src/remote-viewer.c:708
+#: ../src/remote-viewer.c:750
 msgid "Couldn't create a Spice session"
 msgstr "ಸ್ಪೈಸ್ ಅಧಿವೇಶನವನ್ನು ರಚಿಸಲು ಸಾಧ್ಯವಾಗಿಲ್ಲ"
 
-#: ../src/remote-viewer.c:722
+#: ../src/remote-viewer.c:764
 msgid "Setting up Spice session..."
 msgstr "ಸ್ಪೈಸ್ ಅಧಿವೇಶನವನ್ನು ಸಿದ್ಧಗೊಳಿಸಲಾಗುತ್ತಿದೆ..."
 
-#: ../src/remote-viewer.c:732
+#: ../src/remote-viewer.c:774
 msgid "Cannot determine the connection type from URI"
 msgstr "URI ಇಂದ ಸಂಪರ್ಕದ ಬಗೆಯನ್ನು ನಿರ್ಧರಿಸಲು ಸಾಧ್ಯವಾಗಿಲ್ಲ"
 
-#: ../src/remote-viewer.c:737
+#: ../src/remote-viewer.c:779
 #, c-format
 msgid "Couldn't create a session for this type: %s"
 msgstr "ಈ ಬಗೆಗಾಗಿ ಒಂದು ಅಧಿವೇಶನವನ್ನು ರಚಿಸಲು ಸಾಧ್ಯವಾಗಿಲ್ಲ:%s"
@@ -190,62 +212,62 @@ msgstr "This program is free software; you can redistribute it and/or modify\nit
 msgid "virt-manager.org"
 msgstr "virt-manager.org"
 
-#: ../src/virt-viewer-app.c:272
+#: ../src/virt-viewer-app.c:284
 msgid "This is the last visible display. Do you want to quit?"
 msgstr "ಇದು ಕೊನೆಯ ಗೋಚರಿಸುವ ಪ್ರದರ್ಶಕ. ನೀವು ನಿರ್ಗಮಿಸಲು ಬಯಸುವಿರಾ?"
 
-#: ../src/virt-viewer-app.c:613
+#: ../src/virt-viewer-app.c:624
 #, c-format
 msgid "Waiting for display %d..."
 msgstr "%d ಪ್ರದರ್ಶಕಕ್ಕಾಗಿ ಕಾಯಲಾಗುತ್ತಿದೆ..."
 
-#: ../src/virt-viewer-app.c:695
+#: ../src/virt-viewer-app.c:707
 #, c-format
 msgid "Unknown graphic type for the guest %s"
 msgstr "%s ಅತಿಥಿಗಾಗಿ ಗೊತ್ತಿರದ ಗ್ರಾಫಿಕ್ ಬಗೆ"
 
-#: ../src/virt-viewer-app.c:770
+#: ../src/virt-viewer-app.c:782
 msgid "Connect to ssh failed."
 msgstr "ssh ಗೆ ಸಂಪರ್ಕವು ವಿಫಲಗೊಂಡಿದೆ."
 
-#: ../src/virt-viewer-app.c:772
+#: ../src/virt-viewer-app.c:784
 msgid "Can't connect to channel, SSH only supported."
 msgstr "ಚಾನಲ್‌ನೊಂದಿಗೆ ಸಂಪರ್ಕಸಾಧಿಸಲು ಸಾಧ್ಯವಾಗಿಲ್ಲ, SSH ಅನ್ನು ಮಾತ್ರ ಬೆಂಬಲಿಸಲಾಗುತ್ತದೆ."
 
-#: ../src/virt-viewer-app.c:784
+#: ../src/virt-viewer-app.c:796
 msgid "Connect to channel unsupported."
 msgstr "ಚಾನಲ್‌ನೊಂದಿಗೆ ಸಂಪರ್ಕಸಾಧಿಸುವುದನ್ನು ಬೆಂಬಲಿಸಲಾಗುತ್ತದೆ."
 
-#: ../src/virt-viewer-app.c:864
+#: ../src/virt-viewer-app.c:876
 msgid "Connecting to graphic server"
 msgstr "ಗ್ರಾಫಿಕ್ ಪೂರೈಕೆಗಣಕದೊಂದಿಗೆ ಸಂಪರ್ಕಸಾಧಿಸಲಾಗುತ್ತಿದೆ"
 
-#: ../src/virt-viewer-app.c:994
+#: ../src/virt-viewer-app.c:1006
 msgid "Guest domain has shutdown"
 msgstr "ಅತಿಥಿ ಡೊಮೈನ್ ಅನ್ನು ಸ್ಥಗಿತಗೊಳಿಸಲಾಗಿದೆ"
 
-#: ../src/virt-viewer-app.c:1044
+#: ../src/virt-viewer-app.c:1056
 msgid "Connected to graphic server"
 msgstr "ಗ್ರಾಫಿಕ್ ಪೂರೈಕೆಗಣಕದೊಂದಿಗೆ ಸಂಪರ್ಕಿತಗೊಂಡಿದೆ"
 
-#: ../src/virt-viewer-app.c:1070
+#: ../src/virt-viewer-app.c:1082
 #, c-format
 msgid "Unable to connect to the graphic server %s"
 msgstr "%s ಎಂಬ ಗ್ರಾಫಿಕ್ ಪೂರೈಕೆಗಣಕದೊಂದಿಗೆ ಸಂಪರ್ಕಿತಗೊಂಡಿದೆ"
 
-#: ../src/virt-viewer-app.c:1099
+#: ../src/virt-viewer-app.c:1111
 #, c-format
 msgid ""
 "Unable to authenticate with remote desktop server at %s: %s\n"
 "Retry connection again?"
 msgstr "%s ನಲ್ಲಿನ ದೂರದ ಗಣಕತೆರೆ ಪೂರೈಕೆಗಣಕದೊಂದಿಗೆ ದೃಢೀಕರಿಸಲು ಸಾಧ್ಯವಾಗಿಲ್ಲ: %s\nಸಂಪರ್ಕಕ್ಕಾಗಿ ಇನ್ನೊಮ್ಮೆ ಪ್ರಯತ್ನಿಸಬೇಕೆ?"
 
-#: ../src/virt-viewer-app.c:1119
+#: ../src/virt-viewer-app.c:1131
 #, c-format
 msgid "Unable to authenticate with remote desktop server: %s"
 msgstr "ದೂರದ ಗಣಕತೆರೆ ಪೂರೈಕೆಗಣಕದೊಂದಿಗೆ ದೃಢೀಕರಿಸಲು ಸಾಧ್ಯವಾಗಿಲ್ಲ: %s"
 
-#: ../src/virt-viewer-app.c:1127
+#: ../src/virt-viewer-app.c:1139
 #, c-format
 msgid "USB redirection error: %s"
 msgstr "USB ಮರುನಿರ್ದೇಶನ ದೋಷ: %s"
@@ -293,16 +315,20 @@ msgstr "ಡೊಮೈನ್ ಆರಂಭಗೊಳ್ಳುವವರೆಗೆ ನ�
 msgid "Reconnect to domain upon restart"
 msgstr "ಮರಳಿ ಆರಂಭಗೊಂಡ ನಂತರ ಮರಳಿ ಸಂಪರ್ಕ ಜೋಡಿಸು"
 
-#: ../src/virt-viewer-main.c:92
+#: ../src/virt-viewer-main.c:81
+msgid "Open in full screen mode"
+msgstr "ಪೂರ್ಣ ತೆರೆ ಕ್ರಮದಲ್ಲಿ ತೆರೆ"
+
+#: ../src/virt-viewer-main.c:96
 msgid "Virt Viewer"
 msgstr "Virt Viewer"
 
 #. Setup command line options
-#: ../src/virt-viewer-main.c:95
+#: ../src/virt-viewer-main.c:99
 msgid "- Virtual machine graphical console"
 msgstr "- ವರ್ಚುವಲ್ ಗಣಕದ ಚಿತ್ರಾತ್ಮಕ ಕನ್ಸೋಲ್"
 
-#: ../src/virt-viewer-main.c:116
+#: ../src/virt-viewer-main.c:120
 #, c-format
 msgid ""
 "\n"
@@ -313,31 +339,40 @@ msgid ""
 msgstr "\nಬಳಕೆ: %s [OPTIONS] DOMAIN-NAME|ID|UUID\n\n%s\n\n"
 
 #. Create the widgets
-#: ../src/virt-viewer-session-spice.c:370
+#: ../src/virt-viewer-session-spice.c:380
 msgid "Select USB devices for redirection"
 msgstr "ಮರುನಿರ್ದೇಶನಕ್ಕಾಗಿ USB ಸಾಧನಗಳನ್ನು ಆರಿಸಿ"
 
-#: ../src/virt-viewer-session-vnc.c:140
+#: ../src/virt-viewer-session-vnc.c:141
 #, c-format
 msgid "Unsupported authentication type %d"
 msgstr "ಬೆಂಬಲವಿರದ ದೃಢೀಕರಣದ ಬಗೆ %d"
 
-#: ../src/virt-viewer-window.c:804
+#: ../src/virt-viewer-window.c:832
 msgid "Disconnect"
 msgstr "ಸಂಪರ್ಕ ಕಡಿದುಹಾಕು"
 
-#: ../src/virt-viewer-window.c:811 ../src/virt-viewer-window.c:812
+#: ../src/virt-viewer-window.c:839 ../src/virt-viewer-window.c:840
 #: ../src/virt-viewer.xml.h:22
 msgid "USB device selection"
 msgstr "USB ಸಾಧನವನ್ನು ಆರಿಸುವಿಕೆ"
 
-#: ../src/virt-viewer-window.c:819 ../src/virt-viewer-window.c:820
+#: ../src/virt-viewer-window.c:848
+msgid "Send key combination"
+msgstr ""
+
+#: ../src/virt-viewer-window.c:857 ../src/virt-viewer-window.c:858
 msgid "Leave fullscreen"
 msgstr "ಪೂರ್ಣತೆರೆಯಿಂದ ನಿರ್ಗಮಿಸು"
 
-#: ../src/virt-viewer-window.c:892
-msgid "(Press Ctrl+Alt to release pointer)"
-msgstr "(ಸೂಚಕವನ್ನು ಮುಕ್ತಗೊಳಿಸಲು Ctrl+Alt ಅನ್ನು ಒತ್ತಿ)"
+#: ../src/virt-viewer-window.c:937
+msgid "Ctrl+Alt"
+msgstr ""
+
+#: ../src/virt-viewer-window.c:940
+#, c-format
+msgid "(Press %s to release pointer)"
+msgstr ""
 
 #. translators:
 #. * This is "<ungrab (or empty)><space (or empty)><subtitle (or empty)> -
@@ -345,13 +380,13 @@ msgstr "(ಸೂಚಕವನ್ನು ಮುಕ್ತಗೊಳಿಸಲು Ctrl+A
 #. * Such as: "(Press Ctrl+Alt to release pointer) BigCorpTycoon MOTD - Virt
 #. Viewer"
 #. 
-#: ../src/virt-viewer-window.c:901
+#: ../src/virt-viewer-window.c:951
 #, c-format
 msgid "%s%s%s - %s"
 msgstr "%s%s%s - %s"
 
 #. translators: <space>
-#: ../src/virt-viewer-window.c:905
+#: ../src/virt-viewer-window.c:955
 msgid " "
 msgstr " "
 

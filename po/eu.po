@@ -3,7 +3,7 @@
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
-# Nikolas Slivka <snicore@gmail.com>, 2010.
+# Asier Iturralde Sarasola <asier.iturralde@gmail.com>, 2012.
 msgid ""
 msgstr ""
 "Project-Id-Version: virt-viewer\n"
@@ -11,11 +11,11 @@ msgstr ""
 "POT-Creation-Date: 2012-04-25 15:50+0100\n"
 "PO-Revision-Date: 2012-04-25 14:50+0000\n"
 "Last-Translator: Daniel Berrange <dan-transifex@berrange.com>\n"
-"Language-Team: Hungarian <trans-hu@lists.fedoraproject.org>\n"
+"Language-Team: Basque (http://www.transifex.net/projects/p/fedora/language/eu/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: hu\n"
+"Language: eu\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
 
 #: ../src/gbinding.c:637
@@ -83,11 +83,11 @@ msgstr ""
 
 #: ../src/remote-viewer-main.c:206 ../src/virt-viewer-main.c:60
 msgid "Run '"
-msgstr "Futtatás"
+msgstr "Exekutatu"
 
 #: ../src/remote-viewer-main.c:209 ../src/virt-viewer-main.c:63
 msgid "Display version information"
-msgstr ""
+msgstr "Bistaratu bertsio informazioa"
 
 #: ../src/remote-viewer-main.c:211 ../src/virt-viewer-main.c:65
 msgid "Display verbose information"
@@ -103,7 +103,7 @@ msgstr ""
 
 #: ../src/remote-viewer-main.c:217 ../src/virt-viewer-main.c:79
 msgid "Display debugging information"
-msgstr ""
+msgstr "Bistaratu arazketa informazioa"
 
 #: ../src/remote-viewer-main.c:219
 msgid "Open in full screen mode (=<auto-conf>)"
@@ -179,13 +179,13 @@ msgstr ""
 
 #: ../src/virt-viewer-about.xml.h:2
 msgid "About Glade"
-msgstr ""
+msgstr "Glade-ri buruz"
 
 #: ../src/virt-viewer-about.xml.h:3
 msgid ""
 "Copyright (C) 2007-2012 Daniel P. Berrange\n"
 "Copyright (C) 2007-2012 Red Hat, Inc."
-msgstr ""
+msgstr "Copyright-a (C) 2007-2012 Daniel P. Berrange\nCopyright-a (C) 2007-2012 Red Hat, Inc."
 
 #: ../src/virt-viewer-about.xml.h:5
 msgid "The Fedora Translation Team"
@@ -284,20 +284,20 @@ msgstr ""
 
 #: ../src/virt-viewer-auth.xml.h:2
 msgid "Password:"
-msgstr ""
+msgstr "Pasahitza:"
 
 #: ../src/virt-viewer-auth.xml.h:3
 msgid "Username:"
-msgstr ""
+msgstr "Erabiltzaile-izena:"
 
 #: ../src/virt-viewer-auth.xml.h:4
 msgid "label"
-msgstr ""
+msgstr "etiketa"
 
 #: ../src/virt-viewer-main.c:38
 #, c-format
 msgid "%s version %s\n"
-msgstr "%s verzió %s\n"
+msgstr "%s bertsioa %s\n"
 
 #: ../src/virt-viewer-main.c:69
 msgid "Attach to the local display using libvirt"
@@ -317,7 +317,7 @@ msgstr ""
 
 #: ../src/virt-viewer-main.c:81
 msgid "Open in full screen mode"
-msgstr ""
+msgstr "Ireki pantaila osoko moduan"
 
 #: ../src/virt-viewer-main.c:96
 msgid "Virt Viewer"
@@ -336,7 +336,7 @@ msgid ""
 "\n"
 "%s\n"
 "\n"
-msgstr "\nHasználata: %s [OPCIÓK] DOMAIN-NAME|ID|UUID\n\n%s\n\n"
+msgstr ""
 
 #. Create the widgets
 #: ../src/virt-viewer-session-spice.c:380
@@ -350,12 +350,12 @@ msgstr ""
 
 #: ../src/virt-viewer-window.c:832
 msgid "Disconnect"
-msgstr ""
+msgstr "Deskonektatu"
 
 #: ../src/virt-viewer-window.c:839 ../src/virt-viewer-window.c:840
 #: ../src/virt-viewer.xml.h:22
 msgid "USB device selection"
-msgstr ""
+msgstr "USB gailuaren hautapena"
 
 #: ../src/virt-viewer-window.c:848
 msgid "Send key combination"
@@ -363,7 +363,7 @@ msgstr ""
 
 #: ../src/virt-viewer-window.c:857 ../src/virt-viewer-window.c:858
 msgid "Leave fullscreen"
-msgstr ""
+msgstr "Irten pantaila osotik"
 
 #: ../src/virt-viewer-window.c:937
 msgid "Ctrl+Alt"
@@ -383,12 +383,12 @@ msgstr ""
 #: ../src/virt-viewer-window.c:951
 #, c-format
 msgid "%s%s%s - %s"
-msgstr ""
+msgstr "%s%s%s - %s"
 
 #. translators: <space>
 #: ../src/virt-viewer-window.c:955
 msgid " "
-msgstr ""
+msgstr " "
 
 #: ../src/virt-viewer.c:144
 msgid "Waiting for guest domain to re-start"
@@ -437,11 +437,11 @@ msgstr ""
 #: ../src/virt-viewer.c:624
 #, c-format
 msgid "Unable to connect to libvirt with URI %s"
-msgstr "A %s címmel nem tudott csatlakozni a libvirthez"
+msgstr ""
 
 #: ../src/virt-viewer.c:625
 msgid "[none]"
-msgstr "[nincs]"
+msgstr ""
 
 #. * Local variables:
 #. *  c-indent-level: 4
@@ -515,7 +515,7 @@ msgstr ""
 
 #: ../src/virt-viewer.xml.h:17
 msgid "Full screen"
-msgstr ""
+msgstr "Pantaila osoa"
 
 #: ../src/virt-viewer.xml.h:18
 msgid "Release cursor"
@@ -523,7 +523,7 @@ msgstr ""
 
 #: ../src/virt-viewer.xml.h:19
 msgid "Screenshot"
-msgstr ""
+msgstr "Pantaila-argazkia"
 
 #: ../src/virt-viewer.xml.h:20
 msgid "Smartcard insertion"
@@ -535,24 +535,24 @@ msgstr ""
 
 #: ../src/virt-viewer.xml.h:23
 msgid "_File"
-msgstr ""
+msgstr "_Fitxategia"
 
 #: ../src/virt-viewer.xml.h:24
 msgid "_Help"
-msgstr ""
+msgstr "_Laguntza"
 
 #: ../src/virt-viewer.xml.h:25
 msgid "_PrintScreen"
-msgstr ""
+msgstr "_Inprimatu pantaila"
 
 #: ../src/virt-viewer.xml.h:26
 msgid "_Send key"
-msgstr ""
+msgstr "_Bidali tekla"
 
 #: ../src/virt-viewer.xml.h:27
 msgid "_View"
-msgstr ""
+msgstr "_Ikusi"
 
 #: ../src/virt-viewer.xml.h:28
 msgid "_Zoom"
-msgstr ""
+msgstr "_Zooma"

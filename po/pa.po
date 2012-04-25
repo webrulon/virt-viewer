@@ -8,9 +8,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: virt-viewer\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-03-07 10:17+0000\n"
-"PO-Revision-Date: 2012-03-07 09:14+0000\n"
-"Last-Translator: Jaswinder Singh <j.phulewala@gmail.com>\n"
+"POT-Creation-Date: 2012-04-25 15:50+0100\n"
+"PO-Revision-Date: 2012-04-25 14:50+0000\n"
+"Last-Translator: Daniel Berrange <dan-transifex@berrange.com>\n"
 "Language-Team: Panjabi (Punjabi) <punjabi-users@lists.sf.net>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -58,89 +58,111 @@ msgstr "ਫਲੈਗ"
 msgid "The binding flags"
 msgstr "ਬਾਈਂਡਿੰਗ ਫਲੈਗ"
 
-#: ../src/remote-viewer-main.c:42
+#: ../src/remote-viewer-main.c:47
 #, c-format
 msgid "remote-viewer version %s\n"
 msgstr "remote-viewer ਵਰਜਨ %s\n"
 
-#: ../src/remote-viewer-main.c:63 ../src/virt-viewer-main.c:60
+#: ../src/remote-viewer-main.c:69
+#, c-format
+msgid "Invalid full-screen argument: %s"
+msgstr ""
+
+#. Create the widgets
+#: ../src/remote-viewer-main.c:104
+msgid "Connection details"
+msgstr ""
+
+#: ../src/remote-viewer-main.c:119
+msgid "URL:"
+msgstr ""
+
+#: ../src/remote-viewer-main.c:127
+msgid "Recent connections:"
+msgstr ""
+
+#: ../src/remote-viewer-main.c:206 ../src/virt-viewer-main.c:60
 msgid "Run '"
 msgstr "ਚਲਾਓ '"
 
-#: ../src/remote-viewer-main.c:66 ../src/virt-viewer-main.c:63
+#: ../src/remote-viewer-main.c:209 ../src/virt-viewer-main.c:63
 msgid "Display version information"
 msgstr "ਵਰਜਨ ਜਾਣਕਾਰੀ ਵੇਖਾਓ"
 
-#: ../src/remote-viewer-main.c:68 ../src/virt-viewer-main.c:65
+#: ../src/remote-viewer-main.c:211 ../src/virt-viewer-main.c:65
 msgid "Display verbose information"
 msgstr "ਵਰਬੋਜ਼ ਜਾਣਕਾਰੀ ਵੇਖਾਓ"
 
-#: ../src/remote-viewer-main.c:70 ../src/virt-viewer-main.c:67
+#: ../src/remote-viewer-main.c:213 ../src/virt-viewer-main.c:67
 msgid "Direct connection with no automatic tunnels"
 msgstr "ਬਿਨਾਂ ਕਿਸੇ ਆਟੋਮੈਟਿਕ ਟੰਨਲ ਡਾਇਰੈਕਟ ਕੁਨੈਕਸ਼ਨ"
 
-#: ../src/remote-viewer-main.c:72 ../src/virt-viewer-main.c:77
+#: ../src/remote-viewer-main.c:215 ../src/virt-viewer-main.c:77
 msgid "Zoom level of window, in percentage"
 msgstr "ਵਿੰਡੋ ਦਾ ਜ਼ੂਮ ਲੈਵਲ, ਪ੍ਰਤੀਸ਼ਤ ਵਿੱਚ"
 
-#: ../src/remote-viewer-main.c:74 ../src/virt-viewer-main.c:79
+#: ../src/remote-viewer-main.c:217 ../src/virt-viewer-main.c:79
 msgid "Display debugging information"
 msgstr "ਡੀਬੱਗਿੰਗ ਜਾਣਕਾਰੀ ਵੇਖਾਓ"
 
-#: ../src/remote-viewer-main.c:76 ../src/virt-viewer-main.c:81
-msgid "Open in full screen mode"
-msgstr "ਪੂਰੀ ਸਕਰੀਨ ਮੋਡ ਵਿੱਚ ਖੋਲੋ"
+#: ../src/remote-viewer-main.c:219
+msgid "Open in full screen mode (=<auto-conf>)"
+msgstr ""
 
-#: ../src/remote-viewer-main.c:79
+#: ../src/remote-viewer-main.c:222
 msgid "Open connection using Spice controller communication"
 msgstr "ਸਪਾਈਸ ਕੰਟਰੋਲਰ ਕਮਿਊਨੀਕੇਸ਼ ਵਰਤ ਕੇ ਕੁਨੈਕਸ਼ਨ ਖੋਲੋ"
 
+#: ../src/remote-viewer-main.c:249
+msgid "Remote Viewer"
+msgstr ""
+
 #. Setup command line options
-#: ../src/remote-viewer-main.c:92
+#: ../src/remote-viewer-main.c:252
 msgid "- Remote viewer client"
 msgstr "- ਰਿਮੋਟ ਡੈਸਕਟਾਪ ਕਲਾਂਈਟ"
 
-#: ../src/remote-viewer-main.c:117
+#: ../src/remote-viewer-main.c:275
 #, c-format
-msgid ""
-"\n"
-"Usage: %s [OPTIONS] URI\n"
-"\n"
-"%s\n"
-"\n"
-msgstr "\nਵਰਤੋਂ: %s [OPTIONS] URI\n\n%s\n\n"
+msgid "Error: extra arguments given while using Spice controller\n"
+msgstr ""
 
-#: ../src/remote-viewer-main.c:122 ../src/virt-viewer-main.c:121
+#: ../src/remote-viewer-main.c:284
+#, c-format
+msgid "Error: can't handle multiple URIs\n"
+msgstr ""
+
+#: ../src/remote-viewer-main.c:291 ../src/virt-viewer-main.c:125
 #, c-format
 msgid "Zoom level must be within 10-200\n"
 msgstr "ਜ਼ੂਮ ਲੈਵਲ 10-200 ਵਿਚਕਾਰ ਹੋਣਾ ਜਰੂਰੀ ਹੈ\n"
 
-#: ../src/remote-viewer.c:210 ../src/remote-viewer.c:742
+#: ../src/remote-viewer.c:237 ../src/remote-viewer.c:784
 msgid "Failed to initiate connection"
 msgstr "ਕੁਨੈਕਸ਼ਨ ਚਾਲੂ ਕਰਨ ਵਿੱਚ ਫੇਲ"
 
-#: ../src/remote-viewer.c:223
+#: ../src/remote-viewer.c:250
 msgid "Display disabled by controller"
 msgstr "ਕੰਟਰੋਲ ਦੁਆਰਾ ਦਰਸ਼ਕ ਅਯੋਗ ਕੀਤਾ ਹੈ"
 
-#: ../src/remote-viewer.c:654
+#: ../src/remote-viewer.c:697
 #, c-format
 msgid "Controller connection failed: %s"
 msgstr "ਕੰਟਰੋਲਰ ਕੁਨੈਕਸ਼ਨ ਫੇਲ: %s"
 
-#: ../src/remote-viewer.c:708
+#: ../src/remote-viewer.c:750
 msgid "Couldn't create a Spice session"
 msgstr "ਸਪਾਈਸ ਕੁਨੈਕਸ਼ਨ ਬਣਾ ਨਹੀਂ ਸਕਿਆ"
 
-#: ../src/remote-viewer.c:722
+#: ../src/remote-viewer.c:764
 msgid "Setting up Spice session..."
 msgstr "ਸਪਾਈਸ ਕੁਨੈਕਸ਼ਨ ਬਣਾ ਰਿਹਾ ਹੈ..."
 
-#: ../src/remote-viewer.c:732
+#: ../src/remote-viewer.c:774
 msgid "Cannot determine the connection type from URI"
 msgstr "URI ਤੋਂ ਕੁਨੈਕਸ਼ਨ ਜਾਣਕਾਰੀ ਪ੍ਰਾਪਤ ਨਹੀਂ ਕਰ ਸਕਦਾ"
 
-#: ../src/remote-viewer.c:737
+#: ../src/remote-viewer.c:779
 #, c-format
 msgid "Couldn't create a session for this type: %s"
 msgstr "ਇਸ ਕਿਸਮ ਲਈ ਸ਼ੈਸ਼ਨ ਨਹੀਂ ਬਣਾ ਸਕਿਆ: %s"
@@ -190,62 +212,62 @@ msgstr "ਇਹ ਪਰੋਗਰਾਮ ਫਰੀ ਸਾਫਟਵੇਅਰ ਹੈ; 
 msgid "virt-manager.org"
 msgstr "virt-manager.org"
 
-#: ../src/virt-viewer-app.c:272
+#: ../src/virt-viewer-app.c:284
 msgid "This is the last visible display. Do you want to quit?"
 msgstr "ਇਹ ਆਖਰੀ ਦਿਸਣਯੋਗ ਝਲਕ ਹੈ। ਕੀ ਤੁਸੀਂ ਬੰਦ ਕਰਨਾ ਚਾਹੁੰਦੇ ਹੋ?"
 
-#: ../src/virt-viewer-app.c:613
+#: ../src/virt-viewer-app.c:624
 #, c-format
 msgid "Waiting for display %d..."
 msgstr "ਝਲਕ %d ਦੀ ਉਡੀਕ ਕਰ ਰਿਹਾ ਹੈ..."
 
-#: ../src/virt-viewer-app.c:695
+#: ../src/virt-viewer-app.c:707
 #, c-format
 msgid "Unknown graphic type for the guest %s"
 msgstr "ਗਿਸਟ %s ਲਈ ਗਰਾਫਿਕਸ ਕਿਸਮ ਅਣਜਾਣ ਹੈ"
 
-#: ../src/virt-viewer-app.c:770
+#: ../src/virt-viewer-app.c:782
 msgid "Connect to ssh failed."
 msgstr "ssh ਨਾਲ ਜੁੜਨ ਤੋਂ ਫੇਲ ਹੋਇਆ।"
 
-#: ../src/virt-viewer-app.c:772
+#: ../src/virt-viewer-app.c:784
 msgid "Can't connect to channel, SSH only supported."
 msgstr "ਚੈਨਲ ਨਾਲ ਜੁੜ ਨਹੀਂ ਸਕਦਾ, ਸਿਰਫ SSH ਨੂੰ ਸਹਿਯੋਗ ਹੈ।"
 
-#: ../src/virt-viewer-app.c:784
+#: ../src/virt-viewer-app.c:796
 msgid "Connect to channel unsupported."
 msgstr "ਚੈਨਲ ਨਾਲ ਜੁੜਨ ਨੂੰ ਸਹਿਯੋਗ ਨਹੀਂ ਹੈ।"
 
-#: ../src/virt-viewer-app.c:864
+#: ../src/virt-viewer-app.c:876
 msgid "Connecting to graphic server"
 msgstr "ਗਰਾਫਿਕਸ ਸਰਵਰ ਨਾਲ ਜੁੜ ਰਿਹਾ ਹੈ"
 
-#: ../src/virt-viewer-app.c:994
+#: ../src/virt-viewer-app.c:1006
 msgid "Guest domain has shutdown"
 msgstr "ਗਿਸਟ ਡੋਮੇਨ ਸ਼ੱਟ-ਡਾਊਨ ਹੋ ਗਿਆ ਹੈ"
 
-#: ../src/virt-viewer-app.c:1044
+#: ../src/virt-viewer-app.c:1056
 msgid "Connected to graphic server"
 msgstr "ਗਰਾਫਿਕਸ ਸਰਵਰ ਨਾਲ ਜੁੜ ਗਿਆ ਹੈ"
 
-#: ../src/virt-viewer-app.c:1070
+#: ../src/virt-viewer-app.c:1082
 #, c-format
 msgid "Unable to connect to the graphic server %s"
 msgstr "ਗਰਾਫਿਕਸ ਸਰਵਰ %s ਨਾਲ ਜੁੜਨ ਤੋਂ ਅਸਮਰਥ"
 
-#: ../src/virt-viewer-app.c:1099
+#: ../src/virt-viewer-app.c:1111
 #, c-format
 msgid ""
 "Unable to authenticate with remote desktop server at %s: %s\n"
 "Retry connection again?"
 msgstr "%s ਤੋਂ ਰਿਮੋਟ ਡੈਸਕਟਾਪ ਸਰਵਰ ਨਾਲ ਪ੍ਰਮਾਣਿਤ ਕਰਨ ਤੋਂ ਅਸਮਰਥ: %s\nਕੁਨੈਕਸ਼ਨ ਦੁਬਾਰਾ ਕੋਸ਼ਿਸ਼ ਕਰਨੀ ਹੈ?"
 
-#: ../src/virt-viewer-app.c:1119
+#: ../src/virt-viewer-app.c:1131
 #, c-format
 msgid "Unable to authenticate with remote desktop server: %s"
 msgstr "ਰਿਮੋਟ ਸਰਵਰ ਨਾਲ ਪ੍ਰਮਾਣਿਤ ਕਰਨ ਤੋਂ ਅਸਮਰਥ: %s"
 
-#: ../src/virt-viewer-app.c:1127
+#: ../src/virt-viewer-app.c:1139
 #, c-format
 msgid "USB redirection error: %s"
 msgstr "USB ਰੀਡਾਇਰੈਕਸ਼ਨ ਗਲਤੀ: %s"
@@ -293,16 +315,20 @@ msgstr "ਡੋਮੇਲ ਚਾਲੂ ਹੋਣ ਦੀ ਉਡੀਕ ਕਰੋ"
 msgid "Reconnect to domain upon restart"
 msgstr "ਮੁੜ-ਚਾਲੂ ਹੋਣ ਤੇ ਡੋਮੇਨ ਨਾ ਮੁੜ-ਜੁੜੋ"
 
-#: ../src/virt-viewer-main.c:92
+#: ../src/virt-viewer-main.c:81
+msgid "Open in full screen mode"
+msgstr "ਪੂਰੀ ਸਕਰੀਨ ਮੋਡ ਵਿੱਚ ਖੋਲੋ"
+
+#: ../src/virt-viewer-main.c:96
 msgid "Virt Viewer"
 msgstr "Virt ਝਲਕਾਰਾ"
 
 #. Setup command line options
-#: ../src/virt-viewer-main.c:95
+#: ../src/virt-viewer-main.c:99
 msgid "- Virtual machine graphical console"
 msgstr "- ਵਰਚੁਅਲ ਮਸ਼ੀਨ ਗਰਾਫੀਕਲ ਕੰਸੋਲ"
 
-#: ../src/virt-viewer-main.c:116
+#: ../src/virt-viewer-main.c:120
 #, c-format
 msgid ""
 "\n"
@@ -313,31 +339,40 @@ msgid ""
 msgstr "\nਵਰਤੋਂ: %s [OPTIONS] DOMAIN-NAME|ID|UUID\n\n%s\n\n"
 
 #. Create the widgets
-#: ../src/virt-viewer-session-spice.c:370
+#: ../src/virt-viewer-session-spice.c:380
 msgid "Select USB devices for redirection"
 msgstr "ਰੀਡਾਇਰੈਕਸ਼ਨ ਲਈ USB ਜੰਤਰ ਚੁਣੋ"
 
-#: ../src/virt-viewer-session-vnc.c:140
+#: ../src/virt-viewer-session-vnc.c:141
 #, c-format
 msgid "Unsupported authentication type %d"
 msgstr "ਨਾ-ਸਹਿਯੋਗੀ ਪ੍ਰਮਾਣਿਕਤਾ ਕਿਸਮ %d"
 
-#: ../src/virt-viewer-window.c:804
+#: ../src/virt-viewer-window.c:832
 msgid "Disconnect"
 msgstr "ਡਿਸ-ਕੁਨੈਕਟ ਕਰੋ"
 
-#: ../src/virt-viewer-window.c:811 ../src/virt-viewer-window.c:812
+#: ../src/virt-viewer-window.c:839 ../src/virt-viewer-window.c:840
 #: ../src/virt-viewer.xml.h:22
 msgid "USB device selection"
 msgstr "USB ਜੰਤਰ ਚੋਣ"
 
-#: ../src/virt-viewer-window.c:819 ../src/virt-viewer-window.c:820
+#: ../src/virt-viewer-window.c:848
+msgid "Send key combination"
+msgstr ""
+
+#: ../src/virt-viewer-window.c:857 ../src/virt-viewer-window.c:858
 msgid "Leave fullscreen"
 msgstr "ਪੂਰੀ ਸਕਰੀਨ ਛੱਡੋ"
 
-#: ../src/virt-viewer-window.c:892
-msgid "(Press Ctrl+Alt to release pointer)"
-msgstr "(ਪੁਆਇੰਟਰ ਛੱਡਣ ਲਈ Ctrl+Alt ਦੱਬੋ।"
+#: ../src/virt-viewer-window.c:937
+msgid "Ctrl+Alt"
+msgstr ""
+
+#: ../src/virt-viewer-window.c:940
+#, c-format
+msgid "(Press %s to release pointer)"
+msgstr ""
 
 #. translators:
 #. * This is "<ungrab (or empty)><space (or empty)><subtitle (or empty)> -
@@ -345,13 +380,13 @@ msgstr "(ਪੁਆਇੰਟਰ ਛੱਡਣ ਲਈ Ctrl+Alt ਦੱਬੋ।"
 #. * Such as: "(Press Ctrl+Alt to release pointer) BigCorpTycoon MOTD - Virt
 #. Viewer"
 #. 
-#: ../src/virt-viewer-window.c:901
+#: ../src/virt-viewer-window.c:951
 #, c-format
 msgid "%s%s%s - %s"
 msgstr "%s%s%s - %s"
 
 #. translators: <space>
-#: ../src/virt-viewer-window.c:905
+#: ../src/virt-viewer-window.c:955
 msgid " "
 msgstr " "
 

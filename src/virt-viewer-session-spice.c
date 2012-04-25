@@ -482,6 +482,7 @@ virt_viewer_session_spice_fullscreen_auto_conf(VirtViewerSessionSpice *self)
     app = virt_viewer_session_get_app(VIRT_VIEWER_SESSION(self));
     g_return_val_if_fail(VIRT_VIEWER_IS_APP(app), TRUE);
 
+    DEBUG_LOG("Checking full screen auto-conf");
     g_object_get(app, "fullscreen-auto-conf", &auto_conf, NULL);
     if (!auto_conf)
         return TRUE;
@@ -490,12 +491,18 @@ virt_viewer_session_spice_fullscreen_auto_conf(VirtViewerSessionSpice *self)
         return FALSE;
 
     g_object_get(cmain, "agent-connected", &agent_connected, NULL);
-    if (!agent_connected)
+    if (!agent_connected) {
+        DEBUG_LOG("Agent not connected, skipping autoconf");
         return FALSE;
+    }
 
+    DEBUG_LOG("Performing full screen auto-conf, %d host monitors",
+              gdk_screen_get_n_monitors(screen));
     spice_main_set_display_enabled(cmain, -1, FALSE);
     for (i = 0; i < gdk_screen_get_n_monitors(screen); i++) {
         gdk_screen_get_monitor_geometry(screen, i, &dest);
+        DEBUG_LOG("Set SPICE display %d to (%d,%d)-(%dx%d)",
+                  i, dest.x, dest.y, dest.width, dest.height);
         spice_main_set_display(cmain, i, dest.x, dest.y, dest.width, dest.height);
         spice_main_set_display_enabled(cmain, i, TRUE);
     }

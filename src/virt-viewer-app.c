@@ -174,12 +174,12 @@ virt_viewer_app_set_debug(gboolean debug)
 {
 #if GLIB_CHECK_VERSION(2, 31, 0)
     if (debug) {
-        gchar *doms = getenv("G_MESSAGES_DEBUG");
+        gchar *doms = g_getenv("G_MESSAGES_DEBUG");
         if (!doms) {
-            setenv("G_MESSAGES_DEBUG", G_LOG_DOMAIN, 1);
+            g_setenv("G_MESSAGES_DEBUG", G_LOG_DOMAIN, 1);
         } else if (!strstr(doms, G_LOG_DOMAIN)) {
             gchar *newdoms = g_strdup_printf("%s %s", doms, G_LOG_DOMAIN);
-            setenv("G_MESSAGES_DEBUG", newdoms, 1);
+            g_setenv("G_MESSAGES_DEBUG", newdoms, 1);
             g_free(newdoms);
         }
     }

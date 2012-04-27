@@ -174,7 +174,7 @@ virt_viewer_app_set_debug(gboolean debug)
 {
 #if GLIB_CHECK_VERSION(2, 31, 0)
     if (debug) {
-        gchar *doms = g_getenv("G_MESSAGES_DEBUG");
+        const gchar *doms = g_getenv("G_MESSAGES_DEBUG");
         if (!doms) {
             g_setenv("G_MESSAGES_DEBUG", G_LOG_DOMAIN, 1);
         } else if (!strstr(doms, G_LOG_DOMAIN)) {

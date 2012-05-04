@@ -179,6 +179,17 @@ virt_viewer_window_dispose (GObject *object)
         priv->display = NULL;
     }
 
+    DEBUG_LOG("Disposing window %p\n", object);
+
+    if (priv->window) {
+        gtk_widget_destroy(priv->window);
+        priv->window = NULL;
+    }
+    if (priv->builder) {
+        g_object_unref(priv->builder);
+        priv->builder = NULL;
+    }
+
     g_free(priv->subtitle);
     priv->subtitle = NULL;
 }

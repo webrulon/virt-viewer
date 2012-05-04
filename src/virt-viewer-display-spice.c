@@ -110,7 +110,7 @@ display_mark(SpiceChannel *channel G_GNUC_UNUSED,
              gint mark,
              VirtViewerDisplay *display)
 {
-    DEBUG_LOG("display mark %d", mark);
+    DEBUG_LOG("Toggle monitor visibility %p %d", channel, mark);
 
     virt_viewer_display_set_show_hint(display, mark);
 }

@@ -517,6 +517,7 @@ virt_viewer_app_remove_nth_window(VirtViewerApp *self, gint nth)
     win = virt_viewer_app_get_nth_window(self, nth);
     g_return_val_if_fail(win != NULL, FALSE);
 
+    DEBUG_LOG("Remove window %d %p", nth, win);
     removed = g_hash_table_steal(self->priv->windows, &nth);
     g_warn_if_fail(removed);
 
@@ -536,6 +537,7 @@ virt_viewer_app_set_nth_window(VirtViewerApp *self, gint nth, VirtViewerWindow *
     g_return_if_fail(virt_viewer_app_get_nth_window(self, nth) == NULL);
     key = g_malloc(sizeof(gint));
     *key = nth;
+    DEBUG_LOG("Insert window %d %p", nth, win);
     g_hash_table_insert(self->priv->windows, key, win);
     virt_viewer_app_set_window_subtitle(self, win, nth);
 

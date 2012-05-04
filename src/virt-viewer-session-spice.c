@@ -427,6 +427,8 @@ virt_viewer_session_spice_channel_new(SpiceSession *s,
 
     g_object_get(channel, "channel-id", &id, NULL);
 
+    DEBUG_LOG("New spice channel %p %s %d", channel, g_type_name(G_OBJECT_TYPE(channel)), id);
+
     if (SPICE_IS_MAIN_CHANNEL(channel)) {
         if (self->priv->main_channel != NULL)
             g_signal_handlers_disconnect_by_func(self->priv->main_channel,
@@ -522,6 +524,8 @@ virt_viewer_session_spice_channel_destroy(G_GNUC_UNUSED SpiceSession *s,
     g_return_if_fail(self != NULL);
 
     g_object_get(channel, "channel-id", &id, NULL);
+    DEBUG_LOG("Destroy SPICE channel %s %d", g_type_name(G_OBJECT_TYPE(channel)), id);
+
     if (SPICE_IS_MAIN_CHANNEL(channel)) {
         DEBUG_LOG("zap main channel");
         if (channel == SPICE_CHANNEL(self->priv->main_channel))

@@ -1254,9 +1254,13 @@ virt_viewer_app_dispose (GObject *object)
     VirtViewerAppPrivate *priv = self->priv;
 
     if (priv->windows) {
-        g_hash_table_unref(priv->windows);
+        GHashTable *tmp = priv->windows;
+        /* null-ify before unrefing, because we need
+         * to prevent callbacks using priv->windows
+         * while it is being disposed off. */
         priv->windows = NULL;
         priv->main_window = NULL;
+        g_hash_table_unref(tmp);
     }
 
     if (priv->container) {
@@ -1636,6 +1640,8 @@ window_update_menu_displays_cb(gpointer key G_GNUC_UNUSED,
 static void
 virt_viewer_app_update_menu_displays(VirtViewerApp *self)
 {
+    if (!self->priv->windows)
+        return;
     g_hash_table_foreach(self->priv->windows, window_update_menu_displays_cb, self);
 }
 

@@ -1,6 +1,22 @@
   Virt Viewer News
   ================
 
+0.5.3: May 14, 2012
+-------------------
+
+  - Add support for raw IPv6 addresses
+  - Add a remote-viewer.desktop file and register spice:// handling
+  - Add a simple connection dialog to remote-viewer
+  - Add remote-viewer --fullscreen=auto-conf option, to update guest
+    monitors configuration to match client
+  - Spice controller support for disable-effects, color-depth and
+    usbredir
+  - Spice controller interaction fixes
+  - Windows version and nsis installer improvements
+  - Import newer translations from transifex
+  - Misc reference leak / crash bugs fixed
+
+
 0.5.2: Mar 09, 2012
 -------------------
 

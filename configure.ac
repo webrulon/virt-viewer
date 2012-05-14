@@ -38,15 +38,13 @@ AC_PROG_CC
 AM_PROG_CC_C_O
 AC_PROG_LIBTOOL
 
+AC_CHECK_PROGS(ICOTOOL, [icotool], [icotool])
+
 AS_IF([test "x$os_win32" = "xyes"], [
      AC_CHECK_TOOL(WINDRES, [windres])
-     AC_CHECK_PROGS(ICOTOOL, [icotool])
 
      if test -z "$WINDRES" ; then
        AC_MSG_ERROR("windres is required to compile virt-viewer on this platform")
-     fi
-     if test -z "$ICOTOOL" ; then
-       AC_MSG_ERROR("icotool is required to compile virt-viewer on this platform")
      fi
 ])
 

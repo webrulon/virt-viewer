@@ -121,7 +121,7 @@ desktop_DATA = remote-viewer.desktop
 EXTRA_DIST += $(desktop_DATA)
 
 VIRT_VIEWER_RES = virt-viewer.rc virt-viewer.manifest
-ICONDIR = $(top_builddir)/icons
+ICONDIR = $(top_srcdir)/icons
 MANIFESTDIR = $(srcdir)
 EXTRA_DIST += $(VIRT_VIEWER_RES)
 
@@ -130,7 +130,7 @@ bin_PROGRAMS += windows-cmdline-wrapper
 windows_cmdline_wrapper_SOURCES = windows-cmdline-wrapper.c
 windows_cmdline_wrapper_LDFLAGS = -lpsapi
 
-virt-viewer_rc.$(OBJEXT): $(VIRT_VIEWER_RES) $(top_builddir)/icons/virt-viewer.ico
+virt-viewer_rc.$(OBJEXT): $(VIRT_VIEWER_RES) $(ICONDIR)/virt-viewer.ico
 	$(AM_V_GEN)$(WINDRES)				\
 		-DICONDIR='\"$(ICONDIR)\"'		\
 		-DMANIFESTDIR='\"$(MANIFESTDIR)\"'	\

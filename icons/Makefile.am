@@ -9,6 +9,6 @@ ico_sizes = 16 32 48 256
 %.ico: $(foreach s,$(ico_sizes),$(s)x$(s)/%.png)
 	$(AM_V_GEN)$(ICOTOOL) -c -o $@ $^
 
-CLEANFILES = virt-viewer.ico
+EXTRA_DIST = virt-viewer.ico
 
 -include $(top_srcdir)/git.mk

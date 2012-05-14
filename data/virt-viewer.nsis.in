@@ -22,6 +22,7 @@ Page directory
 Page instfiles
 
 !define REG_UNINSTALL "Software\Microsoft\Windows\CurrentVersion\Uninstall\virt-viewer"
+!define REG_IEPOLICY  "Software\Microsoft\Internet Explorer\Low Rights\ElevationPolicy\{96190E9D-6FBB-64DB-9095-29F6FDE0B897}"
 
 Function RegisterApplication
     ;Register uninstaller into Add/Remove panel (for local user only)
@@ -38,6 +39,10 @@ Function RegisterApplication
     WriteRegDWord HKCU "${REG_UNINSTALL}" "NoRepair" 1
     WriteRegStr HKCU "${REG_UNINSTALL}" "UninstallString" "$\"$INSTDIR\Uninstall.exe$\""
     WriteRegStr HKCU "${REG_UNINSTALL}" "Comments" "Uninstalls VirtViewer."
+
+    WriteRegStr HKCU "${REG_IEPOLICY}" "AppPath" "$INSTDIR\bin"
+    WriteRegStr HKCU "${REG_IEPOLICY}" "AppName" "remote-viewer.exe"
+    WriteRegDWord HKCU "${REG_IEPOLICY}" "Policy" 3
 FunctionEnd
 
 Section "VirtViewer"
@@ -205,6 +210,7 @@ Section "Uninstall"
   DeleteRegKey /ifempty HKCU "Software\spice-space.org"
   DeleteRegKey HKCU "Software\virt-viewer"
   DeleteRegKey HKCU "${REG_UNINSTALL}"
+  DeleteRegKey HKCU "${REG_IEPOLICY}"
 
   RMDir /r "$INSTDIR\lib\pango"
 

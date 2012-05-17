@@ -66,9 +66,7 @@ struct _VirtViewerDisplaySpiceClass {
 
 GType virt_viewer_display_spice_get_type(void);
 
-GtkWidget* virt_viewer_display_spice_new(VirtViewerSessionSpice *session,
-                                         SpiceChannel *channel,
-                                         SpiceDisplay *display);
+GtkWidget* virt_viewer_display_spice_new(VirtViewerSessionSpice *session, SpiceChannel *channel);
 
 G_END_DECLS
 

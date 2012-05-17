@@ -448,10 +448,8 @@ virt_viewer_session_spice_channel_new(SpiceSession *s,
         g_signal_emit_by_name(session, "session-connected");
 
         DEBUG_LOG("new display channel (#%d)", id);
-        display = virt_viewer_display_spice_new(self,
-                                                channel,
-                                                spice_display_new(s, id));
-
+        display = virt_viewer_display_spice_new(self, channel);
+        g_object_set_data(G_OBJECT(channel), "virt-viewer-display", display);
         virt_viewer_session_add_display(VIRT_VIEWER_SESSION(session),
                                         VIRT_VIEWER_DISPLAY(display));
 
@@ -533,7 +531,9 @@ virt_viewer_session_spice_channel_destroy(G_GNUC_UNUSED SpiceSession *s,
     }
 
     if (SPICE_IS_DISPLAY_CHANNEL(channel)) {
-        DEBUG_LOG("zap session channel (#%d)", id);
+        VirtViewerDisplay *display = g_object_get_data(G_OBJECT(channel), "virt-viewer-display");
+        DEBUG_LOG("zap display channel (#%d, %p)", id, display);
+        virt_viewer_session_remove_display(session, display);
     }
 
     if (SPICE_IS_PLAYBACK_CHANNEL(channel) && self->priv->audio) {

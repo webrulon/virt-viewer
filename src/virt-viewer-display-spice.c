@@ -35,7 +35,7 @@
 G_DEFINE_TYPE (VirtViewerDisplaySpice, virt_viewer_display_spice, VIRT_VIEWER_TYPE_DISPLAY)
 
 struct _VirtViewerDisplaySpicePrivate {
-    SpiceChannel *channel;
+    SpiceChannel *channel; /* weak reference */
     SpiceDisplay *display;
 };
 
@@ -54,7 +54,6 @@ virt_viewer_display_spice_finalize(GObject *obj)
     VirtViewerDisplaySpice *spice = VIRT_VIEWER_DISPLAY_SPICE(obj);
 
     g_object_unref(spice->priv->display);
-    g_object_unref(spice->priv->channel);
 
     G_OBJECT_CLASS(virt_viewer_display_spice_parent_class)->finalize(obj);
 }
@@ -199,15 +198,14 @@ enable_accel_changed(VirtViewerApp *app,
 
 GtkWidget *
 virt_viewer_display_spice_new(VirtViewerSessionSpice *session,
-                              SpiceChannel *channel,
-                              SpiceDisplay *display)
+                              SpiceChannel *channel)
 {
     VirtViewerDisplaySpice *self;
     VirtViewerApp *app;
     gint channelid;
+    SpiceSession *s;
 
     g_return_val_if_fail(SPICE_IS_DISPLAY_CHANNEL(channel), NULL);
-    g_return_val_if_fail(SPICE_IS_DISPLAY(display), NULL);
 
     g_object_get(channel, "channel-id", &channelid, NULL);
 
@@ -215,15 +213,18 @@ virt_viewer_display_spice_new(VirtViewerSessionSpice *session,
                         "session", session,
                         "nth-display", channelid,
                         NULL);
-    self->priv->channel = g_object_ref(channel);
-    self->priv->display = g_object_ref(display);
+    self->priv->channel = channel;
+
+    g_object_get(session, "spice-session", &s, NULL);
+    self->priv->display = spice_display_new(s, channelid);
+    g_object_unref(s);
 
     g_signal_connect(channel, "display-primary-create",
                      G_CALLBACK(primary_create), self);
     g_signal_connect(channel, "display-mark",
                      G_CALLBACK(display_mark), self);
 
-    gtk_container_add(GTK_CONTAINER(self), GTK_WIDGET(self->priv->display));
+    gtk_container_add(GTK_CONTAINER(self), g_object_ref(self->priv->display));
     gtk_widget_show(GTK_WIDGET(self->priv->display));
     g_object_set(self->priv->display,
                  "grab-keyboard", TRUE,

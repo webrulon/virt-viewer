@@ -57,4 +57,10 @@ gen-ChangeLog:
 	  mv $(distdir)/cl-t $(distdir)/ChangeLog;		\
 	fi
 
+if OS_WIN32
+.PHONY: nsis
+nsis:
+	make -C $(builddir)/data virt-viewer-$(VERSION).exe
+endif
+
 -include $(top_srcdir)/git.mk

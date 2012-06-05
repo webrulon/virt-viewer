@@ -846,15 +846,18 @@ virt_viewer_app_default_activate(VirtViewerApp *self)
 #endif
 
     if (fd >= 0) {
-        return virt_viewer_session_open_fd(VIRT_VIEWER_SESSION(priv->session), fd);
+        if (virt_viewer_session_open_fd(VIRT_VIEWER_SESSION(priv->session), fd))
+            return 0;
     } else if (priv->guri) {
         virt_viewer_app_trace(self, "Opening connection to display at %s\n", priv->guri);
-        return virt_viewer_session_open_uri(VIRT_VIEWER_SESSION(priv->session), priv->guri);
+        if (virt_viewer_session_open_uri(VIRT_VIEWER_SESSION(priv->session), priv->guri))
+            return 0;
     } else {
         virt_viewer_app_trace(self, "Opening direct TCP connection to display at %s:%s:%s\n",
                               priv->ghost, priv->gport, priv->gtlsport ? priv->gtlsport : "-1");
-        return virt_viewer_session_open_host(VIRT_VIEWER_SESSION(priv->session),
-                                             priv->ghost, priv->gport, priv->gtlsport);
+        if (virt_viewer_session_open_host(VIRT_VIEWER_SESSION(priv->session),
+                                          priv->ghost, priv->gport, priv->gtlsport))
+            return 0;
     }
 
     return -1;

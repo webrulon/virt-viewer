@@ -172,6 +172,8 @@ static void
 virt_viewer_window_dispose (GObject *object)
 {
     VirtViewerWindowPrivate *priv = VIRT_VIEWER_WINDOW(object)->priv;
+    GSList *it;
+
     G_OBJECT_CLASS (virt_viewer_window_parent_class)->dispose (object);
 
     if (priv->display) {
@@ -190,8 +192,16 @@ virt_viewer_window_dispose (GObject *object)
         priv->builder = NULL;
     }
 
+    for (it = priv->accel_list ; it != NULL ; it = it->next) {
+        g_object_unref(G_OBJECT(it->data));
+    }
+    g_slist_free(priv->accel_list);
+    priv->accel_list = NULL;
+
     g_free(priv->subtitle);
     priv->subtitle = NULL;
+
+    g_value_unset(&priv->accel_setting);
 }
 
 static void

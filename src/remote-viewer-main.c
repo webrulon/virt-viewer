@@ -184,6 +184,7 @@ static void connected(VirtViewerSession *session,
     gchar *uri = virt_viewer_session_get_uri(session);
 
     recent_add(uri);
+    g_free(uri);
 }
 
 int

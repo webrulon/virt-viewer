@@ -89,6 +89,7 @@ virt_viewer_auth_collect_credentials(GtkWindow *window,
     }
 
     gtk_widget_destroy(GTK_WIDGET(dialog));
+    g_object_unref(G_OBJECT(creds));
 
     return response == GTK_RESPONSE_OK ? 0 : -1;
 }

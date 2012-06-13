@@ -1273,6 +1273,15 @@ virt_viewer_app_dispose (GObject *object)
         priv->session = NULL;
     }
     g_free(priv->title);
+    priv->title = NULL;
+    g_free(priv->guest_name);
+    priv->guest_name = NULL;
+    g_free(priv->pretty_address);
+    priv->pretty_address = NULL;
+    g_free(priv->guri);
+    priv->guri = NULL;
+    g_free(priv->title);
+    priv->title = NULL;
 
     virt_viewer_app_free_connect_info(self);
 
@@ -1622,8 +1631,11 @@ window_update_menu_displays_cb(gpointer key G_GNUC_UNUSED,
         VirtViewerWindow *vwin = VIRT_VIEWER_WINDOW(g_hash_table_lookup(self->priv->windows, nth));
         GtkWidget *item;
         gboolean visible;
+        gchar *label;
 
-        item = gtk_check_menu_item_new_with_label(g_strdup_printf("Display %d", *nth));
+        label = g_strdup_printf("Display %d", *nth);
+        item = gtk_check_menu_item_new_with_label(label);
+        g_free(label);
         visible = gtk_widget_get_visible(GTK_WIDGET(virt_viewer_window_get_window(vwin)));
         gtk_check_menu_item_set_active(GTK_CHECK_MENU_ITEM(item), visible);
         g_signal_connect(G_OBJECT(item),

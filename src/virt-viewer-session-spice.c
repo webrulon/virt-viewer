@@ -499,6 +499,10 @@ virt_viewer_session_spice_fullscreen_auto_conf(VirtViewerSessionSpice *self)
 
     DEBUG_LOG("Performing full screen auto-conf, %d host monitors",
               gdk_screen_get_n_monitors(screen));
+    g_object_set(G_OBJECT(cmain),
+                 "disable-display-position", FALSE,
+                 "disable-display-align", TRUE,
+                 NULL);
     spice_main_set_display_enabled(cmain, -1, FALSE);
     for (i = 0; i < gdk_screen_get_n_monitors(screen); i++) {
         gdk_screen_get_monitor_geometry(screen, i, &dest);

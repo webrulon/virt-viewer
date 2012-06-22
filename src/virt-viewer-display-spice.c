@@ -219,10 +219,10 @@ virt_viewer_display_spice_new(VirtViewerSessionSpice *session,
     self->priv->display = spice_display_new(s, channelid);
     g_object_unref(s);
 
-    g_signal_connect(channel, "display-primary-create",
-                     G_CALLBACK(primary_create), self);
-    g_signal_connect(channel, "display-mark",
-                     G_CALLBACK(display_mark), self);
+    virt_viewer_signal_connect_object(channel, "display-primary-create",
+                                      G_CALLBACK(primary_create), self, 0);
+    virt_viewer_signal_connect_object(channel, "display-mark",
+                                      G_CALLBACK(display_mark), self, 0);
 
     gtk_container_add(GTK_CONTAINER(self), g_object_ref(self->priv->display));
     gtk_widget_show(GTK_WIDGET(self->priv->display));
@@ -233,19 +233,17 @@ virt_viewer_display_spice_new(VirtViewerSessionSpice *session,
                  "scaling", TRUE,
                  NULL);
 
-    g_signal_connect(self->priv->display,
-                     "keyboard-grab",
-                     G_CALLBACK(virt_viewer_display_spice_keyboard_grab), self);
-    g_signal_connect(self->priv->display,
-                     "mouse-grab",
-                     G_CALLBACK(virt_viewer_display_spice_mouse_grab), self);
-    g_signal_connect(self,
-                     "size-allocate",
-                     G_CALLBACK(virt_viewer_display_spice_size_allocate), self);
+    virt_viewer_signal_connect_object(self->priv->display, "keyboard-grab",
+                                      G_CALLBACK(virt_viewer_display_spice_keyboard_grab), self, 0);
+    virt_viewer_signal_connect_object(self->priv->display, "mouse-grab",
+                                      G_CALLBACK(virt_viewer_display_spice_mouse_grab), self, 0);
+    virt_viewer_signal_connect_object(self, "size-allocate",
+                                      G_CALLBACK(virt_viewer_display_spice_size_allocate), self, 0);
 
 
     app = virt_viewer_session_get_app(VIRT_VIEWER_SESSION(session));
-    g_signal_connect(app, "notify::enable-accel", G_CALLBACK(enable_accel_changed), self);
+    virt_viewer_signal_connect_object(app, "notify::enable-accel",
+                                      G_CALLBACK(enable_accel_changed), self, 0);
     enable_accel_changed(app, NULL, self);
 
     return GTK_WIDGET(self);

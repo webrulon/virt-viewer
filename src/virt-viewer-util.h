@@ -40,6 +40,12 @@ int virt_viewer_util_extract_host(const char *uristr,
                                   char **user,
                                   int *port);
 
+gulong virt_viewer_signal_connect_object(gpointer instance,
+                                         const gchar *detailed_signal,
+                                         GCallback c_handler,
+                                         gpointer gobject,
+                                         GConnectFlags connect_flags);
+
 #endif
 
 /*

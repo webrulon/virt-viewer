@@ -520,6 +520,7 @@ virt_viewer_app_remove_nth_window(VirtViewerApp *self, gint nth)
     DEBUG_LOG("Remove window %d %p", nth, win);
     removed = g_hash_table_steal(self->priv->windows, &nth);
     g_warn_if_fail(removed);
+    virt_viewer_app_update_menu_displays(self);
 
     if (removed)
         g_signal_emit(self, signals[SIGNAL_WINDOW_REMOVED], 0, win);
@@ -540,6 +541,7 @@ virt_viewer_app_set_nth_window(VirtViewerApp *self, gint nth, VirtViewerWindow *
     DEBUG_LOG("Insert window %d %p", nth, win);
     g_hash_table_insert(self->priv->windows, key, win);
     virt_viewer_app_set_window_subtitle(self, win, nth);
+    virt_viewer_app_update_menu_displays(self);
 
     g_signal_emit(self, signals[SIGNAL_WINDOW_ADDED], 0, win);
 }
@@ -657,6 +659,7 @@ virt_viewer_app_display_added(VirtViewerSession *session G_GNUC_UNUSED,
     }
 
     virt_viewer_window_set_display(window, display);
+    virt_viewer_app_update_menu_displays(self);
     g_signal_connect(display, "notify::show-hint",
                      G_CALLBACK(display_show_hint), window);
     g_object_notify(G_OBJECT(display), "show-hint"); /* call display_show_hint */

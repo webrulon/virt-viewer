@@ -19,7 +19,7 @@ AC_DEFUN([VIRT_VIEWER_COMPILE_WARNINGS],[
 
     warnCFLAGS=
 
-    try_compiler_flags="-Wp,-D_FORTIFY_SOURCE=2 -fexceptions -fstack-protector --param=ssp-buffer-size=4 -fasynchronous-unwind-tables"
+    try_compiler_flags="-fexceptions -fstack-protector --param=ssp-buffer-size=4 -fasynchronous-unwind-tables"
 
     case "$enable_compile_warnings" in
     no)
@@ -43,6 +43,13 @@ AC_DEFUN([VIRT_VIEWER_COMPILE_WARNINGS],[
 	AC_MSG_ERROR(Unknown argument '$enable_compile_warnings' to --enable-compile-warnings)
 	;;
     esac
+
+    AH_VERBATIM([FORTIFY_SOURCE],
+                [/* Enable compile-time and run-time bounds-checking, and some warnings. */
+                 #if defined __OPTIMIZE__ && __OPTIMIZE__
+                 # define _FORTIFY_SOURCE 2
+                 #endif
+                ])
 
     compiler_flags=
     for option in $try_compiler_flags; do

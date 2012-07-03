@@ -433,6 +433,11 @@ virt_viewer_window_resize(VirtViewerWindow *self)
                                     (screen, gtk_widget_get_window(priv->window)),
                                     &fullscreen);
 
+    g_return_if_fail(fullscreen.height > 128);
+    g_return_if_fail(fullscreen.width > 128);
+    g_return_if_fail(desktopWidth > 0);
+    g_return_if_fail(desktopHeight > 0);
+
     desktopAspect = (double)desktopWidth / (double)desktopHeight;
     screenAspect = (double)(fullscreen.width - 128) / (double)(fullscreen.height - 128);
 

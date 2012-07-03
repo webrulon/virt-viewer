@@ -403,6 +403,10 @@ virt_viewer_display_size_allocate(GtkWidget *widget,
     DEBUG_LOG("Allocated %dx%d", allocation->width, allocation->height);
     gtk_widget_set_allocation(widget, allocation);
 
+    if (priv->desktopWidth == 0 ||
+        priv->desktopHeight == 0)
+        goto end;
+
     desktopAspect = (double)priv->desktopWidth / (double)priv->desktopHeight;
 
     if (child && gtk_widget_get_visible(child)) {
@@ -427,7 +431,7 @@ virt_viewer_display_size_allocate(GtkWidget *widget,
         gtk_widget_size_allocate(child, &child_allocation);
     }
 
-
+end:
     /* This unsets the size request, so that the user can
      * manually resize the window smaller again
      */

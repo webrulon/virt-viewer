@@ -1002,9 +1002,12 @@ display_show_hint(VirtViewerDisplay *display,
                   GParamSpec *pspec G_GNUC_UNUSED,
                   VirtViewerWindow *self)
 {
-    gboolean hint;
+    guint hint;
 
     g_object_get(display, "show-hint", &hint, NULL);
+
+    hint = (hint & VIRT_VIEWER_DISPLAY_SHOW_HINT_READY);
+
     gtk_widget_set_sensitive(GTK_WIDGET(gtk_builder_get_object(self->priv->builder, "menu-send")), hint);
     gtk_widget_set_sensitive(GTK_WIDGET(gtk_builder_get_object(self->priv->builder, "menu-file-screenshot")), hint);
     gtk_widget_set_sensitive(self->priv->toolbar_send_key, hint);

@@ -609,7 +609,8 @@ display_show_hint(VirtViewerDisplay *display,
 {
     VirtViewerApp *self;
     VirtViewerNotebook *nb = virt_viewer_window_get_notebook(win);
-    gint nth, hint;
+    gint nth;
+    guint hint;
 
     g_object_get(win,
                  "app", &self,
@@ -619,7 +620,7 @@ display_show_hint(VirtViewerDisplay *display,
                  "show-hint", &hint,
                  NULL);
 
-    if (hint == VIRT_VIEWER_DISPLAY_SHOW_HINT_HIDE) {
+    if (hint == 0) {
         if (win != self->priv->main_window &&
             g_getenv("VIRT_VIEWER_HIDE"))
             virt_viewer_window_hide(win);

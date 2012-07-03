@@ -41,7 +41,7 @@ struct _VirtViewerDisplayPrivate
     guint zoom_level;
     gboolean zoom;
     gint nth_display;
-    gint show_hint;
+    guint show_hint;
     VirtViewerSession *session;
     gboolean auto_resize;
 };
@@ -151,13 +151,12 @@ virt_viewer_display_class_init(VirtViewerDisplayClass *class)
 
     g_object_class_install_property(object_class,
                                     PROP_SHOW_HINT,
-                                    g_param_spec_int("show-hint",
-                                                     "Show hint",
-                                                     "Show state hint",
-                                                     0,
-                                                     G_MAXINT32,
-                                                     0,
-                                                     G_PARAM_READABLE));
+                                    g_param_spec_flags("show-hint",
+                                                       "Show hint",
+                                                       "Show state hint",
+                                                       VIRT_VIEWER_TYPE_DISPLAY_SHOW_HINT_FLAGS,
+                                                       0,
+                                                       G_PARAM_READABLE));
 
     g_object_class_install_property(object_class,
                                     PROP_SESSION,
@@ -298,7 +297,7 @@ virt_viewer_display_get_property(GObject *object,
         g_value_set_int(value, priv->nth_display);
         break;
     case PROP_SHOW_HINT:
-        g_value_set_int(value, priv->show_hint);
+        g_value_set_flags(value, priv->show_hint);
         break;
     case PROP_SESSION:
         g_value_set_object(value, virt_viewer_display_get_session(display));
@@ -530,7 +529,14 @@ GdkPixbuf* virt_viewer_display_get_pixbuf(VirtViewerDisplay *display)
     return VIRT_VIEWER_DISPLAY_GET_CLASS(display)->get_pixbuf(display);
 }
 
-void virt_viewer_display_set_show_hint(VirtViewerDisplay *self, gint hint)
+guint virt_viewer_display_get_show_hint(VirtViewerDisplay *self)
+{
+    g_return_val_if_fail(VIRT_VIEWER_IS_DISPLAY(self), 0);
+
+    return self->priv->show_hint;
+}
+
+void virt_viewer_display_set_show_hint(VirtViewerDisplay *self, guint hint)
 {
     VirtViewerDisplayPrivate *priv;
     g_return_if_fail(VIRT_VIEWER_IS_DISPLAY(self));

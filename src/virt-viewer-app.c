@@ -283,6 +283,7 @@ virt_viewer_app_window_set_visible(VirtViewerApp *self,
                                         GTK_BUTTONS_OK_CANCEL,
                                         _("This is the last visible display. Do you want to quit?"));
             gint result = gtk_dialog_run (GTK_DIALOG (dialog));
+            gtk_widget_destroy(dialog);
             switch (result) {
             case GTK_RESPONSE_OK:
                 virt_viewer_app_quit(self);
@@ -290,7 +291,6 @@ virt_viewer_app_window_set_visible(VirtViewerApp *self,
             default:
                 break;
             }
-            gtk_widget_destroy(dialog);
             return FALSE;
         } else {
             virt_viewer_app_quit(self);

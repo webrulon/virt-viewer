@@ -172,7 +172,7 @@ virt_viewer_display_spice_size_allocate(VirtViewerDisplaySpice *self,
 {
     gdouble dw = allocation->width, dh = allocation->height;
     guint zoom = 100;
-    guint channelid;
+    guint nth;
 
     if (virt_viewer_display_get_auto_resize(VIRT_VIEWER_DISPLAY(self)) == FALSE)
         return;
@@ -187,13 +187,11 @@ virt_viewer_display_spice_size_allocate(VirtViewerDisplaySpice *self,
         dh /= ((double)zoom / 100.0);
     }
 
-    g_object_get(self->priv->channel, "channel-id", &channelid, NULL);
+    g_object_get(self, "nth-display", &nth, NULL);
 
     SpiceMainChannel *main_channel = virt_viewer_session_spice_get_main_channel(
         VIRT_VIEWER_SESSION_SPICE(virt_viewer_display_get_session(VIRT_VIEWER_DISPLAY(self))));
-    spice_main_set_display(main_channel,
-                           channelid,
-                           0, 0, dw, dh);
+    spice_main_set_display(main_channel, nth, 0, 0, dw, dh);
 }
 
 static void
@@ -212,7 +210,8 @@ enable_accel_changed(VirtViewerApp *app,
 
 GtkWidget *
 virt_viewer_display_spice_new(VirtViewerSessionSpice *session,
-                              SpiceChannel *channel)
+                              SpiceChannel *channel,
+                              gint monitorid)
 {
     VirtViewerDisplaySpice *self;
     VirtViewerApp *app;
@@ -222,15 +221,20 @@ virt_viewer_display_spice_new(VirtViewerSessionSpice *session,
     g_return_val_if_fail(SPICE_IS_DISPLAY_CHANNEL(channel), NULL);
 
     g_object_get(channel, "channel-id", &channelid, NULL);
+    // We don't allow monitorid != 0 && channelid != 0
+    g_return_val_if_fail(channelid == 0 || monitorid == 0, NULL);
 
     self = g_object_new(VIRT_VIEWER_TYPE_DISPLAY_SPICE,
                         "session", session,
-                        "nth-display", channelid,
+                        // either monitorid is always 0 or channelid
+                        // is, we can't have display (0, 2) and (2, 0)
+                        // for example
+                        "nth-display", channelid + monitorid,
                         NULL);
     self->priv->channel = channel;
 
     g_object_get(session, "spice-session", &s, NULL);
-    self->priv->display = spice_display_new(s, channelid);
+    self->priv->display = spice_display_new_with_monitor(s, channelid, monitorid);
     g_object_unref(s);
 
     virt_viewer_signal_connect_object(self->priv->display, "notify::ready",

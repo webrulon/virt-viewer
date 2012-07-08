@@ -33,6 +33,7 @@
 #include "virt-viewer-session-spice.h"
 #include "virt-viewer-display-spice.h"
 #include "virt-viewer-auth.h"
+#include "virt-glib-compat.h"
 
 #if !GLIB_CHECK_VERSION(2, 26, 0)
 #include "gbinding.h"
@@ -414,6 +415,78 @@ agent_connected_changed(SpiceChannel *cmain,
 }
 
 static void
+destroy_display(gpointer data)
+{
+    VirtViewerDisplay *display = VIRT_VIEWER_DISPLAY(data);
+    VirtViewerSession *session = virt_viewer_display_get_session(display);
+
+    DEBUG_LOG("Destroying spice display %p", display);
+    virt_viewer_session_remove_display(session, display);
+    g_object_unref(display);
+}
+
+static void
+virt_viewer_session_spice_display_monitors(SpiceChannel *channel,
+                                           GParamSpec *pspec G_GNUC_UNUSED,
+                                           VirtViewerSessionSpice *self)
+{
+    GArray *monitors = NULL;
+    GPtrArray *displays = NULL;
+    GtkWidget *display;
+    guint i, monitors_max;
+
+    g_object_get(channel,
+                 "monitors", &monitors,
+                 "monitors-max", &monitors_max,
+                 NULL);
+    g_return_if_fail(monitors != NULL);
+    g_return_if_fail(monitors->len <= monitors_max);
+
+    displays = g_object_get_data(G_OBJECT(channel), "virt-viewer-displays");
+    if (displays == NULL) {
+        displays = g_ptr_array_new();
+        g_ptr_array_set_free_func(displays, destroy_display);
+        g_object_set_data_full(G_OBJECT(channel), "virt-viewer-displays",
+                               displays, (GDestroyNotify)g_ptr_array_unref);
+    }
+
+    g_ptr_array_set_size(displays, monitors_max);
+
+    for (i = 0; i < monitors_max; i++) {
+        display = g_ptr_array_index(displays, i);
+        if (display == NULL) {
+            display = virt_viewer_display_spice_new(self, channel, i);
+            DEBUG_LOG("creating spice display (#:%d)", i);
+            g_ptr_array_index(displays, i) = g_object_ref(display);
+        }
+
+        g_object_freeze_notify(G_OBJECT(display));
+        virt_viewer_display_set_enabled(VIRT_VIEWER_DISPLAY(display), FALSE);
+        virt_viewer_session_add_display(VIRT_VIEWER_SESSION(self),
+                                        VIRT_VIEWER_DISPLAY(display));
+    }
+
+    for (i = 0; i < monitors->len; i++) {
+        SpiceDisplayMonitorConfig *monitor = &g_array_index(monitors, SpiceDisplayMonitorConfig, i);
+        display = g_ptr_array_index(displays, monitor->id);
+        g_return_if_fail(display != NULL);
+
+        if (monitor->width == 0 || monitor->width == 0)
+            continue;
+
+        virt_viewer_display_set_enabled(VIRT_VIEWER_DISPLAY(display), TRUE);
+        virt_viewer_display_set_desktop_size(VIRT_VIEWER_DISPLAY(display),
+                                             monitor->width, monitor->height);
+    }
+
+    for (i = 0; i < monitors_max; i++)
+        g_object_thaw_notify(g_ptr_array_index(displays, i));
+
+    g_clear_pointer(&monitors, g_array_unref);
+
+}
+
+static void
 virt_viewer_session_spice_channel_new(SpiceSession *s,
                                       SpiceChannel *channel,
                                       VirtViewerSession *session)
@@ -441,20 +514,17 @@ virt_viewer_session_spice_channel_new(SpiceSession *s,
 
         g_signal_connect(channel, "notify::agent-connected", G_CALLBACK(agent_connected_changed),  self);
         agent_connected_changed(channel, NULL, self);
+
+        g_signal_emit_by_name(session, "session-connected");
     }
 
     if (SPICE_IS_DISPLAY_CHANNEL(channel)) {
-        GtkWidget *display;
-
-        g_signal_emit_by_name(session, "session-connected");
-
-        DEBUG_LOG("new display channel (#%d)", id);
-        display = virt_viewer_display_spice_new(self, channel);
-        g_object_set_data(G_OBJECT(channel), "virt-viewer-display", display);
-        virt_viewer_session_add_display(VIRT_VIEWER_SESSION(session),
-                                        VIRT_VIEWER_DISPLAY(display));
-
         g_signal_emit_by_name(session, "session-initialized");
+
+        g_signal_connect(channel, "notify::monitors",
+                         G_CALLBACK(virt_viewer_session_spice_display_monitors), self);
+
+        spice_channel_connect(channel);
     }
 
     if (SPICE_IS_INPUTS_CHANNEL(channel)) {
@@ -538,7 +608,6 @@ virt_viewer_session_spice_channel_destroy(G_GNUC_UNUSED SpiceSession *s,
     if (SPICE_IS_DISPLAY_CHANNEL(channel)) {
         VirtViewerDisplay *display = g_object_get_data(G_OBJECT(channel), "virt-viewer-display");
         DEBUG_LOG("zap display channel (#%d, %p)", id, display);
-        virt_viewer_session_remove_display(session, display);
     }
 
     if (SPICE_IS_PLAYBACK_CHANNEL(channel) && self->priv->audio) {

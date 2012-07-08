@@ -1639,7 +1639,7 @@ window_update_menu_displays_cb(gpointer key G_GNUC_UNUSED,
         gboolean visible;
         gchar *label;
 
-        label = g_strdup_printf(_("Display %d"), *nth);
+        label = g_strdup_printf(_("Display %d"), *nth + 1);
         item = gtk_check_menu_item_new_with_label(label);
         g_free(label);
         visible = gtk_widget_get_visible(GTK_WIDGET(virt_viewer_window_get_window(vwin)));

@@ -282,6 +282,9 @@ virt_viewer_session_new(void)
 void virt_viewer_session_add_display(VirtViewerSession *session,
                                      VirtViewerDisplay *display)
 {
+    if (g_list_find(session->priv->displays, display))
+        return;
+
     session->priv->displays = g_list_append(session->priv->displays, display);
     g_object_ref(display);
     g_signal_emit_by_name(session, "session-display-added", display);

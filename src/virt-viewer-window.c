@@ -1062,6 +1062,9 @@ virt_viewer_window_show(VirtViewerWindow *self)
 {
     gtk_widget_show(self->priv->window);
 
+    if (self->priv->display)
+        virt_viewer_display_set_enabled(self->priv->display, TRUE);
+
     if (self->priv->desktop_resize_pending) {
         virt_viewer_window_resize(self);
         self->priv->desktop_resize_pending = FALSE;
@@ -1072,6 +1075,15 @@ void
 virt_viewer_window_hide(VirtViewerWindow *self)
 {
     gtk_widget_hide(self->priv->window);
+
+    if (self->priv->display) {
+        VirtViewerDisplay *display = self->priv->display;
+        guint nth;
+
+        g_object_get(display, "nth-display", &nth, NULL);
+        if (nth != 0)
+            virt_viewer_display_set_enabled(display, FALSE);
+    }
 }
 
 void

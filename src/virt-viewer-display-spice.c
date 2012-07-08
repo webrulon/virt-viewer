@@ -75,9 +75,26 @@ virt_viewer_display_spice_class_init(VirtViewerDisplaySpiceClass *klass)
 }
 
 static void
+show_hint_changed(VirtViewerDisplay *self)
+{
+    SpiceMainChannel *main_channel = virt_viewer_session_spice_get_main_channel(
+        VIRT_VIEWER_SESSION_SPICE(virt_viewer_display_get_session(self)));
+    guint enabled = TRUE;
+    guint nth;
+
+    g_object_get(self, "nth-display", &nth, NULL);
+    if (virt_viewer_display_get_show_hint(self) & VIRT_VIEWER_DISPLAY_SHOW_HINT_DISABLED)
+        enabled = FALSE;
+
+    spice_main_set_display_enabled(main_channel, nth, enabled);
+}
+
+static void
 virt_viewer_display_spice_init(VirtViewerDisplaySpice *self G_GNUC_UNUSED)
 {
     self->priv = VIRT_VIEWER_DISPLAY_SPICE_GET_PRIVATE(self);
+
+    g_signal_connect(self, "notify::show-hint", G_CALLBACK(show_hint_changed), NULL);
 }
 
 static void
@@ -164,6 +181,9 @@ virt_viewer_display_spice_size_allocate(VirtViewerDisplaySpice *self,
     guint channelid;
 
     if (virt_viewer_display_get_auto_resize(VIRT_VIEWER_DISPLAY(self)) == FALSE)
+        return;
+
+    if (virt_viewer_display_get_show_hint(VIRT_VIEWER_DISPLAY(self)) & VIRT_VIEWER_DISPLAY_SHOW_HINT_DISABLED)
         return;
 
     if (virt_viewer_display_get_zoom(VIRT_VIEWER_DISPLAY(self))) {

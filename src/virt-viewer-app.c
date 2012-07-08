@@ -622,15 +622,17 @@ display_show_hint(VirtViewerDisplay *display,
                  "show-hint", &hint,
                  NULL);
 
-    if (hint == 0) {
+    if (hint & VIRT_VIEWER_DISPLAY_SHOW_HINT_DISABLED) {
+        virt_viewer_window_hide(win);
+    } else if (hint & VIRT_VIEWER_DISPLAY_SHOW_HINT_READY) {
+        virt_viewer_notebook_show_display(nb);
+        virt_viewer_window_show(win);
+        gtk_window_present(virt_viewer_window_get_window(win));
+    } else {
         if (win != self->priv->main_window &&
             g_getenv("VIRT_VIEWER_HIDE"))
             virt_viewer_window_hide(win);
         virt_viewer_notebook_show_status(nb, _("Waiting for display %d..."), nth + 1);
-    } else {
-        virt_viewer_notebook_show_display(nb);
-        virt_viewer_window_show(win);
-        gtk_window_present(virt_viewer_window_get_window(win));
     }
 
     g_object_unref(self);

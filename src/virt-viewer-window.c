@@ -1042,18 +1042,18 @@ virt_viewer_window_set_display(VirtViewerWindow *self, VirtViewerDisplay *displa
         gtk_notebook_append_page(GTK_NOTEBOOK(priv->notebook), GTK_WIDGET(display), NULL);
         gtk_widget_show_all(GTK_WIDGET(display));
 
-        g_signal_connect(display, "display-pointer-grab",
-                         G_CALLBACK(virt_viewer_window_pointer_grab), self);
-        g_signal_connect(display, "display-pointer-ungrab",
-                         G_CALLBACK(virt_viewer_window_pointer_ungrab), self);
-        g_signal_connect(display, "display-keyboard-grab",
-                         G_CALLBACK(virt_viewer_window_keyboard_grab), self);
-        g_signal_connect(display, "display-keyboard-ungrab",
-                         G_CALLBACK(virt_viewer_window_keyboard_ungrab), self);
-        g_signal_connect(display, "display-desktop-resize",
-                         G_CALLBACK(virt_viewer_window_desktop_resize), self);
-        g_signal_connect(display, "notify::show-hint",
-                         G_CALLBACK(display_show_hint), self);
+        virt_viewer_signal_connect_object(display, "display-pointer-grab",
+                                          G_CALLBACK(virt_viewer_window_pointer_grab), self, 0);
+        virt_viewer_signal_connect_object(display, "display-pointer-ungrab",
+                                          G_CALLBACK(virt_viewer_window_pointer_ungrab), self, 0);
+        virt_viewer_signal_connect_object(display, "display-keyboard-grab",
+                                          G_CALLBACK(virt_viewer_window_keyboard_grab), self, 0);
+        virt_viewer_signal_connect_object(display, "display-keyboard-ungrab",
+                                          G_CALLBACK(virt_viewer_window_keyboard_ungrab), self, 0);
+        virt_viewer_signal_connect_object(display, "display-desktop-resize",
+                                          G_CALLBACK(virt_viewer_window_desktop_resize), self, 0);
+        virt_viewer_signal_connect_object(display, "notify::show-hint",
+                                          G_CALLBACK(display_show_hint), self, 0);
     }
 }
 

@@ -660,8 +660,8 @@ virt_viewer_app_display_added(VirtViewerSession *session G_GNUC_UNUSED,
 
     virt_viewer_window_set_display(window, display);
     virt_viewer_app_update_menu_displays(self);
-    g_signal_connect(display, "notify::show-hint",
-                     G_CALLBACK(display_show_hint), window);
+    virt_viewer_signal_connect_object(display, "notify::show-hint",
+                                      G_CALLBACK(display_show_hint), window, 0);
     g_object_notify(G_OBJECT(display), "show-hint"); /* call display_show_hint */
 }
 

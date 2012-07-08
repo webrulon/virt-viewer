@@ -122,30 +122,24 @@ virt_viewer_display_spice_get_pixbuf(VirtViewerDisplay *display)
 }
 
 static void
-display_mark(SpiceChannel *channel G_GNUC_UNUSED,
-             gint mark,
-             VirtViewerDisplay *display)
+display_ready(GObject *display,
+              GParamSpec *pspec G_GNUC_UNUSED,
+              VirtViewerDisplay *self)
 {
-    DEBUG_LOG("Toggle monitor visibility %p %d", channel, mark);
+    guint hint;
+    gboolean ready;
 
-    virt_viewer_display_set_show_hint(display, mark);
+    g_object_get(display, "ready", &ready, NULL);
+    DEBUG_LOG("display %p ready:%d", self, ready);
+
+    hint = virt_viewer_display_get_show_hint(self);
+    if (ready)
+        hint |= VIRT_VIEWER_DISPLAY_SHOW_HINT_READY;
+    else
+        hint &= ~VIRT_VIEWER_DISPLAY_SHOW_HINT_READY;
+
+    virt_viewer_display_set_show_hint(self, hint);
 }
-
-static void
-primary_create(SpiceChannel *channel G_GNUC_UNUSED,
-               gint format G_GNUC_UNUSED,
-               gint width,
-               gint height,
-               gint stride G_GNUC_UNUSED,
-               gint shmid G_GNUC_UNUSED,
-               gpointer imgdata G_GNUC_UNUSED,
-               VirtViewerDisplay *display)
-{
-    DEBUG_LOG("spice desktop resize %dx%d", width, height);
-
-    virt_viewer_display_set_desktop_size(display, width, height);
-}
-
 
 static void
 virt_viewer_display_spice_keyboard_grab(SpiceDisplay *display G_GNUC_UNUSED,
@@ -239,10 +233,8 @@ virt_viewer_display_spice_new(VirtViewerSessionSpice *session,
     self->priv->display = spice_display_new(s, channelid);
     g_object_unref(s);
 
-    virt_viewer_signal_connect_object(channel, "display-primary-create",
-                                      G_CALLBACK(primary_create), self, 0);
-    virt_viewer_signal_connect_object(channel, "display-mark",
-                                      G_CALLBACK(display_mark), self, 0);
+    virt_viewer_signal_connect_object(self->priv->display, "notify::ready",
+                                      G_CALLBACK(display_ready), self, 0);
 
     gtk_container_add(GTK_CONTAINER(self), g_object_ref(self->priv->display));
     gtk_widget_show(GTK_WIDGET(self->priv->display));

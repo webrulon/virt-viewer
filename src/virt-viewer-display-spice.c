@@ -141,19 +141,12 @@ display_ready(GObject *display,
               GParamSpec *pspec G_GNUC_UNUSED,
               VirtViewerDisplay *self)
 {
-    guint hint;
     gboolean ready;
 
     g_object_get(display, "ready", &ready, NULL);
     DEBUG_LOG("display %p ready:%d", self, ready);
 
-    hint = virt_viewer_display_get_show_hint(self);
-    if (ready)
-        hint |= VIRT_VIEWER_DISPLAY_SHOW_HINT_READY;
-    else
-        hint &= ~VIRT_VIEWER_DISPLAY_SHOW_HINT_READY;
-
-    virt_viewer_display_set_show_hint(self, hint);
+    virt_viewer_display_set_show_hint(self, VIRT_VIEWER_DISPLAY_SHOW_HINT_READY, ready);
 }
 
 static void

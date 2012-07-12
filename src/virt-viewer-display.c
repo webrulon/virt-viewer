@@ -551,12 +551,20 @@ guint virt_viewer_display_get_show_hint(VirtViewerDisplay *self)
     return self->priv->show_hint;
 }
 
-void virt_viewer_display_set_show_hint(VirtViewerDisplay *self, guint hint)
+void virt_viewer_display_set_show_hint(VirtViewerDisplay *self, guint mask, gboolean enable)
 {
     VirtViewerDisplayPrivate *priv;
+    guint hint;
     g_return_if_fail(VIRT_VIEWER_IS_DISPLAY(self));
 
     priv = self->priv;
+    hint = priv->show_hint;
+
+    if (enable)
+        hint |= mask;
+    else
+        hint &= ~mask;
+
     if (priv->show_hint == hint)
         return;
 
@@ -566,17 +574,9 @@ void virt_viewer_display_set_show_hint(VirtViewerDisplay *self, guint hint)
 
 void virt_viewer_display_set_enabled(VirtViewerDisplay *self, gboolean enabled)
 {
-    guint hint;
-
     g_return_if_fail(VIRT_VIEWER_IS_DISPLAY(self));
 
-    hint = virt_viewer_display_get_show_hint(self);
-    if (enabled)
-        hint &= ~VIRT_VIEWER_DISPLAY_SHOW_HINT_DISABLED;
-    else
-        hint |= VIRT_VIEWER_DISPLAY_SHOW_HINT_DISABLED;
-
-    virt_viewer_display_set_show_hint(self, hint);
+    virt_viewer_display_set_show_hint(self, VIRT_VIEWER_DISPLAY_SHOW_HINT_DISABLED, !enabled);
 }
 
 VirtViewerSession* virt_viewer_display_get_session(VirtViewerDisplay *self)

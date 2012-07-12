@@ -110,7 +110,7 @@ gboolean virt_viewer_display_get_zoom(VirtViewerDisplay *display);
 void virt_viewer_display_send_keys(VirtViewerDisplay *display,
                                    const guint *keyvals, int nkeyvals);
 GdkPixbuf* virt_viewer_display_get_pixbuf(VirtViewerDisplay *display);
-void virt_viewer_display_set_show_hint(VirtViewerDisplay *display, guint hint);
+void virt_viewer_display_set_show_hint(VirtViewerDisplay *display, guint mask, gboolean enable);
 guint virt_viewer_display_get_show_hint(VirtViewerDisplay *display);
 VirtViewerSession* virt_viewer_display_get_session(VirtViewerDisplay *display);
 void virt_viewer_display_set_auto_resize(VirtViewerDisplay *display, gboolean auto_resize);

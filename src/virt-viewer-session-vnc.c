@@ -95,7 +95,7 @@ virt_viewer_session_vnc_connected(VncDisplay *vnc G_GNUC_UNUSED,
     GtkWidget *display = virt_viewer_display_vnc_new(session->priv->vnc);
     g_signal_emit_by_name(session, "session-connected");
     virt_viewer_display_set_show_hint(VIRT_VIEWER_DISPLAY(display),
-                                      VIRT_VIEWER_DISPLAY_SHOW_HINT_READY);
+                                      VIRT_VIEWER_DISPLAY_SHOW_HINT_READY, TRUE);
     virt_viewer_session_add_display(VIRT_VIEWER_SESSION(session),
                                     VIRT_VIEWER_DISPLAY(display));
 }

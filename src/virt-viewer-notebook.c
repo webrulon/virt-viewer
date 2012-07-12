@@ -86,6 +86,7 @@ virt_viewer_notebook_init (VirtViewerNotebook *self)
     priv->status = gtk_label_new("");
     gtk_notebook_set_show_tabs(GTK_NOTEBOOK(self), FALSE);
     gtk_notebook_set_show_border(GTK_NOTEBOOK(self), FALSE);
+    gtk_widget_show_all(priv->status);
     gtk_notebook_append_page(GTK_NOTEBOOK(self), priv->status, NULL);
     gdk_color_parse("white", &color);
     gtk_widget_modify_fg(priv->status, GTK_STATE_NORMAL, &color);

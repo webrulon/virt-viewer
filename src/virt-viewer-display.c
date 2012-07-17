@@ -80,6 +80,7 @@ enum {
     PROP_ZOOM_LEVEL,
     PROP_SHOW_HINT,
     PROP_SESSION,
+    PROP_SELECTABLE,
 };
 
 static void
@@ -167,6 +168,13 @@ virt_viewer_display_class_init(VirtViewerDisplayClass *class)
                                                         G_PARAM_READWRITE |
                                                         G_PARAM_CONSTRUCT_ONLY));
 
+    g_object_class_install_property(object_class,
+                                    PROP_SELECTABLE,
+                                    g_param_spec_boolean("selectable",
+                                                         "Selectable",
+                                                         "Selectable",
+                                                         FALSE,
+                                                         G_PARAM_READABLE));
 
     g_signal_new("display-pointer-grab",
                  G_OBJECT_CLASS_TYPE(object_class),
@@ -301,6 +309,9 @@ virt_viewer_display_get_property(GObject *object,
         break;
     case PROP_SESSION:
         g_value_set_object(value, virt_viewer_display_get_session(display));
+        break;
+    case PROP_SELECTABLE:
+        g_value_set_boolean(value, virt_viewer_display_get_selectable(display));
         break;
 
     default:
@@ -601,6 +612,18 @@ void virt_viewer_display_release_cursor(VirtViewerDisplay *self)
     klass->release_cursor(self);
 }
 
+gboolean virt_viewer_display_get_selectable(VirtViewerDisplay *self)
+{
+    VirtViewerDisplayClass *klass;
+
+    g_return_val_if_fail(VIRT_VIEWER_IS_DISPLAY(self), FALSE);
+
+    klass = VIRT_VIEWER_DISPLAY_GET_CLASS(self);
+    if (klass->selectable)
+        return klass->selectable(self);
+
+    return TRUE;
+}
 
 void virt_viewer_display_close(VirtViewerDisplay *self)
 {

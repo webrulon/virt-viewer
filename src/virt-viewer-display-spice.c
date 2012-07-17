@@ -47,6 +47,7 @@ static void virt_viewer_display_spice_send_keys(VirtViewerDisplay *display,
 static GdkPixbuf *virt_viewer_display_spice_get_pixbuf(VirtViewerDisplay *display);
 static void virt_viewer_display_spice_release_cursor(VirtViewerDisplay *display);
 static void virt_viewer_display_spice_close(VirtViewerDisplay *display G_GNUC_UNUSED);
+static gboolean virt_viewer_display_spice_selectable(VirtViewerDisplay *display);
 
 static void
 virt_viewer_display_spice_finalize(GObject *obj)
@@ -70,6 +71,7 @@ virt_viewer_display_spice_class_init(VirtViewerDisplaySpiceClass *klass)
     dclass->get_pixbuf = virt_viewer_display_spice_get_pixbuf;
     dclass->release_cursor = virt_viewer_display_spice_release_cursor;
     dclass->close = virt_viewer_display_spice_close;
+    dclass->selectable = virt_viewer_display_spice_selectable;
 
     g_type_class_add_private(klass, sizeof(VirtViewerDisplaySpicePrivate));
 }
@@ -277,6 +279,20 @@ virt_viewer_display_spice_release_cursor(VirtViewerDisplay *display)
 static void
 virt_viewer_display_spice_close(VirtViewerDisplay *display G_GNUC_UNUSED)
 {
+}
+
+static gboolean
+virt_viewer_display_spice_selectable(VirtViewerDisplay *self)
+{
+    gboolean agent_connected;
+    SpiceMainChannel *mainc;
+
+    mainc = get_main(self);
+    g_object_get(mainc,
+                 "agent-connected", &agent_connected,
+                 NULL);
+
+    return agent_connected;
 }
 
 

@@ -77,6 +77,7 @@ struct _VirtViewerDisplayClass {
     void (*release_cursor)(VirtViewerDisplay *display);
 
     void (*close)(VirtViewerDisplay *display);
+    gboolean (*selectable)(VirtViewerDisplay *display);
 
     /* signals */
     void (*display_pointer_grab)(VirtViewerDisplay *display);
@@ -118,6 +119,7 @@ void virt_viewer_display_release_cursor(VirtViewerDisplay *display);
 
 void virt_viewer_display_close(VirtViewerDisplay *display);
 void virt_viewer_display_set_enabled(VirtViewerDisplay *display, gboolean enabled);
+gboolean virt_viewer_display_get_selectable(VirtViewerDisplay *display);
 
 G_END_DECLS
 

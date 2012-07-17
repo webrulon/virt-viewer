@@ -21,6 +21,7 @@ Source0:        ftp://virt-manager.org/downloads/virt-viewer/virt-viewer-%{versi
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 BuildRequires:  mingw32-filesystem >= 23
+BuildRequires:  mingw32-glib2 >= 2.22
 %if %{with_gtk3}
 BuildRequires:  mingw32-gtk3 >= 3.0.0
 %else

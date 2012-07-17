@@ -76,13 +76,26 @@ virt_viewer_display_spice_class_init(VirtViewerDisplaySpiceClass *klass)
     g_type_class_add_private(klass, sizeof(VirtViewerDisplaySpicePrivate));
 }
 
+static SpiceMainChannel*
+get_main(VirtViewerDisplay *self)
+{
+    VirtViewerSessionSpice *session;
+
+    session = VIRT_VIEWER_SESSION_SPICE(virt_viewer_display_get_session(self));
+
+    return virt_viewer_session_spice_get_main_channel(session);
+}
+
 static void
 show_hint_changed(VirtViewerDisplay *self)
 {
-    SpiceMainChannel *main_channel = virt_viewer_session_spice_get_main_channel(
-        VIRT_VIEWER_SESSION_SPICE(virt_viewer_display_get_session(self)));
+    SpiceMainChannel *main_channel = get_main(self);
     guint enabled = TRUE;
     guint nth;
+
+    /* this may happen when finalizing */
+    if (!main_channel)
+        return;
 
     g_object_get(self, "nth-display", &nth, NULL);
     if (virt_viewer_display_get_show_hint(self) & VIRT_VIEWER_DISPLAY_SHOW_HINT_DISABLED)
@@ -191,9 +204,8 @@ virt_viewer_display_spice_size_allocate(VirtViewerDisplaySpice *self,
 
     g_object_get(self, "nth-display", &nth, NULL);
 
-    SpiceMainChannel *main_channel = virt_viewer_session_spice_get_main_channel(
-        VIRT_VIEWER_SESSION_SPICE(virt_viewer_display_get_session(VIRT_VIEWER_DISPLAY(self))));
-    spice_main_set_display(main_channel, nth, 0, 0, dw, dh);
+    spice_main_set_display(get_main(VIRT_VIEWER_DISPLAY(self)),
+                           nth, 0, 0, dw, dh);
 }
 
 static void

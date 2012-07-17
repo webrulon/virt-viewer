@@ -112,7 +112,8 @@ static void
 virt_viewer_window_get_property (GObject *object, guint property_id,
                                  GValue *value, GParamSpec *pspec)
 {
-    VirtViewerWindowPrivate *priv = VIRT_VIEWER_WINDOW(object)->priv;
+    VirtViewerWindow *self = VIRT_VIEWER_WINDOW(object);
+    VirtViewerWindowPrivate *priv = self->priv;
 
     switch (property_id) {
     case PROP_SUBTITLE:
@@ -124,7 +125,7 @@ virt_viewer_window_get_property (GObject *object, guint property_id,
         break;
 
     case PROP_DISPLAY:
-        g_value_set_object(value, priv->display);
+        g_value_set_object(value, virt_viewer_window_get_display(self));
         break;
 
     case PROP_CONTAINER:
@@ -1115,6 +1116,14 @@ virt_viewer_window_get_builder(VirtViewerWindow *self)
     g_return_val_if_fail(VIRT_VIEWER_IS_WINDOW(self), NULL);
 
     return self->priv->builder;
+}
+
+VirtViewerDisplay*
+virt_viewer_window_get_display(VirtViewerWindow *self)
+{
+    g_return_val_if_fail(VIRT_VIEWER_WINDOW(self), FALSE);
+
+    return self->priv->display;
 }
 
 /*

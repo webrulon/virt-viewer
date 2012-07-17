@@ -1040,8 +1040,12 @@ virt_viewer_window_set_display(VirtViewerWindow *self, VirtViewerDisplay *displa
         virt_viewer_display_set_zoom_level(VIRT_VIEWER_DISPLAY(priv->display), priv->zoomlevel);
         virt_viewer_display_set_auto_resize(VIRT_VIEWER_DISPLAY(priv->display), priv->auto_resize);
 
-        gtk_notebook_append_page(GTK_NOTEBOOK(priv->notebook), GTK_WIDGET(display), NULL);
         gtk_widget_show_all(GTK_WIDGET(display));
+        gtk_notebook_append_page(GTK_NOTEBOOK(priv->notebook), GTK_WIDGET(display), NULL);
+        /* switch back to non-display if not ready */
+        if (!(virt_viewer_display_get_show_hint(display) &
+              VIRT_VIEWER_DISPLAY_SHOW_HINT_READY))
+            gtk_notebook_set_current_page(GTK_NOTEBOOK(priv->notebook), 0);
 
         virt_viewer_signal_connect_object(display, "display-pointer-grab",
                                           G_CALLBACK(virt_viewer_window_pointer_grab), self, 0);

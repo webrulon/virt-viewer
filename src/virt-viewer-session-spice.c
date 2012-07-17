@@ -406,12 +406,21 @@ virt_viewer_session_spice_usb_device_selection(VirtViewerSession *session,
 }
 
 static void
-agent_connected_changed(SpiceChannel *cmain,
+agent_connected_changed(SpiceChannel *cmain G_GNUC_UNUSED,
                         GParamSpec *pspec G_GNUC_UNUSED,
                         VirtViewerSessionSpice *self)
 {
+    // this will force refresh of application menu
+    g_signal_emit_by_name(self, "session-display-updated");
+}
+
+static void
+agent_connected_fullscreen_auto_conf(SpiceChannel *cmain,
+                                     GParamSpec *pspec G_GNUC_UNUSED,
+                                     VirtViewerSessionSpice *self)
+{
     if (virt_viewer_session_spice_fullscreen_auto_conf(self))
-        g_signal_handlers_disconnect_by_func(cmain, agent_connected_changed, self);
+        g_signal_handlers_disconnect_by_func(cmain, agent_connected_fullscreen_auto_conf, self);
 }
 
 static void
@@ -512,8 +521,9 @@ virt_viewer_session_spice_channel_new(SpiceSession *s,
                          G_CALLBACK(virt_viewer_session_spice_main_channel_event), self);
         self->priv->main_channel = SPICE_MAIN_CHANNEL(channel);
 
-        g_signal_connect(channel, "notify::agent-connected", G_CALLBACK(agent_connected_changed),  self);
-        agent_connected_changed(channel, NULL, self);
+        g_signal_connect(channel, "notify::agent-connected", G_CALLBACK(agent_connected_changed), self);
+        g_signal_connect(channel, "notify::agent-connected", G_CALLBACK(agent_connected_fullscreen_auto_conf), self);
+        agent_connected_fullscreen_auto_conf(channel, NULL, self);
 
         g_signal_emit_by_name(session, "session-connected");
     }

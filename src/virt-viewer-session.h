@@ -88,6 +88,7 @@ struct _VirtViewerSessionClass {
                                   VirtViewerDisplay *display);
     void (*session_display_removed)(VirtViewerSession *session,
                                     VirtViewerDisplay *display);
+    void (*session_display_updated)(VirtViewerSession *session);
 
     void (*session_cut_text)(VirtViewerSession *session, const gchar *str);
     void (*session_bell)(VirtViewerSession *session);

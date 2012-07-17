@@ -685,6 +685,13 @@ virt_viewer_app_display_removed(VirtViewerSession *session G_GNUC_UNUSED,
         virt_viewer_app_remove_nth_window(self, nth);
 }
 
+static void
+virt_viewer_app_display_updated(VirtViewerSession *session G_GNUC_UNUSED,
+                                VirtViewerApp *self)
+{
+    virt_viewer_app_update_menu_displays(self);
+}
+
 int
 virt_viewer_app_create_session(VirtViewerApp *self, const gchar *type)
 {
@@ -735,6 +742,8 @@ virt_viewer_app_create_session(VirtViewerApp *self, const gchar *type)
                      G_CALLBACK(virt_viewer_app_display_added), self);
     g_signal_connect(priv->session, "session-display-removed",
                      G_CALLBACK(virt_viewer_app_display_removed), self);
+    g_signal_connect(priv->session, "session-display-updated",
+                     G_CALLBACK(virt_viewer_app_display_updated), self);
 
     g_signal_connect(priv->session, "session-cut-text",
                      G_CALLBACK(virt_viewer_app_server_cut_text), self);

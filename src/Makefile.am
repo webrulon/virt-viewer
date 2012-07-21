@@ -157,6 +157,11 @@ virt-viewer_rc.$(OBJEXT): $(VIRT_VIEWER_RES) $(ICONDIR)/virt-viewer.ico
 		-i $< -o $@
 LDADD += virt-viewer_rc.$(OBJEXT)
 MAINTAINERCLEANFILES += virt-viewer_rc.$(OBJEXT)
+
+bin_PROGRAMS += debug-helper
+debug_helper_SOURCES = debug-helper.c
+debug_helper_LDFLAGS = $(GLIB2_LIBS) -Wl,--subsystem,windows
+debug_helper_CFLAGS = $(GLIB2_CFLAGS)
 endif
 
 -include $(top_srcdir)/git.mk

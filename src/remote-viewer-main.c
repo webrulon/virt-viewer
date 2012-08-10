@@ -204,7 +204,6 @@ main(int argc, char **argv)
     gboolean controller = FALSE;
 #endif
     VirtViewerApp *app;
-    const char *help_msg = N_("Run '" PACKAGE " --help' to see a full list of available command line options");
     const GOptionEntry options [] = {
         { "version", 'V', G_OPTION_FLAG_NO_ARG, G_OPTION_ARG_CALLBACK,
           remote_viewer_version, N_("Display version information"), NULL },
@@ -261,9 +260,11 @@ main(int argc, char **argv)
 #endif
     g_option_context_parse (context, &argc, &argv, &error);
     if (error) {
-        g_printerr("%s\n%s\n",
-                   error->message,
-                   gettext(help_msg));
+        char *basename;
+        basename = g_path_get_basename(argv[0]);
+        g_printerr(_("%s\nRun '%s --help' to see a full list of available command line options\n"),
+                   error->message, basename);
+        g_free(basename);
         g_error_free(error);
         goto cleanup;
     }

@@ -57,7 +57,8 @@ int main(int argc, char **argv)
     gboolean reconnect = FALSE;
     gboolean fullscreen = FALSE;
     VirtViewer *viewer = NULL;
-    const char *help_msg = N_("Run '" PACKAGE " --help' to see a full list of available command line options");
+    char *basename;
+    char *help_msg = NULL;
     const GOptionEntry options [] = {
         { "version", 'V', G_OPTION_FLAG_NO_ARG, G_OPTION_ARG_CALLBACK,
           virt_viewer_version, N_("Display version information"), NULL },
@@ -95,6 +96,12 @@ int main(int argc, char **argv)
 
     g_set_application_name(_("Virt Viewer"));
 
+
+    basename = g_path_get_basename(argv[0]);
+    help_msg = g_strdup_printf(_("Run '%s --help' to see a full list of available command line options"),
+                               basename);
+    g_free(basename);
+
     /* Setup command line options */
     context = g_option_context_new (_("- Virtual machine graphical console"));
     g_option_context_add_main_entries (context, options, NULL);
@@ -108,8 +115,7 @@ int main(int argc, char **argv)
     g_option_context_parse (context, &argc, &argv, &error);
     if (error) {
         g_printerr("%s\n%s\n",
-                   error->message,
-                   gettext(help_msg));
+                   error->message, help_msg);
         g_error_free(error);
         goto cleanup;
     }
@@ -147,6 +153,7 @@ int main(int argc, char **argv)
         g_object_unref(viewer);
     g_free(uri);
     g_strfreev(args);
+    g_free(help_msg);
 
     return ret;
 }

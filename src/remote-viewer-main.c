@@ -216,7 +216,7 @@ main(int argc, char **argv)
         { "debug", '\0', 0, G_OPTION_ARG_NONE, &debug,
           N_("Display debugging information"), NULL },
         { "full-screen", 'f', G_OPTION_FLAG_OPTIONAL_ARG, G_OPTION_ARG_CALLBACK, option_fullscreen,
-          N_("Open in full screen mode (=<auto-conf>)"), NULL },
+          N_("Open in full screen mode (auto-conf adjusts guest resolution to fit the client's)."), N_("<auto-conf>") },
 #if HAVE_SPICE_GTK
         { "spice-controller", '\0', 0, G_OPTION_ARG_NONE, &controller,
           N_("Open connection using Spice controller communication"), NULL },

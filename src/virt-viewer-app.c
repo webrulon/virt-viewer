@@ -431,6 +431,7 @@ virt_viewer_app_trace(VirtViewerApp *self,
         va_start(ap, fmt);
         g_vprintf(fmt, ap);
         va_end(ap);
+        g_print("\n");
     }
 }
 
@@ -703,7 +704,7 @@ virt_viewer_app_create_session(VirtViewerApp *self, const gchar *type)
 #ifdef HAVE_GTK_VNC
     if (g_ascii_strcasecmp(type, "vnc") == 0) {
         GtkWindow *window = virt_viewer_window_get_window(priv->main_window);
-        virt_viewer_app_trace(self, "Guest %s has a %s display\n",
+        virt_viewer_app_trace(self, "Guest %s has a %s display",
                               priv->guest_name, type);
         priv->session = virt_viewer_session_vnc_new(window);
     } else
@@ -711,13 +712,13 @@ virt_viewer_app_create_session(VirtViewerApp *self, const gchar *type)
 #ifdef HAVE_SPICE_GTK
     if (g_ascii_strcasecmp(type, "spice") == 0) {
         GtkWindow *window = virt_viewer_window_get_window(priv->main_window);
-        virt_viewer_app_trace(self, "Guest %s has a %s display\n",
+        virt_viewer_app_trace(self, "Guest %s has a %s display",
                               priv->guest_name, type);
         priv->session = virt_viewer_session_spice_new(self, window);
     } else
 #endif
     {
-        virt_viewer_app_trace(self, "Guest %s has unsupported %s display type\n",
+        virt_viewer_app_trace(self, "Guest %s has unsupported %s display type",
                               priv->guest_name, type);
         virt_viewer_app_simple_message_dialog(self, _("Unknown graphic type for the guest %s"),
                                               priv->guest_name);
@@ -833,16 +834,16 @@ virt_viewer_app_default_activate(VirtViewerApp *self)
         gchar *p = NULL;
 
         if (priv->gport) {
-            virt_viewer_app_trace(self, "Opening indirect TCP connection to display at %s:%s\n",
+            virt_viewer_app_trace(self, "Opening indirect TCP connection to display at %s:%s",
                                   priv->ghost, priv->gport);
         } else {
-            virt_viewer_app_trace(self, "Opening indirect UNIX connection to display at %s\n",
+            virt_viewer_app_trace(self, "Opening indirect UNIX connection to display at %s",
                                   priv->unixsock);
         }
         if (priv->port)
             p = g_strdup_printf(":%d", priv->port);
 
-        virt_viewer_app_trace(self, "Setting up SSH tunnel via %s%s%s%s\n",
+        virt_viewer_app_trace(self, "Setting up SSH tunnel via %s%s%s%s",
                               priv->user ? priv->user : "",
                               priv->user ? "@" : "",
                               priv->host, p ? p : "");
@@ -863,10 +864,10 @@ virt_viewer_app_default_activate(VirtViewerApp *self)
     if (fd >= 0) {
         return virt_viewer_session_open_fd(VIRT_VIEWER_SESSION(priv->session), fd);
     } else if (priv->guri) {
-        virt_viewer_app_trace(self, "Opening connection to display at %s\n", priv->guri);
+        virt_viewer_app_trace(self, "Opening connection to display at %s", priv->guri);
         return virt_viewer_session_open_uri(VIRT_VIEWER_SESSION(priv->session), priv->guri);
     } else {
-        virt_viewer_app_trace(self, "Opening direct TCP connection to display at %s:%s:%s\n",
+        virt_viewer_app_trace(self, "Opening direct TCP connection to display at %s:%s:%s",
                               priv->ghost, priv->gport, priv->gtlsport ? priv->gtlsport : "-1");
         return virt_viewer_session_open_host(VIRT_VIEWER_SESSION(priv->session),
                                              priv->ghost, priv->gport, priv->gtlsport);

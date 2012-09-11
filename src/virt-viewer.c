@@ -390,7 +390,7 @@ virt_viewer_update_display(VirtViewer *self, virDomainPtr dom)
     priv->dom = dom;
     virDomainRef(priv->dom);
 
-    virt_viewer_app_trace(app, "Guest %s is running, determining display\n",
+    virt_viewer_app_trace(app, "Guest %s is running, determining display",
                           priv->domkey);
 
     g_object_set(app, "title", virDomainGetName(dom), NULL);
@@ -476,7 +476,7 @@ virt_viewer_initial_connect(VirtViewerApp *app)
     if (!dom) {
         if (priv->waitvm) {
             virt_viewer_app_show_status(app, _("Waiting for guest domain to be created"));
-            virt_viewer_app_trace(app, "Guest %s does not yet exist, waiting for it to be created\n",
+            virt_viewer_app_trace(app, "Guest %s does not yet exist, waiting for it to be created",
                                   priv->domkey);
             goto done;
         } else {
@@ -502,7 +502,7 @@ virt_viewer_initial_connect(VirtViewerApp *app)
         if (ret < 0) {
             if (priv->waitvm) {
                 virt_viewer_app_show_status(app, _("Waiting for guest domain to start server"));
-                virt_viewer_app_trace(app, "Guest %s has not activated its display yet, waiting for it to start\n",
+                virt_viewer_app_trace(app, "Guest %s has not activated its display yet, waiting for it to start",
                                       priv->domkey);
             } else {
                 DEBUG_LOG("Failed to activate viewer");
@@ -614,7 +614,7 @@ virt_viewer_start(VirtViewerApp *app)
 
     virSetErrorFunc(NULL, virt_viewer_error_func);
 
-    virt_viewer_app_trace(app, "Opening connection to libvirt with URI %s\n",
+    virt_viewer_app_trace(app, "Opening connection to libvirt with URI %s",
                           priv->uri ? priv->uri : "<null>");
     priv->conn = virConnectOpenAuth(priv->uri,
                                     //virConnectAuthPtrDefault,

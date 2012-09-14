@@ -204,7 +204,7 @@ AC_OUTPUT([
     icons/48x48/Makefile
     icons/256x256/Makefile
     man/Makefile
-    mingw32-virt-viewer.spec
+    mingw-virt-viewer.spec
     plugin/Makefile
     po/Makefile.in
     src/Makefile

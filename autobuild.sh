@@ -59,44 +59,72 @@ if [ -f /usr/bin/rpmbuild ]; then
      -ba --clean virt-viewer.spec
 fi
 
-if [ -x /usr/bin/i686-pc-mingw32-gcc ]; then
+if [ -x /usr/bin/i686-w64-mingw32-gcc ]; then
   make distclean
 
-  PKG_CONFIG_PATH="$AUTOBUILD_INSTALL_ROOT/i686-pc-mingw32/sys-root/mingw/lib/pkgconfig:/usr/i686-pc-mingw32/sys-root/mingw/lib/pkgconfig" \
-  CC="i686-pc-mingw32-gcc" \
+  PKG_CONFIG_PATH="$AUTOBUILD_INSTALL_ROOT/i686-w64-mingw32/sys-root/mingw/lib/pkgconfig" \
+  CC="i686-w64-mingw32-gcc" \
   ../configure \
-    --build=$(uname -m)-pc-linux \
-    --host=i686-pc-mingw32 \
-    --prefix="$AUTOBUILD_INSTALL_ROOT/i686-pc-mingw32/sys-root/mingw" \
-    --disable-plugin \
+    --build=$(uname -m)-w64-linux \
+    --host=i686-w64-mingw32 \
+    --prefix="$AUTOBUILD_INSTALL_ROOT/i686-w64-mingw32/sys-root/mingw" \
     --with-gtk=2.0
 
   make
   make install
 
   # Test GTK3 build too if available
-  PKG_CONFIG_LIBDIR=/usr/i686-pc-mingw32/sys-root/mingw/lib/pkgconfig pkg-config gtk+-3.0 1>/dev/null 2>&1
+  PKG_CONFIG_LIBDIR=/usr/i686-w64-mingw32/sys-root/mingw/lib/pkgconfig pkg-config gtk+-3.0 1>/dev/null 2>&1
   if test $? = 0 ; then
     make distclean
-    PKG_CONFIG_PATH="$AUTOBUILD_INSTALL_ROOT/i686-pc-mingw32/sys-root/mingw/lib/pkgconfig:/usr/i686-pc-mingw32/sys-root/mingw/lib/pkgconfig" \
-    CC="i686-pc-mingw32-gcc" \
+    PKG_CONFIG_PATH="$AUTOBUILD_INSTALL_ROOT/i686-w64-mingw32/sys-root/mingw/lib/pkgconfig" \
+    CC="i686-w64-mingw32-gcc" \
     ../configure --prefix=$AUTOBUILD_INSTALL_ROOT \
-      --build=$(uname -m)-pc-linux \
-      --host=i686-pc-mingw32 \
-      --prefix="$AUTOBUILD_INSTALL_ROOT/i686-pc-mingw32/sys-root/mingw" \
-      --disable-plugin \
+      --build=$(uname -m)-w64-linux \
+      --host=i686-w64-mingw32 \
+      --prefix="$AUTOBUILD_INSTALL_ROOT/i686-w64-mingw32/sys-root/mingw" \
       --with-gtk=3.0
     make
     make install
   fi
+fi
 
-  #set -o pipefail
-  #make check 2>&1 | tee "$RESULTS"
 
+if [ -x /usr/bin/x86_64-w64-mingw32-gcc ]; then
+  make distclean
+
+  PKG_CONFIG_PATH="$AUTOBUILD_INSTALL_ROOT/x86_64-w64-mingw32/sys-root/mingw/lib/pkgconfig" \
+  CC="x86_64-w64-mingw32-gcc" \
+  ../configure \
+    --build=$(uname -m)-w64-linux \
+    --host=x86_64-w64-mingw32 \
+    --prefix="$AUTOBUILD_INSTALL_ROOT/x86_64-w64-mingw32/sys-root/mingw" \
+    --with-gtk=2.0
+
+  make
+  make install
+
+  # Test GTK3 build too if available
+  PKG_CONFIG_LIBDIR=/usr/x86_64-w64-mingw32/sys-root/mingw/lib/pkgconfig pkg-config gtk+-3.0 1>/dev/null 2>&1
+  if test $? = 0 ; then
+    make distclean
+    PKG_CONFIG_PATH="$AUTOBUILD_INSTALL_ROOT/x86_64-w64-mingw32/sys-root/mingw/lib/pkgconfig" \
+    CC="x86_64-w64-mingw32-gcc" \
+    ../configure --prefix=$AUTOBUILD_INSTALL_ROOT \
+      --build=$(uname -m)-w64-linux \
+      --host=x86_64-w64-mingw32 \
+      --prefix="$AUTOBUILD_INSTALL_ROOT/x86_64-w64-mingw32/sys-root/mingw" \
+      --with-gtk=3.0
+    make
+    make install
+  fi
+fi
+
+if test -x /usr/bin/i686-w64-mingw32-gcc && test -x /usr/bin/x86_64-w64-mingw32-gcc ; then
   if [ -f /usr/bin/rpmbuild ]; then
     rpmbuild --nodeps \
        --define "extra_release $EXTRA_RELEASE" \
        --define "_sourcedir `pwd`" \
-       -ba --clean mingw32-virt-viewer.spec
+       -ba --clean mingw-virt-viewer.spec
   fi
 fi

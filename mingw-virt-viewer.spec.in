@@ -1,0 +1,99 @@
+%{?mingw_package_hedder}
+
+Name:           mingw-virt-viewer
+Version:        @VERSION@
+Release:        1%{?dist}%{?extra_release}
+Summary:        MinGW Windows virt-viewer console application
+
+License:        GPLv2+
+Group:          Applications/Internet
+URL:            http://virt-manager.org/
+Source0:        ftp://virt-manager.org/downloads/virt-viewer/virt-viewer-%{version}.tar.gz
+
+BuildRequires:  mingw32-filesystem >= 23
+BuildRequires:  mingw64-filesystem >= 23
+BuildRequires:  mingw32-glib2 >= 2.22
+BuildRequires:  mingw64-glib2 >= 2.22
+BuildRequires:  mingw32-gtk3 >= 3.0.0
+BuildRequires:  mingw64-gtk3 >= 3.0.0
+BuildRequires:  mingw32-libvirt >= 0.9.7
+BuildRequires:  mingw64-libvirt >= 0.9.7
+BuildRequires:  mingw32-libxml2
+BuildRequires:  mingw64-libxml2
+BuildRequires:  mingw32-gtk-vnc2 >= 0.4.3
+BuildRequires:  mingw64-gtk-vnc2 >= 0.4.3
+BuildRequires:  pkgconfig
+
+BuildArch:      noarch
+
+%package -n mingw32-virt-viewer
+Summary:        MinGW Windows virt-viewer console application
+Group:          Applications/Internet
+
+%package -n mingw64-virt-viewer
+Summary:        MinGW Windows virt-viewer console application
+Group:          Applications/Internet
+
+%description
+MinGW Windows virt-viewer console application
+
+%description -n mingw32-virt-viewer
+MinGW Windows virt-viewer console application
+
+%description -n mingw64-virt-viewer
+MinGW Windows virt-viewer console application
+
+%prep
+%setup -q -n virt-viewer-%{version}
+
+
+%build
+%mingw_configure --with-gtk=3.0
+%mingw_make %{?_smp_mflags} V=1
+
+
+%install
+%mingw_make_install DESTDIR=$RPM_BUILD_ROOT
+
+%find_lang virt-viewer
+
+# Don't need the XDG desktop files on Windows
+find $RPM_BUILD_ROOT -name "*.desktop" -delete
+
+%clean
+rm -rf $RPM_BUILD_ROOT
+
+
+%files -n mingw32-virt-viewer -f virt-viewer.lang
+%defattr(-,root,root)
+%{mingw32_bindir}/virt-viewer.exe
+%{mingw32_bindir}/remote-viewer.exe
+%{mingw32_bindir}/windows-cmdline-wrapper.exe
+
+%dir %{mingw32_datadir}/virt-viewer/
+%dir %{mingw32_datadir}/virt-viewer/ui/
+%{mingw32_datadir}/virt-viewer/ui/virt-viewer.xml
+%{mingw32_datadir}/virt-viewer/ui/virt-viewer-about.xml
+%{mingw32_datadir}/virt-viewer/ui/virt-viewer-auth.xml
+%{mingw32_datadir}/icons/hicolor/*/apps/*
+
+%{mingw32_mandir}/man1/virt-viewer.1*
+%{mingw32_mandir}/man1/remote-viewer.1*
+
+%files -n mingw64-virt-viewer -f virt-viewer.lang
+%defattr(-,root,root)
+%{mingw64_bindir}/virt-viewer.exe
+%{mingw64_bindir}/remote-viewer.exe
+%{mingw64_bindir}/windows-cmdline-wrapper.exe
+
+%dir %{mingw64_datadir}/virt-viewer/
+%dir %{mingw64_datadir}/virt-viewer/ui/
+%{mingw64_datadir}/virt-viewer/ui/virt-viewer.xml
+%{mingw64_datadir}/virt-viewer/ui/virt-viewer-about.xml
+%{mingw64_datadir}/virt-viewer/ui/virt-viewer-auth.xml
+%{mingw64_datadir}/icons/hicolor/*/apps/*
+
+%{mingw64_mandir}/man1/virt-viewer.1*
+%{mingw64_mandir}/man1/remote-viewer.1*
+
+%changelog

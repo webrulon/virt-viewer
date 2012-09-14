@@ -30,7 +30,7 @@ BUILT_SOURCES =					\
 $(BUILT_SOURCES): %: %.etemplate $(ENUMS_FILES)
 	$(AM_V_GEN)$(GLIB_MKENUMS) --template $^ | \
             sed -e 's/VIRT_TYPE_VIEWER/VIRT_VIEWER_TYPE/' \
-                -e 's,$(srcdir)/,,' > $@
+                -e 's,#include "$(srcdir)/,#include ",' > $@
 
 COMMON_SOURCES =					\
 	$(BUILT_SOURCES)				\

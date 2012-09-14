@@ -28,7 +28,9 @@ BUILT_SOURCES =					\
 	$(NULL)
 
 $(BUILT_SOURCES): %: %.etemplate $(ENUMS_FILES)
-	$(AM_V_GEN)$(GLIB_MKENUMS) --template $^ | sed -e 's/VIRT_TYPE_VIEWER/VIRT_VIEWER_TYPE/' > $@
+	$(AM_V_GEN)$(GLIB_MKENUMS) --template $^ | \
+            sed -e 's/VIRT_TYPE_VIEWER/VIRT_VIEWER_TYPE/' \
+                -e 's,$(srcdir)/,,' > $@
 
 COMMON_SOURCES =					\
 	$(BUILT_SOURCES)				\
@@ -139,7 +141,7 @@ desktop_DATA = remote-viewer.desktop
 EXTRA_DIST += $(desktop_DATA)
 
 VIRT_VIEWER_RES = virt-viewer.rc virt-viewer.manifest
-ICONDIR = $(top_srcdir)/icons
+ICONDIR = $(top_builddir)/icons
 MANIFESTDIR = $(srcdir)
 EXTRA_DIST += $(VIRT_VIEWER_RES)
 

@@ -1,6 +1,21 @@
   Virt Viewer News
   ================
 
+0.5.4: Sep 17, 2012
+-------------------
+
+  - Fix host migration with Spice
+  - Fix misc memory leaks
+  - Fix build with newer glibc and -O0
+  - Improve automatic fullscreen Spice configuration
+  - Avoid crash when quiting application
+  - Rebuild display men whenever a window is added/removed
+  - Number displays starting from 1 instead of 0
+  - Add support for handling multiple monitors with Spice
+  - Menu display menu insensitive if no displays can be selected
+  - Use real binary name in remote-viewer help message
+  - Document -f=auto-conf in remote-viewer help
+
 0.5.3: May 14, 2012
 -------------------
 

@@ -7,15 +7,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: virt-viewer\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-04-25 15:50+0100\n"
-"PO-Revision-Date: 2012-04-25 14:50+0000\n"
+"POT-Creation-Date: 2012-09-18 14:26+0100\n"
+"PO-Revision-Date: 2012-09-18 13:26+0000\n"
 "Last-Translator: Daniel Berrange <dan-transifex@berrange.com>\n"
-"Language-Team: Galician (http://www.transifex.net/projects/p/fedora/language/gl/)\n"
+"Language-Team: Galician (http://www.transifex.com/projects/p/fedora/language/gl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Language: gl\n"
-"Plural-Forms: nplurals=2; plural=(n != 1)\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: ../src/gbinding.c:637
 msgid "Source"
@@ -80,32 +80,34 @@ msgstr ""
 msgid "Recent connections:"
 msgstr ""
 
-#: ../src/remote-viewer-main.c:206 ../src/virt-viewer-main.c:60
-msgid "Run '"
-msgstr ""
-
-#: ../src/remote-viewer-main.c:209 ../src/virt-viewer-main.c:63
+#: ../src/remote-viewer-main.c:209 ../src/virt-viewer-main.c:64
 msgid "Display version information"
 msgstr ""
 
-#: ../src/remote-viewer-main.c:211 ../src/virt-viewer-main.c:65
+#: ../src/remote-viewer-main.c:211 ../src/virt-viewer-main.c:66
 msgid "Display verbose information"
 msgstr ""
 
-#: ../src/remote-viewer-main.c:213 ../src/virt-viewer-main.c:67
+#: ../src/remote-viewer-main.c:213 ../src/virt-viewer-main.c:68
 msgid "Direct connection with no automatic tunnels"
 msgstr ""
 
-#: ../src/remote-viewer-main.c:215 ../src/virt-viewer-main.c:77
+#: ../src/remote-viewer-main.c:215 ../src/virt-viewer-main.c:78
 msgid "Zoom level of window, in percentage"
 msgstr ""
 
-#: ../src/remote-viewer-main.c:217 ../src/virt-viewer-main.c:79
+#: ../src/remote-viewer-main.c:217 ../src/virt-viewer-main.c:80
 msgid "Display debugging information"
 msgstr ""
 
 #: ../src/remote-viewer-main.c:219
-msgid "Open in full screen mode (=<auto-conf>)"
+msgid ""
+"Open in full screen mode (auto-conf adjusts guest resolution to fit the "
+"client's)."
+msgstr ""
+
+#: ../src/remote-viewer-main.c:219
+msgid "<auto-conf>"
 msgstr ""
 
 #: ../src/remote-viewer-main.c:222
@@ -121,17 +123,24 @@ msgstr ""
 msgid "- Remote viewer client"
 msgstr ""
 
-#: ../src/remote-viewer-main.c:275
+#: ../src/remote-viewer-main.c:265
+#, c-format
+msgid ""
+"%s\n"
+"Run '%s --help' to see a full list of available command line options\n"
+msgstr ""
+
+#: ../src/remote-viewer-main.c:277
 #, c-format
 msgid "Error: extra arguments given while using Spice controller\n"
 msgstr ""
 
-#: ../src/remote-viewer-main.c:284
+#: ../src/remote-viewer-main.c:286
 #, c-format
 msgid "Error: can't handle multiple URIs\n"
 msgstr ""
 
-#: ../src/remote-viewer-main.c:291 ../src/virt-viewer-main.c:125
+#: ../src/remote-viewer-main.c:293 ../src/virt-viewer-main.c:131
 #, c-format
 msgid "Zoom level must be within 10-200\n"
 msgstr ""
@@ -173,21 +182,21 @@ msgstr ""
 #. * End:
 #. 
 #: ../src/virt-viewer-about.xml.h:1
-msgid "A remote desktop client built with GTK-VNC, SPICE-GTK and libvirt"
-msgstr ""
-
-#: ../src/virt-viewer-about.xml.h:2
 msgid "About Glade"
 msgstr ""
 
-#: ../src/virt-viewer-about.xml.h:3
+#: ../src/virt-viewer-about.xml.h:2
 msgid ""
 "Copyright (C) 2007-2012 Daniel P. Berrange\n"
 "Copyright (C) 2007-2012 Red Hat, Inc."
 msgstr ""
 
+#: ../src/virt-viewer-about.xml.h:4
+msgid "A remote desktop client built with GTK-VNC, SPICE-GTK and libvirt"
+msgstr ""
+
 #: ../src/virt-viewer-about.xml.h:5
-msgid "The Fedora Translation Team"
+msgid "virt-manager.org"
 msgstr ""
 
 #: ../src/virt-viewer-about.xml.h:6
@@ -208,67 +217,72 @@ msgid ""
 msgstr ""
 
 #: ../src/virt-viewer-about.xml.h:20
-msgid "virt-manager.org"
+msgid "The Fedora Translation Team"
 msgstr ""
 
 #: ../src/virt-viewer-app.c:284
 msgid "This is the last visible display. Do you want to quit?"
 msgstr ""
 
-#: ../src/virt-viewer-app.c:624
+#: ../src/virt-viewer-app.c:635
 #, c-format
 msgid "Waiting for display %d..."
 msgstr ""
 
-#: ../src/virt-viewer-app.c:707
+#: ../src/virt-viewer-app.c:722
 #, c-format
 msgid "Unknown graphic type for the guest %s"
 msgstr ""
 
-#: ../src/virt-viewer-app.c:782
+#: ../src/virt-viewer-app.c:799
 msgid "Connect to ssh failed."
 msgstr ""
 
-#: ../src/virt-viewer-app.c:784
+#: ../src/virt-viewer-app.c:801
 msgid "Can't connect to channel, SSH only supported."
 msgstr ""
 
-#: ../src/virt-viewer-app.c:796
+#: ../src/virt-viewer-app.c:813
 msgid "Connect to channel unsupported."
 msgstr ""
 
-#: ../src/virt-viewer-app.c:876
+#: ../src/virt-viewer-app.c:893
 msgid "Connecting to graphic server"
 msgstr ""
 
-#: ../src/virt-viewer-app.c:1006
+#: ../src/virt-viewer-app.c:1023
 msgid "Guest domain has shutdown"
 msgstr ""
 
-#: ../src/virt-viewer-app.c:1056
+#: ../src/virt-viewer-app.c:1073
 msgid "Connected to graphic server"
 msgstr ""
 
-#: ../src/virt-viewer-app.c:1082
+#: ../src/virt-viewer-app.c:1099
 #, c-format
 msgid "Unable to connect to the graphic server %s"
 msgstr ""
 
-#: ../src/virt-viewer-app.c:1111
+#: ../src/virt-viewer-app.c:1128
 #, c-format
 msgid ""
 "Unable to authenticate with remote desktop server at %s: %s\n"
 "Retry connection again?"
 msgstr ""
 
-#: ../src/virt-viewer-app.c:1131
+#: ../src/virt-viewer-app.c:1148
 #, c-format
 msgid "Unable to authenticate with remote desktop server: %s"
 msgstr ""
 
-#: ../src/virt-viewer-app.c:1139
+#: ../src/virt-viewer-app.c:1156
 #, c-format
 msgid "USB redirection error: %s"
+msgstr ""
+
+#: ../src/virt-viewer-app.c:1652
+#, c-format
+msgid "Display %d"
 msgstr ""
 
 #. * Local variables:
@@ -282,15 +296,15 @@ msgid "Authentication required"
 msgstr ""
 
 #: ../src/virt-viewer-auth.xml.h:2
-msgid "Password:"
+msgid "label"
 msgstr ""
 
 #: ../src/virt-viewer-auth.xml.h:3
-msgid "Username:"
+msgid "Password:"
 msgstr ""
 
 #: ../src/virt-viewer-auth.xml.h:4
-msgid "label"
+msgid "Username:"
 msgstr ""
 
 #: ../src/virt-viewer-main.c:38
@@ -298,36 +312,41 @@ msgstr ""
 msgid "%s version %s\n"
 msgstr ""
 
-#: ../src/virt-viewer-main.c:69
+#: ../src/virt-viewer-main.c:70
 msgid "Attach to the local display using libvirt"
 msgstr ""
 
-#: ../src/virt-viewer-main.c:71
+#: ../src/virt-viewer-main.c:72
 msgid "Connect to hypervisor"
 msgstr ""
 
-#: ../src/virt-viewer-main.c:73
+#: ../src/virt-viewer-main.c:74
 msgid "Wait for domain to start"
 msgstr ""
 
-#: ../src/virt-viewer-main.c:75
+#: ../src/virt-viewer-main.c:76
 msgid "Reconnect to domain upon restart"
 msgstr ""
 
-#: ../src/virt-viewer-main.c:81
+#: ../src/virt-viewer-main.c:82
 msgid "Open in full screen mode"
 msgstr ""
 
-#: ../src/virt-viewer-main.c:96
+#: ../src/virt-viewer-main.c:97
 msgid "Virt Viewer"
 msgstr ""
 
+#: ../src/virt-viewer-main.c:101
+#, c-format
+msgid "Run '%s --help' to see a full list of available command line options"
+msgstr ""
+
 #. Setup command line options
-#: ../src/virt-viewer-main.c:99
+#: ../src/virt-viewer-main.c:106
 msgid "- Virtual machine graphical console"
 msgstr ""
 
-#: ../src/virt-viewer-main.c:120
+#: ../src/virt-viewer-main.c:126
 #, c-format
 msgid ""
 "\n"
@@ -338,7 +357,7 @@ msgid ""
 msgstr ""
 
 #. Create the widgets
-#: ../src/virt-viewer-session-spice.c:380
+#: ../src/virt-viewer-session-spice.c:382
 msgid "Select USB devices for redirection"
 msgstr ""
 
@@ -347,28 +366,28 @@ msgstr ""
 msgid "Unsupported authentication type %d"
 msgstr ""
 
-#: ../src/virt-viewer-window.c:832
+#: ../src/virt-viewer-window.c:859
 msgid "Disconnect"
 msgstr ""
 
-#: ../src/virt-viewer-window.c:839 ../src/virt-viewer-window.c:840
-#: ../src/virt-viewer.xml.h:22
+#: ../src/virt-viewer-window.c:866 ../src/virt-viewer-window.c:867
+#: ../src/virt-viewer.xml.h:3
 msgid "USB device selection"
 msgstr ""
 
-#: ../src/virt-viewer-window.c:848
+#: ../src/virt-viewer-window.c:875
 msgid "Send key combination"
 msgstr ""
 
-#: ../src/virt-viewer-window.c:857 ../src/virt-viewer-window.c:858
+#: ../src/virt-viewer-window.c:884 ../src/virt-viewer-window.c:885
 msgid "Leave fullscreen"
 msgstr ""
 
-#: ../src/virt-viewer-window.c:937
+#: ../src/virt-viewer-window.c:964
 msgid "Ctrl+Alt"
 msgstr ""
 
-#: ../src/virt-viewer-window.c:940
+#: ../src/virt-viewer-window.c:967
 #, c-format
 msgid "(Press %s to release pointer)"
 msgstr ""
@@ -379,13 +398,13 @@ msgstr ""
 #. * Such as: "(Press Ctrl+Alt to release pointer) BigCorpTycoon MOTD - Virt
 #. Viewer"
 #. 
-#: ../src/virt-viewer-window.c:951
+#: ../src/virt-viewer-window.c:978
 #, c-format
 msgid "%s%s%s - %s"
 msgstr ""
 
 #. translators: <space>
-#: ../src/virt-viewer-window.c:955
+#: ../src/virt-viewer-window.c:982
 msgid " "
 msgstr ""
 
@@ -449,55 +468,51 @@ msgstr ""
 #. * End:
 #. 
 #: ../src/virt-viewer.xml.h:1
-msgid "Automatically resize"
+msgid "_File"
 msgstr ""
 
 #: ../src/virt-viewer.xml.h:2
-msgid "Ctrl+Alt+F11"
-msgstr ""
-
-#: ../src/virt-viewer.xml.h:3
-msgid "Ctrl+Alt+F12"
+msgid "Screenshot"
 msgstr ""
 
 #: ../src/virt-viewer.xml.h:4
-msgid "Ctrl+Alt+F1_0"
+msgid "Smartcard insertion"
 msgstr ""
 
 #: ../src/virt-viewer.xml.h:5
-msgid "Ctrl+Alt+F_1"
+msgid "Smartcard removal"
 msgstr ""
 
 #: ../src/virt-viewer.xml.h:6
-msgid "Ctrl+Alt+F_2"
+msgid "_View"
 msgstr ""
 
 #: ../src/virt-viewer.xml.h:7
-msgid "Ctrl+Alt+F_3"
+msgid "Full screen"
 msgstr ""
 
 #: ../src/virt-viewer.xml.h:8
-msgid "Ctrl+Alt+F_4"
+msgid "_Zoom"
 msgstr ""
 
 #: ../src/virt-viewer.xml.h:9
-msgid "Ctrl+Alt+F_5"
+msgid "Automatically resize"
 msgstr ""
 
 #: ../src/virt-viewer.xml.h:10
-msgid "Ctrl+Alt+F_6"
+msgid "Displays"
 msgstr ""
 
 #: ../src/virt-viewer.xml.h:11
-msgid "Ctrl+Alt+F_7"
+msgid "Release cursor"
 msgstr ""
 
 #: ../src/virt-viewer.xml.h:12
-msgid "Ctrl+Alt+F_8"
+msgid "_Send key"
 msgstr ""
 
 #: ../src/virt-viewer.xml.h:13
-msgid "Ctrl+Alt+F_9"
+msgid "Ctrl+Alt+_Del"
 msgstr ""
 
 #: ../src/virt-viewer.xml.h:14
@@ -505,53 +520,57 @@ msgid "Ctrl+Alt+_Backspace"
 msgstr ""
 
 #: ../src/virt-viewer.xml.h:15
-msgid "Ctrl+Alt+_Del"
+msgid "Ctrl+Alt+F_1"
 msgstr ""
 
 #: ../src/virt-viewer.xml.h:16
-msgid "Displays"
+msgid "Ctrl+Alt+F_2"
 msgstr ""
 
 #: ../src/virt-viewer.xml.h:17
-msgid "Full screen"
+msgid "Ctrl+Alt+F_3"
 msgstr ""
 
 #: ../src/virt-viewer.xml.h:18
-msgid "Release cursor"
+msgid "Ctrl+Alt+F_4"
 msgstr ""
 
 #: ../src/virt-viewer.xml.h:19
-msgid "Screenshot"
+msgid "Ctrl+Alt+F_5"
 msgstr ""
 
 #: ../src/virt-viewer.xml.h:20
-msgid "Smartcard insertion"
+msgid "Ctrl+Alt+F_6"
 msgstr ""
 
 #: ../src/virt-viewer.xml.h:21
-msgid "Smartcard removal"
+msgid "Ctrl+Alt+F_7"
+msgstr ""
+
+#: ../src/virt-viewer.xml.h:22
+msgid "Ctrl+Alt+F_8"
 msgstr ""
 
 #: ../src/virt-viewer.xml.h:23
-msgid "_File"
+msgid "Ctrl+Alt+F_9"
 msgstr ""
 
 #: ../src/virt-viewer.xml.h:24
-msgid "_Help"
+msgid "Ctrl+Alt+F1_0"
 msgstr ""
 
 #: ../src/virt-viewer.xml.h:25
-msgid "_PrintScreen"
+msgid "Ctrl+Alt+F11"
 msgstr ""
 
 #: ../src/virt-viewer.xml.h:26
-msgid "_Send key"
+msgid "Ctrl+Alt+F12"
 msgstr ""
 
 #: ../src/virt-viewer.xml.h:27
-msgid "_View"
+msgid "_PrintScreen"
 msgstr ""
 
 #: ../src/virt-viewer.xml.h:28
-msgid "_Zoom"
+msgid "_Help"
 msgstr ""

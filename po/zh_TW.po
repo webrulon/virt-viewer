@@ -5,19 +5,20 @@
 # Translators:
 # Terry Chuang <tchuang at redhat>, 2010.
 # Terry Chuang <tchuang@redhat.com>, 2012.
+# Walter Cheuk <wwycheuk@gmail.com>, 2012.
 msgid ""
 msgstr ""
 "Project-Id-Version: virt-viewer\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-04-25 15:50+0100\n"
-"PO-Revision-Date: 2012-04-25 14:50+0000\n"
+"POT-Creation-Date: 2012-09-18 14:26+0100\n"
+"PO-Revision-Date: 2012-09-18 13:26+0000\n"
 "Last-Translator: Daniel Berrange <dan-transifex@berrange.com>\n"
 "Language-Team: Chinese (Taiwan) <trans-zh_TW@lists.fedoraproject.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Language: zh_TW\n"
-"Plural-Forms: nplurals=1; plural=0\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
 
 #: ../src/gbinding.c:637
 msgid "Source"
@@ -67,47 +68,49 @@ msgstr "remote-viewer 版本 %s\n"
 #: ../src/remote-viewer-main.c:69
 #, c-format
 msgid "Invalid full-screen argument: %s"
-msgstr ""
+msgstr "無效的全螢幕引數：%s"
 
 #. Create the widgets
 #: ../src/remote-viewer-main.c:104
 msgid "Connection details"
-msgstr ""
+msgstr "連線細節"
 
 #: ../src/remote-viewer-main.c:119
 msgid "URL:"
-msgstr ""
+msgstr "URL："
 
 #: ../src/remote-viewer-main.c:127
 msgid "Recent connections:"
-msgstr ""
+msgstr "最近連線："
 
-#: ../src/remote-viewer-main.c:206 ../src/virt-viewer-main.c:60
-msgid "Run '"
-msgstr "執行 '"
-
-#: ../src/remote-viewer-main.c:209 ../src/virt-viewer-main.c:63
+#: ../src/remote-viewer-main.c:209 ../src/virt-viewer-main.c:64
 msgid "Display version information"
 msgstr "顯示版本資訊"
 
-#: ../src/remote-viewer-main.c:211 ../src/virt-viewer-main.c:65
+#: ../src/remote-viewer-main.c:211 ../src/virt-viewer-main.c:66
 msgid "Display verbose information"
 msgstr "顯示詳細資訊"
 
-#: ../src/remote-viewer-main.c:213 ../src/virt-viewer-main.c:67
+#: ../src/remote-viewer-main.c:213 ../src/virt-viewer-main.c:68
 msgid "Direct connection with no automatic tunnels"
 msgstr "無自動穿隧的直接連線"
 
-#: ../src/remote-viewer-main.c:215 ../src/virt-viewer-main.c:77
+#: ../src/remote-viewer-main.c:215 ../src/virt-viewer-main.c:78
 msgid "Zoom level of window, in percentage"
 msgstr "視窗放大等級，單位為百分比"
 
-#: ../src/remote-viewer-main.c:217 ../src/virt-viewer-main.c:79
+#: ../src/remote-viewer-main.c:217 ../src/virt-viewer-main.c:80
 msgid "Display debugging information"
 msgstr "顯示除錯資訊"
 
 #: ../src/remote-viewer-main.c:219
-msgid "Open in full screen mode (=<auto-conf>)"
+msgid ""
+"Open in full screen mode (auto-conf adjusts guest resolution to fit the "
+"client's)."
+msgstr ""
+
+#: ../src/remote-viewer-main.c:219
+msgid "<auto-conf>"
 msgstr ""
 
 #: ../src/remote-viewer-main.c:222
@@ -116,24 +119,31 @@ msgstr "透過 Spice 控制器通訊來開啟連線"
 
 #: ../src/remote-viewer-main.c:249
 msgid "Remote Viewer"
-msgstr ""
+msgstr "遠端檢視器"
 
 #. Setup command line options
 #: ../src/remote-viewer-main.c:252
 msgid "- Remote viewer client"
-msgstr "- 院端檢視器客戶端"
+msgstr "- 遠端檢視器客戶端"
 
-#: ../src/remote-viewer-main.c:275
+#: ../src/remote-viewer-main.c:265
+#, c-format
+msgid ""
+"%s\n"
+"Run '%s --help' to see a full list of available command line options\n"
+msgstr ""
+
+#: ../src/remote-viewer-main.c:277
 #, c-format
 msgid "Error: extra arguments given while using Spice controller\n"
-msgstr ""
+msgstr "錯誤：額使用 Spice 控制器時給定額外引數\n"
 
-#: ../src/remote-viewer-main.c:284
+#: ../src/remote-viewer-main.c:286
 #, c-format
 msgid "Error: can't handle multiple URIs\n"
-msgstr ""
+msgstr "錯誤：無法處理 URI\n"
 
-#: ../src/remote-viewer-main.c:291 ../src/virt-viewer-main.c:125
+#: ../src/remote-viewer-main.c:293 ../src/virt-viewer-main.c:131
 #, c-format
 msgid "Zoom level must be within 10-200\n"
 msgstr "放大等級必須介於 10-200 之間\n"
@@ -161,7 +171,7 @@ msgstr "正在設置 Spice 作業階段..."
 
 #: ../src/remote-viewer.c:774
 msgid "Cannot determine the connection type from URI"
-msgstr "無法從網址判斷連線類型"
+msgstr "無法從 URI 判斷連線類型"
 
 #: ../src/remote-viewer.c:779
 #, c-format
@@ -175,22 +185,22 @@ msgstr "無法為此類型建立作業階段：%s"
 #. * End:
 #. 
 #: ../src/virt-viewer-about.xml.h:1
-msgid "A remote desktop client built with GTK-VNC, SPICE-GTK and libvirt"
-msgstr "以 GTK-VNC、SPICE-GTK 和 libvirt 所建立的遠端桌面客戶端"
-
-#: ../src/virt-viewer-about.xml.h:2
 msgid "About Glade"
 msgstr "關於 Glade"
 
-#: ../src/virt-viewer-about.xml.h:3
+#: ../src/virt-viewer-about.xml.h:2
 msgid ""
 "Copyright (C) 2007-2012 Daniel P. Berrange\n"
 "Copyright (C) 2007-2012 Red Hat, Inc."
 msgstr "Copyright (C) 2007-2012 Daniel P. Berrange\nCopyright (C) 2007-2012 Red Hat, Inc."
 
+#: ../src/virt-viewer-about.xml.h:4
+msgid "A remote desktop client built with GTK-VNC, SPICE-GTK and libvirt"
+msgstr "以 GTK-VNC、SPICE-GTK 和 libvirt 所建立的遠端桌面客戶端"
+
 #: ../src/virt-viewer-about.xml.h:5
-msgid "The Fedora Translation Team"
-msgstr "Fedora 翻譯團隊"
+msgid "virt-manager.org"
+msgstr "virt-manager.org"
 
 #: ../src/virt-viewer-about.xml.h:6
 msgid ""
@@ -207,71 +217,76 @@ msgid ""
 "You should have received a copy of the GNU General Public License\n"
 "along with this program; if not, write to the Free Software\n"
 "Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA\n"
-msgstr "此程式為自由軟體；您可將它重新發佈與/或對它進行修改，\n您必須同意自由軟體基金會（Free Software Foundation）的 GNU 通用\n公共許可證（GNU General Public License）的授權條款；許可證\n版本 2 或任何更新的版本。\n\n此程式乃為了方便社群使用，不過\n卻不含任何使用上的保証；甚至沒有任何適銷性上\n以及特定使用對象的保証。  欲取得更多詳細\n資訊，請參閱 GNU 通用公共許可證。\n\n當您取得此程式時，您應同時取得了\n一份 GNU 通用公共許可證。若沒有的話，請聯絡自由軟體\n基金會（Free Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA\n"
+msgstr "此程式為自由軟體；您可將它重新發佈與/或對它進行修改，\n您必須同意自由軟體基金會 (Free Software Foundation) 的 GNU 通用\n公共許可證 (GNU General Public License) 的授權條款；許可證\n版本 2 或任何更新的版本。\n\n此程式乃為了方便社群使用，不過\n卻不含任何使用上的保証；甚至沒有任何適銷性上\n以及特定使用對象的保証。  欲取得更多詳細\n資訊，請參閱 GNU 通用公共許可證。\n\n當您取得此程式時，您應同時取得了\n一份 GNU 通用公共許可證。若沒有的話，請聯絡自由軟體\n基金會（Free Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA\n"
 
 #: ../src/virt-viewer-about.xml.h:20
-msgid "virt-manager.org"
-msgstr "virt-manager.org"
+msgid "The Fedora Translation Team"
+msgstr "Fedora 翻譯團隊"
 
 #: ../src/virt-viewer-app.c:284
 msgid "This is the last visible display. Do you want to quit?"
 msgstr "這是最後的可見顯示。您是否想退出？"
 
-#: ../src/virt-viewer-app.c:624
+#: ../src/virt-viewer-app.c:635
 #, c-format
 msgid "Waiting for display %d..."
-msgstr "正在等候顯示 %d..."
+msgstr "正在等候顯示器 %d..."
 
-#: ../src/virt-viewer-app.c:707
+#: ../src/virt-viewer-app.c:722
 #, c-format
 msgid "Unknown graphic type for the guest %s"
 msgstr "客端 %s 的圖形類型不明"
 
-#: ../src/virt-viewer-app.c:782
+#: ../src/virt-viewer-app.c:799
 msgid "Connect to ssh failed."
 msgstr "連至 ssh 的連線失敗。"
 
-#: ../src/virt-viewer-app.c:784
+#: ../src/virt-viewer-app.c:801
 msgid "Can't connect to channel, SSH only supported."
 msgstr "無法連至頻道，僅支援 SSH。"
 
-#: ../src/virt-viewer-app.c:796
+#: ../src/virt-viewer-app.c:813
 msgid "Connect to channel unsupported."
-msgstr "不支援連至頻道。"
+msgstr "不支援頻道的連接。"
 
-#: ../src/virt-viewer-app.c:876
+#: ../src/virt-viewer-app.c:893
 msgid "Connecting to graphic server"
-msgstr "正連至圖形化伺服器"
+msgstr "正在連接圖形化伺服器"
 
-#: ../src/virt-viewer-app.c:1006
+#: ../src/virt-viewer-app.c:1023
 msgid "Guest domain has shutdown"
 msgstr "客端網域已關閉"
 
-#: ../src/virt-viewer-app.c:1056
+#: ../src/virt-viewer-app.c:1073
 msgid "Connected to graphic server"
 msgstr "已連上圖形化伺服器"
 
-#: ../src/virt-viewer-app.c:1082
+#: ../src/virt-viewer-app.c:1099
 #, c-format
 msgid "Unable to connect to the graphic server %s"
-msgstr "無法連上圖形化伺服器 %s"
+msgstr "無法連接圖形化伺服器 %s"
 
-#: ../src/virt-viewer-app.c:1111
+#: ../src/virt-viewer-app.c:1128
 #, c-format
 msgid ""
 "Unable to authenticate with remote desktop server at %s: %s\n"
 "Retry connection again?"
 msgstr "無法在位於 %s 的遠端桌面伺服器上驗證：%s\n重新嘗試連線？"
 
-#: ../src/virt-viewer-app.c:1131
+#: ../src/virt-viewer-app.c:1148
 #, c-format
 msgid "Unable to authenticate with remote desktop server: %s"
 msgstr "無法在遠端桌面伺服器驗證：%s"
 
-#: ../src/virt-viewer-app.c:1139
+#: ../src/virt-viewer-app.c:1156
 #, c-format
 msgid "USB redirection error: %s"
-msgstr "USB 重定向錯誤：%s"
+msgstr "USB 重新導引錯誤：%s"
+
+#: ../src/virt-viewer-app.c:1652
+#, c-format
+msgid "Display %d"
+msgstr ""
 
 #. * Local variables:
 #. *  c-indent-level: 4
@@ -284,52 +299,57 @@ msgid "Authentication required"
 msgstr "須要通過驗證"
 
 #: ../src/virt-viewer-auth.xml.h:2
+msgid "label"
+msgstr "標籤"
+
+#: ../src/virt-viewer-auth.xml.h:3
 msgid "Password:"
 msgstr "密碼："
 
-#: ../src/virt-viewer-auth.xml.h:3
+#: ../src/virt-viewer-auth.xml.h:4
 msgid "Username:"
 msgstr "使用者名稱："
-
-#: ../src/virt-viewer-auth.xml.h:4
-msgid "label"
-msgstr "標籤"
 
 #: ../src/virt-viewer-main.c:38
 #, c-format
 msgid "%s version %s\n"
-msgstr "%s version %s\n"
+msgstr "%s 版本 %s\n"
 
-#: ../src/virt-viewer-main.c:69
+#: ../src/virt-viewer-main.c:70
 msgid "Attach to the local display using libvirt"
-msgstr "使用 libvirt 連至本機顯示"
+msgstr "使用 libvirt 接至本機顯示"
 
-#: ../src/virt-viewer-main.c:71
+#: ../src/virt-viewer-main.c:72
 msgid "Connect to hypervisor"
-msgstr "連至 hypervisor"
+msgstr "連接 hypervisor"
 
-#: ../src/virt-viewer-main.c:73
+#: ../src/virt-viewer-main.c:74
 msgid "Wait for domain to start"
-msgstr "等待網域啟用"
+msgstr "等候網域啟動"
 
-#: ../src/virt-viewer-main.c:75
+#: ../src/virt-viewer-main.c:76
 msgid "Reconnect to domain upon restart"
-msgstr "重新啓動時重新連至網域"
+msgstr "重新啓動時重新連接網域"
 
-#: ../src/virt-viewer-main.c:81
+#: ../src/virt-viewer-main.c:82
 msgid "Open in full screen mode"
 msgstr "以全螢幕模式開啟"
 
-#: ../src/virt-viewer-main.c:96
+#: ../src/virt-viewer-main.c:97
 msgid "Virt Viewer"
 msgstr "Virt 檢視器"
 
+#: ../src/virt-viewer-main.c:101
+#, c-format
+msgid "Run '%s --help' to see a full list of available command line options"
+msgstr ""
+
 #. Setup command line options
-#: ../src/virt-viewer-main.c:99
+#: ../src/virt-viewer-main.c:106
 msgid "- Virtual machine graphical console"
 msgstr "- 虛擬機圖形化主控臺"
 
-#: ../src/virt-viewer-main.c:120
+#: ../src/virt-viewer-main.c:126
 #, c-format
 msgid ""
 "\n"
@@ -340,40 +360,40 @@ msgid ""
 msgstr "\n用法：%s [OPTIONS] DOMAIN-NAME|ID|UUID\n\n%s\n\n"
 
 #. Create the widgets
-#: ../src/virt-viewer-session-spice.c:380
+#: ../src/virt-viewer-session-spice.c:382
 msgid "Select USB devices for redirection"
-msgstr "選擇欲重新導向的 USB 裝置"
+msgstr "選擇欲重新導引的 USB 裝置"
 
 #: ../src/virt-viewer-session-vnc.c:141
 #, c-format
 msgid "Unsupported authentication type %d"
 msgstr "不支援的驗證類型 %d"
 
-#: ../src/virt-viewer-window.c:832
+#: ../src/virt-viewer-window.c:859
 msgid "Disconnect"
 msgstr "中斷連接"
 
-#: ../src/virt-viewer-window.c:839 ../src/virt-viewer-window.c:840
-#: ../src/virt-viewer.xml.h:22
+#: ../src/virt-viewer-window.c:866 ../src/virt-viewer-window.c:867
+#: ../src/virt-viewer.xml.h:3
 msgid "USB device selection"
 msgstr "USB 裝置選取"
 
-#: ../src/virt-viewer-window.c:848
+#: ../src/virt-viewer-window.c:875
 msgid "Send key combination"
-msgstr ""
+msgstr "傳送按鍵組合"
 
-#: ../src/virt-viewer-window.c:857 ../src/virt-viewer-window.c:858
+#: ../src/virt-viewer-window.c:884 ../src/virt-viewer-window.c:885
 msgid "Leave fullscreen"
 msgstr "離開全螢幕"
 
-#: ../src/virt-viewer-window.c:937
+#: ../src/virt-viewer-window.c:964
 msgid "Ctrl+Alt"
-msgstr ""
+msgstr "Ctrl+Alt"
 
-#: ../src/virt-viewer-window.c:940
+#: ../src/virt-viewer-window.c:967
 #, c-format
 msgid "(Press %s to release pointer)"
-msgstr ""
+msgstr "(按下 %s 以釋放游標)"
 
 #. translators:
 #. * This is "<ungrab (or empty)><space (or empty)><subtitle (or empty)> -
@@ -381,13 +401,13 @@ msgstr ""
 #. * Such as: "(Press Ctrl+Alt to release pointer) BigCorpTycoon MOTD - Virt
 #. Viewer"
 #. 
-#: ../src/virt-viewer-window.c:951
+#: ../src/virt-viewer-window.c:978
 #, c-format
 msgid "%s%s%s - %s"
 msgstr "%s%s%s - %s"
 
 #. translators: <space>
-#: ../src/virt-viewer-window.c:955
+#: ../src/virt-viewer-window.c:982
 msgid " "
 msgstr " "
 
@@ -438,7 +458,7 @@ msgstr "正在等候客端網域啟動伺服器"
 #: ../src/virt-viewer.c:624
 #, c-format
 msgid "Unable to connect to libvirt with URI %s"
-msgstr "無法透過 %s 網址與 libvirt 連線"
+msgstr "無法透過 %s URI 與 libvirt 連線"
 
 #: ../src/virt-viewer.c:625
 msgid "[none]"
@@ -451,109 +471,109 @@ msgstr "[無]"
 #. * End:
 #. 
 #: ../src/virt-viewer.xml.h:1
+msgid "_File"
+msgstr "檔案(_F)"
+
+#: ../src/virt-viewer.xml.h:2
+msgid "Screenshot"
+msgstr "螢幕快照"
+
+#: ../src/virt-viewer.xml.h:4
+msgid "Smartcard insertion"
+msgstr "智慧卡插入"
+
+#: ../src/virt-viewer.xml.h:5
+msgid "Smartcard removal"
+msgstr "智慧卡移除"
+
+#: ../src/virt-viewer.xml.h:6
+msgid "_View"
+msgstr "檢視(_V)"
+
+#: ../src/virt-viewer.xml.h:7
+msgid "Full screen"
+msgstr "全螢幕"
+
+#: ../src/virt-viewer.xml.h:8
+msgid "_Zoom"
+msgstr "遠近(_Z)"
+
+#: ../src/virt-viewer.xml.h:9
 msgid "Automatically resize"
 msgstr "自動重新調整大小"
 
-#: ../src/virt-viewer.xml.h:2
-msgid "Ctrl+Alt+F11"
-msgstr "Ctrl+Alt+F11"
-
-#: ../src/virt-viewer.xml.h:3
-msgid "Ctrl+Alt+F12"
-msgstr "Ctrl+Alt+F12"
-
-#: ../src/virt-viewer.xml.h:4
-msgid "Ctrl+Alt+F1_0"
-msgstr "Ctrl+Alt+F1_0"
-
-#: ../src/virt-viewer.xml.h:5
-msgid "Ctrl+Alt+F_1"
-msgstr "Ctrl+Alt+F_1"
-
-#: ../src/virt-viewer.xml.h:6
-msgid "Ctrl+Alt+F_2"
-msgstr "Ctrl+Alt+F_2"
-
-#: ../src/virt-viewer.xml.h:7
-msgid "Ctrl+Alt+F_3"
-msgstr "Ctrl+Alt+F_3"
-
-#: ../src/virt-viewer.xml.h:8
-msgid "Ctrl+Alt+F_4"
-msgstr "Ctrl+Alt+F_4"
-
-#: ../src/virt-viewer.xml.h:9
-msgid "Ctrl+Alt+F_5"
-msgstr "Ctrl+Alt+F_5"
-
 #: ../src/virt-viewer.xml.h:10
-msgid "Ctrl+Alt+F_6"
-msgstr "Ctrl+Alt+F_6"
+msgid "Displays"
+msgstr "顯示"
 
 #: ../src/virt-viewer.xml.h:11
-msgid "Ctrl+Alt+F_7"
-msgstr "Ctrl+Alt+F_7"
+msgid "Release cursor"
+msgstr "釋放游標"
 
 #: ../src/virt-viewer.xml.h:12
-msgid "Ctrl+Alt+F_8"
-msgstr "Ctrl+Alt+F_8"
+msgid "_Send key"
+msgstr "傳送按鍵(_S)"
 
 #: ../src/virt-viewer.xml.h:13
-msgid "Ctrl+Alt+F_9"
-msgstr "Ctrl+Alt+F_9"
+msgid "Ctrl+Alt+_Del"
+msgstr "Ctrl+Alt+_Del"
 
 #: ../src/virt-viewer.xml.h:14
 msgid "Ctrl+Alt+_Backspace"
 msgstr "Ctrl+Alt+_Backspace"
 
 #: ../src/virt-viewer.xml.h:15
-msgid "Ctrl+Alt+_Del"
-msgstr "Ctrl+Alt+_Del"
+msgid "Ctrl+Alt+F_1"
+msgstr "Ctrl+Alt+F_1"
 
 #: ../src/virt-viewer.xml.h:16
-msgid "Displays"
-msgstr "顯示"
+msgid "Ctrl+Alt+F_2"
+msgstr "Ctrl+Alt+F_2"
 
 #: ../src/virt-viewer.xml.h:17
-msgid "Full screen"
-msgstr "全螢幕"
+msgid "Ctrl+Alt+F_3"
+msgstr "Ctrl+Alt+F_3"
 
 #: ../src/virt-viewer.xml.h:18
-msgid "Release cursor"
-msgstr "釋放游標"
+msgid "Ctrl+Alt+F_4"
+msgstr "Ctrl+Alt+F_4"
 
 #: ../src/virt-viewer.xml.h:19
-msgid "Screenshot"
-msgstr "螢幕快照"
+msgid "Ctrl+Alt+F_5"
+msgstr "Ctrl+Alt+F_5"
 
 #: ../src/virt-viewer.xml.h:20
-msgid "Smartcard insertion"
-msgstr "智慧卡插入"
+msgid "Ctrl+Alt+F_6"
+msgstr "Ctrl+Alt+F_6"
 
 #: ../src/virt-viewer.xml.h:21
-msgid "Smartcard removal"
-msgstr "智慧卡移除"
+msgid "Ctrl+Alt+F_7"
+msgstr "Ctrl+Alt+F_7"
+
+#: ../src/virt-viewer.xml.h:22
+msgid "Ctrl+Alt+F_8"
+msgstr "Ctrl+Alt+F_8"
 
 #: ../src/virt-viewer.xml.h:23
-msgid "_File"
-msgstr "檔案(_F)"
+msgid "Ctrl+Alt+F_9"
+msgstr "Ctrl+Alt+F_9"
 
 #: ../src/virt-viewer.xml.h:24
-msgid "_Help"
-msgstr "求助(_H)"
+msgid "Ctrl+Alt+F1_0"
+msgstr "Ctrl+Alt+F1_0"
 
 #: ../src/virt-viewer.xml.h:25
+msgid "Ctrl+Alt+F11"
+msgstr "Ctrl+Alt+F11"
+
+#: ../src/virt-viewer.xml.h:26
+msgid "Ctrl+Alt+F12"
+msgstr "Ctrl+Alt+F12"
+
+#: ../src/virt-viewer.xml.h:27
 msgid "_PrintScreen"
 msgstr "列印畫面(_P)"
 
-#: ../src/virt-viewer.xml.h:26
-msgid "_Send key"
-msgstr "傳送按鍵(_S)"
-
-#: ../src/virt-viewer.xml.h:27
-msgid "_View"
-msgstr "檢視(_V)"
-
 #: ../src/virt-viewer.xml.h:28
-msgid "_Zoom"
-msgstr "遠近(_Z)"
+msgid "_Help"
+msgstr "求助(_H)"

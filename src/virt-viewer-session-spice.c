@@ -326,7 +326,6 @@ virt_viewer_session_spice_main_channel_event(SpiceChannel *channel G_GNUC_UNUSED
             gboolean openfd;
 
             g_object_set(self->priv->session, "password", password, NULL);
-            g_free(password);
             g_object_get(self->priv->session, "client-sockets", &openfd, NULL);
 
             if (openfd)

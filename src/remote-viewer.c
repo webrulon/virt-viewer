@@ -181,11 +181,12 @@ remote_viewer_init(RemoteViewer *self)
 }
 
 RemoteViewer *
-remote_viewer_new(const gchar *uri, gboolean verbose)
+remote_viewer_new(const gchar *uri, const gchar *title, gboolean verbose)
 {
     return g_object_new(REMOTE_VIEWER_TYPE,
                         "guri", uri,
                         "verbose", verbose,
+                        "title", title,
                         NULL);
 }
 
@@ -609,7 +610,7 @@ spice_ctrl_notified(SpiceCtrlController *ctrl,
                                   &value);
         }
     } else if (g_str_equal(pspec->name, "title")) {
-        g_object_set_property(G_OBJECT(app), "title", &value);
+        virt_viewer_app_set_title(app, g_value_get_string(&value));
     } else if (g_str_equal(pspec->name, "display-flags")) {
         guint flags = g_value_get_uint(&value);
         gboolean fullscreen = flags & CONTROLLER_SET_FULL_SCREEN;
@@ -768,7 +769,8 @@ remote_viewer_start(VirtViewerApp *app)
         g_return_val_if_fail(guri != NULL, FALSE);
 
         DEBUG_LOG("Opening display to %s", guri);
-        g_object_set(app, "title", guri, NULL);
+        if (virt_viewer_app_get_title(app) == NULL)
+            virt_viewer_app_set_title(app, guri);
 
         if (virt_viewer_util_extract_host(guri, &type, NULL, NULL, NULL, NULL) < 0 || type == NULL) {
             virt_viewer_app_simple_message_dialog(app, _("Cannot determine the connection type from URI"));

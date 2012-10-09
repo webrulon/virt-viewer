@@ -196,6 +196,7 @@ main(int argc, char **argv)
     int zoom = 100;
     gchar **args = NULL;
     gchar *uri = NULL;
+    char *title = NULL;
     gboolean verbose = FALSE;
     gboolean debug = FALSE;
     gboolean direct = FALSE;
@@ -209,6 +210,8 @@ main(int argc, char **argv)
           remote_viewer_version, N_("Display version information"), NULL },
         { "verbose", 'v', 0, G_OPTION_ARG_NONE, &verbose,
           N_("Display verbose information"), NULL },
+        { "title", 't', 0, G_OPTION_ARG_STRING, &title,
+          N_("Set window title"), NULL },
         { "direct", 'd', 0, G_OPTION_ARG_NONE, &direct,
           N_("Direct connection with no automatic tunnels"), NULL },
         { "zoom", 'z', 0, G_OPTION_ARG_INT, &zoom,
@@ -304,7 +307,7 @@ main(int argc, char **argv)
         g_object_set(viewer, "guest-name", "defined by Spice controller", NULL);
     } else {
 #endif
-        viewer = remote_viewer_new(uri, verbose);
+        viewer = remote_viewer_new(uri, title, verbose);
         g_object_set(viewer, "guest-name", uri, NULL);
 #if HAVE_SPICE_GTK
     }

@@ -38,6 +38,10 @@ Zoom level of the display window in percentage. Range 10-200.
 
 Start with the window maximised to fullscreen
 
+=item -t TITLE, --title TITLE
+
+Set the window title to B<TITLE>
+
 =item --spice-controller
 
 Use the SPICE controller to initialize the connection with the SPICE

@@ -1245,9 +1245,7 @@ virt_viewer_app_set_property (GObject *object, guint property_id,
         break;
 
     case PROP_TITLE:
-        g_free(priv->title);
-        priv->title = g_value_dup_string(value);
-        virt_viewer_app_set_all_window_subtitles(self);
+        virt_viewer_app_set_title(self, g_value_get_string(value));
         break;
 
     case PROP_ENABLE_ACCEL:
@@ -1492,6 +1490,22 @@ virt_viewer_app_class_init (VirtViewerAppClass *klass)
                      G_TYPE_NONE,
                      1,
                      G_TYPE_OBJECT);
+}
+
+const char *virt_viewer_app_get_title(VirtViewerApp *self)
+{
+    g_return_val_if_fail(VIRT_VIEWER_IS_APP(self), NULL);
+
+    return self->priv->title;
+}
+
+void virt_viewer_app_set_title(VirtViewerApp *self, const char *title)
+{
+    g_return_if_fail(VIRT_VIEWER_IS_APP(self));
+
+    g_free(self->priv->title);
+    self->priv->title = g_strdup(title);
+    virt_viewer_app_set_all_window_subtitles(self);
 }
 
 void

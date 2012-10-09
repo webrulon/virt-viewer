@@ -60,6 +60,8 @@ typedef struct {
 
 GType virt_viewer_app_get_type (void);
 
+const char *virt_viewer_app_get_title(VirtViewerApp *app);
+void virt_viewer_app_set_title(VirtViewerApp *app, const char *title);
 void virt_viewer_app_set_debug(gboolean debug);
 gboolean virt_viewer_app_start(VirtViewerApp *app);
 void virt_viewer_app_quit(VirtViewerApp *self);

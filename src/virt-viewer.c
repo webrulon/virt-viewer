@@ -282,6 +282,27 @@ virt_viewer_extract_xpath_string(const gchar *xmldesc,
     return port;
 }
 
+
+static gboolean
+virt_viewer_replace_host(const gchar *host)
+{
+    GInetAddress *addr;
+    gboolean ret;
+
+    if (!host)
+        return TRUE;
+
+    addr = g_inet_address_new_from_string(host);
+
+    if (!addr) /* Parsing error means it was probably a hostname */
+        return FALSE;
+
+    ret = g_inet_address_get_is_any(addr);
+    g_object_unref(addr);
+
+    return ret;
+}
+
 static gboolean
 virt_viewer_extract_connect_info(VirtViewer *self,
                                  virDomainPtr dom)
@@ -351,9 +372,7 @@ virt_viewer_extract_connect_info(VirtViewer *self,
      * from a remote host. Instead we fallback to the hostname used in
      * the libvirt URI. This isn't perfect but it is better than nothing
      */
-    if (!ghost ||
-        (strcmp(ghost, "0.0.0.0") == 0 ||
-         strcmp(ghost, "::") == 0)) {
+    if (virt_viewer_replace_host(ghost)) {
         DEBUG_LOG("Guest graphics listen '%s' is NULL or a wildcard, replacing with '%s'",
                   ghost ? ghost : "", host);
         g_free(ghost);

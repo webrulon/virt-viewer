@@ -1,5 +1,10 @@
 # -*- rpm-spec -*-
 
+# Default to skipping autoreconf.  Distros can change just this one line
+# (or provide a command-line override) if they backport any patches that
+# touch configure.ac or Makefile.am.
+%{!?enable_autotools:%define enable_autotools 1}
+
 # Plugin isn't ready for real world use yet - it needs
 # a security audit at very least
 %define _with_plugin %{?with_plugin:1}%{!?with_plugin:0}
@@ -37,6 +42,13 @@ Requires(post):   %{_sbindir}/update-alternatives
 Requires(postun): %{_sbindir}/update-alternatives
 Requires(post): desktop-file-utils
 Requires(postun): desktop-file-utils
+
+%if 0%{?enable_autotools}
+BuildRequires: autoconf
+BuildRequires: automake
+BuildRequires: gettext-devel
+BuildRequires: libtool
+%endif
 
 BuildRequires: glib2-devel >= 2.22
 %if %{with_gtk3}
@@ -93,6 +105,10 @@ browsers.
 %setup -q
 
 %build
+
+%if 0%{?enable_autotools}
+autoreconf -if
+%endif
 
 %if %{_with_plugin}
 %define plugin_arg --enable-plugin

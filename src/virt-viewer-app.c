@@ -1591,6 +1591,14 @@ static void fullscreen_cb(gpointer key,
         virt_viewer_window_leave_fullscreen(vwin);
 }
 
+gboolean
+virt_viewer_app_get_fullscreen(VirtViewerApp *self)
+{
+    g_return_val_if_fail(VIRT_VIEWER_IS_APP(self), FALSE);
+
+    return self->priv->fullscreen;
+}
+
 static void
 virt_viewer_app_set_fullscreen(VirtViewerApp *self, gboolean fullscreen)
 {

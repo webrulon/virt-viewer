@@ -38,6 +38,13 @@ G_DEFINE_TYPE (VirtViewerDisplaySpice, virt_viewer_display_spice, VIRT_VIEWER_TY
 struct _VirtViewerDisplaySpicePrivate {
     SpiceChannel *channel; /* weak reference */
     SpiceDisplay *display;
+    int auto_resize;
+};
+
+enum {
+    AUTO_RESIZE_ALWAYS,
+    AUTO_RESIZE_FULLSCREEN,
+    AUTO_RESIZE_NEVER,
 };
 
 #define VIRT_VIEWER_DISPLAY_SPICE_GET_PRIVATE(o) (G_TYPE_INSTANCE_GET_PRIVATE((o), VIRT_VIEWER_TYPE_DISPLAY_SPICE, VirtViewerDisplaySpicePrivate))
@@ -189,6 +196,12 @@ virt_viewer_display_spice_size_allocate(VirtViewerDisplaySpice *self,
     if (virt_viewer_display_get_show_hint(VIRT_VIEWER_DISPLAY(self)) & VIRT_VIEWER_DISPLAY_SHOW_HINT_DISABLED)
         return;
 
+    if (self->priv->auto_resize == AUTO_RESIZE_FULLSCREEN) {
+        GdkScreen *screen = gtk_widget_get_screen(GTK_WIDGET(self));
+        dw = gdk_screen_get_width(screen);
+        dh = gdk_screen_get_height(screen);
+    }
+
     if (virt_viewer_display_get_zoom(VIRT_VIEWER_DISPLAY(self))) {
         zoom = virt_viewer_display_get_zoom_level(VIRT_VIEWER_DISPLAY(self));
 
@@ -198,8 +211,11 @@ virt_viewer_display_spice_size_allocate(VirtViewerDisplaySpice *self,
 
     g_object_get(self, "nth-display", &nth, NULL);
 
-    spice_main_set_display(get_main(VIRT_VIEWER_DISPLAY(self)),
-                           nth, 0, 0, dw, dh);
+    if (self->priv->auto_resize != AUTO_RESIZE_NEVER)
+        spice_main_set_display(get_main(VIRT_VIEWER_DISPLAY(self)),
+                               nth, 0, 0, dw, dh);
+    if (self->priv->auto_resize == AUTO_RESIZE_FULLSCREEN)
+        self->priv->auto_resize = AUTO_RESIZE_NEVER;
 }
 
 static void
@@ -214,6 +230,15 @@ enable_accel_changed(VirtViewerApp *app,
     } else {
         spice_display_set_grab_keys(self->priv->display, NULL);
     }
+}
+
+static void
+fullscreen_changed(VirtViewerApp *app,
+                   GParamSpec *pspec G_GNUC_UNUSED,
+                   VirtViewerDisplaySpice *self)
+{
+    self->priv->auto_resize = virt_viewer_app_get_fullscreen(app) ?
+        AUTO_RESIZE_FULLSCREEN : AUTO_RESIZE_ALWAYS;
 }
 
 GtkWidget *
@@ -268,6 +293,8 @@ virt_viewer_display_spice_new(VirtViewerSessionSpice *session,
     app = virt_viewer_session_get_app(VIRT_VIEWER_SESSION(session));
     virt_viewer_signal_connect_object(app, "notify::enable-accel",
                                       G_CALLBACK(enable_accel_changed), self, 0);
+    virt_viewer_signal_connect_object(app, "notify::fullscreen",
+                                      G_CALLBACK(fullscreen_changed), self, 0);
     enable_accel_changed(app, NULL, self);
 
     return GTK_WIDGET(self);

@@ -354,8 +354,8 @@ virt_viewer_display_size_request(GtkWidget *widget,
 
     if (priv->dirty) {
         if (priv->zoom) {
-            requisition->width += priv->desktopWidth * priv->zoom_level / 100;
-            requisition->height += priv->desktopHeight * priv->zoom_level / 100;
+            requisition->width += round(priv->desktopWidth * priv->zoom_level / 100.0);
+            requisition->height += round(priv->desktopHeight * priv->zoom_level / 100.0);
         } else {
             requisition->width += priv->desktopWidth;
             requisition->height += priv->desktopHeight;

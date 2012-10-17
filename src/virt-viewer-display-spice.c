@@ -24,6 +24,7 @@
 
 #include <config.h>
 
+#include <math.h>
 #include <spice-audio.h>
 
 #include <glib/gi18n.h>
@@ -191,8 +192,8 @@ virt_viewer_display_spice_size_allocate(VirtViewerDisplaySpice *self,
     if (virt_viewer_display_get_zoom(VIRT_VIEWER_DISPLAY(self))) {
         zoom = virt_viewer_display_get_zoom_level(VIRT_VIEWER_DISPLAY(self));
 
-        dw /= ((double)zoom / 100.0);
-        dh /= ((double)zoom / 100.0);
+        dw = round(dw * 100 / zoom);
+        dh = round(dh * 100 / zoom);
     }
 
     g_object_get(self, "nth-display", &nth, NULL);

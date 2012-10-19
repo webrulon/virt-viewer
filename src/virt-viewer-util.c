@@ -263,6 +263,15 @@ gulong virt_viewer_signal_connect_object(gpointer instance,
 void virt_viewer_util_init(const char *appname)
 {
 #ifdef G_OS_WIN32
+    /*
+     * This named mutex will be kept around by Windows until the
+     * process terminates. This allows other instances to check if it
+     * already exists, indicating already running instances. It is
+     * used to warn the user that installer can't proceed in this
+     * case.
+     */
+    CreateMutexA(0, 0, "VirtViewerMutex");
+
     if (AttachConsole(ATTACH_PARENT_PROCESS) != 0) {
         freopen("CONIN$", "r", stdin);
         freopen("CONOUT$", "w", stdout);

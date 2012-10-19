@@ -45,6 +45,18 @@ Function RegisterApplication
     WriteRegDWord HKCU "${REG_IEPOLICY}" "Policy" 3
 FunctionEnd
 
+Function .onInit
+retry:
+ System::Call 'kernel32::CreateMutexA(i 0, i 0, t "VirtViewerMutex") i .r1 ?e'
+ Pop $R0
+ StrCmp $R0 0 end
+   System::Call 'kernel32::CloseHandle(i r1) i.s'
+   MessageBox MB_ICONEXCLAMATION|MB_RETRYCANCEL "VirtViewer is already running, quit any instance and retry." IDRETRY retry IDCANCEL cancel
+cancel:
+   Abort
+end:
+FunctionEnd
+
 Section "VirtViewer"
   SectionIn RO
   WriteRegStr HKCU "Software\virt-viewer" "" $INSTDIR

@@ -23,6 +23,14 @@
 
 #include <config.h>
 
+#include <glib.h>
+#include <glib/gi18n.h>
+
+#ifdef G_OS_WIN32
+#include <windows.h>
+#include <io.h>
+#endif
+
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <unistd.h>
@@ -252,6 +260,30 @@ gulong virt_viewer_signal_connect_object(gpointer instance,
     return ctx->handler_id;
 }
 
+void virt_viewer_util_init(const char *appname)
+{
+#ifdef G_OS_WIN32
+    if (AttachConsole(ATTACH_PARENT_PROCESS) != 0) {
+        freopen("CONIN$", "r", stdin);
+        freopen("CONOUT$", "w", stdout);
+        freopen("CONOUT$", "w", stderr);
+        dup2(fileno(stdin), STDIN_FILENO);
+        dup2(fileno(stdout), STDOUT_FILENO);
+        dup2(fileno(stderr), STDERR_FILENO);
+    }
+#endif
+
+#if !GLIB_CHECK_VERSION(2,31,0)
+    g_thread_init(NULL);
+#endif
+
+    setlocale(LC_ALL, "");
+    bindtextdomain(GETTEXT_PACKAGE, LOCALE_DIR);
+    bind_textdomain_codeset(GETTEXT_PACKAGE, "UTF-8");
+    textdomain(GETTEXT_PACKAGE);
+
+    g_set_application_name(appname);
+}
 
 /*
  * Local variables:

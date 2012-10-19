@@ -85,17 +85,7 @@ int main(int argc, char **argv)
         { NULL, 0, 0, G_OPTION_ARG_NONE, NULL, NULL, NULL }
     };
 
-#if !GLIB_CHECK_VERSION(2,31,0)
-    g_thread_init(NULL);
-#endif
-
-    setlocale(LC_ALL, "");
-    bindtextdomain(GETTEXT_PACKAGE, LOCALE_DIR);
-    bind_textdomain_codeset(GETTEXT_PACKAGE, "UTF-8");
-    textdomain(GETTEXT_PACKAGE);
-
-    g_set_application_name(_("Virt Viewer"));
-
+    virt_viewer_util_init(_("Virt Viewer"));
 
     basename = g_path_get_basename(argv[0]);
     help_msg = g_strdup_printf(_("Run '%s --help' to see a full list of available command line options"),

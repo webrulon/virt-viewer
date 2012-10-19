@@ -32,6 +32,8 @@ extern gboolean doDebug;
 #define ARRAY_CARDINALITY(Array) (sizeof (Array) / sizeof *(Array))
 
 
+void virt_viewer_util_init(const char *appname);
+
 GtkBuilder *virt_viewer_util_load_ui(const char *name);
 int virt_viewer_util_extract_host(const char *uristr,
                                   char **scheme,

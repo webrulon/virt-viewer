@@ -25,6 +25,7 @@
 
 #include <glib.h>
 #include <glib/gi18n.h>
+#include <locale.h>
 
 #ifdef G_OS_WIN32
 #include <windows.h>

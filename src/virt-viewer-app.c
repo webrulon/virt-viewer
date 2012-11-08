@@ -1010,6 +1010,8 @@ virt_viewer_app_start_reconnect_poll(VirtViewerApp *self)
     g_return_if_fail(VIRT_VIEWER_IS_APP(self));
     VirtViewerAppPrivate *priv = self->priv;
 
+    DEBUG_LOG("reconnect_poll: %d", priv->reconnect_poll);
+
     if (priv->reconnect_poll != 0)
         return;
 

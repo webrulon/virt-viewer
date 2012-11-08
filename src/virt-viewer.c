@@ -489,6 +489,25 @@ virt_viewer_domain_event(virConnectPtr conn G_GNUC_UNUSED,
     return 0;
 }
 
+static void
+virt_viewer_conn_event(virConnectPtr conn G_GNUC_UNUSED,
+                       int reason,
+                       void *opaque)
+{
+    VirtViewer *self = opaque;
+    VirtViewerApp *app = VIRT_VIEWER_APP(self);
+    VirtViewerPrivate *priv = self->priv;
+
+    DEBUG_LOG("Got connection event %d", reason);
+
+    virConnectClose(priv->conn);
+    priv->conn = NULL;
+
+    virt_viewer_app_start_reconnect_poll(app);
+}
+
+static int virt_viewer_connect(VirtViewerApp *app);
+
 static int
 virt_viewer_initial_connect(VirtViewerApp *app)
 {
@@ -497,6 +516,15 @@ virt_viewer_initial_connect(VirtViewerApp *app)
     int ret = -1;
     VirtViewer *self = VIRT_VIEWER(app);
     VirtViewerPrivate *priv = self->priv;
+
+
+    DEBUG_LOG("initial connect");
+
+    if (!priv->conn &&
+        virt_viewer_connect(app) < 0) {
+        virt_viewer_app_show_status(app, _("Waiting for libvirt to start"));
+        goto done;
+    }
 
     virt_viewer_app_show_status(app, _("Finding guest domain"));
     dom = virt_viewer_lookup_domain(self);
@@ -618,9 +646,8 @@ virt_viewer_auth_libvirt_credentials(virConnectCredentialPtr cred,
     return ret;
 }
 
-
-static gboolean
-virt_viewer_start(VirtViewerApp *app)
+static int
+virt_viewer_connect(VirtViewerApp *app)
 {
     VirtViewer *self = VIRT_VIEWER(app);
     VirtViewerPrivate *priv = self->priv;
@@ -637,9 +664,7 @@ virt_viewer_start(VirtViewerApp *app)
     if (!virt_viewer_app_get_attach(app))
         oflags |= VIR_CONNECT_RO;
 
-    virt_viewer_events_register();
-
-    virSetErrorFunc(NULL, virt_viewer_error_func);
+    DEBUG_LOG("connecting ...");
 
     virt_viewer_app_trace(app, "Opening connection to libvirt with URI %s",
                           priv->uri ? priv->uri : "<null>");
@@ -650,11 +675,11 @@ virt_viewer_start(VirtViewerApp *app)
     if (!priv->conn) {
         virt_viewer_app_simple_message_dialog(app, _("Unable to connect to libvirt with URI %s"),
                                               priv->uri ? priv->uri : _("[none]"));
-        return FALSE;
+        return -1;
     }
 
     if (virt_viewer_app_initial_connect(app) < 0)
-        return FALSE;
+        return -1;
 
     if (virConnectDomainEventRegister(priv->conn,
                                       virt_viewer_domain_event,
@@ -669,6 +694,26 @@ virt_viewer_start(VirtViewerApp *app)
         DEBUG_LOG("No domain events, falling back to polling");
         virt_viewer_app_start_reconnect_poll(app);
     }
+
+    if (virConnectRegisterCloseCallback(priv->conn,
+                                        virt_viewer_conn_event,
+                                        self,
+                                        NULL) < 0) {
+        DEBUG_LOG("Unable to register close callback on libvirt connection");
+    }
+
+    return 0;
+}
+
+static gboolean
+virt_viewer_start(VirtViewerApp *app)
+{
+    virt_viewer_events_register();
+
+    virSetErrorFunc(NULL, virt_viewer_error_func);
+
+    if (virt_viewer_connect(app) < 0)
+        return FALSE;
 
     return VIRT_VIEWER_APP_CLASS(virt_viewer_parent_class)->start(app);
 }

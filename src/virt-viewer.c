@@ -370,13 +370,21 @@ virt_viewer_extract_connect_info(VirtViewer *self,
     /* If the XML listen attribute shows a wildcard address, we need to
      * throw that away since you obviously can't 'connect(2)' to that
      * from a remote host. Instead we fallback to the hostname used in
-     * the libvirt URI. This isn't perfect but it is better than nothing
+     * the libvirt URI. This isn't perfect but it is better than nothing.
+     * If the transport is SSH, fallback to localhost as the connection
+     * will be made from the remote end of the ssh connection.
      */
     if (virt_viewer_replace_host(ghost)) {
+        gchar *replacement_host = NULL;
+        if (g_str_equal(transport, "ssh")) {
+            replacement_host = g_strdup("localhost");
+        } else {
+            replacement_host = g_strdup(host);
+        }
         DEBUG_LOG("Guest graphics listen '%s' is NULL or a wildcard, replacing with '%s'",
-                  ghost ? ghost : "", host);
+                  ghost ? ghost : "", replacement_host);
         g_free(ghost);
-        ghost = g_strdup(host);
+        ghost = replacement_host;
     }
 
     virt_viewer_app_set_connect_info(app, host, ghost, gport, gtlsport,transport, unixsock, user, port, NULL);

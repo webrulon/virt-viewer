@@ -192,7 +192,7 @@ if test "x$enable_plugin" = "xyes"; then
 fi
 AM_CONDITIONAL(ENABLE_PLUGIN, [test "x$enable_plugin" = "xyes"])
 
-if test "x$have_gtk_vnc" != "xyes" && test "x$have_gtk_spice" != "xyes"; then
+if test "x$have_gtk_vnc" != "xyes" && test "x$have_spice_gtk" != "xyes"; then
     AC_MSG_ERROR([At least one of spice or vnc must be used])
 fi
 

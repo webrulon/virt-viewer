@@ -750,15 +750,66 @@ virt_viewer_window_menu_view_resize(GtkWidget *menu,
     virt_viewer_display_set_auto_resize(priv->display, priv->auto_resize);
 }
 
+static void add_if_writable (GdkPixbufFormat *data, GHashTable *formats)
+{
+    if (gdk_pixbuf_format_is_writable(data)) {
+        gchar **extensions;
+        gchar **it;
+        extensions = gdk_pixbuf_format_get_extensions(data);
+        for (it = extensions; *it != NULL; it++) {
+            g_hash_table_insert(formats, g_strdup(*it), data);
+        }
+        g_strfreev(extensions);
+    }
+}
+
+static GHashTable *init_image_formats(void)
+{
+    GHashTable *format_map;
+    GSList *formats = gdk_pixbuf_get_formats();
+
+    format_map = g_hash_table_new_full(g_str_hash, g_str_equal, g_free, NULL);
+    g_slist_foreach(formats, (GFunc)add_if_writable, format_map);
+    g_slist_free (formats);
+
+    return format_map;
+}
+
+static GdkPixbufFormat *get_image_format(const char *filename)
+{
+    static GOnce image_formats_once = G_ONCE_INIT;
+    const char *ext;
+
+    g_once(&image_formats_once, (GThreadFunc)init_image_formats, NULL);
+
+    ext = strrchr(filename, '.');
+    if (ext == NULL)
+        return NULL;
+
+    ext++; /* skip '.' */
+
+    return g_hash_table_lookup(image_formats_once.retval, ext);
+}
+
 static void
 virt_viewer_window_save_screenshot(VirtViewerWindow *self,
                                    const char *file)
 {
     VirtViewerWindowPrivate *priv = self->priv;
     GdkPixbuf *pix = virt_viewer_display_get_pixbuf(VIRT_VIEWER_DISPLAY(priv->display));
+    GdkPixbufFormat *format = get_image_format(file);
 
-    gdk_pixbuf_save(pix, file, "png", NULL,
-                    "tEXt::Generator App", PACKAGE, NULL);
+    if (format == NULL) {
+        g_debug("unknown file extension, falling back to png");
+        gdk_pixbuf_save(pix, file, "png", NULL,
+                        "tEXt::Generator App", PACKAGE, NULL);
+    } else {
+        char *type = gdk_pixbuf_format_get_name(format);
+        g_debug("saving to %s", type);
+        gdk_pixbuf_save(pix, file, type, NULL, NULL);
+        g_free(type);
+    }
+
     g_object_unref(pix);
 }
 

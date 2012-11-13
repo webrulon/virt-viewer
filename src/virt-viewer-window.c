@@ -768,6 +768,7 @@ virt_viewer_window_menu_file_screenshot(GtkWidget *menu G_GNUC_UNUSED,
 {
     GtkWidget *dialog;
     VirtViewerWindowPrivate *priv = self->priv;
+    const char *image_dir;
 
     g_return_if_fail(priv->display != NULL);
 
@@ -780,9 +781,10 @@ virt_viewer_window_menu_file_screenshot(GtkWidget *menu G_GNUC_UNUSED,
     gtk_file_chooser_set_do_overwrite_confirmation(GTK_FILE_CHOOSER (dialog), TRUE);
     gtk_window_set_transient_for(GTK_WINDOW(dialog),
                                  GTK_WINDOW(self->priv->window));
-
-    //gtk_file_chooser_set_current_folder (GTK_FILE_CHOOSER (dialog), default_folder_for_saving);
-    //gtk_file_chooser_set_current_name (GTK_FILE_CHOOSER (dialog), "Screenshot");
+    image_dir = g_get_user_special_dir(G_USER_DIRECTORY_PICTURES);
+    if (image_dir != NULL)
+        gtk_file_chooser_set_current_folder(GTK_FILE_CHOOSER (dialog), image_dir);
+    gtk_file_chooser_set_current_name(GTK_FILE_CHOOSER (dialog), _("Screenshot"));
 
     if (gtk_dialog_run(GTK_DIALOG (dialog)) == GTK_RESPONSE_ACCEPT) {
         char *filename;

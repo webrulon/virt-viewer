@@ -1,5 +1,5 @@
 # Customize Makefile.maint.                           -*- makefile -*-
-# Copyright (C) 2008-2011 Red Hat, Inc.
+# Copyright (C) 2008-2012 Red Hat, Inc.
 # Copyright (C) 2003-2008 Free Software Foundation, Inc.
 
 # This program is free software: you can redistribute it and/or modify
@@ -24,6 +24,7 @@ local-checks-to-skip =			\
   patch-check				\
   sc_GPL_version			\
   sc_always_defined_macros		\
+  sc_bindtextdomain			\
   sc_cast_of_alloca_return_value	\
   sc_cross_check_PATH_usage_in_tests	\
   sc_dd_max_sym_length			\
@@ -133,5 +134,4 @@ exclude_file_name_regexp--sc_require_config_h_first = ^plugin/|src/gbinding\.c|s
 exclude_file_name_regexp--sc_prohibit_empty_lines_at_EOF = ^icons/
 exclude_file_name_regexp--sc_trailing_blank = ^icons/
 
-exclude_file_name_regexp--sc_bindtextdomain = src/windows-cmdline-wrapper.c
 exclude_file_name_regexp--sc_prohibit_magic_number_exit = src/windows-cmdline-wrapper.c

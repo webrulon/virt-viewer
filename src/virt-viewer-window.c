@@ -801,8 +801,16 @@ virt_viewer_window_save_screenshot(VirtViewerWindow *self,
 
     if (format == NULL) {
         g_debug("unknown file extension, falling back to png");
-        gdk_pixbuf_save(pix, file, "png", NULL,
-                        "tEXt::Generator App", PACKAGE, NULL);
+        if (!g_str_has_suffix(file, ".png")) {
+            char *png_filename;
+            png_filename = g_strconcat(file, ".png", NULL);
+            gdk_pixbuf_save(pix, png_filename, "png", NULL,
+                            "tEXt::Generator App", PACKAGE, NULL);
+            g_free(png_filename);
+        } else {
+            gdk_pixbuf_save(pix, file, "png", NULL,
+                            "tEXt::Generator App", PACKAGE, NULL);
+        }
     } else {
         char *type = gdk_pixbuf_format_get_name(format);
         g_debug("saving to %s", type);

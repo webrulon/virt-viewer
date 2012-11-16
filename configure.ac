@@ -84,7 +84,7 @@ AC_ARG_WITH([libvirt],
 
 AS_IF([test "x$with_libvirt" != "xno"],
       [PKG_CHECK_MODULES(LIBVIRT,
-                         [libvirt],
+                         [libvirt >= $LIBVIRT_REQUIRED],
                          [have_libvirt=yes], [have_libvirt=no])],
       [have_libvirt=no])
 

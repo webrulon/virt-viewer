@@ -200,6 +200,7 @@ AC_OUTPUT([
     Makefile
     data/Makefile
     data/virt-viewer.nsis
+    data/virt-viewer-debug.nsis
     icons/Makefile
     icons/16x16/Makefile
     icons/22x22/Makefile

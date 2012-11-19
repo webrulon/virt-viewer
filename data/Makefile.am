@@ -3,6 +3,7 @@ NULL=
 EXTRA_DIST =					\
 	spice-xpi-client-remote-viewer		\
 	virt-viewer.nsis.in			\
+	virt-viewer-debug.nsis.in			\
 	$(NULL)
 
 if OS_WIN32

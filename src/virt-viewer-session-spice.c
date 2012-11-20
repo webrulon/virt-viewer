@@ -303,6 +303,7 @@ virt_viewer_session_spice_main_channel_event(SpiceChannel *channel G_GNUC_UNUSED
     switch (event) {
     case SPICE_CHANNEL_OPENED:
         DEBUG_LOG("main channel: opened");
+        g_signal_emit_by_name(session, "session-connected");
         break;
     case SPICE_CHANNEL_CLOSED:
         DEBUG_LOG("main channel: closed");
@@ -523,8 +524,6 @@ virt_viewer_session_spice_channel_new(SpiceSession *s,
         g_signal_connect(channel, "notify::agent-connected", G_CALLBACK(agent_connected_changed), self);
         g_signal_connect(channel, "notify::agent-connected", G_CALLBACK(agent_connected_fullscreen_auto_conf), self);
         agent_connected_fullscreen_auto_conf(channel, NULL, self);
-
-        g_signal_emit_by_name(session, "session-connected");
     }
 
     if (SPICE_IS_DISPLAY_CHANNEL(channel)) {

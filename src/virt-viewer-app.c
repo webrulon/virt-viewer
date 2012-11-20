@@ -890,14 +890,16 @@ virt_viewer_app_activate(VirtViewerApp *self)
 
     ret = VIRT_VIEWER_APP_GET_CLASS(self)->activate(self);
 
-    if (ret != -1) {
-        virt_viewer_app_show_status(self, _("Connecting to graphic server"));
+    if (ret == -1) {
         priv->connected = FALSE;
+    } else {
+        virt_viewer_app_show_status(self, _("Connecting to graphic server"));
         priv->cancelled = FALSE;
         priv->active = TRUE;
-        priv->grabbed = FALSE;
-        virt_viewer_app_update_title(self);
     }
+
+    priv->grabbed = FALSE;
+    virt_viewer_app_update_title(self);
 
     return ret;
 }

@@ -158,19 +158,17 @@ static gint connect_dialog(gchar **uri)
 }
 
 static void
-recent_add(gchar *uri)
+recent_add(gchar *uri, const gchar *mime_type)
 {
     GtkRecentManager *recent;
     GtkRecentData meta = {
-        .mime_type    = (char*)"application/x-spice",
         .app_name     = (char*)"remote-viewer",
         .app_exec     = (char*)"remote-viewer %u",
+        .mime_type    = (char*)mime_type,
     };
 
     if (uri == NULL)
         return;
-
-    g_return_if_fail(g_str_has_prefix(uri, "spice://") || g_str_has_prefix(uri, "vnc://"));
 
     recent = gtk_recent_manager_get_default();
     meta.display_name = uri;
@@ -182,8 +180,9 @@ static void connected(VirtViewerSession *session,
                       VirtViewerApp *self G_GNUC_UNUSED)
 {
     gchar *uri = virt_viewer_session_get_uri(session);
+    const gchar *mime = virt_viewer_session_mime_type(session);
 
-    recent_add(uri);
+    recent_add(uri, mime);
     g_free(uri);
 }
 

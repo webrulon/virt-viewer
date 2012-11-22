@@ -123,6 +123,12 @@ virt_viewer_session_spice_dispose(GObject *obj)
 }
 
 
+static const gchar*
+virt_viewer_session_spice_mime_type(VirtViewerSession *self G_GNUC_UNUSED)
+{
+    return "application/x-spice";
+}
+
 static void
 virt_viewer_session_spice_class_init(VirtViewerSessionSpiceClass *klass)
 {
@@ -142,6 +148,7 @@ virt_viewer_session_spice_class_init(VirtViewerSessionSpiceClass *klass)
     dclass->usb_device_selection = virt_viewer_session_spice_usb_device_selection;
     dclass->smartcard_insert = virt_viewer_session_spice_smartcard_insert;
     dclass->smartcard_remove = virt_viewer_session_spice_smartcard_remove;
+    dclass->mime_type = virt_viewer_session_spice_mime_type;
 
     g_type_class_add_private(klass, sizeof(VirtViewerSessionSpicePrivate));
 

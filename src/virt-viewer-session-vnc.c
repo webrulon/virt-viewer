@@ -64,6 +64,11 @@ virt_viewer_session_vnc_finalize(GObject *obj)
     G_OBJECT_CLASS(virt_viewer_session_vnc_parent_class)->finalize(obj);
 }
 
+static const gchar*
+virt_viewer_session_vnc_mime_type(VirtViewerSession *self G_GNUC_UNUSED)
+{
+    return "application/x-vnc";
+}
 
 static void
 virt_viewer_session_vnc_class_init(VirtViewerSessionVncClass *klass)
@@ -78,6 +83,7 @@ virt_viewer_session_vnc_class_init(VirtViewerSessionVncClass *klass)
     dclass->open_host = virt_viewer_session_vnc_open_host;
     dclass->open_uri = virt_viewer_session_vnc_open_uri;
     dclass->channel_open_fd = virt_viewer_session_vnc_channel_open_fd;
+    dclass->mime_type = virt_viewer_session_vnc_mime_type;
 
     g_type_class_add_private(klass, sizeof(VirtViewerSessionVncPrivate));
 }

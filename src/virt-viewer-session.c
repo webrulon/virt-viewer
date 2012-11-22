@@ -367,6 +367,18 @@ gboolean virt_viewer_session_open_uri(VirtViewerSession *session, const gchar *u
     return klass->open_uri(session, uri);
 }
 
+const gchar* virt_viewer_session_mime_type(VirtViewerSession *self)
+{
+    VirtViewerSessionClass *klass;
+
+    g_return_val_if_fail(VIRT_VIEWER_IS_SESSION(self), FALSE);
+
+    klass = VIRT_VIEWER_SESSION_GET_CLASS(self);
+    g_return_val_if_fail(klass->mime_type != NULL, FALSE);
+
+    return klass->mime_type(self);
+}
+
 gboolean virt_viewer_session_channel_open_fd(VirtViewerSession *session,
                                              VirtViewerSessionChannel *channel, int fd)
 {

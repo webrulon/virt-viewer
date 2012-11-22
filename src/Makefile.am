@@ -39,6 +39,7 @@ COMMON_SOURCES =					\
 	virt-viewer-util.h virt-viewer-util.c		\
 	virt-viewer-auth.h virt-viewer-auth.c		\
 	virt-viewer-app.h virt-viewer-app.c		\
+	virt-viewer-file.h virt-viewer-file.c		\
 	virt-viewer-session.h virt-viewer-session.c	\
 	virt-viewer-display.h virt-viewer-display.c	\
 	virt-viewer-notebook.h virt-viewer-notebook.c	\

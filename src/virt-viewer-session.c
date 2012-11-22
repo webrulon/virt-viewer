@@ -38,6 +38,7 @@ struct _VirtViewerSessionPrivate
     VirtViewerApp *app;
     gboolean auto_usbredir;
     gchar *uri;
+    VirtViewerFile *file;
 };
 
 G_DEFINE_ABSTRACT_TYPE(VirtViewerSession, virt_viewer_session, G_TYPE_OBJECT)
@@ -47,6 +48,7 @@ enum {
 
     PROP_APP,
     PROP_AUTO_USBREDIR,
+    PROP_FILE
 };
 
 static void
@@ -62,6 +64,7 @@ virt_viewer_session_finalize(GObject *obj)
     g_list_free(session->priv->displays);
 
     g_free(session->priv->uri);
+    g_clear_object(&session->priv->file);
 
     G_OBJECT_CLASS(virt_viewer_session_parent_class)->finalize(obj);
 }
@@ -81,6 +84,10 @@ virt_viewer_session_set_property(GObject *object,
 
     case PROP_APP:
         self->priv->app = g_value_get_object(value);
+        break;
+
+    case PROP_FILE:
+        virt_viewer_session_set_file(self, g_value_get_object(value));
         break;
 
     default:
@@ -104,6 +111,10 @@ virt_viewer_session_get_property(GObject *object,
 
     case PROP_APP:
         g_value_set_object(value, self->priv->app);
+        break;
+
+    case PROP_FILE:
+        g_value_set_object(value, self->priv->file);
         break;
 
     default:
@@ -137,6 +148,16 @@ virt_viewer_session_class_init(VirtViewerSessionClass *class)
                                                          "VirtViewerApp",
                                                          "VirtViewerApp",
                                                          VIRT_VIEWER_TYPE_APP,
+                                                         G_PARAM_READWRITE |
+                                                         G_PARAM_CONSTRUCT |
+                                                         G_PARAM_STATIC_STRINGS));
+
+    g_object_class_install_property(object_class,
+                                    PROP_FILE,
+                                    g_param_spec_object("file",
+                                                         "VirtViewerFile",
+                                                         "VirtViewerFile",
+                                                         VIRT_VIEWER_TYPE_FILE,
                                                          G_PARAM_READWRITE |
                                                          G_PARAM_CONSTRUCT |
                                                          G_PARAM_STATIC_STRINGS));
@@ -373,6 +394,9 @@ const gchar* virt_viewer_session_mime_type(VirtViewerSession *self)
 
     g_return_val_if_fail(VIRT_VIEWER_IS_SESSION(self), FALSE);
 
+    if (self->priv->file)
+        return "application/x-virt-viewer";
+
     klass = VIRT_VIEWER_SESSION_GET_CLASS(self);
     g_return_val_if_fail(klass->mime_type != NULL, FALSE);
 
@@ -475,6 +499,21 @@ gchar* virt_viewer_session_get_uri(VirtViewerSession *self)
     return g_strdup(self->priv->uri);
 }
 
+void virt_viewer_session_set_file(VirtViewerSession *self, VirtViewerFile *file)
+{
+    g_return_if_fail(VIRT_VIEWER_IS_SESSION(self));
+
+    g_clear_object(&self->priv->file);
+    if (file)
+        self->priv->file = g_object_ref(file);
+}
+
+VirtViewerFile* virt_viewer_session_get_file(VirtViewerSession *self)
+{
+    g_return_val_if_fail(VIRT_VIEWER_IS_SESSION(self), NULL);
+
+    return self->priv->file;
+}
 
 /*
  * Local variables:

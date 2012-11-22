@@ -136,6 +136,7 @@ static gint connect_dialog(gchar **uri)
     rfilter = gtk_recent_filter_new();
     gtk_recent_filter_add_mime_type(rfilter, "application/x-spice");
     gtk_recent_filter_add_mime_type(rfilter, "application/x-vnc");
+    gtk_recent_filter_add_mime_type(rfilter, "application/x-virt-viewer");
     gtk_recent_chooser_set_filter(GTK_RECENT_CHOOSER(recent), rfilter);
     gtk_recent_chooser_set_local_only(GTK_RECENT_CHOOSER(recent), FALSE);
     g_signal_connect(recent, "selection-changed",

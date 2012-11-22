@@ -27,6 +27,7 @@
 #include <gtk/gtk.h>
 
 #include "virt-viewer-app.h"
+#include "virt-viewer-file.h"
 #include "virt-viewer-display.h"
 
 G_BEGIN_DECLS
@@ -124,6 +125,8 @@ void virt_viewer_session_smartcard_insert(VirtViewerSession *self);
 void virt_viewer_session_smartcard_remove(VirtViewerSession *self);
 VirtViewerApp* virt_viewer_session_get_app(VirtViewerSession *self);
 gchar* virt_viewer_session_get_uri(VirtViewerSession *self);
+void virt_viewer_session_set_file(VirtViewerSession *self, VirtViewerFile *file);
+VirtViewerFile* virt_viewer_session_get_file(VirtViewerSession *self);
 
 G_END_DECLS
 

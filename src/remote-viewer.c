@@ -435,119 +435,6 @@ remote_viewer_get_spice_session(RemoteViewer *self)
     return session;
 }
 
-static gchar *
-ctrl_key_to_gtk_key(const gchar *key)
-{
-    int i;
-
-    static const struct {
-        const char *ctrl;
-        const char *gtk;
-    } keys[] = {
-        /* FIXME: right alt, right ctrl, right shift, cmds */
-        { "alt", "<Alt>" },
-        { "ralt", "<Alt>" },
-        { "rightalt", "<Alt>" },
-        { "right-alt", "<Alt>" },
-        { "lalt", "<Alt>" },
-        { "leftalt", "<Alt>" },
-        { "left-alt", "<Alt>" },
-
-        { "ctrl", "<Ctrl>" },
-        { "rctrl", "<Ctrl>" },
-        { "rightctrl", "<Ctrl>" },
-        { "right-ctrl", "<Ctrl>" },
-        { "lctrl", "<Ctrl>" },
-        { "leftctrl", "<Ctrl>" },
-        { "left-ctrl", "<Ctrl>" },
-
-        { "shift", "<Shift>" },
-        { "rshift", "<Shift>" },
-        { "rightshift", "<Shift>" },
-        { "right-shift", "<Shift>" },
-        { "lshift", "<Shift>" },
-        { "leftshift", "<Shift>" },
-        { "left-shift", "<Shift>" },
-
-        { "cmd", "<Ctrl>" },
-        { "rcmd", "<Ctrl>" },
-        { "rightcmd", "<Ctrl>" },
-        { "right-cmd", "<Ctrl>" },
-        { "lcmd", "<Ctrl>" },
-        { "leftcmd", "<Ctrl>" },
-        { "left-cmd", "<Ctrl>" },
-
-        { "win", "<Super>" },
-        { "rwin", "<Super>" },
-        { "rightwin", "<Super>" },
-        { "right-win", "<Super>" },
-        { "lwin", "<Super>" },
-        { "leftwin", "<Super>" },
-        { "left-win", "<Super>" },
-
-        { "esc", "Escape" },
-        /* { "escape", "Escape" }, */
-
-        { "ins", "Insert" },
-        /* { "insert", "Insert" }, */
-
-        { "del", "Delete" },
-        /* { "delete", "Delete" }, */
-
-        { "pgup", "Page_Up" },
-        { "pageup", "Page_Up" },
-        { "pgdn", "Page_Down" },
-        { "pagedown", "Page_Down" },
-
-        /* { "home", "home" }, */
-        /* { "end", "end" }, */
-        /* { "space", "space" }, */
-
-        { "enter", "Return" },
-
-        /* { "tab", "tab" }, */
-        /* { "f1", "F1" }, */
-        /* { "f2", "F2" }, */
-        /* { "f3", "F3" }, */
-        /* { "f4", "F4" }, */
-        /* { "f5", "F5" }, */
-        /* { "f6", "F6" }, */
-        /* { "f7", "F7" }, */
-        /* { "f8", "F8" }, */
-        /* { "f9", "F9" }, */
-        /* { "f10", "F10" }, */
-        /* { "f11", "F11" }, */
-        /* { "f12", "F12" } */
-    };
-
-    for (i = 0; i < G_N_ELEMENTS(keys); ++i) {
-        if (g_ascii_strcasecmp(keys[i].ctrl, key) == 0)
-            return g_strdup(keys[i].gtk);
-    }
-
-    return g_ascii_strup(key, -1);
-}
-
-static gchar*
-ctrl_key_to_gtk_accelerator(const gchar *key)
-{
-    gchar *accel, **k, **keyv;
-
-    keyv = g_strsplit(key, "+", -1);
-    g_return_val_if_fail(keyv != NULL, NULL);
-
-    for (k = keyv; *k != NULL; k++) {
-        gchar *tmp = *k;
-        *k = ctrl_key_to_gtk_key(tmp);
-        g_free(tmp);
-    }
-
-    accel = g_strjoinv(NULL, keyv);
-    g_strfreev(keyv);
-
-    return accel;
-}
-
 static void
 app_notified(VirtViewerApp *app,
              GParamSpec *pspec,
@@ -635,7 +522,7 @@ spice_ctrl_notified(SpiceCtrlController *ctrl,
             }
             *key = '\0';
 
-            gchar *accel = ctrl_key_to_gtk_accelerator(key + 1);
+            gchar *accel = spice_hotkey_to_gtk_accelerator(key + 1);
             guint accel_key;
             GdkModifierType accel_mods;
             gtk_accelerator_parse(accel, &accel_key, &accel_mods);

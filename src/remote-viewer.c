@@ -35,6 +35,7 @@
 #include "virt-viewer-session-spice.h"
 #endif
 #include "virt-viewer-app.h"
+#include "virt-viewer-file.h"
 #include "remote-viewer.h"
 
 #ifndef G_VALUE_INIT /* see bug https://bugzilla.gnome.org/show_bug.cgi?id=654793 */
@@ -626,6 +627,8 @@ remote_viewer_start(VirtViewerApp *app)
     RemoteViewer *self = REMOTE_VIEWER(app);
     RemoteViewerPrivate *priv = self->priv;
 #endif
+    GFile *file = NULL;
+    VirtViewerFile *vvfile = NULL;
     gboolean ret = FALSE;
     gchar *guri = NULL;
     gchar *type = NULL;
@@ -659,7 +662,20 @@ remote_viewer_start(VirtViewerApp *app)
         if (virt_viewer_app_get_title(app) == NULL)
             virt_viewer_app_set_title(app, guri);
 
-        if (virt_viewer_util_extract_host(guri, &type, NULL, NULL, NULL, NULL) < 0 || type == NULL) {
+        file = g_file_new_for_commandline_arg(guri);
+        if (g_file_query_exists(file, NULL)) {
+            GError *error = NULL;
+            gchar *path = g_file_get_path(file);
+            vvfile = virt_viewer_file_new(path, &error);
+            g_free(path);
+            if (error) {
+                virt_viewer_app_simple_message_dialog(app, _("Invalid file %s"), guri);
+                g_warning(error->message);
+                g_clear_error(&error);
+                goto cleanup;
+            }
+            g_object_get(G_OBJECT(vvfile), "type", &type, NULL);
+        } else if (virt_viewer_util_extract_host(guri, &type, NULL, NULL, NULL, NULL) < 0 || type == NULL) {
             virt_viewer_app_simple_message_dialog(app, _("Cannot determine the connection type from URI"));
             goto cleanup;
         }
@@ -668,6 +684,8 @@ remote_viewer_start(VirtViewerApp *app)
             virt_viewer_app_simple_message_dialog(app, _("Couldn't create a session for this type: %s"), type);
             goto cleanup;
         }
+
+        virt_viewer_session_set_file(virt_viewer_app_get_session(app), vvfile);
 
         if (virt_viewer_app_initial_connect(app) < 0) {
             virt_viewer_app_simple_message_dialog(app, _("Failed to initiate connection"));
@@ -679,7 +697,9 @@ remote_viewer_start(VirtViewerApp *app)
 
     ret = VIRT_VIEWER_APP_CLASS(remote_viewer_parent_class)->start(app);
 
- cleanup:
+cleanup:
+    g_clear_object(&file);
+    g_clear_object(&vvfile);
     g_free(guri);
     g_free(type);
     return ret;

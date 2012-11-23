@@ -29,6 +29,7 @@
 
 #include <spice-option.h>
 #include <usb-device-widget.h>
+#include "virt-viewer-file.h"
 #include "virt-viewer-util.h"
 #include "virt-viewer-session-spice.h"
 #include "virt-viewer-display-spice.h"
@@ -252,16 +253,104 @@ virt_viewer_session_spice_open_host(VirtViewerSession *session,
     return spice_session_connect(self->priv->session);
 }
 
+static void
+fill_session(VirtViewerFile *file, SpiceSession *session)
+{
+    g_return_if_fail(VIRT_VIEWER_IS_FILE(file));
+    g_return_if_fail(SPICE_IS_SESSION(session));
+
+    if (virt_viewer_file_is_set(file, "host")) {
+        gchar *val = virt_viewer_file_get_host(file);
+        g_object_set(G_OBJECT(session), "host", val, NULL);
+        g_free(val);
+    }
+
+    if (virt_viewer_file_is_set(file, "port")) {
+        gchar *port = g_strdup_printf("%d", virt_viewer_file_get_port(file));
+        g_object_set(G_OBJECT(session), "port", port, NULL);
+        g_free(port);
+    }
+    if (virt_viewer_file_is_set(file, "tls-port")) {
+        gchar *tls_port = g_strdup_printf("%d", virt_viewer_file_get_tls_port(file));
+        g_object_set(G_OBJECT(session), "tls-port", tls_port, NULL);
+        g_free(tls_port);
+    }
+    if (virt_viewer_file_is_set(file, "password")) {
+        gchar *val = virt_viewer_file_get_password(file);
+        g_object_set(G_OBJECT(session), "password", val, NULL);
+        g_free(val);
+    }
+
+    if (virt_viewer_file_is_set(file, "tls-ciphers")) {
+        gchar *val = virt_viewer_file_get_tls_ciphers(file);
+        g_object_set(G_OBJECT(session), "ciphers", val, NULL);
+        g_free(val);
+    }
+
+    if (virt_viewer_file_is_set(file, "ca")) {
+        gchar *ca = virt_viewer_file_get_ca(file);
+        g_return_if_fail(ca != NULL);
+
+        GByteArray *ba = g_byte_array_new_take(ca, strlen(ca) + 1);
+        g_object_set(G_OBJECT(session), "ca", ba, NULL);
+        g_byte_array_unref(ba);
+    }
+
+    if (virt_viewer_file_is_set(file, "host-subject")) {
+        gchar *val = virt_viewer_file_get_host_subject(file);
+        g_object_set(G_OBJECT(session), "cert-subject", val, NULL);
+        g_free(val);
+    }
+
+    if (virt_viewer_file_is_set(file, "enable-smartcard")) {
+        g_object_set(G_OBJECT(session),
+                     "enable-smartcard", virt_viewer_file_get_enable_smartcard(file), NULL);
+    }
+
+    if (virt_viewer_file_is_set(file, "enable-usbredir")) {
+        g_object_set(G_OBJECT(session),
+                     "enable-usbredir", virt_viewer_file_get_enable_usbredir(file), NULL);
+    }
+
+    if (virt_viewer_file_is_set(file, "color-depth")) {
+        g_object_set(G_OBJECT(session),
+                     "color-depth", virt_viewer_file_get_color_depth(file), NULL);
+    }
+
+    if (virt_viewer_file_is_set(file, "disable-effects")) {
+        gchar **disabled = virt_viewer_file_get_disable_effects(file, NULL);
+        g_object_set(G_OBJECT(session), "disable-effects", disabled, NULL);
+        g_strfreev(disabled);
+    }
+
+    if (virt_viewer_file_is_set(file, "enable-usb-autoshare")) {
+        gboolean enabled = virt_viewer_file_get_enable_usb_autoshare(file);
+        SpiceGtkSession *gtk = spice_gtk_session_get(session);
+        g_object_set(G_OBJECT(gtk), "auto-usbredir", enabled, NULL);
+    }
+
+    if (virt_viewer_file_is_set(file, "disable-channels")) {
+        DEBUG_LOG("FIXME: disable-channels is not supported atm");
+    }
+}
+
 static gboolean
 virt_viewer_session_spice_open_uri(VirtViewerSession *session,
                                    const gchar *uri)
 {
     VirtViewerSessionSpice *self = VIRT_VIEWER_SESSION_SPICE(session);
+    VirtViewerFile *file = virt_viewer_session_get_file(session);
+    VirtViewerApp *app = virt_viewer_session_get_app(session);
 
     g_return_val_if_fail(self != NULL, FALSE);
     g_return_val_if_fail(self->priv->session != NULL, FALSE);
 
-    g_object_set(self->priv->session, "uri", uri, NULL);
+    if (file) {
+        fill_session(file, self->priv->session);
+        virt_viewer_file_fill_app(file, app);
+    } else {
+        g_object_set(self->priv->session, "uri", uri, NULL);
+    }
 
     return spice_session_connect(self->priv->session);
 }

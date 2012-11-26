@@ -448,7 +448,8 @@ end:
      */
     if (priv->dirty) {
         g_idle_add(virt_viewer_display_idle, widget);
-        priv->dirty = FALSE;
+        if (gtk_widget_get_mapped(widget))
+            priv->dirty = FALSE;
     }
 }
 

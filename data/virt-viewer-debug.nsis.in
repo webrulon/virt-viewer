@@ -32,7 +32,7 @@ Section "VirtViewer Debug"
   File "${DESTDIR}@prefix@/bin/debug-helper.exe"
 
   # make virt-viewer debug the default spice-x client
-  WriteRegStr HKCU "Software\spice-space.org\spicex" "client" "$INSTDIR\bin\debug-helper.exe $INSTDIR\bin\remote-viewer.exe --spice-controller"
+  WriteRegStr HKCU "Software\spice-space.org\spicex" "client" "$INSTDIR\bin\debug-helper.exe remote-viewer.exe --spice-controller"
 SectionEnd
 
 Section "Uninstall"

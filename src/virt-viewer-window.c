@@ -1017,10 +1017,10 @@ virt_viewer_window_update_title(VirtViewerWindow *self)
 
     if (priv->grabbed) {
         gchar *label;
+        GtkAccelKey key;
 
-        if (virt_viewer_app_get_enable_accel(priv->app)) {
-            GtkAccelKey key;
-            gtk_accel_map_lookup_entry("<virt-viewer>/view/release-cursor", &key);
+        if (virt_viewer_app_get_enable_accel(priv->app)
+                && gtk_accel_map_lookup_entry("<virt-viewer>/view/release-cursor", &key)) {
             label = gtk_accelerator_get_label(key.accel_key, key.accel_mods);
         } else {
             label = g_strdup(_("Ctrl+Alt"));

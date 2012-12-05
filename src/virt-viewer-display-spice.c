@@ -197,9 +197,13 @@ virt_viewer_display_spice_size_allocate(VirtViewerDisplaySpice *self,
         return;
 
     if (self->priv->auto_resize == AUTO_RESIZE_FULLSCREEN) {
+        GdkRectangle monitor;
         GdkScreen *screen = gtk_widget_get_screen(GTK_WIDGET(self));
-        dw = gdk_screen_get_width(screen);
-        dh = gdk_screen_get_height(screen);
+        GdkWindow *window = gtk_widget_get_root_window(GTK_WIDGET(self));
+        int n = gdk_screen_get_monitor_at_window(screen, window);
+        gdk_screen_get_monitor_geometry(screen, n, &monitor);
+        dw = monitor.width;
+        dh = monitor.height;
     }
 
     if (virt_viewer_display_get_zoom(VIRT_VIEWER_DISPLAY(self))) {

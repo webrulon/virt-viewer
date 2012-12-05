@@ -47,4 +47,3 @@ SectionEnd
 Section -post
   WriteUninstaller "$INSTDIR\Uninstall-debug.exe"
 SectionEnd
-

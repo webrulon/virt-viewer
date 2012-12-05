@@ -514,6 +514,11 @@ spice_ctrl_notified(SpiceCtrlController *ctrl,
             g_object_set(app, "enable-accel", FALSE, NULL);
             goto end;
         }
+        /* Disable default bindings and replace them with our own */
+        gtk_accel_map_change_entry("<virt-viewer>/view/fullscreen", 0, 0, TRUE);
+        gtk_accel_map_change_entry("<virt-viewer>/view/release-cursor", 0, 0, TRUE);
+        gtk_accel_map_change_entry("<virt-viewer>/file/smartcard-insert", 0, 0, TRUE);
+        gtk_accel_map_change_entry("<virt-viewer>/file/smartcard-remove", 0, 0, TRUE);
 
         for (hotkey = hotkeys; *hotkey != NULL; hotkey++) {
             gchar *key = strstr(*hotkey, "=");

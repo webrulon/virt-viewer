@@ -228,9 +228,10 @@ enable_accel_changed(VirtViewerApp *app,
                      VirtViewerDisplaySpice *self)
 {
     if (virt_viewer_app_get_enable_accel(app)) {
+        SpiceGrabSequence *seq = spice_grab_sequence_new(0, NULL);
         /* disable default grab sequence */
-        spice_display_set_grab_keys(self->priv->display,
-                                    spice_grab_sequence_new(0, NULL));
+        spice_display_set_grab_keys(self->priv->display, seq);
+        spice_grab_sequence_free(seq);
     } else {
         spice_display_set_grab_keys(self->priv->display, NULL);
     }

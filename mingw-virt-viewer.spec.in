@@ -1,4 +1,4 @@
-%{?mingw_package_hedder}
+%{?mingw_package_header}
 
 Name:           mingw-virt-viewer
 Version:        @VERSION@

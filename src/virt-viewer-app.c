@@ -1521,6 +1521,59 @@ virt_viewer_app_set_direct(VirtViewerApp *self, gboolean direct)
 }
 
 void
+virt_viewer_app_set_hotkeys(VirtViewerApp *self, const gchar *hotkeys_str)
+{
+    gchar **hotkey, **hotkeys = NULL;
+
+    g_return_if_fail(VIRT_VIEWER_IS_APP(self));
+
+    if (hotkeys_str)
+        hotkeys = g_strsplit(hotkeys_str, ",", -1);
+
+    if (!hotkeys || g_strv_length(hotkeys) == 0) {
+        g_strfreev(hotkeys);
+        g_object_set(self, "enable-accel", FALSE, NULL);
+        return;
+    }
+
+    /* Disable default bindings and replace them with our own */
+    gtk_accel_map_change_entry("<virt-viewer>/view/fullscreen", 0, 0, TRUE);
+    gtk_accel_map_change_entry("<virt-viewer>/view/release-cursor", 0, 0, TRUE);
+    gtk_accel_map_change_entry("<virt-viewer>/file/smartcard-insert", 0, 0, TRUE);
+    gtk_accel_map_change_entry("<virt-viewer>/file/smartcard-remove", 0, 0, TRUE);
+
+    for (hotkey = hotkeys; *hotkey != NULL; hotkey++) {
+        gchar *key = strstr(*hotkey, "=");
+        if (key == NULL) {
+            g_warn_if_reached();
+            continue;
+        }
+        *key = '\0';
+
+        gchar *accel = spice_hotkey_to_gtk_accelerator(key + 1);
+        guint accel_key;
+        GdkModifierType accel_mods;
+        gtk_accelerator_parse(accel, &accel_key, &accel_mods);
+        g_free(accel);
+
+        if (g_str_equal(*hotkey, "toggle-fullscreen")) {
+            gtk_accel_map_change_entry("<virt-viewer>/view/fullscreen", accel_key, accel_mods, TRUE);
+        } else if (g_str_equal(*hotkey, "release-cursor")) {
+            gtk_accel_map_change_entry("<virt-viewer>/view/release-cursor", accel_key, accel_mods, TRUE);
+        } else if (g_str_equal(*hotkey, "smartcard-insert")) {
+            gtk_accel_map_change_entry("<virt-viewer>/file/smartcard-insert", accel_key, accel_mods, TRUE);
+        } else if (g_str_equal(*hotkey, "smartcard-remove")) {
+            gtk_accel_map_change_entry("<virt-viewer>/file/smartcard-remove", accel_key, accel_mods, TRUE);
+        } else {
+            g_warning("Unknown hotkey command %s", *hotkey);
+        }
+    }
+    g_strfreev(hotkeys);
+
+    g_object_set(self, "enable-accel", TRUE, NULL);
+}
+
+void
 virt_viewer_app_set_attach(VirtViewerApp *self, gboolean attach)
 {
     g_return_if_fail(VIRT_VIEWER_IS_APP(self));

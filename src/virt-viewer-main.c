@@ -49,6 +49,7 @@ int main(int argc, char **argv)
     char *uri = NULL;
     int zoom = 100;
     gchar **args = NULL;
+    gchar *hotkeys = NULL;
     gboolean verbose = FALSE;
     gboolean debug = FALSE;
     gboolean direct = FALSE;
@@ -80,6 +81,8 @@ int main(int argc, char **argv)
           N_("Display debugging information"), NULL },
         { "full-screen", 'f', 0, G_OPTION_ARG_NONE, &fullscreen,
           N_("Open in full screen mode"), NULL },
+        { "hotkeys", 'h', 0, G_OPTION_ARG_STRING, &hotkeys,
+          N_("Customise hotkeys"), NULL },
         { G_OPTION_REMAINING, '\0', 0, G_OPTION_ARG_STRING_ARRAY, &args,
           NULL, "DOMAIN-NAME|ID|UUID" },
         { NULL, 0, 0, G_OPTION_ARG_NONE, NULL, NULL, NULL }
@@ -131,6 +134,7 @@ int main(int argc, char **argv)
         goto cleanup;
 
     g_object_set(viewer, "fullscreen", fullscreen, NULL);
+    virt_viewer_app_set_hotkeys(VIRT_VIEWER_APP(viewer), hotkeys);
     if (!virt_viewer_app_start(VIRT_VIEWER_APP(viewer)))
         goto cleanup;
 

@@ -197,6 +197,7 @@ main(int argc, char **argv)
     gchar **args = NULL;
     gchar *uri = NULL;
     char *title = NULL;
+    char *hotkeys = NULL;
     gboolean verbose = FALSE;
     gboolean debug = FALSE;
     gboolean direct = FALSE;
@@ -224,6 +225,8 @@ main(int argc, char **argv)
         { "spice-controller", '\0', 0, G_OPTION_ARG_NONE, &controller,
           N_("Open connection using Spice controller communication"), NULL },
 #endif
+        { "hotkeys", 'h', 0, G_OPTION_ARG_STRING, &hotkeys,
+          N_("Customise hotkeys"), NULL },
         { G_OPTION_REMAINING, '\0', 0, G_OPTION_ARG_STRING_ARRAY, &args,
           NULL, "URI" },
         { NULL, 0, 0, G_OPTION_ARG_NONE, NULL, NULL, NULL }
@@ -302,6 +305,7 @@ main(int argc, char **argv)
                  NULL);
     virt_viewer_window_set_zoom_level(virt_viewer_app_get_main_window(app), zoom);
     virt_viewer_app_set_direct(app, direct);
+    virt_viewer_app_set_hotkeys(app, hotkeys);
 
     if (!virt_viewer_app_start(app))
         goto cleanup;

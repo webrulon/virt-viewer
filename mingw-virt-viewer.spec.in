@@ -43,6 +43,8 @@ MinGW Windows virt-viewer console application
 %description -n mingw64-virt-viewer
 MinGW Windows virt-viewer console application
 
+%{mingw_debug_package}
+
 %prep
 %setup -q -n virt-viewer-%{version}
 

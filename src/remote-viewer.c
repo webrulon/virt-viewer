@@ -36,6 +36,7 @@
 #endif
 #include "virt-viewer-app.h"
 #include "virt-viewer-file.h"
+#include "virt-viewer-session.h"
 #include "remote-viewer.h"
 
 #ifndef G_VALUE_INIT /* see bug https://bugzilla.gnome.org/show_bug.cgi?id=654793 */

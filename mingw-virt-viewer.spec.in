@@ -14,14 +14,14 @@ BuildRequires:  mingw32-filesystem >= 23
 BuildRequires:  mingw64-filesystem >= 23
 BuildRequires:  mingw32-glib2 >= 2.22
 BuildRequires:  mingw64-glib2 >= 2.22
-BuildRequires:  mingw32-gtk3 >= 3.0.0
-BuildRequires:  mingw64-gtk3 >= 3.0.0
+BuildRequires:  mingw32-gtk2
+BuildRequires:  mingw64-gtk2
 BuildRequires:  mingw32-libvirt >= 0.9.7
 BuildRequires:  mingw64-libvirt >= 0.9.7
 BuildRequires:  mingw32-libxml2
 BuildRequires:  mingw64-libxml2
-BuildRequires:  mingw32-gtk-vnc2 >= 0.4.3
-BuildRequires:  mingw64-gtk-vnc2 >= 0.4.3
+BuildRequires:  mingw32-gtk-vnc >= 0.4.3
+BuildRequires:  mingw64-gtk-vnc >= 0.4.3
 BuildRequires:  pkgconfig
 
 BuildArch:      noarch
@@ -50,7 +50,7 @@ MinGW Windows virt-viewer console application
 
 
 %build
-%mingw_configure --with-gtk=3.0
+%mingw_configure --with-gtk=2.0
 %mingw_make %{?_smp_mflags} V=1
 
 

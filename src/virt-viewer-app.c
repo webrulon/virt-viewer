@@ -706,7 +706,7 @@ virt_viewer_app_create_session(VirtViewerApp *self, const gchar *type)
         GtkWindow *window = virt_viewer_window_get_window(priv->main_window);
         virt_viewer_app_trace(self, "Guest %s has a %s display",
                               priv->guest_name, type);
-        priv->session = virt_viewer_session_vnc_new(window);
+        priv->session = virt_viewer_session_vnc_new(self, window);
     } else
 #endif
 #ifdef HAVE_SPICE_GTK

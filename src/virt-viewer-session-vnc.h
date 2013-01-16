@@ -64,7 +64,7 @@ struct _VirtViewerSessionVncClass {
 
 GType virt_viewer_session_vnc_get_type(void);
 
-VirtViewerSession *virt_viewer_session_vnc_new(GtkWindow *main_window);
+VirtViewerSession *virt_viewer_session_vnc_new(VirtViewerApp *app, GtkWindow *main_window);
 
 G_END_DECLS
 

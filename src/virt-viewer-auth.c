@@ -96,7 +96,8 @@ virt_viewer_auth_collect_credentials(GtkWindow *window,
 
 #ifdef HAVE_GTK_VNC
 void
-virt_viewer_auth_vnc_credentials(GtkWindow *window,
+virt_viewer_auth_vnc_credentials(VirtViewerSession *session,
+                                 GtkWindow *window,
                                  GtkWidget *vnc,
                                  GValueArray *credList,
                                  char *vncAddress)
@@ -122,6 +123,19 @@ virt_viewer_auth_vnc_credentials(GtkWindow *window,
             DEBUG_LOG("Unsupported credential type %d", g_value_get_enum(cred));
             vnc_display_close(VNC_DISPLAY(vnc));
             goto cleanup;
+        }
+    }
+
+    VirtViewerFile *file = virt_viewer_session_get_file(session);
+    if (file != NULL) {
+        if (wantUsername && virt_viewer_file_is_set(file, "username")) {
+            username = virt_viewer_file_get_username(file);
+            wantUsername = FALSE;
+        }
+        if (wantPassword && virt_viewer_file_is_set(file, "password")) {
+            password = virt_viewer_file_get_password(file);
+            g_message (password);
+            wantPassword = FALSE;
         }
     }
 

@@ -203,6 +203,7 @@ AC_DEFINE_UNQUOTED([BUILDID], "$with_buildid", [Build version details])
 AC_CONFIG_FILES([
     Makefile
     data/Makefile
+    data/virt-viewer.wxs
     data/virt-viewer.nsis
     data/virt-viewer-debug.nsis
     icons/Makefile

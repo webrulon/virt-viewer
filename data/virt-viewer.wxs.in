@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+
+  <?require spice-gtk.wxi?>
+  <?require gtk-vnc.wxi?>
+  <?require libvirt.wxi?>
+
+  <?define Version = "@VERSION@"?>
+  <?define UpgradeCode = "5B027138-1A63-49E6-877E-055E5EEC1903"?>
+  <Product Id="*" Name="VirtViewer" Manufacturer="$(env.MANUFACTURER)"
+           Version="$(var.Version)" UpgradeCode="$(var.UpgradeCode)"
+           Language="1033">
+
+    <Package InstallerVersion="200" Compressed="yes" Comments="comments"/>
+    <Media Id="1" Cabinet="cabinet.cab" EmbedCab="yes"/>
+
+    <Property Id="ARPHELPLINK" Value="http://www.virt-tools.org"/>
+    <Property Id="ARPNOMODIFY" Value="1"/>
+    <Property Id="ARPNOREPAIR" Value="1"/>
+    <Property Id="ARPPRODUCTICON" Value="virt-viewer.ico"/>
+    <Property Id="ARPURLINFOABOUT" Value="http://www.virt-tools.org/about"/>
+    <Upgrade Id="$(var.UpgradeCode)">
+      <UpgradeVersion Minimum="$(var.Version)" OnlyDetect="yes" Property="NEWERVERSIONDETECTED"/>
+      <UpgradeVersion Minimum="0.0.0" Maximum="$(var.Version)" IncludeMinimum="yes" IncludeMaximum="no" Property="OLDERVERSIONBEINGUPGRADED"/>
+    </Upgrade>
+    <Condition Message="VirtViewer is already installed.">NOT NEWERVERSIONDETECTED</Condition>
+
+    <DirectoryRef Id="TARGETDIR">
+      <Component Id="CRegistryEntries" Guid="*">
+        <RegistryKey Root='HKLM' Key='Software\Microsoft\Internet Explorer\Low Rights\ElevationPolicy\{96190E9D-6FBB-64DB-9095-29F6FDE0B897}'>
+          <RegistryValue Type='string' Name='AppPath' Value='[INSTALLDIR]\bin'/>
+          <RegistryValue Type='string' Name='AppName' Value='remote-viewer.exe'/>
+          <RegistryValue Type='integer' Name='Policy' Value='3'/>
+        </RegistryKey>
+        <RegistryKey Root='HKLM' Key='Software\spice-space.org\spicex'>
+          <RegistryValue Type='string' Name='client' Value='[INSTALLDIR]\bin\remote-viewer.exe --spice-controller'/>
+        </RegistryKey>
+      </Component>
+      <Component Id="CProgIds" Guid="89D6F46D-9C5E-4D65-8456-58FC361E553E">
+        <ProgId Id='VirtViewer.vvfile' Description='VirtViewer connection file'>
+          <Extension Id='vv' ContentType='application/x-virt-viewer'>
+            <Verb Id='open' Command='Open' TargetFile='fil808B4A5BAB4ACD727D3823632E798743' Argument='"%1"' />
+            <MIME ContentType="application/x-virt-viewer" Default="yes"/>
+          </Extension>
+        </ProgId>
+      </Component>
+    </DirectoryRef>
+
+    <Directory Id="TARGETDIR" Name="SourceDir">
+      <Directory Id="ProgramFilesFolder">
+        <Directory Id="INSTALLDIR" Name="VirtViewer">
+          <Component Id="CDepsFile" Guid="*">
+            <File Id="filA1E799D196006E6DF67DACE15B8C6193" KeyPath="yes" Source="deps.txt"/>
+          </Component>
+        </Directory>
+      </Directory>
+      <Directory Id="ProgramMenuFolder">
+        <Directory Id="MENUDIR" Name="VirtViewer"/>
+      </Directory>
+    </Directory>
+
+    <DirectoryRef Id="MENUDIR">
+      <Component Id="CShortcut" Guid="*">
+        <Shortcut Id="ApplicationStartMenuShortcut"
+                  Name="Remote viewer"
+                  Description="A SPICE/VNC client"
+                  Target="[INSTALLDIR]\bin\remote-viewer.exe"
+                  Icon="virt-viewer.ico"/>
+        <RemoveFolder Id="MENUDIR" On="uninstall"/>
+        <RegistryValue Root="HKCU" Key="Software\VirtViewer\remote-viewer-shortcut" Name="installed" Type="integer" Value="1" KeyPath="yes"/>
+      </Component>
+    </DirectoryRef>
+
+    <Feature Id="Complete"  Level="1">
+      <ComponentGroupRef Id="CG.spice-gtk"/>
+      <ComponentGroupRef Id="CG.libvirt"/>
+      <ComponentGroupRef Id="CG.gtk-vnc"/>
+      <ComponentGroupRef Id="CG.virt-viewer"/>
+      <ComponentRef Id="CDepsFile"/>
+      <ComponentRef Id="CShortcut"/>
+      <ComponentRef Id="CRegistryEntries"/>
+      <ComponentRef Id="CProgIds"/>
+    </Feature>
+
+    <InstallExecuteSequence>
+      <RemoveExistingProducts After="InstallValidate"/>
+    </InstallExecuteSequence>
+
+    <Icon Id="virt-viewer.ico" SourceFile="virt-viewer.ico"/>
+  </Product>
+</Wix>

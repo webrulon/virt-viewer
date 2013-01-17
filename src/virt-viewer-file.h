@@ -63,6 +63,8 @@ gint virt_viewer_file_get_port(VirtViewerFile* self);
 void virt_viewer_file_set_port(VirtViewerFile* self, gint value);
 gint virt_viewer_file_get_tls_port(VirtViewerFile* self);
 void virt_viewer_file_set_tls_port(VirtViewerFile* self, gint value);
+gchar* virt_viewer_file_get_username(VirtViewerFile* self);
+void virt_viewer_file_set_username(VirtViewerFile* self, const gchar* value);
 gchar* virt_viewer_file_get_password(VirtViewerFile* self);
 void virt_viewer_file_set_password(VirtViewerFile* self, const gchar* value);
 gchar** virt_viewer_file_get_disable_channels(VirtViewerFile* self, gsize* length);

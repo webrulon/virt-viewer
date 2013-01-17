@@ -38,6 +38,7 @@
  * - host: string
  * - port: int
  * - tls-port: int
+ * - username: string
  * - password: string
  * - disable-channels: string list
  * - tls-ciphers: string
@@ -76,6 +77,7 @@ enum  {
     PROP_HOST,
     PROP_PORT,
     PROP_TLS_PORT,
+    PROP_USERNAME,
     PROP_PASSWORD,
     PROP_DISABLE_CHANNELS,
     PROP_TLS_CIPHERS,
@@ -287,9 +289,22 @@ virt_viewer_file_set_tls_port(VirtViewerFile* self, gint value)
 }
 
 gchar*
+virt_viewer_file_get_username(VirtViewerFile* self)
+{
+    return virt_viewer_file_get_string(self, "username");
+}
+
+gchar*
 virt_viewer_file_get_password(VirtViewerFile* self)
 {
     return virt_viewer_file_get_string(self, "password");
+}
+
+void
+virt_viewer_file_set_username(VirtViewerFile* self, const gchar* value)
+{
+    virt_viewer_file_set_string(self, "username", value);
+    g_object_notify(G_OBJECT(self), "username");
 }
 
 void
@@ -568,6 +583,9 @@ virt_viewer_file_set_property(GObject* object, guint property_id,
     case PROP_TLS_PORT:
         virt_viewer_file_set_tls_port(self, g_value_get_int(value));
         break;
+    case PROP_USERNAME:
+        virt_viewer_file_set_username(self, g_value_get_string(value));
+        break;
     case PROP_PASSWORD:
         virt_viewer_file_set_password(self, g_value_get_string(value));
         break;
@@ -639,6 +657,9 @@ virt_viewer_file_get_property(GObject* object, guint property_id,
         break;
     case PROP_TLS_PORT:
         g_value_set_int(value, virt_viewer_file_get_tls_port(self));
+        break;
+    case PROP_USERNAME:
+        g_value_take_string(value, virt_viewer_file_get_username(self));
         break;
     case PROP_PASSWORD:
         g_value_take_string(value, virt_viewer_file_get_password(self));
@@ -735,6 +756,10 @@ virt_viewer_file_class_init(VirtViewerFileClass* klass)
     g_object_class_install_property(G_OBJECT_CLASS(klass), PROP_TLS_PORT,
         g_param_spec_int("tls-port", "tls-port", "tls-port", -1, 65535, -1,
                          G_PARAM_STATIC_STRINGS | G_PARAM_READWRITE));
+
+    g_object_class_install_property(G_OBJECT_CLASS(klass), PROP_USERNAME,
+        g_param_spec_string("username", "username", "username", NULL,
+                            G_PARAM_STATIC_STRINGS | G_PARAM_READWRITE));
 
     g_object_class_install_property(G_OBJECT_CLASS(klass), PROP_PASSWORD,
         g_param_spec_string("password", "password", "password", NULL,

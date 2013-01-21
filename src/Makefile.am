@@ -136,11 +136,6 @@ if OS_WIN32
 remote_viewer_LDFLAGS += -Wl,--subsystem,windows
 endif
 
-desktopdir = $(datadir)/applications
-desktop_DATA = remote-viewer.desktop
-
-EXTRA_DIST += $(desktop_DATA)
-
 VIRT_VIEWER_RES = virt-viewer.rc virt-viewer.manifest
 ICONDIR = $(top_builddir)/icons
 MANIFESTDIR = $(srcdir)

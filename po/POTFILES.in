@@ -1,3 +1,5 @@
+data/remote-viewer.desktop.in
+data/virt-viewer-mime.xml.in
 src/gbinding.c
 src/remote-viewer-main.c
 src/remote-viewer.c

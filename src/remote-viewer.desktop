@@ -1,6 +1,0 @@
-[Desktop Entry]
-Name=Remote Viewer
-Exec=remote-viewer %u
-Type=Application
-Terminal=false
-MimeType=x-scheme-handler/spice;

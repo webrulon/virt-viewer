@@ -37,6 +37,7 @@ BuildRequires:  mingw64-spice-gtk
 BuildRequires:  mingw32-usbredir
 BuildRequires:  mingw64-usbredir
 BuildRequires:  pkgconfig
+BuildRequires:  intltool
 BuildRequires:  icoutils
 BuildRequires:  dos2unix
 BuildRequires:  mingw32-nsis

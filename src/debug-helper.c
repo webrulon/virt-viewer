@@ -24,6 +24,7 @@ int
 main(int argc, char *argv[])
 {
     char pipe[2048];
+    MSG msg;
     STARTUPINFO si = { 0, };
     PROCESS_INFORMATION pi = { 0, };
     gchar *program_path = get_program_path();
@@ -55,8 +56,19 @@ main(int argc, char *argv[])
         goto end;
     }
 
-    // Wait until child process exits
-    WaitForSingleObject(pi.hProcess, INFINITE);
+
+    while (1) {
+        DWORD reason = MsgWaitForMultipleObjects(1, &pi.hProcess, FALSE,
+                                                 INFINITE, QS_ALLINPUT);
+        if (reason == WAIT_OBJECT_0)
+            break;
+        else {
+            if (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE)) {
+                TranslateMessage(&msg);
+                DispatchMessage(&msg);
+            }
+        }
+    }
 
     // Close process and thread handles
     CloseHandle(pi.hProcess);

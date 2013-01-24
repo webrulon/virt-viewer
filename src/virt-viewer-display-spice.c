@@ -199,7 +199,6 @@ virt_viewer_display_spice_size_allocate(VirtViewerDisplaySpice *self,
     if (self->priv->auto_resize == AUTO_RESIZE_FULLSCREEN) {
         GdkRectangle monitor;
         GdkScreen *screen = gtk_widget_get_screen(GTK_WIDGET(self));
-        GdkWindow *window = gtk_widget_get_root_window(GTK_WIDGET(self));
         int n = gdk_screen_get_monitor_at_window(screen,
                                      gtk_widget_get_window(GTK_WIDGET(self)));
         gdk_screen_get_monitor_geometry(screen, n, &monitor);

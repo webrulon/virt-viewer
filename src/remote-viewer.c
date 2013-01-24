@@ -518,7 +518,6 @@ spice_ctrl_notified(SpiceCtrlController *ctrl,
         g_free(content);
     }
 
-end:
     g_object_unref(session);
     g_value_unset(&value);
 }

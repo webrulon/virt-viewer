@@ -302,6 +302,12 @@ fill_session(VirtViewerFile *file, SpiceSession *session)
         g_free(val);
     }
 
+    if (virt_viewer_file_is_set(file, "proxy")) {
+        gchar *val = virt_viewer_file_get_proxy(file);
+        g_object_set(G_OBJECT(session), "proxy", val, NULL);
+        g_free(val);
+    }
+
     if (virt_viewer_file_is_set(file, "enable-smartcard")) {
         g_object_set(G_OBJECT(session),
                      "enable-smartcard", virt_viewer_file_get_enable_smartcard(file), NULL);

@@ -98,6 +98,8 @@ gchar* virt_viewer_file_get_smartcard_insert(VirtViewerFile* self);
 void virt_viewer_file_set_smartcard_insert(VirtViewerFile* self, const gchar* value);
 gchar* virt_viewer_file_get_smartcard_remove(VirtViewerFile* self);
 void virt_viewer_file_set_smartcard_remove(VirtViewerFile* self, const gchar* value);
+gchar* virt_viewer_file_get_proxy(VirtViewerFile* self);
+void virt_viewer_file_set_proxy(VirtViewerFile* self, const gchar* value);
 
 G_END_DECLS
 

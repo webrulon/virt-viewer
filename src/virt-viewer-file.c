@@ -92,7 +92,8 @@ enum  {
     PROP_COLOR_DEPTH,
     PROP_DISABLE_EFFECTS,
     PROP_ENABLE_USB_AUTOSHARE,
-    PROP_USB_FILTER
+    PROP_USB_FILTER,
+    PROP_PROXY,
 };
 
 VirtViewerFile*
@@ -509,6 +510,19 @@ virt_viewer_file_set_usb_filter(VirtViewerFile* self, const gchar* value)
     g_object_notify(G_OBJECT(self), "usb-filter");
 }
 
+gchar*
+virt_viewer_file_get_proxy(VirtViewerFile* self)
+{
+    return virt_viewer_file_get_string(self, "proxy");
+}
+
+void
+virt_viewer_file_set_proxy(VirtViewerFile* self, const gchar* value)
+{
+    virt_viewer_file_set_string(self, "proxy", value);
+    g_object_notify(G_OBJECT(self), "proxy");
+}
+
 static void
 spice_hotkey_set_accel(VirtViewerApp *app, const gchar *accel_path, const gchar *key)
 {
@@ -633,6 +647,9 @@ virt_viewer_file_set_property(GObject* object, guint property_id,
     case PROP_USB_FILTER:
         virt_viewer_file_set_usb_filter(self, g_value_get_string(value));
         break;
+    case PROP_PROXY:
+        virt_viewer_file_set_proxy(self, g_value_get_string(value));
+        break;
     default:
         G_OBJECT_WARN_INVALID_PROPERTY_ID(object, property_id, pspec);
         break;
@@ -705,6 +722,9 @@ virt_viewer_file_get_property(GObject* object, guint property_id,
         break;
     case PROP_USB_FILTER:
         g_value_take_string(value, virt_viewer_file_get_usb_filter(self));
+        break;
+    case PROP_PROXY:
+        g_value_take_string(value, virt_viewer_file_get_proxy(self));
         break;
     default:
         G_OBJECT_WARN_INVALID_PROPERTY_ID(object, property_id, pspec);
@@ -820,4 +840,8 @@ virt_viewer_file_class_init(VirtViewerFileClass* klass)
     g_object_class_install_property(G_OBJECT_CLASS(klass), PROP_DISABLE_EFFECTS,
         g_param_spec_boxed("disable-effects", "disable-effects", "disable-effects", G_TYPE_STRV,
                            G_PARAM_STATIC_STRINGS | G_PARAM_READWRITE));
+
+    g_object_class_install_property(G_OBJECT_CLASS(klass), PROP_PROXY,
+        g_param_spec_string("proxy", "proxy", "proxy", NULL,
+                            G_PARAM_STATIC_STRINGS | G_PARAM_READWRITE));
 }

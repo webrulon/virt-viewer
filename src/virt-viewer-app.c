@@ -140,6 +140,8 @@ struct _VirtViewerAppPrivate {
     char *title;
 
     gint focused;
+    GKeyFile *config;
+    gchar *config_file;
 };
 
 
@@ -221,6 +223,9 @@ virt_viewer_app_simple_message_dialog(VirtViewerApp *self,
 void
 virt_viewer_app_quit(VirtViewerApp *self)
 {
+    GError *error = NULL;
+    gchar *data;
+
     g_return_if_fail(VIRT_VIEWER_IS_APP(self));
     VirtViewerAppPrivate *priv = self->priv;
 
@@ -231,6 +236,20 @@ virt_viewer_app_quit(VirtViewerApp *self)
             return;
         }
     }
+
+    {
+        gchar *dir = g_path_get_dirname(priv->config_file);
+        if (g_mkdir_with_parents(dir, S_IRWXU) == -1)
+            g_warning("failed to create config directory");
+        g_free(dir);
+    }
+
+    if ((data = g_key_file_to_data(priv->config, NULL, &error)) == NULL ||
+        !g_file_set_contents(priv->config_file, data, -1, &error)) {
+        g_warning("Couldn't save configuration: %s", error->message);
+        g_clear_error(&error);
+    }
+    g_free(data);
 
     gtk_main_quit();
 }
@@ -259,6 +278,8 @@ virt_viewer_app_window_set_visible(VirtViewerApp *self,
                                    VirtViewerWindow *window,
                                    gboolean visible)
 {
+    GError *error = NULL;
+
     g_return_val_if_fail(VIRT_VIEWER_IS_APP(self), FALSE);
     g_return_val_if_fail(VIRT_VIEWER_IS_WINDOW(window), FALSE);
 
@@ -269,14 +290,35 @@ virt_viewer_app_window_set_visible(VirtViewerApp *self,
         if (virt_viewer_app_get_n_windows_visible(self) > 1) {
             virt_viewer_window_hide(window);
             return FALSE;
-        } else {
+        }
+
+        gboolean ask = g_key_file_get_boolean(self->priv->config,
+                                              "virt-viewer", "ask-quit", &error);
+        if (error) {
+            ask = TRUE;
+            g_clear_error(&error);
+        }
+
+        if (ask) {
             GtkWidget *dialog =
                 gtk_message_dialog_new (virt_viewer_window_get_window(window),
                                         GTK_DIALOG_DESTROY_WITH_PARENT,
                                         GTK_MESSAGE_QUESTION,
                                         GTK_BUTTONS_OK_CANCEL,
                                         _("Do you want to close the session?"));
-            gint result = gtk_dialog_run (GTK_DIALOG (dialog));
+
+            GtkWidget *check = gtk_check_button_new_with_label(_("Do not ask me again"));
+            gtk_container_add(GTK_CONTAINER(gtk_dialog_get_content_area(GTK_DIALOG(dialog))), check);
+            gtk_widget_show(check);
+
+            gint result = gtk_dialog_run(GTK_DIALOG(dialog));
+
+            gboolean dont_ask = FALSE;
+            g_object_get(check, "active", &dont_ask, NULL);
+            if (dont_ask)
+                g_key_file_set_boolean(self->priv->config,
+                                       "virt-viewer", "ask-quit", FALSE);
+
             gtk_widget_destroy(dialog);
             switch (result) {
             case GTK_RESPONSE_OK:
@@ -285,6 +327,9 @@ virt_viewer_app_window_set_visible(VirtViewerApp *self,
             default:
                 break;
             }
+            return FALSE;
+        } else {
+            virt_viewer_app_quit(self);
             return FALSE;
         }
     }
@@ -1291,6 +1336,9 @@ virt_viewer_app_dispose (GObject *object)
     priv->guri = NULL;
     g_free(priv->title);
     priv->title = NULL;
+    g_free(priv->config_file);
+    priv->config_file = NULL;
+    g_clear_pointer(&priv->config, g_key_file_free);
 
     virt_viewer_app_free_connect_info(self);
 
@@ -1320,8 +1368,20 @@ gboolean virt_viewer_app_start(VirtViewerApp *self)
 static void
 virt_viewer_app_init (VirtViewerApp *self)
 {
+    GError *error = NULL;
+
     self->priv = GET_PRIVATE(self);
     self->priv->windows = g_hash_table_new_full(g_int_hash, g_int_equal, g_free, g_object_unref);
+    self->priv->config = g_key_file_new();
+    self->priv->config_file = g_build_filename(g_get_user_config_dir(),
+                                               "virt-viewer", "settings", NULL);
+
+    g_key_file_load_from_file(self->priv->config, self->priv->config_file,
+                    G_KEY_FILE_KEEP_COMMENTS|G_KEY_FILE_KEEP_TRANSLATIONS, &error);
+    if (error)
+        g_debug("Couldn't load configuration: %s", error->message);
+
+    g_clear_error(&error);
 }
 
 static GObject *

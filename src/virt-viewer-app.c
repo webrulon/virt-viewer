@@ -254,12 +254,6 @@ virt_viewer_app_get_n_windows_visible(VirtViewerApp *self)
     return n;
 }
 
-static guint
-virt_viewer_app_get_n_windows(VirtViewerApp *self)
-{
-    return g_hash_table_size(self->priv->windows);
-}
-
 gboolean
 virt_viewer_app_window_set_visible(VirtViewerApp *self,
                                    VirtViewerWindow *window,
@@ -275,13 +269,13 @@ virt_viewer_app_window_set_visible(VirtViewerApp *self,
         if (virt_viewer_app_get_n_windows_visible(self) > 1) {
             virt_viewer_window_hide(window);
             return FALSE;
-        } else if (virt_viewer_app_get_n_windows(self) > 1) {
+        } else {
             GtkWidget *dialog =
                 gtk_message_dialog_new (virt_viewer_window_get_window(window),
                                         GTK_DIALOG_DESTROY_WITH_PARENT,
                                         GTK_MESSAGE_QUESTION,
                                         GTK_BUTTONS_OK_CANCEL,
-                                        _("This is the last visible display. Do you want to quit?"));
+                                        _("Do you want to close the session?"));
             gint result = gtk_dialog_run (GTK_DIALOG (dialog));
             gtk_widget_destroy(dialog);
             switch (result) {
@@ -291,9 +285,6 @@ virt_viewer_app_window_set_visible(VirtViewerApp *self,
             default:
                 break;
             }
-            return FALSE;
-        } else {
-            virt_viewer_app_quit(self);
             return FALSE;
         }
     }

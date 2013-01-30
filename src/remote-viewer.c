@@ -476,7 +476,8 @@ spice_ctrl_notified(SpiceCtrlController *ctrl,
         g_str_equal(pspec->name, "enable-smartcard") ||
         g_str_equal(pspec->name, "color-depth") ||
         g_str_equal(pspec->name, "disable-effects") ||
-        g_str_equal(pspec->name, "enable-usbredir")) {
+        g_str_equal(pspec->name, "enable-usbredir") ||
+        g_str_equal(pspec->name, "proxy")) {
         g_object_set_property(G_OBJECT(session), pspec->name, &value);
     } else if (g_str_equal(pspec->name, "sport")) {
         g_object_set_property(G_OBJECT(session), "tls-port", &value);

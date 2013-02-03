@@ -579,6 +579,10 @@ virt_viewer_app_set_nth_window(VirtViewerApp *self, gint nth, VirtViewerWindow *
     g_hash_table_insert(self->priv->windows, key, win);
     virt_viewer_app_set_window_subtitle(self, win, nth);
     virt_viewer_app_update_menu_displays(self);
+    if (self->priv->session) {
+        gboolean has_usb = virt_viewer_session_has_usb(self->priv->session);
+        virt_viewer_window_set_usb_options_sensitive(win, has_usb);
+    }
 
     g_signal_emit(self, signals[SIGNAL_WINDOW_ADDED], 0, win);
 }

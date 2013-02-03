@@ -190,6 +190,7 @@ virt_viewer_display_spice_size_allocate(VirtViewerDisplaySpice *self,
     guint zoom = 100;
     guint nth;
     gint x = 0, y = 0;
+    gboolean disable_display_position = TRUE;
 
     if (virt_viewer_display_get_auto_resize(VIRT_VIEWER_DISPLAY(self)) == FALSE)
         return;
@@ -203,6 +204,7 @@ virt_viewer_display_spice_size_allocate(VirtViewerDisplaySpice *self,
         int n = gdk_screen_get_monitor_at_window(screen,
                                      gtk_widget_get_window(GTK_WIDGET(self)));
         gdk_screen_get_monitor_geometry(screen, n, &monitor);
+        disable_display_position = FALSE;
         x = monitor.x;
         y = monitor.y;
         dw = monitor.width;
@@ -218,9 +220,14 @@ virt_viewer_display_spice_size_allocate(VirtViewerDisplaySpice *self,
 
     g_object_get(self, "nth-display", &nth, NULL);
 
-    if (self->priv->auto_resize != AUTO_RESIZE_NEVER)
+    if (self->priv->auto_resize != AUTO_RESIZE_NEVER) {
+        g_object_set(get_main(VIRT_VIEWER_DISPLAY(self)),
+                     "disable-display-position", disable_display_position,
+                     "disable-display-align", !disable_display_position,
+                     NULL);
         spice_main_set_display(get_main(VIRT_VIEWER_DISPLAY(self)),
                                nth, x, y, dw, dh);
+    }
     if (self->priv->auto_resize == AUTO_RESIZE_FULLSCREEN)
         self->priv->auto_resize = AUTO_RESIZE_NEVER;
 }

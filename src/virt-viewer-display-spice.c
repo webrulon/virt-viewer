@@ -209,6 +209,13 @@ virt_viewer_display_spice_size_allocate(VirtViewerDisplaySpice *self,
         y = monitor.y;
         dw = monitor.width;
         dh = monitor.height;
+    } else {
+        GtkWidget *top = gtk_widget_get_toplevel(GTK_WIDGET(self));
+        gtk_window_get_position(GTK_WINDOW(top), &x, &y);
+        if (x < 0)
+            x = 0;
+        if (y < 0)
+            y = 0;
     }
 
     if (virt_viewer_display_get_zoom(VIRT_VIEWER_DISPLAY(self))) {

@@ -637,7 +637,7 @@ remote_viewer_start(VirtViewerApp *app)
             g_free(path);
             if (error) {
                 virt_viewer_app_simple_message_dialog(app, _("Invalid file %s"), guri);
-                g_warning(error->message);
+                g_warning("%s", error->message);
                 g_clear_error(&error);
                 goto cleanup;
             }

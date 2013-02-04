@@ -134,7 +134,7 @@ virt_viewer_auth_vnc_credentials(VirtViewerSession *session,
         }
         if (wantPassword && virt_viewer_file_is_set(file, "password")) {
             password = virt_viewer_file_get_password(file);
-            g_message (password);
+            g_message("%s", password);
             wantPassword = FALSE;
         }
     }

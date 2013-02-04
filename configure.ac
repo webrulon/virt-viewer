@@ -1,5 +1,5 @@
 
-AC_INIT(virt-viewer, 0.5.4)
+AC_INIT([virt-viewer],[0.5.4])
 AC_CONFIG_SRCDIR(src/virt-viewer-main.c)
 AC_CONFIG_MACRO_DIR([m4])
 AC_CONFIG_AUX_DIR([build-aux])
@@ -36,7 +36,7 @@ AM_CONDITIONAL([OS_WIN32],[test "$os_win32" = "yes"])
 
 AC_PROG_CC
 AM_PROG_CC_C_O
-AC_PROG_LIBTOOL
+LT_INIT
 
 AC_CHECK_PROGS(ICOTOOL, [icotool], [icotool])
 
@@ -196,7 +196,7 @@ if test "x$have_gtk_vnc" != "xyes" && test "x$have_spice_gtk" != "xyes"; then
     AC_MSG_ERROR([At least one of spice or vnc must be used])
 fi
 
-AC_OUTPUT([
+AC_CONFIG_FILES([
     Makefile
     data/Makefile
     data/virt-viewer.nsis
@@ -216,6 +216,7 @@ AC_OUTPUT([
     src/virt-viewer.rc
     virt-viewer.spec
 ])
+AC_OUTPUT
 
 AC_MSG_NOTICE([])
 AC_MSG_NOTICE([Configuration summary])

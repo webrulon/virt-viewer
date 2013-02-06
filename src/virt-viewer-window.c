@@ -100,6 +100,7 @@ struct _VirtViewerWindowPrivate {
     gboolean grabbed;
     gboolean before_saved;
     GdkRectangle before_fullscreen;
+    GdkPoint fullscreen_coordinate;
     gboolean desktop_resize_pending;
 
     gint zoomlevel;
@@ -288,6 +289,7 @@ virt_viewer_window_init (VirtViewerWindow *self)
     priv = self->priv;
 
     priv->auto_resize = TRUE;
+    priv->fullscreen_coordinate.x = priv->fullscreen_coordinate.y = -1;
     g_value_init(&priv->accel_setting, G_TYPE_STRING);
 
     priv->notebook = virt_viewer_notebook_new();
@@ -479,6 +481,7 @@ virt_viewer_window_leave_fullscreen(VirtViewerWindow *self)
 
     gtk_check_menu_item_set_active(check, FALSE);
     priv->fullscreen = FALSE;
+    priv->fullscreen_coordinate.x = priv->fullscreen_coordinate.y = -1;
     ViewAutoDrawer_SetActive(VIEW_AUTODRAWER(priv->layout), FALSE);
     gtk_widget_show(menu);
     gtk_widget_hide(priv->toolbar);
@@ -526,8 +529,11 @@ virt_viewer_window_enter_fullscreen(VirtViewerWindow *self, gboolean move, gint 
     ViewAutoDrawer_Close(VIEW_AUTODRAWER(priv->layout));
 
     /* g_debug("enter fullscreen move:%d %d+%d", move, x, y); */
-    if (move)
+    if (move) {
         gtk_window_move(GTK_WINDOW(priv->window), x, y);
+        priv->fullscreen_coordinate.x = x;
+        priv->fullscreen_coordinate.y = y;
+    }
 
     gtk_window_fullscreen(GTK_WINDOW(priv->window));
 #ifdef G_OS_WIN32
@@ -1127,6 +1133,8 @@ virt_viewer_window_set_display(VirtViewerWindow *self, VirtViewerDisplay *displa
 void
 virt_viewer_window_show(VirtViewerWindow *self)
 {
+    VirtViewerWindowPrivate *priv = self->priv;
+
     gtk_widget_show(self->priv->window);
 
     if (self->priv->display)
@@ -1136,6 +1144,11 @@ virt_viewer_window_show(VirtViewerWindow *self)
         virt_viewer_window_resize(self, FALSE);
         self->priv->desktop_resize_pending = FALSE;
     }
+
+    if (priv->fullscreen && priv->fullscreen_coordinate.x != -1)
+        gtk_window_move(GTK_WINDOW(priv->window),
+                        priv->fullscreen_coordinate.x,
+                        priv->fullscreen_coordinate.y);
 }
 
 void

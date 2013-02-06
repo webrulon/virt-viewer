@@ -220,14 +220,33 @@ virt_viewer_app_simple_message_dialog(VirtViewerApp *self,
     g_free(msg);
 }
 
+static void
+virt_viewer_app_save_config(VirtViewerApp *self)
+{
+    VirtViewerAppPrivate *priv = self->priv;
+    GError *error = NULL;
+    gchar *dir, *data;
+
+    dir = g_path_get_dirname(priv->config_file);
+    if (g_mkdir_with_parents(dir, S_IRWXU) == -1)
+        g_warning("failed to create config directory");
+    g_free(dir);
+
+    if ((data = g_key_file_to_data(priv->config, NULL, &error)) == NULL ||
+        !g_file_set_contents(priv->config_file, data, -1, &error)) {
+        g_warning("Couldn't save configuration: %s", error->message);
+        g_clear_error(&error);
+    }
+    g_free(data);
+}
+
 void
 virt_viewer_app_quit(VirtViewerApp *self)
 {
-    GError *error = NULL;
-    gchar *data;
-
     g_return_if_fail(VIRT_VIEWER_IS_APP(self));
     VirtViewerAppPrivate *priv = self->priv;
+
+    virt_viewer_app_save_config(self);
 
     if (priv->session) {
         virt_viewer_session_close(VIRT_VIEWER_SESSION(priv->session));
@@ -236,20 +255,6 @@ virt_viewer_app_quit(VirtViewerApp *self)
             return;
         }
     }
-
-    {
-        gchar *dir = g_path_get_dirname(priv->config_file);
-        if (g_mkdir_with_parents(dir, S_IRWXU) == -1)
-            g_warning("failed to create config directory");
-        g_free(dir);
-    }
-
-    if ((data = g_key_file_to_data(priv->config, NULL, &error)) == NULL ||
-        !g_file_set_contents(priv->config_file, data, -1, &error)) {
-        g_warning("Couldn't save configuration: %s", error->message);
-        g_clear_error(&error);
-    }
-    g_free(data);
 
     gtk_main_quit();
 }

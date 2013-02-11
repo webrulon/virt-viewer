@@ -196,6 +196,10 @@ if test "x$have_gtk_vnc" != "xyes" && test "x$have_spice_gtk" != "xyes"; then
     AC_MSG_ERROR([At least one of spice or vnc must be used])
 fi
 
+AC_ARG_WITH([buildid],
+    AS_HELP_STRING([--with-buildid=id], [Set additional build version details]))
+AC_DEFINE_UNQUOTED([BUILDID], "$with_buildid", [Build version details])
+
 AC_CONFIG_FILES([
     Makefile
     data/Makefile

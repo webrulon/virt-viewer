@@ -35,7 +35,7 @@
 
 static void virt_viewer_version(void)
 {
-    g_print(_("%s version %s\n"), PACKAGE, VERSION);
+    g_print(_("%s version %s\n"), PACKAGE, VERSION BUILDID);
 
     exit(EXIT_SUCCESS);
 }

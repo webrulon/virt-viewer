@@ -84,7 +84,7 @@ MinGW Windows virt-viewer installer
 
 
 %build
-%mingw_configure --with-gtk=2.0
+%mingw_configure --with-gtk=2.0 --with-buildid=-%{release}
 %mingw_make %{?_smp_mflags} V=1
 
 %install

@@ -898,7 +898,7 @@ virt_viewer_window_menu_help_about(GtkWidget *menu G_GNUC_UNUSED,
     GtkBuilder *about = virt_viewer_util_load_ui("virt-viewer-about.xml");
 
     GtkWidget *dialog = GTK_WIDGET(gtk_builder_get_object(about, "about"));
-    gtk_about_dialog_set_version(GTK_ABOUT_DIALOG(dialog), VERSION);
+    gtk_about_dialog_set_version(GTK_ABOUT_DIALOG(dialog), VERSION BUILDID);
 
     gtk_window_set_transient_for(GTK_WINDOW(dialog),
                                  GTK_WINDOW(self->priv->window));

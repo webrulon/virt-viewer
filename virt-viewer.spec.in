@@ -128,7 +128,7 @@ autoreconf -if
 %define gtk_arg --with-gtk=2.0
 %endif
 
-%configure %{spice_arg} %{plugin_arg} %{gtk_arg}
+%configure %{spice_arg} %{plugin_arg} %{gtk_arg} --with-buildid=-%{release}
 %__make %{?_smp_mflags}
 
 

@@ -44,7 +44,7 @@
 static void
 remote_viewer_version(void)
 {
-    g_print(_("remote-viewer version %s\n"), VERSION);
+    g_print(_("remote-viewer version %s\n"), VERSION BUILDID);
     exit(EXIT_SUCCESS);
 }
 

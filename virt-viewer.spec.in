@@ -176,6 +176,7 @@ update-desktop-database -q %{_datadir}/applications
 %{_datadir}/%{name}/ui/virt-viewer-about.xml
 %{_datadir}/icons/hicolor/*/apps/*
 %{_datadir}/applications/remote-viewer.desktop
+%{_datadir}/mime/packages/virt-viewer-mime.xml
 %ghost %{_libexecdir}/spice-xpi-client
 %{_libexecdir}/spice-xpi-client-remote-viewer
 %{_mandir}/man1/virt-viewer.1*

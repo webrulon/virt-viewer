@@ -32,8 +32,8 @@ BuildRequires:  mingw32-readline
 BuildRequires:  mingw64-readline
 BuildRequires:  mingw32-spice-glib
 BuildRequires:  mingw64-spice-glib
-BuildRequires:  mingw32-spice-gtk
-BuildRequires:  mingw64-spice-gtk
+BuildRequires:  mingw32-spice-gtk >= 0.16.26
+BuildRequires:  mingw64-spice-gtk >= 0.16.26
 BuildRequires:  mingw32-usbredir
 BuildRequires:  mingw64-usbredir
 BuildRequires:  pkgconfig

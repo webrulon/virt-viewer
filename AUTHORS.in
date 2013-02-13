@@ -1,0 +1,21 @@
+ Virt Viewer Authors
+ ===================
+
+The Virt Viewer application is maintained by
+
+    Daniel P. Berrange <berrange@redhat.com> (Original author)
+    Christophe Fergeau <cfergeau@redhat.com>
+    Marc-André Lureau <marcandre.lureau@redhat.com>
+    Hans de Goede <hdegoede@redhat.com>
+    Michal Privoznik <mprivozn@redhat.com>
+
+With additional patches & translations from:
+
+#authorslist#
+
+   ...send patches to get your name here...
+
+For full translation credits see the header of the individual
+files in the po/ directory.
+
+-- End

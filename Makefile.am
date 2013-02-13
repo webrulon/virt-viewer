@@ -15,6 +15,7 @@ EXTRA_DIST =					\
 	build-aux/gitlog-to-changelog		\
 	build-aux/useless-if-before-free	\
 	build-aux/vc-list-files			\
+	AUTHORS.in				\
 	$(NULL)
 
 DISTCLEAN_FILES =				\
@@ -44,17 +45,25 @@ MAINTAINERCLEANFILES =				\
 	$(srcdir)/m4/lt~obsolete.m4		\
 	$(NULL)
 
-dist-hook: gen-ChangeLog
+dist-hook: gen-ChangeLog gen-AUTHORS
 
 # Generate the ChangeLog file (with all entries since the switch to git)
 # and insert it into the directory we're about to use to create a tarball.
-.PHONY: gen-ChangeLog
+.PHONY: gen-ChangeLog gen-AUTHORS
 gen-ChangeLog:
 	if test -d .git || test -d ../.git; then		\
 	  $(top_srcdir)/build-aux/gitlog-to-changelog		\
 	    > $(distdir)/cl-t;					\
 	  rm -f $(distdir)/ChangeLog;				\
 	  mv $(distdir)/cl-t $(distdir)/ChangeLog;		\
+	fi
+
+gen-AUTHORS:
+	$(AM_V_GEN)if test -d $(srcdir)/.git; then                      \
+	   out="`cd $(srcdir) && git log --pretty=format:'%aN <%aE>' | sort -u`" && \
+	   perl -p -e "s/#authorslist#// and print '$$out'"            \
+	     < $(srcdir)/AUTHORS.in > $(distdir)/AUTHORS-tmp &&        \
+	   mv -f $(distdir)/AUTHORS-tmp $(distdir)/AUTHORS ;           \
 	fi
 
 if OS_WIN32

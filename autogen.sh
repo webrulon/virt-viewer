@@ -2,6 +2,7 @@
 # Run this to generate all the initial makefiles, etc.
 
 set -e
+
 srcdir=`dirname $0`
 test -z "$srcdir" && srcdir=.
 
@@ -20,6 +21,11 @@ if test "x$1" = "x--system"; then
     fi
     EXTRA_ARGS="--prefix=$prefix --sysconfdir=$sysconfdir --localstatedir=$localstatedir --libdir=$libdir"
 fi
+
+# Real ChangeLog/AUTHORS is auto-generated from GIT logs at
+ # make dist time, but automake requires that it
+ # exists at all times :-(
+touch ChangeLog AUTHORS
 
 intltoolize --force
 autoreconf -vfi

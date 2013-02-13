@@ -1,6 +1,21 @@
   Virt Viewer News
   ================
 
+0.5.5: Feb 13, 2013
+-------------------
+
+  - Improve screenshot saving dialog
+  - remote-viewer learned to connect with a file of mime type
+    application/x-virt-viewer, described in src/virt-viewer-file.c
+  - Add a "do not ask me again" dialog checkbox when leaving
+  - Add a MSI target, using https://live.gnome.org/msitools
+  - Add windows debug helper, useful in Spice controller running context
+  - Add remote-viewer --title STRING
+  - Support for Spice proxy settings added
+  - Numerous Spice display and multi-monitor fixes
+  - win32, memory, build, and other misc fixes
+  - Requires spice-gtk >= 0.16.26
+
 0.5.4: Sep 17, 2012
 -------------------
 

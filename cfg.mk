@@ -120,3 +120,5 @@ exclude_file_name_regexp--sc_prohibit_empty_lines_at_EOF = ^icons/
 exclude_file_name_regexp--sc_trailing_blank = ^icons/
 
 exclude_file_name_regexp--sc_prohibit_magic_number_exit = src/windows-cmdline-wrapper.c
+
+exclude_file_name_regexp--sc_makefile_at_at_check = data/Makefile.am

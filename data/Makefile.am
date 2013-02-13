@@ -30,7 +30,7 @@ virt-viewer-$(VERSION).msi: virt-viewer.wxs deps.txt
 	     $< virt-viewer-files.wxs && \
 	rm -rf $$DESTDIR virt-viewer-files.wxs
 
-CLEANFILES =					\
+CLEANFILES +=					\
 	deps.txt				\
 	virt-viewer-$(VERSION).exe		\
 	virt-viewer-$(VERSION).msi		\

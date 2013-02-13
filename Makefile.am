@@ -49,7 +49,12 @@ dist-hook: gen-ChangeLog gen-AUTHORS
 
 # Generate the ChangeLog file (with all entries since the switch to git)
 # and insert it into the directory we're about to use to create a tarball.
+if OS_WIN32
+.PHONY: gen-ChangeLog gen-AUTHORS nsis
+else
 .PHONY: gen-ChangeLog gen-AUTHORS
+endif
+
 gen-ChangeLog:
 	if test -d .git || test -d ../.git; then		\
 	  $(top_srcdir)/build-aux/gitlog-to-changelog		\

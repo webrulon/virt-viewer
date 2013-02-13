@@ -1072,6 +1072,8 @@ sc_po_check:
 	      *.m4|*.mk) continue ;;					\
 	      *.?|*.??) ;;						\
 	      *.xml) ;;							\
+	      *.xml.in) ;;						\
+	      *.desktop.in) ;;						\
 	      *) continue;;						\
 	    esac;							\
 	    case $$file in						\
@@ -1081,7 +1083,7 @@ sc_po_check:
 	    esac;							\
 	    files="$$files $$file";					\
 	  done;								\
-	  grep -E -l '(\b(N?_|gettext *)\([^)"]*("|$$))|(<interface>)' $$files	\
+	  grep -E -l '(\b(N?_|gettext *)\([^)"]*("|$$))|(<interface>)|^_|<_' $$files	\
 	    | sed 's|^$(_dot_escaped_srcdir)/||' | sort -u > $@-2;	\
 	  diff -u -L $(po_file) -L $(po_file) $@-1 $@-2			\
 	    || { printf '$(ME): '$(fix_po_file_diag) 1>&2; exit 1; };	\

@@ -34,7 +34,7 @@ AC_DEFUN([VIRT_VIEWER_COMPILE_WARNINGS],[
 	try_compiler_flags="$try_compiler_flags -Wall -Wmissing-prototypes -std=c99 -Wnested-externs -Wpointer-arith"
         try_compiler_flags="$try_compiler_flags -Wextra -Wshadow -Wcast-align -Wwrite-strings -Waggregate-return"
         # Removed -Wstrict-prototypes to avoid GTK bug
-	try_compiler_flags="$try_compiler_flags -Winline -Wredundant-decls -Wno-sign-compare"
+	try_compiler_flags="$try_compiler_flags -Winline -Wredundant-decls -Wno-sign-compare -Wno-deprecated-declarations"
 	if test "$enable_compile_warnings" = "error" ; then
 	    try_compiler_flags="$try_compiler_flags -Werror"
 	fi

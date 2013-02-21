@@ -202,7 +202,7 @@ main(int argc, char **argv)
     gboolean debug = FALSE;
     gboolean direct = FALSE;
     RemoteViewer *viewer = NULL;
-#if HAVE_SPICE_GTK
+#ifdef HAVE_SPICE_GTK
     gboolean controller = FALSE;
 #endif
     VirtViewerApp *app;
@@ -221,7 +221,7 @@ main(int argc, char **argv)
           N_("Display debugging information"), NULL },
         { "full-screen", 'f', G_OPTION_FLAG_OPTIONAL_ARG, G_OPTION_ARG_CALLBACK, option_fullscreen,
           N_("Open in full screen mode (auto-conf adjusts guest resolution to fit the client's)."), N_("<auto-conf>") },
-#if HAVE_SPICE_GTK
+#ifdef HAVE_SPICE_GTK
         { "spice-controller", '\0', 0, G_OPTION_ARG_NONE, &controller,
           N_("Open connection using Spice controller communication"), NULL },
 #endif
@@ -257,7 +257,7 @@ main(int argc, char **argv)
 
     g_option_context_free(context);
 
-#if HAVE_SPICE_GTK
+#ifdef HAVE_SPICE_GTK
     if (controller) {
         if (args) {
             g_printerr(_("Error: extra arguments given while using Spice controller\n"));
@@ -284,7 +284,7 @@ main(int argc, char **argv)
 
     virt_viewer_app_set_debug(debug);
 
-#if HAVE_SPICE_GTK
+#ifdef HAVE_SPICE_GTK
     if (controller) {
         viewer = remote_viewer_new_with_controller(verbose);
         g_object_set(viewer, "guest-name", "defined by Spice controller", NULL);
@@ -292,7 +292,7 @@ main(int argc, char **argv)
 #endif
         viewer = remote_viewer_new(uri, title, verbose);
         g_object_set(viewer, "guest-name", uri, NULL);
-#if HAVE_SPICE_GTK
+#ifdef HAVE_SPICE_GTK
     }
 #endif
     if (viewer == NULL)

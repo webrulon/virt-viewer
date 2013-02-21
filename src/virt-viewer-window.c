@@ -597,6 +597,7 @@ static GtkMenu*
 virt_viewer_window_get_keycombo_menu(VirtViewerWindow *self)
 {
     gint i;
+    VirtViewerWindowPrivate *priv = self->priv;
     GtkMenu *menu = GTK_MENU(gtk_menu_new());
 
     for (i = 0 ; i < G_N_ELEMENTS(keyCombos) ; i++) {
@@ -610,6 +611,7 @@ virt_viewer_window_get_keycombo_menu(VirtViewerWindow *self)
         gtk_container_add(GTK_CONTAINER(menu), item);
     }
 
+    gtk_menu_attach_to_widget(menu, GTK_WIDGET(priv->window), NULL);
     gtk_widget_show_all(GTK_WIDGET(menu));
     return g_object_ref_sink(menu);
 }

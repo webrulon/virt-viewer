@@ -80,31 +80,25 @@ virt_viewer_LDFLAGS =				\
 	-lm					\
 	$(GLIB2_LIBS)				\
 	$(GTK_LIBS)				\
+	$(GTK_VNC_LIBS)				\
 	$(LIBXML2_LIBS)				\
 	$(LIBVIRT_LIBS)				\
+	$(OVIRT_LIBS)				\
+	$(SPICE_GTK_LIBS)			\
 	$(NULL)
 virt_viewer_CFLAGS = 				\
 	-DLOCALE_DIR=\""$(datadir)/locale"\"	\
 	-DG_LOG_DOMAIN=\"virt-viewer\"          \
 	$(GLIB2_CFLAGS) 			\
 	$(GTK_CFLAGS)				\
+	$(GTK_VNC_CFLAGS)			\
 	$(LIBXML2_CFLAGS)			\
 	$(LIBVIRT_CFLAGS)			\
+	$(OVIRT_CFLAGS)				\
+	$(SPICE_GTK_CFLAGS)			\
+	$(SPICE_CONTROLLER_CFLAGS)		\
 	$(WARN_CFLAGS)				\
 	$(NULL)
-
-if HAVE_GTK_VNC
-virt_viewer_LDFLAGS += $(GTK_VNC_LIBS)
-virt_viewer_CFLAGS += $(GTK_VNC_CFLAGS)
-endif
-if HAVE_OVIRT
-virt_viewer_LDFLAGS += $(OVIRT_LIBS)
-virt_viewer_CFLAGS += $(OVIRT_CFLAGS)
-endif
-if HAVE_SPICE_GTK
-virt_viewer_LDFLAGS += $(SPICE_GTK_LIBS)
-virt_viewer_CFLAGS += $(SPICE_GTK_CFLAGS)
-endif
 endif
 
 
@@ -118,29 +112,25 @@ remote_viewer_LDFLAGS =				\
 	-lm					\
 	$(GLIB2_LIBS)				\
 	$(GTK_LIBS)				\
+	$(GTK_VNC_LIBS)				\
 	$(LIBXML2_LIBS)				\
+	$(OVIRT_LIBS)				\
+	$(SPICE_GTK_LIBS)			\
+	$(SPICE_CONTROLLER_LIBS)		\
 	$(NULL)
 remote_viewer_CFLAGS =				\
 	-DLOCALE_DIR=\""$(datadir)/locale"\"	\
 	-DG_LOG_DOMAIN=\"remote-viewer\"        \
 	$(GLIB2_CFLAGS) 			\
 	$(GTK_CFLAGS)				\
+	$(GTK_VNC_CFLAGS)			\
 	$(LIBXML2_CFLAGS)			\
+	$(OVIRT_CFLAGS)				\
+	$(SPICE_GTK_CFLAGS)			\
+	$(SPICE_CONTROLLER_CFLAGS)		\
 	$(WARN_CFLAGS)				\
 	$(NULL)
 
-if HAVE_GTK_VNC
-remote_viewer_LDFLAGS += $(GTK_VNC_LIBS)
-remote_viewer_CFLAGS += $(GTK_VNC_CFLAGS)
-endif
-if HAVE_OVIRT
-remote_viewer_LDFLAGS += $(OVIRT_LIBS)
-remote_viewer_CFLAGS += $(OVIRT_CFLAGS)
-endif
-if HAVE_SPICE_GTK
-remote_viewer_LDFLAGS += $(SPICE_GTK_LIBS) $(SPICE_CONTROLLER_LIBS)
-remote_viewer_CFLAGS += $(SPICE_GTK_CFLAGS) $(SPICE_CONTROLLER_CFLAGS)
-endif
 if OS_WIN32
 remote_viewer_LDFLAGS += -Wl,--subsystem,windows
 endif

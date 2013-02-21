@@ -179,7 +179,6 @@ AS_IF([test "x$have_ovirt" = "xyes"],
              [AC_MSG_ERROR([oVirt support requested but libgovirt not found])
       ])
 ])
-AM_CONDITIONAL([HAVE_OVIRT], [test "x$have_ovirt" = "xyes"])
 
 dnl Decide if this platform can support the SSH tunnel feature.
 AC_CHECK_HEADERS([sys/socket.h sys/un.h windows.h])

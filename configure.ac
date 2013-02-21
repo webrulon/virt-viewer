@@ -165,6 +165,22 @@ AS_IF([test "x$have_spice_gtk" = "xyes"],
 ])
 AM_CONDITIONAL([HAVE_SPICE_GTK], [test "x$have_spice_gtk" = "xyes"])
 
+AC_ARG_WITH([ovirt],
+    AS_HELP_STRING([--without-ovirt], [Ignore presence of librest and disable oVirt support]))
+
+AS_IF([test "x$with_ovirt" != "xno"],
+      [PKG_CHECK_MODULES([OVIRT], [govirt-1.0],
+                         [have_ovirt=yes], [have_ovirt=no])],
+      [have_ovirt=no])
+
+AS_IF([test "x$have_ovirt" = "xyes"],
+      [AC_DEFINE([HAVE_OVIRT], 1, [Have libgovirt?])],
+      [AS_IF([test "x$with_ovirt" = "xyes"],
+             [AC_MSG_ERROR([oVirt support requested but libgovirt not found])
+      ])
+])
+AM_CONDITIONAL([HAVE_OVIRT], [test "x$have_ovirt" = "xyes"])
+
 dnl Decide if this platform can support the SSH tunnel feature.
 AC_CHECK_HEADERS([sys/socket.h sys/un.h windows.h])
 AC_CHECK_FUNCS([fork socketpair])
@@ -221,4 +237,6 @@ AC_MSG_NOTICE([])
 AC_MSG_NOTICE([     LIBXML2: $LIBXML2_CFLAGS $LIBXML2_LIBS])
 AC_MSG_NOTICE([])
 AC_MSG_NOTICE([     LIBVIRT: $LIBVIRT_CFLAGS $LIBVIRT_LIBS])
+AC_MSG_NOTICE([])
+AC_MSG_NOTICE([       OVIRT: $OVIRT_CFLAGS $OVIRT_LIBS])
 AC_MSG_NOTICE([])

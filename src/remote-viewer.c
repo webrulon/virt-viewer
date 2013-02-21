@@ -26,6 +26,11 @@
 #include <gtk/gtk.h>
 #include <glib/gprintf.h>
 #include <glib/gi18n.h>
+#include <libxml/uri.h>
+
+#ifdef HAVE_OVIRT
+#include <govirt/govirt.h>
+#endif
 
 #ifdef HAVE_SPICE_GTK
 #include <spice-controller.h>
@@ -35,6 +40,7 @@
 #include "virt-viewer-session-spice.h"
 #endif
 #include "virt-viewer-app.h"
+#include "virt-viewer-auth.h"
 #include "virt-viewer-file.h"
 #include "virt-viewer-session.h"
 #include "remote-viewer.h"
@@ -590,6 +596,213 @@ remote_viewer_window_added(VirtViewerApp *app G_GNUC_UNUSED,
 }
 #endif
 
+#ifdef HAVE_OVIRT
+static gboolean
+parse_ovirt_uri(const gchar *uri_str, char **rest_uri, char **name)
+{
+    char *vm_name = NULL;
+    char *rel_path;
+    xmlURIPtr uri;
+    gchar **path_elements;
+    guint element_count;
+
+    g_return_val_if_fail(uri_str != NULL, FALSE);
+    g_return_val_if_fail(rest_uri != NULL, FALSE);
+    g_return_val_if_fail(name != NULL, FALSE);
+
+    uri = xmlParseURI(uri_str);
+    if (uri == NULL)
+        return FALSE;
+
+    if (g_strcmp0(uri->scheme, "ovirt") != 0) {
+        xmlFreeURI(uri);
+        return FALSE;
+    }
+
+    if (uri->path == NULL) {
+        xmlFreeURI(uri);
+        return FALSE;
+    }
+
+    /* extract VM name from path */
+    path_elements = g_strsplit(uri->path, "/", -1);
+
+    element_count = g_strv_length(path_elements);
+    if (element_count == 0) {
+        g_strfreev(path_elements);
+        xmlFreeURI(uri);
+        return FALSE;
+    }
+    vm_name = path_elements[element_count-1];
+    path_elements[element_count-1] = NULL;
+
+    /* build final URI */
+    rel_path = g_strjoinv("/", path_elements);
+    /* FIXME: how to decide between http and https? */
+    *rest_uri = g_strdup_printf("https://%s/%s/api/", uri->server, rel_path);
+    *name = vm_name;
+    g_free(rel_path);
+    g_strfreev(path_elements);
+    xmlFreeURI(uri);
+
+    g_debug("oVirt base URI: %s", *rest_uri);
+    g_debug("oVirt VM name: %s", *name);
+
+    return TRUE;
+}
+
+static gboolean
+authenticate_cb(RestProxy *proxy, G_GNUC_UNUSED RestProxyAuth *auth,
+                G_GNUC_UNUSED gboolean retrying, gpointer user_data)
+{
+    gchar *username;
+    gchar *password;
+    VirtViewerWindow *window;
+
+    window = virt_viewer_app_get_main_window(VIRT_VIEWER_APP(user_data));
+    int ret = virt_viewer_auth_collect_credentials(virt_viewer_window_get_window(window),
+                                                   "oVirt",
+                                                   NULL,
+                                                   &username, &password);
+    if (ret < 0) {
+        return FALSE;
+    } else {
+        g_object_set(G_OBJECT(proxy),
+                     "username", username,
+                     "password", password,
+                     NULL);
+        g_free(username);
+        g_free(password);
+        return TRUE;
+    }
+}
+
+
+static gboolean
+create_ovirt_session(VirtViewerApp *app, const char *uri)
+{
+    OvirtProxy *proxy = NULL;
+    OvirtVm *vm = NULL;
+    OvirtVmDisplay *display = NULL;
+    OvirtVmState state;
+    GError *error = NULL;
+    char *rest_uri = NULL;
+    char *vm_name = NULL;
+    gboolean success = FALSE;
+    guint port;
+    guint secure_port;
+    OvirtVmDisplayType type;
+    const char *session_type;
+
+    gchar *gport = NULL;
+    gchar *gtlsport = NULL;
+    gchar *ghost = NULL;
+    gchar *ticket = NULL;
+
+    g_return_val_if_fail(VIRT_VIEWER_IS_APP(app), FALSE);
+
+    if (!parse_ovirt_uri(uri, &rest_uri, &vm_name))
+        goto error;
+    proxy = ovirt_proxy_new(rest_uri);
+    if (proxy == NULL)
+        goto error;
+    g_signal_connect(G_OBJECT(proxy), "authenticate",
+                     G_CALLBACK(authenticate_cb), app);
+
+    ovirt_proxy_fetch_ca_certificate(proxy, &error);
+    if (error != NULL) {
+        g_debug("failed to get CA certificate: %s", error->message);
+        goto error;
+    }
+
+    ovirt_proxy_fetch_vms(proxy, &error);
+    if (error != NULL) {
+        g_debug("failed to lookup %s: %s", vm_name, error->message);
+        goto error;
+    }
+
+    vm = ovirt_proxy_lookup_vm(proxy, vm_name);
+    g_return_val_if_fail(vm != NULL, FALSE);
+    g_object_get(G_OBJECT(vm), "state", &state, NULL);
+    if (state != OVIRT_VM_STATE_UP) {
+        g_debug("oVirt VM %s is not running", vm_name);
+        goto error;
+    }
+
+    if (!ovirt_vm_get_ticket(vm, proxy, &error)) {
+        g_debug("failed to get ticket for %s: %s", vm_name, error->message);
+        goto error;
+    }
+
+    g_object_get(G_OBJECT(vm), "display", &display, NULL);
+    if (display == NULL) {
+        goto error;
+    }
+
+    g_object_get(G_OBJECT(display),
+                 "type", &type,
+                 "address", &ghost,
+                 "port", &port,
+                 "secure-port", &secure_port,
+                 "ticket", &ticket,
+                 NULL);
+    gport = g_strdup_printf("%d", port);
+    gtlsport = g_strdup_printf("%d", secure_port);
+
+    if (type == OVIRT_VM_DISPLAY_SPICE) {
+        session_type = "spice";
+    } else if (type == OVIRT_VM_DISPLAY_VNC) {
+        session_type = "vnc";
+    } else {
+        g_debug("Unknown display type: %d", type);
+        goto error;
+    }
+
+    virt_viewer_app_set_connect_info(app, NULL, ghost, gport, gtlsport,
+                                     session_type, NULL, NULL, 0, NULL);
+
+    if (virt_viewer_app_create_session(app, session_type) < 0)
+        goto error;
+
+#if HAVE_SPICE_GTK
+    if (type == OVIRT_VM_DISPLAY_SPICE) {
+        SpiceSession *session;
+        GByteArray *ca_cert;
+
+        g_object_get(G_OBJECT(proxy), "ca-cert", &ca_cert, NULL);
+        session = remote_viewer_get_spice_session(REMOTE_VIEWER(app));
+        g_object_set(G_OBJECT(session),
+                     "ca", ca_cert,
+                     "password", ticket,
+                     NULL);
+        g_byte_array_unref(ca_cert);
+    }
+#endif
+
+    success = TRUE;
+
+error:
+    g_free(rest_uri);
+    g_free(vm_name);
+    g_free(ticket);
+    g_free(gport);
+    g_free(gtlsport);
+    g_free(ghost);
+
+    if (error != NULL)
+        g_error_free(error);
+    if (display != NULL)
+        g_object_unref(display);
+    if (vm != NULL)
+        g_object_unref(vm);
+    if (proxy != NULL)
+        g_object_unref(proxy);
+
+    return success;
+}
+
+#endif
+
 static gboolean
 remote_viewer_start(VirtViewerApp *app)
 {
@@ -651,10 +864,19 @@ remote_viewer_start(VirtViewerApp *app)
             virt_viewer_app_simple_message_dialog(app, _("Cannot determine the connection type from URI"));
             goto cleanup;
         }
-
-        if (virt_viewer_app_create_session(app, type) < 0) {
-            virt_viewer_app_simple_message_dialog(app, _("Couldn't create a session for this type: %s"), type);
-            goto cleanup;
+#if HAVE_OVIRT
+        if (g_strcmp0(type, "ovirt") == 0) {
+            if (!create_ovirt_session(app, guri)) {
+                virt_viewer_app_simple_message_dialog(app, _("Couldn't open oVirt session"));
+                goto cleanup;
+            }
+        } else
+#endif
+        {
+            if (virt_viewer_app_create_session(app, type) < 0) {
+                virt_viewer_app_simple_message_dialog(app, _("Couldn't create a session for this type: %s"), type);
+                goto cleanup;
+            }
         }
 
         virt_viewer_session_set_file(virt_viewer_app_get_session(app), vvfile);

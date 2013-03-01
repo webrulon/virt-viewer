@@ -113,8 +113,8 @@ prev_version_file = /dev/null
 
 exclude_file_name_regexp--sc_preprocessor_indentation = ^*/*.[ch]
 exclude_file_name_regexp--sc_prohibit_strcmp = ^*/*.[ch]
-exclude_file_name_regexp--sc_require_config_h = ^plugin/|src/gbinding\.c|src/windows-cmdline-wrapper.c
-exclude_file_name_regexp--sc_require_config_h_first = ^plugin/|src/gbinding\.c|src/windows-cmdline-wrapper.c
+exclude_file_name_regexp--sc_require_config_h = ^src/gbinding\.c|src/windows-cmdline-wrapper.c
+exclude_file_name_regexp--sc_require_config_h_first = ^src/gbinding\.c|src/windows-cmdline-wrapper.c
 
 exclude_file_name_regexp--sc_prohibit_empty_lines_at_EOF = ^icons/
 exclude_file_name_regexp--sc_trailing_blank = ^icons/

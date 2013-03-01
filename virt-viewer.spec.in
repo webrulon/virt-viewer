@@ -5,10 +5,6 @@
 # touch configure.ac or Makefile.am.
 %{!?enable_autotools:%define enable_autotools 1}
 
-# Plugin isn't ready for real world use yet - it needs
-# a security audit at very least
-%define _with_plugin %{?with_plugin:1}%{!?with_plugin:0}
-
 %define with_gtk3 0
 %if 0%{?fedora} >= 15
 %define with_gtk3 1
@@ -73,33 +69,11 @@ BuildRequires: spice-protocol >= 0.10.1
 %endif
 BuildRequires: /usr/bin/pod2man
 BuildRequires: intltool
-%if %{_with_plugin}
-%if 0%{?fedora} > 8
-BuildRequires: xulrunner-devel
-%else
-BuildRequires: firefox-devel
-%endif
-%endif
 
 %description
 Virtual Machine Viewer provides a graphical console client for connecting
 to virtual machines. It uses the GTK-VNC or SPICE-GTK widgets to provide
 the display, and libvirt for looking up VNC/SPICE server details.
-
-%if %{_with_plugin}
-%package plugin
-Summary: Mozilla plugin for the gtk-vnc library
-Group: Development/Libraries
-Requires: %{name} = %{version}
-
-%description plugin
-Virtual Machine Viewer provides a graphical console client for connecting
-to virtual machines. It uses the GTK-VNC or SPICE-GTK widgets to provide
-the display, and libvirt for looking up VNC/SPICE server details.
-
-This package provides a web browser plugin for Mozilla compatible
-browsers.
-%endif
 
 %prep
 %setup -q
@@ -108,12 +82,6 @@ browsers.
 
 %if 0%{?enable_autotools}
 autoreconf -if
-%endif
-
-%if %{_with_plugin}
-%define plugin_arg --enable-plugin
-%else
-%define plugin_arg --disable-plugin
 %endif
 
 %if %{with_spice}
@@ -128,7 +96,7 @@ autoreconf -if
 %define gtk_arg --with-gtk=2.0
 %endif
 
-%configure %{spice_arg} %{plugin_arg} %{gtk_arg} --with-buildid=-%{release}
+%configure %{spice_arg} %{gtk_arg} --with-buildid=-%{release}
 %__make %{?_smp_mflags}
 
 
@@ -138,10 +106,6 @@ rm -rf $RPM_BUILD_ROOT
 mkdir -p %{buildroot}%{_libexecdir}
 touch %{buildroot}%{_libexecdir}/spice-xpi-client
 install -m 0755 data/spice-xpi-client-remote-viewer %{buildroot}%{_libexecdir}/
-%if %{_with_plugin}
-rm -f %{buildroot}%{_libdir}/mozilla/plugins/%{name}-plugin.a
-rm -f %{buildroot}%{_libdir}/mozilla/plugins/%{name}-plugin.la
-%endif
 %find_lang %{name}
 
 %clean
@@ -181,11 +145,5 @@ update-desktop-database -q %{_datadir}/applications
 %{_libexecdir}/spice-xpi-client-remote-viewer
 %{_mandir}/man1/virt-viewer.1*
 %{_mandir}/man1/remote-viewer.1*
-
-%if %{_with_plugin}
-%files plugin
-%defattr(-, root, root)
-%{_libdir}/mozilla/plugins/%{name}-plugin.so
-%endif
 
 %changelog

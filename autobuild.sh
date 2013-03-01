@@ -14,7 +14,6 @@ cd build
 
 ../autogen.sh --prefix=$AUTOBUILD_INSTALL_ROOT \
     --enable-compile-warnings=error \
-    --disable-plugin \
     --with-gtk=2.0
 
 make
@@ -26,7 +25,6 @@ if test $? = 0 ; then
   make distclean
   ../configure --prefix=$AUTOBUILD_INSTALL_ROOT \
     --enable-compile-warnings=error \
-    --disable-plugin \
     --with-gtk=3.0
   make
   make install

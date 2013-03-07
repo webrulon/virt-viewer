@@ -56,6 +56,7 @@ gulong virt_viewer_signal_connect_object(gpointer instance,
                                          GConnectFlags connect_flags);
 
 gchar* spice_hotkey_to_gtk_accelerator(const gchar *key);
+gint virt_viewer_compare_version(const gchar *s1, const gchar *s2);
 
 #endif
 

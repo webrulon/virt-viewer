@@ -414,6 +414,55 @@ spice_hotkey_to_gtk_accelerator(const gchar *key)
     return accel;
 }
 
+/**
+ * virt_viewer_compare_version:
+ * @s1: a version-like string
+ * @s2: a version-like string
+ *
+ * Compare two version-like strings: 1.1 > 1.0, 1.0.1 > 1.0, 1.10 > 1.7...
+ *
+ * String suffix (1.0rc1 etc) are not accepted, and will return 0.
+ *
+ * Returns: negative value if s1 < s2; zero if s1 = s2; positive value if s1 > s2.
+ **/
+gint
+virt_viewer_compare_version(const gchar *s1, const gchar *s2)
+{
+    gint i, retval = 0;
+    gchar **v1, **v2;
+
+    g_return_val_if_fail(s1 != NULL, 0);
+    g_return_val_if_fail(s2 != NULL, 0);
+
+    v1 = g_strsplit(s1, ".", -1);
+    v2 = g_strsplit(s2, ".", -1);
+
+    for (i = 0; v1[i] && v2[i]; ++i) {
+        gchar *e1 = NULL, *e2 = NULL;
+        guint64 m1 = g_ascii_strtoull(v1[i], &e1, 10);
+        guint64 m2 = g_ascii_strtoull(v2[i], &e2, 10);
+
+        retval = m1 - m2;
+        if (retval != 0)
+            goto end;
+
+        g_return_val_if_fail(e1 && e2, 0);
+        if (*e1 || *e2) {
+            g_warning("the version string contains suffix");
+            goto end;
+        }
+    }
+
+    if (v1[i])
+        retval = 1;
+    else if (v2[i])
+        retval = -1;
+
+end:
+    g_strfreev(v1);
+    g_strfreev(v2);
+    return retval;
+}
 /*
  * Local variables:
  *  c-indent-level: 4

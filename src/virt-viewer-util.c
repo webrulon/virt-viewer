@@ -41,6 +41,12 @@
 
 #include "virt-viewer-util.h"
 
+GQuark
+virt_viewer_error_quark(void)
+{
+  return g_quark_from_static_string ("virt-viewer-error-quark");
+}
+
 GtkBuilder *virt_viewer_util_load_ui(const char *name)
 {
     struct stat sb;

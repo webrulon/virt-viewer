@@ -20,6 +20,9 @@
  */
 
 #include <config.h>
+
+#include <glib/gi18n.h>
+
 #include "virt-viewer-util.h"
 #include "virt-viewer-file.h"
 
@@ -34,6 +37,7 @@
  * port=5900
  *
  *  The current list of [virt-viewer] keys is:
+ * - version: string
  * - type: string, mandatory, values: "spice" (later "vnc" etc..)
  * - host: string
  * - port: int
@@ -94,6 +98,7 @@ enum  {
     PROP_ENABLE_USB_AUTOSHARE,
     PROP_USB_FILTER,
     PROP_PROXY,
+    PROP_VERSION,
 };
 
 VirtViewerFile*
@@ -523,6 +528,19 @@ virt_viewer_file_set_proxy(VirtViewerFile* self, const gchar* value)
     g_object_notify(G_OBJECT(self), "proxy");
 }
 
+gchar*
+virt_viewer_file_get_version(VirtViewerFile* self)
+{
+    return virt_viewer_file_get_string(self, "version");
+}
+
+void
+virt_viewer_file_set_version(VirtViewerFile* self, const gchar* value)
+{
+    virt_viewer_file_set_string(self, "version", value);
+    g_object_notify(G_OBJECT(self), "version");
+}
+
 static void
 spice_hotkey_set_accel(VirtViewerApp *app, const gchar *accel_path, const gchar *key)
 {
@@ -539,11 +557,28 @@ spice_hotkey_set_accel(VirtViewerApp *app, const gchar *accel_path, const gchar 
     g_object_set(G_OBJECT(app), "enable-accel", TRUE, NULL);
 }
 
-void
-virt_viewer_file_fill_app(VirtViewerFile* self, VirtViewerApp *app)
+gboolean
+virt_viewer_file_fill_app(VirtViewerFile* self, VirtViewerApp *app, GError **error)
 {
-    g_return_if_fail(VIRT_VIEWER_IS_FILE(self));
-    g_return_if_fail(VIRT_VIEWER_IS_APP(app));
+    g_return_val_if_fail(VIRT_VIEWER_IS_FILE(self), FALSE);
+    g_return_val_if_fail(VIRT_VIEWER_IS_APP(app), FALSE);
+
+    if (virt_viewer_file_is_set(self, "version")) {
+        gchar *val = virt_viewer_file_get_version(self);
+
+        if (virt_viewer_compare_version(val, PACKAGE_VERSION) > 0) {
+            g_set_error(error,
+                VIRT_VIEWER_ERROR,
+                VIRT_VIEWER_ERROR_FAILED,
+                _("At least %s version %s is required to setup this connection"),
+                g_get_application_name(), val);
+
+            g_free(val);
+            return FALSE;
+        }
+
+        g_free(val);
+    }
 
     if (virt_viewer_file_is_set(self, "title"))
         virt_viewer_app_set_title(app, virt_viewer_file_get_title(self));
@@ -575,6 +610,8 @@ virt_viewer_file_fill_app(VirtViewerFile* self, VirtViewerApp *app)
     if (virt_viewer_file_is_set(self, "fullscreen"))
         g_object_set(G_OBJECT(app), "fullscreen",
             virt_viewer_file_get_fullscreen(self), NULL);
+
+    return TRUE;
 }
 
 static void
@@ -649,6 +686,9 @@ virt_viewer_file_set_property(GObject* object, guint property_id,
         break;
     case PROP_PROXY:
         virt_viewer_file_set_proxy(self, g_value_get_string(value));
+        break;
+    case PROP_VERSION:
+        virt_viewer_file_set_version(self, g_value_get_string(value));
         break;
     default:
         G_OBJECT_WARN_INVALID_PROPERTY_ID(object, property_id, pspec);
@@ -725,6 +765,9 @@ virt_viewer_file_get_property(GObject* object, guint property_id,
         break;
     case PROP_PROXY:
         g_value_take_string(value, virt_viewer_file_get_proxy(self));
+        break;
+    case PROP_VERSION:
+        g_value_take_string(value, virt_viewer_file_get_version(self));
         break;
     default:
         G_OBJECT_WARN_INVALID_PROPERTY_ID(object, property_id, pspec);
@@ -843,5 +886,9 @@ virt_viewer_file_class_init(VirtViewerFileClass* klass)
 
     g_object_class_install_property(G_OBJECT_CLASS(klass), PROP_PROXY,
         g_param_spec_string("proxy", "proxy", "proxy", NULL,
+                            G_PARAM_STATIC_STRINGS | G_PARAM_READWRITE));
+
+    g_object_class_install_property(G_OBJECT_CLASS(klass), PROP_VERSION,
+        g_param_spec_string("version", "version", "version", NULL,
                             G_PARAM_STATIC_STRINGS | G_PARAM_READWRITE));
 }

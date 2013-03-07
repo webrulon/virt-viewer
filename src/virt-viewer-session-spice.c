@@ -353,7 +353,8 @@ virt_viewer_session_spice_open_uri(VirtViewerSession *session,
 
     if (file) {
         fill_session(file, self->priv->session);
-        virt_viewer_file_fill_app(file, app);
+        if (!virt_viewer_file_fill_app(file, app, error))
+            return FALSE;
     } else {
         g_object_set(self->priv->session, "uri", uri, NULL);
     }

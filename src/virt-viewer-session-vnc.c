@@ -218,7 +218,8 @@ virt_viewer_session_vnc_open_uri(VirtViewerSession* session,
         portstr = g_strdup_printf("%d", virt_viewer_file_get_port(file));
         hoststr = g_strdup(virt_viewer_file_get_host(file));
 
-        virt_viewer_file_fill_app(file, app);
+        if (!virt_viewer_file_fill_app(file, app, error))
+            return FALSE;
     } else {
         xmlURIPtr uri = NULL;
         if (!(uri = xmlParseURI(uristr)))

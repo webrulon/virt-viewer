@@ -66,7 +66,7 @@ enum {
 
 static gboolean remote_viewer_start(VirtViewerApp *self);
 #if HAVE_SPICE_GTK
-static int remote_viewer_activate(VirtViewerApp *self);
+static gboolean remote_viewer_activate(VirtViewerApp *self, GError **error);
 static void remote_viewer_window_added(VirtViewerApp *self, VirtViewerWindow *win);
 static void spice_foreign_menu_updated(RemoteViewer *self);
 #endif
@@ -236,8 +236,13 @@ static void
 spice_ctrl_do_connect(SpiceCtrlController *ctrl G_GNUC_UNUSED,
                       VirtViewerApp *self)
 {
-    if (virt_viewer_app_initial_connect(self) < 0) {
-        virt_viewer_app_simple_message_dialog(self, _("Failed to initiate connection"));
+    GError *error = NULL;
+
+    if (!virt_viewer_app_initial_connect(self, &error)) {
+        const gchar *msg = error ? error->message :
+            _("Failed to initiate connection");
+        virt_viewer_app_simple_message_dialog(self, msg);
+        g_clear_error(&error);
     }
 }
 
@@ -558,19 +563,19 @@ spice_ctrl_listen_async_cb(GObject *object,
 }
 
 
-static int
-remote_viewer_activate(VirtViewerApp *app)
+static gboolean
+remote_viewer_activate(VirtViewerApp *app, GError **error)
 {
-    g_return_val_if_fail(REMOTE_VIEWER_IS(app), -1);
+    g_return_val_if_fail(REMOTE_VIEWER_IS(app), FALSE);
     RemoteViewer *self = REMOTE_VIEWER(app);
-    int ret = -1;
+    gboolean ret = FALSE;
 
     if (self->priv->controller) {
         SpiceSession *session = remote_viewer_get_spice_session(self);
         ret = spice_session_connect(session);
         g_object_unref(session);
     } else {
-        ret = VIRT_VIEWER_APP_CLASS(remote_viewer_parent_class)->activate(app);
+        ret = VIRT_VIEWER_APP_CLASS(remote_viewer_parent_class)->activate(app, error);
     }
 
     return ret;
@@ -599,6 +604,7 @@ remote_viewer_start(VirtViewerApp *app)
     gboolean ret = FALSE;
     gchar *guri = NULL;
     gchar *type = NULL;
+    GError *error = NULL;
 
 #if HAVE_SPICE_GTK
     g_signal_connect(app, "notify", G_CALLBACK(app_notified), self);
@@ -631,7 +637,6 @@ remote_viewer_start(VirtViewerApp *app)
 
         file = g_file_new_for_commandline_arg(guri);
         if (g_file_query_exists(file, NULL)) {
-            GError *error = NULL;
             gchar *path = g_file_get_path(file);
             vvfile = virt_viewer_file_new(path, &error);
             g_free(path);
@@ -654,8 +659,12 @@ remote_viewer_start(VirtViewerApp *app)
 
         virt_viewer_session_set_file(virt_viewer_app_get_session(app), vvfile);
 
-        if (virt_viewer_app_initial_connect(app) < 0) {
-            virt_viewer_app_simple_message_dialog(app, _("Failed to initiate connection"));
+        if (!virt_viewer_app_initial_connect(app, &error)) {
+            const gchar *msg = error ? error->message :
+                _("Failed to initiate connection");
+
+            virt_viewer_app_simple_message_dialog(app, msg);
+            g_clear_error(&error);
             goto cleanup;
         }
 #if HAVE_SPICE_GTK

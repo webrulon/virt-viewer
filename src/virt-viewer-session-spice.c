@@ -64,7 +64,7 @@ enum {
 static void virt_viewer_session_spice_close(VirtViewerSession *session);
 static gboolean virt_viewer_session_spice_open_fd(VirtViewerSession *session, int fd);
 static gboolean virt_viewer_session_spice_open_host(VirtViewerSession *session, const gchar *host, const gchar *port, const gchar *tlsport);
-static gboolean virt_viewer_session_spice_open_uri(VirtViewerSession *session, const gchar *uri);
+static gboolean virt_viewer_session_spice_open_uri(VirtViewerSession *session, const gchar *uri, GError **error);
 static gboolean virt_viewer_session_spice_channel_open_fd(VirtViewerSession *session, VirtViewerSessionChannel *channel, int fd);
 static gboolean virt_viewer_session_spice_has_usb(VirtViewerSession *session);
 static void virt_viewer_session_spice_usb_device_selection(VirtViewerSession *session, GtkWindow *parent);
@@ -342,7 +342,7 @@ fill_session(VirtViewerFile *file, SpiceSession *session)
 
 static gboolean
 virt_viewer_session_spice_open_uri(VirtViewerSession *session,
-                                   const gchar *uri)
+                                   const gchar *uri, GError **error)
 {
     VirtViewerSessionSpice *self = VIRT_VIEWER_SESSION_SPICE(session);
     VirtViewerFile *file = virt_viewer_session_get_file(session);

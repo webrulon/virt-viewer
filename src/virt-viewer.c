@@ -63,7 +63,7 @@ G_DEFINE_TYPE (VirtViewer, virt_viewer, VIRT_VIEWER_TYPE_APP)
 #define GET_PRIVATE(o)                                                        \
     (G_TYPE_INSTANCE_GET_PRIVATE ((o), VIRT_VIEWER_TYPE, VirtViewerPrivate))
 
-static int virt_viewer_initial_connect(VirtViewerApp *self);
+static gboolean virt_viewer_initial_connect(VirtViewerApp *self, GError **error);
 static gboolean virt_viewer_open_connection(VirtViewerApp *self, int *fd);
 static void virt_viewer_deactivated(VirtViewerApp *self);
 static gboolean virt_viewer_start(VirtViewerApp *self);
@@ -406,7 +406,7 @@ virt_viewer_extract_connect_info(VirtViewer *self,
     return retval;
 }
 
-static int
+static gboolean
 virt_viewer_update_display(VirtViewer *self, virDomainPtr dom)
 {
     VirtViewerPrivate *priv = self->priv;
@@ -424,10 +424,10 @@ virt_viewer_update_display(VirtViewer *self, virDomainPtr dom)
 
     if (!virt_viewer_app_has_session(app)) {
         if (!virt_viewer_extract_connect_info(self, dom))
-            return -1;
+            return FALSE;
     }
 
-    return 0;
+    return TRUE;
 }
 
 static gboolean
@@ -469,6 +469,7 @@ virt_viewer_domain_event(virConnectPtr conn G_GNUC_UNUSED,
 {
     VirtViewer *self = opaque;
     VirtViewerApp *app = VIRT_VIEWER_APP(self);
+    GError *error = NULL;
 
     DEBUG_LOG("Got domain event %d %d", event, detail);
 
@@ -482,7 +483,13 @@ virt_viewer_domain_event(virConnectPtr conn G_GNUC_UNUSED,
 
     case VIR_DOMAIN_EVENT_STARTED:
         virt_viewer_update_display(self, dom);
-        virt_viewer_app_activate(app);
+        virt_viewer_app_activate(app, &error);
+        if (error) {
+            /* we may want to consolidate error reporting in
+               app_activate() instead */
+            g_warning("%s", error->message);
+            g_clear_error(&error);
+        }
         break;
     }
 
@@ -508,15 +515,14 @@ virt_viewer_conn_event(virConnectPtr conn G_GNUC_UNUSED,
 
 static int virt_viewer_connect(VirtViewerApp *app);
 
-static int
-virt_viewer_initial_connect(VirtViewerApp *app)
+static gboolean
+virt_viewer_initial_connect(VirtViewerApp *app, GError **error)
 {
     virDomainPtr dom = NULL;
     virDomainInfo info;
-    int ret = -1;
+    gboolean ret = FALSE;
     VirtViewer *self = VIRT_VIEWER(app);
     VirtViewerPrivate *priv = self->priv;
-
 
     DEBUG_LOG("initial connect");
 
@@ -552,9 +558,9 @@ virt_viewer_initial_connect(VirtViewerApp *app)
         virt_viewer_app_show_status(app, _("Waiting for guest domain to start"));
     } else {
         ret = virt_viewer_update_display(self, dom);
-        if (ret >= 0)
-            ret = VIRT_VIEWER_APP_CLASS(virt_viewer_parent_class)->initial_connect(app);
-        if (ret < 0) {
+        if (ret)
+            ret = VIRT_VIEWER_APP_CLASS(virt_viewer_parent_class)->initial_connect(app, error);
+        if (!ret) {
             if (priv->waitvm) {
                 virt_viewer_app_show_status(app, _("Waiting for guest domain to start server"));
                 virt_viewer_app_trace(app, "Guest %s has not activated its display yet, waiting for it to start",
@@ -563,15 +569,11 @@ virt_viewer_initial_connect(VirtViewerApp *app)
                 DEBUG_LOG("Failed to activate viewer");
                 goto cleanup;
             }
-        } else if (ret == 0) {
-            DEBUG_LOG("Failed to activate viewer");
-            ret = -1;
-            goto cleanup;
         }
     }
 
  done:
-    ret = 0;
+    ret = TRUE;
  cleanup:
     if (dom)
         virDomainFree(dom);
@@ -660,6 +662,7 @@ virt_viewer_connect(VirtViewerApp *app)
         .cbdata = app,
     };
     int oflags = 0;
+    GError *error = NULL;
 
     if (!virt_viewer_app_get_attach(app))
         oflags |= VIR_CONNECT_RO;
@@ -678,8 +681,12 @@ virt_viewer_connect(VirtViewerApp *app)
         return -1;
     }
 
-    if (virt_viewer_app_initial_connect(app) < 0)
+    if (!virt_viewer_app_initial_connect(app, &error)) {
+        if (error)
+            g_warning(error->message);
+        g_clear_error(&error);
         return -1;
+    }
 
     if (virConnectDomainEventRegister(priv->conn,
                                       virt_viewer_domain_event,

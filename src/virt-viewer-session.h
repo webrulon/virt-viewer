@@ -68,7 +68,7 @@ struct _VirtViewerSessionClass {
     void (* close) (VirtViewerSession* session);
     gboolean (* open_fd) (VirtViewerSession* session, int fd);
     gboolean (* open_host) (VirtViewerSession* session, const gchar *host, const gchar *port, const gchar *tlsport);
-    gboolean (* open_uri) (VirtViewerSession* session, const gchar *uri);
+    gboolean (* open_uri) (VirtViewerSession* session, const gchar *uri, GError **error);
     gboolean (* channel_open_fd) (VirtViewerSession* session, VirtViewerSessionChannel *channel, int fd);
     gboolean (* has_usb) (VirtViewerSession* session);
     void (* usb_device_selection) (VirtViewerSession* session, GtkWindow *parent);
@@ -114,7 +114,7 @@ gboolean virt_viewer_session_open_host(VirtViewerSession* session, const gchar *
 GObject* virt_viewer_session_get(VirtViewerSession* session);
 gboolean virt_viewer_session_channel_open_fd(VirtViewerSession* session,
                                              VirtViewerSessionChannel* channel, int fd);
-gboolean virt_viewer_session_open_uri(VirtViewerSession *session, const gchar *uri);
+gboolean virt_viewer_session_open_uri(VirtViewerSession *session, const gchar *uri, GError **error);
 
 void virt_viewer_session_set_auto_usbredir(VirtViewerSession* session, gboolean auto_usbredir);
 gboolean virt_viewer_session_get_auto_usbredir(VirtViewerSession* session);

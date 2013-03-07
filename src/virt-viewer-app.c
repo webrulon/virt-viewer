@@ -860,14 +860,14 @@ virt_viewer_app_channel_open(VirtViewerSession *session G_GNUC_UNUSED,
 }
 #endif
 
-static int
-virt_viewer_app_default_activate(VirtViewerApp *self)
+static gboolean
+virt_viewer_app_default_activate(VirtViewerApp *self, GError **error)
 {
     VirtViewerAppPrivate *priv = self->priv;
     int fd = -1;
 
     if (!virt_viewer_app_open_connection(self, &fd))
-        return -1;
+        return FALSE;
 
     DEBUG_LOG("After open connection callback fd=%d", fd);
 
@@ -897,12 +897,12 @@ virt_viewer_app_default_activate(VirtViewerApp *self)
         if ((fd = virt_viewer_app_open_tunnel_ssh(priv->host, priv->port,
                                                   priv->user, priv->ghost,
                                                   priv->gport, priv->unixsock)) < 0)
-            return -1;
+            return FALSE;
     } else if (priv->unixsock && fd == -1) {
         virt_viewer_app_trace(self, "Opening direct UNIX connection to display at %s",
                               priv->unixsock);
         if ((fd = virt_viewer_app_open_unix_sock(priv->unixsock)) < 0)
-            return -1;
+            return FALSE;
     }
 #endif
 
@@ -910,7 +910,7 @@ virt_viewer_app_default_activate(VirtViewerApp *self)
         return virt_viewer_session_open_fd(VIRT_VIEWER_SESSION(priv->session), fd);
     } else if (priv->guri) {
         virt_viewer_app_trace(self, "Opening connection to display at %s", priv->guri);
-        return virt_viewer_session_open_uri(VIRT_VIEWER_SESSION(priv->session), priv->guri);
+        return virt_viewer_session_open_uri(VIRT_VIEWER_SESSION(priv->session), priv->guri, error);
     } else {
         virt_viewer_app_trace(self, "Opening direct TCP connection to display at %s:%s:%s",
                               priv->ghost, priv->gport, priv->gtlsport ? priv->gtlsport : "-1");
@@ -918,24 +918,24 @@ virt_viewer_app_default_activate(VirtViewerApp *self)
                                              priv->ghost, priv->gport, priv->gtlsport);
     }
 
-    return -1;
+    return FALSE;
 }
 
-int
-virt_viewer_app_activate(VirtViewerApp *self)
+gboolean
+virt_viewer_app_activate(VirtViewerApp *self, GError **error)
 {
     VirtViewerAppPrivate *priv;
-    int ret;
+    gboolean ret;
 
-    g_return_val_if_fail(VIRT_VIEWER_IS_APP(self), -1);
+    g_return_val_if_fail(VIRT_VIEWER_IS_APP(self), FALSE);
 
     priv = self->priv;
     if (priv->active)
-        return -1;
+        return FALSE;
 
-    ret = VIRT_VIEWER_APP_GET_CLASS(self)->activate(self);
+    ret = VIRT_VIEWER_APP_GET_CLASS(self)->activate(self, error);
 
-    if (ret == -1) {
+    if (ret == FALSE) {
         priv->connected = FALSE;
     } else {
         virt_viewer_app_show_status(self, _("Connecting to graphic server"));
@@ -1004,21 +1004,21 @@ static void virt_viewer_app_bell(VirtViewerSession *session G_GNUC_UNUSED,
 }
 
 
-static int
-virt_viewer_app_default_initial_connect(VirtViewerApp *self)
+static gboolean
+virt_viewer_app_default_initial_connect(VirtViewerApp *self, GError **error)
 {
-    return virt_viewer_app_activate(self);
+    return virt_viewer_app_activate(self, error);
 }
 
-int
-virt_viewer_app_initial_connect(VirtViewerApp *self)
+gboolean
+virt_viewer_app_initial_connect(VirtViewerApp *self, GError **error)
 {
     VirtViewerAppClass *klass;
 
-    g_return_val_if_fail(VIRT_VIEWER_IS_APP(self), -1);
+    g_return_val_if_fail(VIRT_VIEWER_IS_APP(self), FALSE);
     klass = VIRT_VIEWER_APP_GET_CLASS(self);
 
-    return klass->initial_connect(self);
+    return klass->initial_connect(self, error);
 }
 
 static gboolean
@@ -1026,7 +1026,7 @@ virt_viewer_app_retryauth(gpointer opaque)
 {
     VirtViewerApp *self = opaque;
 
-    virt_viewer_app_initial_connect(self);
+    virt_viewer_app_initial_connect(self, NULL);
 
     return FALSE;
 }
@@ -1040,7 +1040,7 @@ virt_viewer_app_connect_timer(void *opaque)
     DEBUG_LOG("Connect timer fired");
 
     if (!priv->active &&
-        virt_viewer_app_initial_connect(self) < 0)
+        virt_viewer_app_initial_connect(self, NULL) < 0)
         gtk_main_quit();
 
     if (priv->active) {

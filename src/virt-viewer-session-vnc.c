@@ -44,7 +44,7 @@ struct _VirtViewerSessionVncPrivate {
 static void virt_viewer_session_vnc_close(VirtViewerSession* session);
 static gboolean virt_viewer_session_vnc_open_fd(VirtViewerSession* session, int fd);
 static gboolean virt_viewer_session_vnc_open_host(VirtViewerSession* session, const gchar *host, const gchar *port, const gchar *tlsport);
-static gboolean virt_viewer_session_vnc_open_uri(VirtViewerSession* session, const gchar *uri);
+static gboolean virt_viewer_session_vnc_open_uri(VirtViewerSession* session, const gchar *uri, GError **error);
 static gboolean virt_viewer_session_vnc_channel_open_fd(VirtViewerSession* session,
                                                         VirtViewerSessionChannel* channel, int fd);
 
@@ -198,7 +198,8 @@ virt_viewer_session_vnc_open_host(VirtViewerSession* session,
 
 static gboolean
 virt_viewer_session_vnc_open_uri(VirtViewerSession* session,
-                                 const gchar *uristr)
+                                 const gchar *uristr,
+                                 GError **error)
 {
     VirtViewerSessionVnc *self = VIRT_VIEWER_SESSION_VNC(session);
     VirtViewerFile *file = virt_viewer_session_get_file(session);

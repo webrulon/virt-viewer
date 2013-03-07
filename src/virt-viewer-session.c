@@ -374,7 +374,7 @@ gboolean virt_viewer_session_open_host(VirtViewerSession *session, const gchar *
     return klass->open_host(session, host, port, tlsport);
 }
 
-gboolean virt_viewer_session_open_uri(VirtViewerSession *session, const gchar *uri)
+gboolean virt_viewer_session_open_uri(VirtViewerSession *session, const gchar *uri, GError **error)
 {
     VirtViewerSessionClass *klass;
 
@@ -385,7 +385,7 @@ gboolean virt_viewer_session_open_uri(VirtViewerSession *session, const gchar *u
 
     session->priv->uri = g_strdup(uri);
 
-    return klass->open_uri(session, uri);
+    return klass->open_uri(session, uri, error);
 }
 
 const gchar* virt_viewer_session_mime_type(VirtViewerSession *self)

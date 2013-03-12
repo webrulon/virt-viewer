@@ -179,7 +179,8 @@ virt_viewer_app_set_debug(gboolean debug)
         const gchar *doms = g_getenv("G_MESSAGES_DEBUG");
         if (!doms) {
             g_setenv("G_MESSAGES_DEBUG", G_LOG_DOMAIN, 1);
-        } else if (!strstr(doms, G_LOG_DOMAIN)) {
+        } else if (!g_str_equal(doms, "all") &&
+                   !strstr(doms, G_LOG_DOMAIN)) {
             gchar *newdoms = g_strdup_printf("%s %s", doms, G_LOG_DOMAIN);
             g_setenv("G_MESSAGES_DEBUG", newdoms, 1);
             g_free(newdoms);

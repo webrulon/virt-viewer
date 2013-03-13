@@ -318,6 +318,7 @@ virt_viewer_display_spice_new(VirtViewerSessionSpice *session,
                                       G_CALLBACK(enable_accel_changed), self, 0);
     virt_viewer_signal_connect_object(app, "notify::fullscreen",
                                       G_CALLBACK(fullscreen_changed), self, 0);
+    fullscreen_changed(app, NULL, self);
     enable_accel_changed(app, NULL, self);
 
     return GTK_WIDGET(self);

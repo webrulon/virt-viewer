@@ -35,6 +35,7 @@ $(BUILT_SOURCES): %: %.etemplate $(ENUMS_FILES)
 COMMON_SOURCES =					\
 	$(BUILT_SOURCES)				\
 	virt-glib-compat.h				\
+	virt-glib-compat.c				\
 	virt-gtk-compat.h				\
 	virt-viewer-util.h virt-viewer-util.c		\
 	virt-viewer-auth.h virt-viewer-auth.c		\

@@ -27,6 +27,7 @@
 #include <locale.h>
 #include <math.h>
 
+#include "virt-gtk-compat.h"
 #include "virt-viewer-session.h"
 #include "virt-viewer-display.h"
 #include "virt-viewer-util.h"

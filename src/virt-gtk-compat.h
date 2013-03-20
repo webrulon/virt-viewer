@@ -24,9 +24,14 @@
 #ifndef _VIRT_GTK_COMPAT
 # define _VIRT_GTK_COMPAT
 
+#include <gtk/gtk.h>
 #include <gdk/gdk.h>
 
 G_BEGIN_DECLS
+
+#if !GTK_CHECK_VERSION(2, 20, 0)
+#define gtk_widget_get_mapped(w) GTK_WIDGET_MAPPED(w)
+#endif
 
 #if GTK_CHECK_VERSION(3, 0, 0)
 #define GDK_Control_L GDK_KEY_Control_L

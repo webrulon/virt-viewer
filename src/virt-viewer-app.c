@@ -1697,14 +1697,12 @@ static void fullscreen_cb(gpointer key,
     DEBUG_LOG("fullscreen display %d: %d", nth, options->fullscreen);
     if (options->fullscreen) {
         GdkScreen *screen = gdk_screen_get_default();
-        GdkRectangle mon;
 
         if (nth >= gdk_screen_get_n_monitors(screen)) {
             DEBUG_LOG("skipping display %d", nth);
             return;
         }
-        gdk_screen_get_monitor_geometry(screen, nth, &mon);
-        virt_viewer_window_enter_fullscreen(vwin, options->move, mon.x, mon.y);
+        virt_viewer_window_enter_fullscreen(vwin, options->move ? nth : -1);
     } else
         virt_viewer_window_leave_fullscreen(vwin);
 }

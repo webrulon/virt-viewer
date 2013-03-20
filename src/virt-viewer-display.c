@@ -41,6 +41,7 @@ struct _VirtViewerDisplayPrivate
     guint zoom_level;
     gboolean zoom;
     gint nth_display;
+    gint monitor;
     guint show_hint;
     VirtViewerSession *session;
     gboolean auto_resize;
@@ -81,6 +82,7 @@ enum {
     PROP_SHOW_HINT,
     PROP_SESSION,
     PROP_SELECTABLE,
+    PROP_MONITOR,
 };
 
 static void
@@ -175,6 +177,17 @@ virt_viewer_display_class_init(VirtViewerDisplayClass *class)
                                                          "Selectable",
                                                          FALSE,
                                                          G_PARAM_READABLE));
+
+    g_object_class_install_property(object_class,
+                                    PROP_MONITOR,
+                                    g_param_spec_int("monitor",
+                                                     "Monitor",
+                                                     "Display Monitor",
+                                                     -1,
+                                                     G_MAXINT32,
+                                                     -1,
+                                                     G_PARAM_READWRITE |
+                                                     G_PARAM_CONSTRUCT));
 
     g_signal_new("display-pointer-grab",
                  G_OBJECT_CLASS_TYPE(object_class),
@@ -278,6 +291,9 @@ virt_viewer_display_set_property(GObject *object,
         g_warn_if_fail(priv->session == NULL);
         priv->session = g_value_get_object(value);
         break;
+    case PROP_MONITOR:
+        priv->monitor = g_value_get_int(value);
+        break;
 
     default:
         G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
@@ -312,6 +328,9 @@ virt_viewer_display_get_property(GObject *object,
         break;
     case PROP_SELECTABLE:
         g_value_set_boolean(value, virt_viewer_display_get_selectable(display));
+        break;
+    case PROP_MONITOR:
+        g_value_set_int(value, priv->monitor);
         break;
 
     default:
@@ -599,6 +618,21 @@ gboolean virt_viewer_display_get_auto_resize(VirtViewerDisplay *self)
     g_return_val_if_fail(VIRT_VIEWER_IS_DISPLAY(self), FALSE);
 
     return self->priv->auto_resize;
+}
+
+void virt_viewer_display_set_monitor(VirtViewerDisplay *self, gint monitor)
+{
+    g_return_if_fail(VIRT_VIEWER_IS_DISPLAY(self));
+
+    self->priv->monitor = monitor;
+    g_object_notify(G_OBJECT(self), "monitor");
+}
+
+gint virt_viewer_display_get_monitor(VirtViewerDisplay *self)
+{
+    g_return_val_if_fail(VIRT_VIEWER_IS_DISPLAY(self), -1);
+
+    return self->priv->monitor;
 }
 
 void virt_viewer_display_release_cursor(VirtViewerDisplay *self)

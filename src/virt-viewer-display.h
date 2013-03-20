@@ -115,6 +115,8 @@ guint virt_viewer_display_get_show_hint(VirtViewerDisplay *display);
 VirtViewerSession* virt_viewer_display_get_session(VirtViewerDisplay *display);
 void virt_viewer_display_set_auto_resize(VirtViewerDisplay *display, gboolean auto_resize);
 gboolean virt_viewer_display_get_auto_resize(VirtViewerDisplay *display);
+void virt_viewer_display_set_monitor(VirtViewerDisplay *display, gint monitor);
+gint virt_viewer_display_get_monitor(VirtViewerDisplay *display);
 void virt_viewer_display_release_cursor(VirtViewerDisplay *display);
 
 void virt_viewer_display_close(VirtViewerDisplay *display);

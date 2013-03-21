@@ -515,15 +515,8 @@ agent_connected_changed(SpiceChannel *cmain G_GNUC_UNUSED,
 {
     // this will force refresh of application menu
     g_signal_emit_by_name(self, "session-display-updated");
-}
 
-static void
-agent_connected_fullscreen_auto_conf(SpiceChannel *cmain,
-                                     GParamSpec *pspec G_GNUC_UNUSED,
-                                     VirtViewerSessionSpice *self)
-{
-    if (virt_viewer_session_spice_fullscreen_auto_conf(self))
-        g_signal_handlers_disconnect_by_func(cmain, agent_connected_fullscreen_auto_conf, self);
+    virt_viewer_session_spice_fullscreen_auto_conf(self);
 }
 
 static void
@@ -625,8 +618,7 @@ virt_viewer_session_spice_channel_new(SpiceSession *s,
         self->priv->main_channel = SPICE_MAIN_CHANNEL(channel);
 
         g_signal_connect(channel, "notify::agent-connected", G_CALLBACK(agent_connected_changed), self);
-        g_signal_connect(channel, "notify::agent-connected", G_CALLBACK(agent_connected_fullscreen_auto_conf), self);
-        agent_connected_fullscreen_auto_conf(channel, NULL, self);
+        virt_viewer_session_spice_fullscreen_auto_conf(self);
     }
 
     if (SPICE_IS_DISPLAY_CHANNEL(channel)) {
@@ -666,12 +658,18 @@ virt_viewer_session_spice_fullscreen_auto_conf(VirtViewerSessionSpice *self)
 
     DEBUG_LOG("Checking full screen auto-conf");
     g_object_get(app, "fullscreen-auto-conf", &auto_conf, NULL);
-    if (!auto_conf)
-        return TRUE;
-
-    if (cmain == NULL)
+    if (!auto_conf) {
+        DEBUG_LOG("auto-conf disabled");
         return FALSE;
-
+    }
+    if (!virt_viewer_app_get_fullscreen(app)) {
+        DEBUG_LOG("app is not in full screen");
+        return FALSE;
+    }
+    if (cmain == NULL) {
+        DEBUG_LOG("no main channel yet");
+        return FALSE;
+    }
     g_object_get(cmain, "agent-connected", &agent_connected, NULL);
     if (!agent_connected) {
         DEBUG_LOG("Agent not connected, skipping autoconf");

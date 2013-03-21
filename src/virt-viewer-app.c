@@ -681,6 +681,7 @@ display_show_hint(VirtViewerDisplay *display,
             virt_viewer_window_hide(win);
         virt_viewer_notebook_show_status(nb, _("Waiting for display %d..."), nth + 1);
     }
+    virt_viewer_app_update_menu_displays(self);
 
     g_object_unref(self);
 }

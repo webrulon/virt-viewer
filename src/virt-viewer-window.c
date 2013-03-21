@@ -594,6 +594,8 @@ virt_viewer_window_menu_send(GtkWidget *menu,
     const char *text = gtk_label_get_label(GTK_LABEL(label));
     VirtViewerWindowPrivate *priv = self->priv;
 
+    g_return_if_fail(priv->display != NULL);
+
     for (i = 0 ; i < G_N_ELEMENTS(keyCombos) ; i++) {
         if (!strcmp(text, keyCombos[i].label)) {
             DEBUG_LOG("Sending key combo %s", gtk_label_get_text(GTK_LABEL(label)));
@@ -768,7 +770,8 @@ virt_viewer_window_menu_view_resize(GtkWidget *menu,
         priv->auto_resize = FALSE;
     }
 
-    virt_viewer_display_set_auto_resize(priv->display, priv->auto_resize);
+    if (priv->display)
+        virt_viewer_display_set_auto_resize(priv->display, priv->auto_resize);
 }
 
 static void add_if_writable (GdkPixbufFormat *data, GHashTable *formats)
@@ -903,6 +906,7 @@ G_MODULE_EXPORT void
 virt_viewer_window_menu_view_release_cursor(GtkWidget *menu G_GNUC_UNUSED,
                                             VirtViewerWindow *self)
 {
+    g_return_if_fail(self->priv->display != NULL);
     virt_viewer_display_release_cursor(VIRT_VIEWER_DISPLAY(self->priv->display));
 }
 

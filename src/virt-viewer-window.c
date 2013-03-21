@@ -1105,6 +1105,14 @@ display_show_hint(VirtViewerDisplay *display,
     gtk_widget_set_sensitive(GTK_WIDGET(gtk_builder_get_object(self->priv->builder, "menu-file-screenshot")), hint);
     gtk_widget_set_sensitive(self->priv->toolbar_send_key, hint);
 }
+static gboolean
+window_key_pressed (GtkWidget *widget G_GNUC_UNUSED,
+                    GdkEvent  *event,
+                    GtkWidget *display)
+{
+    gtk_widget_grab_focus(display);
+    return gtk_widget_event(display, event);
+}
 
 void
 virt_viewer_window_set_display(VirtViewerWindow *self, VirtViewerDisplay *display)
@@ -1130,6 +1138,10 @@ virt_viewer_window_set_display(VirtViewerWindow *self, VirtViewerDisplay *displa
 
         gtk_widget_show_all(GTK_WIDGET(display));
         gtk_notebook_append_page(GTK_NOTEBOOK(priv->notebook), GTK_WIDGET(display), NULL);
+
+        virt_viewer_signal_connect_object(priv->window, "key-press-event",
+                                          G_CALLBACK(window_key_pressed), display, 0);
+
         /* switch back to non-display if not ready */
         if (!(virt_viewer_display_get_show_hint(display) &
               VIRT_VIEWER_DISPLAY_SHOW_HINT_READY))

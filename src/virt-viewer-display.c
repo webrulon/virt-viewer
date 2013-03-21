@@ -41,8 +41,8 @@ struct _VirtViewerDisplayPrivate
     guint desktopHeight;
     guint zoom_level;
     gboolean zoom;
-    gint nth_display;
-    gint monitor;
+    gint nth_display; /* Monitor number inside the guest */
+    gint monitor;     /* Monitor number on the client */
     guint show_hint;
     VirtViewerSession *session;
     gboolean auto_resize;

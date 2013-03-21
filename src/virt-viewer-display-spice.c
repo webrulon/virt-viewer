@@ -262,8 +262,15 @@ fullscreen_changed(VirtViewerApp *app,
                    GParamSpec *pspec G_GNUC_UNUSED,
                    VirtViewerDisplaySpice *self)
 {
-    self->priv->auto_resize = virt_viewer_app_get_fullscreen(app) ?
-        AUTO_RESIZE_FULLSCREEN : AUTO_RESIZE_ALWAYS;
+    if (virt_viewer_app_get_fullscreen(app)) {
+        gboolean auto_conf;
+        g_object_get(app, "fullscreen-auto-conf", &auto_conf, NULL);
+        if (auto_conf)
+            self->priv->auto_resize = AUTO_RESIZE_NEVER;
+        else
+            self->priv->auto_resize = AUTO_RESIZE_FULLSCREEN;
+    } else
+        self->priv->auto_resize = AUTO_RESIZE_ALWAYS;
 }
 
 GtkWidget *

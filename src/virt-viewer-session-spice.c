@@ -566,7 +566,6 @@ virt_viewer_session_spice_display_monitors(SpiceChannel *channel,
         }
 
         g_object_freeze_notify(G_OBJECT(display));
-        virt_viewer_display_set_enabled(VIRT_VIEWER_DISPLAY(display), FALSE);
         virt_viewer_session_add_display(VIRT_VIEWER_SESSION(self),
                                         VIRT_VIEWER_DISPLAY(display));
     }

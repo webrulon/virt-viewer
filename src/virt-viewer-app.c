@@ -1766,19 +1766,48 @@ update_menu_displays_sort(gconstpointer a, gconstpointer b)
         return 0;
 }
 
+static GtkMenuShell *
+window_empty_display_submenu(VirtViewerWindow *window)
+{
+    /* Because of what apparently is a gtk+2 bug (rhbz#922712), we
+     * cannot recreate the submenu every time we need to refresh it,
+     * otherwise the application may get frozen with the keyboard and
+     * mouse grabbed if gtk_menu_item_set_submenu is called while
+     * the menu is displayed. Reusing the same menu every time
+     * works around this issue.
+     */
+    GtkMenuItem *menu = virt_viewer_window_get_menu_displays(window);
+    GtkMenuShell *submenu;
+
+    submenu = GTK_MENU_SHELL(gtk_menu_item_get_submenu(menu));
+    if (submenu) {
+        GList *subitems;
+        GList *it;
+        subitems = gtk_container_get_children(GTK_CONTAINER(submenu));
+        for (it = subitems; it != NULL; it = it->next) {
+            gtk_container_remove(GTK_CONTAINER(submenu), GTK_WIDGET(it->data));
+        }
+        g_list_free(subitems);
+    } else {
+        submenu = GTK_MENU_SHELL(gtk_menu_new());
+        gtk_menu_item_set_submenu(menu, GTK_WIDGET(submenu));
+    }
+
+    return submenu;
+}
+
 static void
 window_update_menu_displays_cb(gpointer key G_GNUC_UNUSED,
                                gpointer value,
                                gpointer user_data)
 {
     VirtViewerApp *self = VIRT_VIEWER_APP(user_data);
-    VirtViewerWindow *window = VIRT_VIEWER_WINDOW(value);
-    GtkMenuShell *submenu = GTK_MENU_SHELL(gtk_menu_new());
-    GtkMenuItem *menu = virt_viewer_window_get_menu_displays(window);
+    GtkMenuShell *submenu;
     GList *keys = g_hash_table_get_keys(self->priv->windows);
     GList *tmp;
 
     keys = g_list_sort(keys, update_menu_displays_sort);
+    submenu = window_empty_display_submenu(VIRT_VIEWER_WINDOW(value));
 
     tmp = keys;
     while (tmp) {
@@ -1816,7 +1845,6 @@ window_update_menu_displays_cb(gpointer key G_GNUC_UNUSED,
     }
 
     gtk_widget_show_all(GTK_WIDGET(submenu));
-    gtk_menu_item_set_submenu(menu, GTK_WIDGET(submenu));
     g_list_free(keys);
 }
 

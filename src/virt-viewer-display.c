@@ -503,11 +503,21 @@ void virt_viewer_display_get_desktop_size(VirtViewerDisplay *display,
 }
 
 
+void virt_viewer_display_queue_resize(VirtViewerDisplay *display)
+{
+    VirtViewerDisplayPrivate *priv = display->priv;
+    GtkWidget *child = gtk_bin_get_child(GTK_BIN(display));
+
+    if (child && gtk_widget_get_visible(child)) {
+        priv->dirty = TRUE;
+        gtk_widget_queue_resize(GTK_WIDGET(display));
+    }
+}
+
 void virt_viewer_display_set_zoom_level(VirtViewerDisplay *display,
                                         guint zoom)
 {
     VirtViewerDisplayPrivate *priv = display->priv;
-    GtkWidget *child = gtk_bin_get_child(GTK_BIN(display));
 
     if (zoom < 10)
         zoom = 10;
@@ -515,10 +525,7 @@ void virt_viewer_display_set_zoom_level(VirtViewerDisplay *display,
         zoom = 400;
     priv->zoom_level = zoom;
 
-    if (child && gtk_widget_get_visible(child)) {
-        priv->dirty = TRUE;
-        gtk_widget_queue_resize(GTK_WIDGET(display));
-    }
+    virt_viewer_display_queue_resize(display);
 }
 
 
@@ -533,13 +540,9 @@ void virt_viewer_display_set_zoom(VirtViewerDisplay *display,
                                   gboolean zoom)
 {
     VirtViewerDisplayPrivate *priv = display->priv;
-    GtkWidget *child = gtk_bin_get_child(GTK_BIN(display));
 
     priv->zoom = zoom;
-    if (child && gtk_widget_get_visible(child)) {
-        priv->dirty = TRUE;
-        gtk_widget_queue_resize(GTK_WIDGET(display));
-    }
+    virt_viewer_display_queue_resize(display);
 }
 
 

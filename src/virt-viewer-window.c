@@ -480,6 +480,13 @@ virt_viewer_window_move_to_monitor(VirtViewerWindow *self)
 
     gdk_screen_get_monitor_geometry(gdk_screen_get_default(), n, &mon);
     gtk_window_move(GTK_WINDOW(priv->window), mon.x, mon.y);
+#ifdef G_OS_WIN32
+    /* FIXME: on windows, fullscreen doesn't always hide the taskbar
+       See https://bugzilla.gnome.org/show_bug.cgi?id=652049 */
+    gtk_widget_set_size_request(GTK_WIDGET(priv->window),
+                                mon.width,
+                                mon.height);
+#endif
 }
 
 void
@@ -549,13 +556,6 @@ virt_viewer_window_enter_fullscreen(VirtViewerWindow *self, gint monitor)
     virt_viewer_window_move_to_monitor(self);
 
     gtk_window_fullscreen(GTK_WINDOW(priv->window));
-#ifdef G_OS_WIN32
-    /* on windows, fullscreen doesn't always hide the taskbar
-       See https://bugzilla.gnome.org/show_bug.cgi?id=652049 */
-    gtk_widget_set_size_request(GTK_WIDGET(priv->window),
-                                gdk_screen_width(),
-                                gdk_screen_height());
-#endif
 }
 
 #define MAX_KEY_COMBO 3

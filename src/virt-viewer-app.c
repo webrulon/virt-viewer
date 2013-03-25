@@ -1254,7 +1254,7 @@ virt_viewer_app_get_property (GObject *object, guint property_id,
         break;
 
     case PROP_FULLSCREEN_AUTO_CONF:
-        g_value_set_boolean(value, priv->fullscreen_auto_conf);
+        g_value_set_boolean(value, virt_viewer_app_get_fullscreen_auto_conf(self));
         break;
 
     default:
@@ -1714,6 +1714,14 @@ virt_viewer_app_get_fullscreen(VirtViewerApp *self)
     g_return_val_if_fail(VIRT_VIEWER_IS_APP(self), FALSE);
 
     return self->priv->fullscreen;
+}
+
+gboolean
+virt_viewer_app_get_fullscreen_auto_conf(VirtViewerApp *self)
+{
+    g_return_val_if_fail(VIRT_VIEWER_IS_APP(self), FALSE);
+
+    return self->priv->fullscreen_auto_conf;
 }
 
 static void

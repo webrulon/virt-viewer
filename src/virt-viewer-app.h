@@ -97,6 +97,7 @@ GHashTable* virt_viewer_app_get_windows(VirtViewerApp *self);
 gboolean virt_viewer_app_get_enable_accel(VirtViewerApp *self);
 VirtViewerSession* virt_viewer_app_get_session(VirtViewerApp *self);
 gboolean virt_viewer_app_get_fullscreen(VirtViewerApp *app);
+gboolean virt_viewer_app_get_fullscreen_auto_conf(VirtViewerApp *app);
 
 G_END_DECLS
 

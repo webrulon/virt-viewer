@@ -519,6 +519,8 @@ virt_viewer_window_leave_fullscreen(VirtViewerWindow *self)
         gtk_window_resize(GTK_WINDOW(priv->window),
                           priv->before_fullscreen.width,
                           priv->before_fullscreen.height);
+    } else {
+        virt_viewer_display_queue_resize(priv->display);
     }
 }
 

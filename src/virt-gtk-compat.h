@@ -53,6 +53,12 @@ G_BEGIN_DECLS
 #define GDK_F12 GDK_KEY_F12
 #endif
 
+#if !GTK_CHECK_VERSION(3, 0, 0)
+#define gtk_widget_get_realized(widget)         \
+  GTK_WIDGET_REALIZED(widget)
+#endif
+
+
 G_END_DECLS
 
 #endif /* _VIRT_GTK_COMPAT */

@@ -1822,7 +1822,7 @@ window_update_menu_displays_cb(gpointer key G_GNUC_UNUSED,
         VirtViewerWindow *vwin = VIRT_VIEWER_WINDOW(g_hash_table_lookup(self->priv->windows, nth));
         VirtViewerDisplay *display = virt_viewer_window_get_display(vwin);
         GtkWidget *item;
-        gboolean visible, sensitive = FALSE;
+        gboolean visible, sensitive;
         gchar *label;
 
         label = g_strdup_printf(_("Display %d"), *nth + 1);
@@ -1832,6 +1832,7 @@ window_update_menu_displays_cb(gpointer key G_GNUC_UNUSED,
         visible = gtk_widget_get_visible(GTK_WIDGET(virt_viewer_window_get_window(vwin)));
         gtk_check_menu_item_set_active(GTK_CHECK_MENU_ITEM(item), visible);
 
+        sensitive = visible;
         if (display) {
             guint hint = virt_viewer_display_get_show_hint(display);
 
@@ -1841,7 +1842,6 @@ window_update_menu_displays_cb(gpointer key G_GNUC_UNUSED,
             if (virt_viewer_display_get_selectable(display))
                 sensitive = TRUE;
         }
-
         gtk_widget_set_sensitive(item, sensitive);
 
         g_signal_connect(G_OBJECT(item),

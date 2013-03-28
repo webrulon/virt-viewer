@@ -1838,8 +1838,7 @@ window_update_menu_displays_cb(gpointer key G_GNUC_UNUSED,
             if (hint & VIRT_VIEWER_DISPLAY_SHOW_HINT_READY)
                 sensitive = TRUE;
 
-            if ((hint & VIRT_VIEWER_DISPLAY_SHOW_HINT_DISABLED) &&
-                virt_viewer_display_get_selectable(display))
+            if (virt_viewer_display_get_selectable(display))
                 sensitive = TRUE;
         }
 

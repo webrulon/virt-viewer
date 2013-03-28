@@ -58,6 +58,7 @@ typedef struct _VirtViewerDisplayChannel VirtViewerDisplayChannel;
 typedef enum {
     VIRT_VIEWER_DISPLAY_SHOW_HINT_READY            = 1 << 0,
     VIRT_VIEWER_DISPLAY_SHOW_HINT_DISABLED         = 1 << 1,
+    VIRT_VIEWER_DISPLAY_SHOW_HINT_SET              = 1 << 2,
 } VirtViewerDisplayShowHintFlags;
 
 /* perhaps this become an interface, and be pushed in gtkvnc and spice? */

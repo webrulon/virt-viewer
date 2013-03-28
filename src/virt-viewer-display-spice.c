@@ -99,14 +99,15 @@ show_hint_changed(VirtViewerDisplay *self)
 {
     SpiceMainChannel *main_channel = get_main(self);
     guint enabled = TRUE;
-    guint nth;
+    guint nth, hint = virt_viewer_display_get_show_hint(self);
 
     /* this may happen when finalizing */
     if (!main_channel)
         return;
 
     g_object_get(self, "nth-display", &nth, NULL);
-    if (virt_viewer_display_get_show_hint(self) & VIRT_VIEWER_DISPLAY_SHOW_HINT_DISABLED)
+    if (!(hint & VIRT_VIEWER_DISPLAY_SHOW_HINT_SET) ||
+        hint & VIRT_VIEWER_DISPLAY_SHOW_HINT_DISABLED)
         enabled = FALSE;
 
     spice_main_set_display_enabled(main_channel, nth, enabled);

@@ -573,21 +573,21 @@ struct        keyComboDef {
 };
 
 static const struct keyComboDef keyCombos[] = {
-    { { GDK_Control_L, GDK_Alt_L, GDK_Delete }, 3, "Ctrl+Alt+_Del"},
-    { { GDK_Control_L, GDK_Alt_L, GDK_BackSpace }, 3, "Ctrl+Alt+_Backspace"},
+    { { GDK_Control_L, GDK_Alt_L, GDK_Delete }, 3, N_("Ctrl+Alt+_Del")},
+    { { GDK_Control_L, GDK_Alt_L, GDK_BackSpace }, 3, N_("Ctrl+Alt+_Backspace")},
     { {}, 0, "" },
-    { { GDK_Control_L, GDK_Alt_L, GDK_F1 }, 3, "Ctrl+Alt+F_1"},
-    { { GDK_Control_L, GDK_Alt_L, GDK_F2 }, 3, "Ctrl+Alt+F_2"},
-    { { GDK_Control_L, GDK_Alt_L, GDK_F3 }, 3, "Ctrl+Alt+F_3"},
-    { { GDK_Control_L, GDK_Alt_L, GDK_F4 }, 3, "Ctrl+Alt+F_4"},
-    { { GDK_Control_L, GDK_Alt_L, GDK_F5 }, 3, "Ctrl+Alt+F_5"},
-    { { GDK_Control_L, GDK_Alt_L, GDK_F6 }, 3, "Ctrl+Alt+F_6"},
-    { { GDK_Control_L, GDK_Alt_L, GDK_F7 }, 3, "Ctrl+Alt+F_7"},
-    { { GDK_Control_L, GDK_Alt_L, GDK_F8 }, 3, "Ctrl+Alt+F_8"},
-    { { GDK_Control_L, GDK_Alt_L, GDK_F9 }, 3, "Ctrl+Alt+F_9"},
-    { { GDK_Control_L, GDK_Alt_L, GDK_F10 }, 3, "Ctrl+Alt+F1_0"},
-    { { GDK_Control_L, GDK_Alt_L, GDK_F11 }, 3, "Ctrl+Alt+F11"},
-    { { GDK_Control_L, GDK_Alt_L, GDK_F12 }, 3, "Ctrl+Alt+F12"},
+    { { GDK_Control_L, GDK_Alt_L, GDK_F1 }, 3, N_("Ctrl+Alt+F_1")},
+    { { GDK_Control_L, GDK_Alt_L, GDK_F2 }, 3, N_("Ctrl+Alt+F_2")},
+    { { GDK_Control_L, GDK_Alt_L, GDK_F3 }, 3, N_("Ctrl+Alt+F_3")},
+    { { GDK_Control_L, GDK_Alt_L, GDK_F4 }, 3, N_("Ctrl+Alt+F_4")},
+    { { GDK_Control_L, GDK_Alt_L, GDK_F5 }, 3, N_("Ctrl+Alt+F_5")},
+    { { GDK_Control_L, GDK_Alt_L, GDK_F6 }, 3, N_("Ctrl+Alt+F_6")},
+    { { GDK_Control_L, GDK_Alt_L, GDK_F7 }, 3, N_("Ctrl+Alt+F_7")},
+    { { GDK_Control_L, GDK_Alt_L, GDK_F8 }, 3, N_("Ctrl+Alt+F_8")},
+    { { GDK_Control_L, GDK_Alt_L, GDK_F9 }, 3, N_("Ctrl+Alt+F_9")},
+    { { GDK_Control_L, GDK_Alt_L, GDK_F10 }, 3, N_("Ctrl+Alt+F1_0")},
+    { { GDK_Control_L, GDK_Alt_L, GDK_F11 }, 3, N_("Ctrl+Alt+F11")},
+    { { GDK_Control_L, GDK_Alt_L, GDK_F12 }, 3, N_("Ctrl+Alt+F12")},
     { {}, 0, "" },
     { { GDK_Print }, 1, "_PrintScreen"},
 };
@@ -604,7 +604,7 @@ virt_viewer_window_menu_send(GtkWidget *menu,
     g_return_if_fail(priv->display != NULL);
 
     for (i = 0 ; i < G_N_ELEMENTS(keyCombos) ; i++) {
-        if (!strcmp(text, keyCombos[i].label)) {
+        if (!strcmp(text, _(keyCombos[i].label))) {
             DEBUG_LOG("Sending key combo %s", gtk_label_get_text(GTK_LABEL(label)));
             virt_viewer_display_send_keys(VIRT_VIEWER_DISPLAY(priv->display),
                                           keyCombos[i].keys,

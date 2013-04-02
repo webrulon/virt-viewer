@@ -520,7 +520,13 @@ virt_viewer_window_leave_fullscreen(VirtViewerWindow *self)
                           priv->before_fullscreen.width,
                           priv->before_fullscreen.height);
     } else {
+#ifdef G_OS_WIN32
+	/* win32 window manager isn't smart enough to place
+         * the window so that titlebar would be visible */
+        gtk_window_maximize(GTK_WINDOW(priv->window));
+#else
         virt_viewer_display_queue_resize(priv->display);
+#endif
     }
 }
 

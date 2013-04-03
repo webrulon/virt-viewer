@@ -77,4 +77,9 @@ nsis:
 	make -C $(builddir)/data virt-viewer-$(VERSION).exe
 endif
 
+
+# this make sure those files are regenerated when they change
+# (in maintainer-mode)
+all-local: virt-viewer.spec mingw-virt-viewer.spec
+
 -include $(top_srcdir)/git.mk

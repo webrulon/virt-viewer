@@ -8,6 +8,10 @@ EXTRA_DIST =					\
 	virt-viewer-debug.nsis.in		\
 	$(NULL)
 
+# this make sure those files are regenerated when they change
+# (in maintainer-mode)
+all-local: virt-viewer.wxs virt-viewer.nsis virt-viewer-debug.nsis
+
 if OS_WIN32
 
 deps.txt:

@@ -37,12 +37,13 @@ BuildRequires:  mingw64-spice-gtk >= 0.16.26
 BuildRequires:  mingw32-usbredir
 BuildRequires:  mingw64-usbredir
 BuildRequires:  pkgconfig
+BuildRequires:  /usr/bin/pod2man
 BuildRequires:  intltool
 BuildRequires:  icoutils
 BuildRequires:  dos2unix
-BuildRequires:  mingw32-nsis
 BuildRequires:  hicolor-icon-theme
 BuildRequires:  gnome-icon-theme
+BuildRequires:  msitools >= 0.92-2
 
 BuildArch:      noarch
 
@@ -54,12 +55,12 @@ Group:          Applications/Internet
 Summary:        MinGW Windows virt-viewer console application
 Group:          Applications/Internet
 
-%package -n mingw64-virt-viewer-installer
-Summary:        MinGW Windows virt-viewer installer
+%package -n mingw64-virt-viewer-msi
+Summary:        MinGW Windows virt-viewer MSI
 Group:          Applications/Internet
 
-%package -n mingw32-virt-viewer-installer
-Summary:        MinGW Windows virt-viewer installer
+%package -n mingw32-virt-viewer-msi
+Summary:        MinGW Windows virt-viewer MSI
 Group:          Applications/Internet
 
 %description
@@ -71,11 +72,11 @@ MinGW Windows virt-viewer console application
 %description -n mingw64-virt-viewer
 MinGW Windows virt-viewer console application
 
-%description -n mingw64-virt-viewer-installer
-MinGW Windows virt-viewer installer
+%description -n mingw64-virt-viewer-msi
+MinGW Windows virt-viewer MSI
 
-%description -n mingw32-virt-viewer-installer
-MinGW Windows virt-viewer installer
+%description -n mingw32-virt-viewer-msi
+MinGW Windows virt-viewer MSI
 
 %{mingw_debug_package}
 
@@ -85,21 +86,25 @@ MinGW Windows virt-viewer installer
 
 %build
 %mingw_configure --with-gtk=2.0 --with-buildid=-%{release}
+
 %mingw_make %{?_smp_mflags} V=1
+%if 0%{?mingw_build_win32} == 1
+make -C build_win32$MINGW_BUILDDIR_SUFFIX GLIB_ARCH="win32" MANUFACTURER="Fedora" -C data virt-viewer-%{version}.msi
+%endif
+
+%if 0%{?mingw_build_win64} == 1
+make -C build_win64$MINGW_BUILDDIR_SUFFIX GLIB_ARCH="win64" MANUFACTURER="Fedora" -C data virt-viewer-%{version}.msi
+%endif
 
 %install
 %mingw_make_install DESTDIR=$RPM_BUILD_ROOT
 
 %if 0%{?mingw_build_win32} == 1
-rpm -qa | grep mingw32 | sort | unix2dos >deps.txt
-makensis -NOCD -DDESTDIR=$RPM_BUILD_ROOT build_win32$MINGW_BUILDDIR_SUFFIX/data/virt-viewer.nsis
-cp virt-viewer-%{version}.exe $RPM_BUILD_ROOT/%{mingw32_datadir}/virt-viewer
+cp build_win32$MINGW_BUILDDIR_SUFFIX/data/virt-viewer-@VERSION@.msi $RPM_BUILD_ROOT/%{mingw32_datadir}/virt-viewer
 %endif
 
 %if 0%{?mingw_build_win64} == 1
-rpm -qa | grep mingw64 | sort | unix2dos >deps.txt
-makensis -NOCD -DDESTDIR=$RPM_BUILD_ROOT build_win64$MINGW_BUILDDIR_SUFFIX/data/virt-viewer.nsis
-cp virt-viewer-%{version}.exe $RPM_BUILD_ROOT/%{mingw64_datadir}/virt-viewer
+cp build_win32$MINGW_BUILDDIR_SUFFIX/data/virt-viewer-@VERSION@.msi $RPM_BUILD_ROOT/%{mingw64_datadir}/virt-viewer
 %endif
 
 %find_lang virt-viewer
@@ -128,8 +133,8 @@ rm -rf $RPM_BUILD_ROOT
 %{mingw32_mandir}/man1/virt-viewer.1*
 %{mingw32_mandir}/man1/remote-viewer.1*
 
-%files -n mingw32-virt-viewer-installer
-%{mingw32_datadir}/virt-viewer/virt-viewer-@VERSION@.exe
+%files -n mingw32-virt-viewer-msi
+%{mingw32_datadir}/virt-viewer/virt-viewer-x86-@VERSION@.msi
 
 %files -n mingw64-virt-viewer -f virt-viewer.lang
 %defattr(-,root,root)
@@ -148,7 +153,7 @@ rm -rf $RPM_BUILD_ROOT
 %{mingw64_mandir}/man1/virt-viewer.1*
 %{mingw64_mandir}/man1/remote-viewer.1*
 
-%files -n mingw64-virt-viewer-installer
-%{mingw64_datadir}/virt-viewer/virt-viewer-@VERSION@.exe
+%files -n mingw64-virt-viewer-msi
+%{mingw64_datadir}/virt-viewer/virt-viewer-x64-@VERSION@.msi
 
 %changelog

@@ -4,12 +4,13 @@
 # 
 # Translators:
 # Nikolas Slivka <snicore@gmail.com>, 2010.
+# Zoltan Hoppár <hopparz@gmail.com>, 2012-2013.
 msgid ""
 msgstr ""
 "Project-Id-Version: virt-viewer\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-09-18 14:26+0100\n"
-"PO-Revision-Date: 2012-09-18 13:26+0000\n"
+"POT-Creation-Date: 2013-04-08 11:18+0100\n"
+"PO-Revision-Date: 2013-04-08 10:19+0000\n"
 "Last-Translator: Daniel Berrange <dan-transifex@berrange.com>\n"
 "Language-Team: Hungarian <trans-hu@lists.fedoraproject.org>\n"
 "MIME-Version: 1.0\n"
@@ -18,163 +19,184 @@ msgstr ""
 "Language: hu\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
+#: ../data/remote-viewer.desktop.in.h:1 ../src/remote-viewer-main.c:235
+msgid "Remote Viewer"
+msgstr "Távoli megjelenítő"
+
+#: ../data/remote-viewer.desktop.in.h:2
+msgid "Access remote desktops"
+msgstr ""
+
+#: ../data/virt-viewer-mime.xml.in.h:1
+msgid "Virt-Viewer connection file"
+msgstr ""
+
 #: ../src/gbinding.c:637
 msgid "Source"
-msgstr ""
+msgstr "Forrás"
 
 #: ../src/gbinding.c:638
 msgid "The source of the binding"
-msgstr ""
+msgstr "A forrás kapcsolódási pontja"
 
 #: ../src/gbinding.c:652
 msgid "Target"
-msgstr ""
+msgstr "Cél"
 
 #: ../src/gbinding.c:653
 msgid "The target of the binding"
-msgstr ""
+msgstr "A kapcsolódási cél"
 
 #: ../src/gbinding.c:668
 msgid "Source Property"
-msgstr ""
+msgstr "Forrás tulajdonos"
 
 #: ../src/gbinding.c:669
 msgid "The property on the source to bind"
-msgstr ""
+msgstr "A tulajdon a forráson a bind-hoz"
 
 #: ../src/gbinding.c:684
 msgid "Target Property"
-msgstr ""
+msgstr "Cél Tulajdonos"
 
 #: ../src/gbinding.c:685
 msgid "The property on the target to bind"
-msgstr ""
+msgstr "A tulajdon a célon a bind-hoz"
 
 #: ../src/gbinding.c:699
 msgid "Flags"
-msgstr ""
+msgstr "Jelzők"
 
 #: ../src/gbinding.c:700
 msgid "The binding flags"
-msgstr ""
+msgstr "Kötési jelzők"
 
 #: ../src/remote-viewer-main.c:47
 #, c-format
 msgid "remote-viewer version %s\n"
-msgstr ""
+msgstr "alkalmazás verziója %s\n"
 
 #: ../src/remote-viewer-main.c:69
 #, c-format
 msgid "Invalid full-screen argument: %s"
-msgstr ""
+msgstr "Helytelen teljes képernyő paraméter: %s"
 
 #. Create the widgets
 #: ../src/remote-viewer-main.c:104
 msgid "Connection details"
-msgstr ""
+msgstr "Kapcsolat részletei"
 
 #: ../src/remote-viewer-main.c:119
 msgid "URL:"
-msgstr ""
+msgstr "URL:"
 
 #: ../src/remote-viewer-main.c:127
 msgid "Recent connections:"
-msgstr ""
+msgstr "Gyakori kapcsolatok:"
 
-#: ../src/remote-viewer-main.c:209 ../src/virt-viewer-main.c:64
+#: ../src/remote-viewer-main.c:211 ../src/virt-viewer-main.c:65
 msgid "Display version information"
-msgstr ""
+msgstr "Verzió információk megjelenítése"
 
-#: ../src/remote-viewer-main.c:211 ../src/virt-viewer-main.c:66
+#: ../src/remote-viewer-main.c:213 ../src/virt-viewer-main.c:67
 msgid "Display verbose information"
+msgstr "Részletes információk megjelenítése"
+
+#: ../src/remote-viewer-main.c:215
+msgid "Set window title"
 msgstr ""
 
-#: ../src/remote-viewer-main.c:213 ../src/virt-viewer-main.c:68
+#: ../src/remote-viewer-main.c:217 ../src/virt-viewer-main.c:69
 msgid "Direct connection with no automatic tunnels"
-msgstr ""
+msgstr "Közvetlen kapcsolat automata átjárók nélkül"
 
-#: ../src/remote-viewer-main.c:215 ../src/virt-viewer-main.c:78
+#: ../src/remote-viewer-main.c:219 ../src/virt-viewer-main.c:79
 msgid "Zoom level of window, in percentage"
-msgstr ""
+msgstr "Ablak nagyítási fokozata, százalékban"
 
-#: ../src/remote-viewer-main.c:217 ../src/virt-viewer-main.c:80
+#: ../src/remote-viewer-main.c:221 ../src/virt-viewer-main.c:81
 msgid "Display debugging information"
-msgstr ""
+msgstr "Hibakeresési információk megjelenítése"
 
-#: ../src/remote-viewer-main.c:219
+#: ../src/remote-viewer-main.c:223
 msgid ""
 "Open in full screen mode (auto-conf adjusts guest resolution to fit the "
 "client's)."
-msgstr ""
+msgstr "Nyissa meg teljes képernyőben (auto-conf be fogja szabályozni a felbontást hogy elférjen a kliensen)"
 
-#: ../src/remote-viewer-main.c:219
+#: ../src/remote-viewer-main.c:223
 msgid "<auto-conf>"
-msgstr ""
+msgstr "<auto-conf>"
 
-#: ../src/remote-viewer-main.c:222
+#: ../src/remote-viewer-main.c:226
 msgid "Open connection using Spice controller communication"
-msgstr ""
+msgstr "Kapcsolat megnyitása a Spice vezérlő kommunikációjában"
 
-#: ../src/remote-viewer-main.c:249
-msgid "Remote Viewer"
+#: ../src/remote-viewer-main.c:229 ../src/virt-viewer-main.c:85
+msgid "Customise hotkeys"
 msgstr ""
 
 #. Setup command line options
-#: ../src/remote-viewer-main.c:252
+#: ../src/remote-viewer-main.c:238
 msgid "- Remote viewer client"
-msgstr ""
+msgstr "- Távoli megjelenítő kliens"
 
-#: ../src/remote-viewer-main.c:265
+#: ../src/remote-viewer-main.c:251
 #, c-format
 msgid ""
 "%s\n"
 "Run '%s --help' to see a full list of available command line options\n"
-msgstr ""
+msgstr "%s\nFuttassa a '%s --help' parancsot a teljes elérhető parancssori opciókért\n"
 
-#: ../src/remote-viewer-main.c:277
+#: ../src/remote-viewer-main.c:263
 #, c-format
 msgid "Error: extra arguments given while using Spice controller\n"
-msgstr ""
+msgstr "Hiba: külön paraméterek kerültek megadásra a Spice vezérlő használatakor\n"
 
-#: ../src/remote-viewer-main.c:286
+#: ../src/remote-viewer-main.c:272
 #, c-format
 msgid "Error: can't handle multiple URIs\n"
-msgstr ""
+msgstr "Hiba: több URI nem kezelhető egyszerre\n"
 
-#: ../src/remote-viewer-main.c:293 ../src/virt-viewer-main.c:131
+#: ../src/remote-viewer-main.c:279 ../src/virt-viewer-main.c:124
 #, c-format
 msgid "Zoom level must be within 10-200\n"
-msgstr ""
+msgstr "Nagyítási szintnek 10-200 közöttinek kell lennie\n"
 
-#: ../src/remote-viewer.c:237 ../src/remote-viewer.c:784
+#: ../src/remote-viewer.c:243 ../src/remote-viewer.c:664
 msgid "Failed to initiate connection"
-msgstr ""
+msgstr "Sikertelen kapcsolat indítás"
 
-#: ../src/remote-viewer.c:250
+#: ../src/remote-viewer.c:258
 msgid "Display disabled by controller"
-msgstr ""
+msgstr "Kijelző kikapcsolva a vezérlő által"
 
-#: ../src/remote-viewer.c:697
+#: ../src/remote-viewer.c:558
 #, c-format
 msgid "Controller connection failed: %s"
-msgstr ""
+msgstr "Vezérlő kapcsolat sikertelen: %s"
 
-#: ../src/remote-viewer.c:750
+#: ../src/remote-viewer.c:614
 msgid "Couldn't create a Spice session"
-msgstr ""
+msgstr "Spice folyamat készítése nem lehetséges"
 
-#: ../src/remote-viewer.c:764
+#: ../src/remote-viewer.c:628
 msgid "Setting up Spice session..."
+msgstr "Spice folyamat beállítása..."
+
+#: ../src/remote-viewer.c:644
+#, c-format
+msgid "Invalid file %s"
 msgstr ""
 
-#: ../src/remote-viewer.c:774
+#: ../src/remote-viewer.c:651
 msgid "Cannot determine the connection type from URI"
-msgstr ""
+msgstr "Kapcsolattípus nem meghatározható az URI-ról "
 
-#: ../src/remote-viewer.c:779
+#: ../src/remote-viewer.c:656
 #, c-format
 msgid "Couldn't create a session for this type: %s"
-msgstr ""
+msgstr "Folyamat nem indítható ehhez a típushoz: %s"
 
 #. * Local variables:
 #. *  c-indent-level: 4
@@ -184,21 +206,21 @@ msgstr ""
 #. 
 #: ../src/virt-viewer-about.xml.h:1
 msgid "About Glade"
-msgstr ""
+msgstr "A Glade-ről"
 
 #: ../src/virt-viewer-about.xml.h:2
 msgid ""
 "Copyright (C) 2007-2012 Daniel P. Berrange\n"
 "Copyright (C) 2007-2012 Red Hat, Inc."
-msgstr ""
+msgstr "Copyright (C) 2007-2012 Daniel P. Berrange\nCopyright (C) 2007-2012 Red Hat, Inc."
 
 #: ../src/virt-viewer-about.xml.h:4
 msgid "A remote desktop client built with GTK-VNC, SPICE-GTK and libvirt"
-msgstr ""
+msgstr "Távoli vezérlésű asztal kliens beépített GTK-VNC, SPICE-GTK és libvirt támogatással"
 
 #: ../src/virt-viewer-about.xml.h:5
 msgid "virt-manager.org"
-msgstr ""
+msgstr "virt-manager.org"
 
 #: ../src/virt-viewer-about.xml.h:6
 msgid ""
@@ -215,76 +237,80 @@ msgid ""
 "You should have received a copy of the GNU General Public License\n"
 "along with this program; if not, write to the Free Software\n"
 "Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA\n"
-msgstr ""
+msgstr "This program is free software; you can redistribute it and/or modify\nit under the terms of the GNU General Public License as published by\nthe Free Software Foundation; either version 2 of the License, or\n(at your option) any later version.\n\nThis program is distributed in the hope that it will be useful,\nbut WITHOUT ANY WARRANTY; without even the implied warranty of\nMERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\nGNU General Public License for more details.\n\nYou should have received a copy of the GNU General Public License\nalong with this program; if not, write to the Free Software\nFoundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA\n"
 
 #: ../src/virt-viewer-about.xml.h:20
 msgid "The Fedora Translation Team"
+msgstr "A Fedora Fordítói csapata"
+
+#: ../src/virt-viewer-app.c:314
+msgid "Do you want to close the session?"
 msgstr ""
 
-#: ../src/virt-viewer-app.c:284
-msgid "This is the last visible display. Do you want to quit?"
+#: ../src/virt-viewer-app.c:316
+msgid "Do not ask me again"
 msgstr ""
 
-#: ../src/virt-viewer-app.c:635
+#: ../src/virt-viewer-app.c:681
 #, c-format
 msgid "Waiting for display %d..."
-msgstr ""
+msgstr "Várakozás a %d kijelzőre..."
 
-#: ../src/virt-viewer-app.c:722
+#: ../src/virt-viewer-app.c:769
 #, c-format
 msgid "Unknown graphic type for the guest %s"
-msgstr ""
+msgstr "Ismeretlen grafikus mód típus %s vendégnél"
 
-#: ../src/virt-viewer-app.c:799
+#: ../src/virt-viewer-app.c:846
 msgid "Connect to ssh failed."
-msgstr ""
+msgstr "SSH kapcsolat sikertelen."
 
-#: ../src/virt-viewer-app.c:801
+#: ../src/virt-viewer-app.c:848
 msgid "Can't connect to channel, SSH only supported."
-msgstr ""
+msgstr "Csatornára való csatlakozás meghiúsult, kizárólag SSH támogatott."
 
-#: ../src/virt-viewer-app.c:813
+#: ../src/virt-viewer-app.c:860
 msgid "Connect to channel unsupported."
-msgstr ""
+msgstr "Kapcsolódás egy nem támogatott csatornához."
 
-#: ../src/virt-viewer-app.c:893
+#: ../src/virt-viewer-app.c:942
 msgid "Connecting to graphic server"
-msgstr ""
+msgstr "Csatlakozás egy grafikus kiszolgálóhoz"
 
-#: ../src/virt-viewer-app.c:1023
+#: ../src/virt-viewer-app.c:1074
 msgid "Guest domain has shutdown"
-msgstr ""
+msgstr "Vendég tartomány leáll"
 
-#: ../src/virt-viewer-app.c:1073
+#: ../src/virt-viewer-app.c:1124
 msgid "Connected to graphic server"
-msgstr ""
+msgstr "Csatlakozva a grafikus kiszolgálóhoz"
 
-#: ../src/virt-viewer-app.c:1099
+#: ../src/virt-viewer-app.c:1150
 #, c-format
 msgid "Unable to connect to the graphic server %s"
-msgstr ""
+msgstr "%s grafikus kiszolgálóhoz a kapcsolódás nem lehetséges"
 
-#: ../src/virt-viewer-app.c:1128
+#: ../src/virt-viewer-app.c:1179
 #, c-format
 msgid ""
 "Unable to authenticate with remote desktop server at %s: %s\n"
 "Retry connection again?"
-msgstr ""
+msgstr "Bejelentkezés sikertelen a távoli kiszolgálónál itt:  %s: %s\nMegpróbáljuk még egyszer?"
 
-#: ../src/virt-viewer-app.c:1148
+#: ../src/virt-viewer-app.c:1199
 #, c-format
 msgid "Unable to authenticate with remote desktop server: %s"
-msgstr ""
+msgstr "Bejelentkezés sikertelen a távoli kiszolgálónál: %s"
 
-#: ../src/virt-viewer-app.c:1156
+#: ../src/virt-viewer-app.c:1207
 #, c-format
 msgid "USB redirection error: %s"
-msgstr ""
+msgstr "USB átirányítási hiba: %s"
 
-#: ../src/virt-viewer-app.c:1652
+#: ../src/virt-viewer-app.c:1828
 #, c-format
 msgid "Display %d"
-msgstr ""
+msgstr "%d kijelző"
 
 #. * Local variables:
 #. *  c-indent-level: 4
@@ -294,60 +320,60 @@ msgstr ""
 #. 
 #: ../src/virt-viewer-auth.xml.h:1
 msgid "Authentication required"
-msgstr ""
+msgstr "Azonosítás szükséges"
 
 #: ../src/virt-viewer-auth.xml.h:2
 msgid "label"
-msgstr ""
+msgstr "cimke"
 
 #: ../src/virt-viewer-auth.xml.h:3
 msgid "Password:"
-msgstr ""
+msgstr "Jelszó:"
 
 #: ../src/virt-viewer-auth.xml.h:4
 msgid "Username:"
-msgstr ""
+msgstr "Felhasználói név:"
 
 #: ../src/virt-viewer-main.c:38
 #, c-format
 msgid "%s version %s\n"
 msgstr "%s verzió %s\n"
 
-#: ../src/virt-viewer-main.c:70
+#: ../src/virt-viewer-main.c:71
 msgid "Attach to the local display using libvirt"
-msgstr ""
+msgstr "Csatlakoztassa a helyi kijelzőt a libvirt segítségével"
 
-#: ../src/virt-viewer-main.c:72
+#: ../src/virt-viewer-main.c:73
 msgid "Connect to hypervisor"
-msgstr ""
+msgstr "Csatlakozás a hypervisorhoz"
 
-#: ../src/virt-viewer-main.c:74
+#: ../src/virt-viewer-main.c:75
 msgid "Wait for domain to start"
-msgstr ""
+msgstr "Várakozás a tartomány elindulásáig"
 
-#: ../src/virt-viewer-main.c:76
+#: ../src/virt-viewer-main.c:77
 msgid "Reconnect to domain upon restart"
-msgstr ""
+msgstr "Csatlakozzon újra a tartományhoz újraindításkor"
 
-#: ../src/virt-viewer-main.c:82
+#: ../src/virt-viewer-main.c:83
 msgid "Open in full screen mode"
-msgstr ""
+msgstr "Megnyitás teljes képernyőn"
 
-#: ../src/virt-viewer-main.c:97
+#: ../src/virt-viewer-main.c:91
 msgid "Virt Viewer"
-msgstr ""
+msgstr "Virt Viewer"
 
-#: ../src/virt-viewer-main.c:101
+#: ../src/virt-viewer-main.c:94
 #, c-format
 msgid "Run '%s --help' to see a full list of available command line options"
-msgstr ""
+msgstr "Futtassa a '%s --help' parancsot a teljes elérhető parancssori opciókért"
 
 #. Setup command line options
-#: ../src/virt-viewer-main.c:106
+#: ../src/virt-viewer-main.c:99
 msgid "- Virtual machine graphical console"
-msgstr ""
+msgstr "- Virtuális gép grafikus konzolja"
 
-#: ../src/virt-viewer-main.c:126
+#: ../src/virt-viewer-main.c:119
 #, c-format
 msgid ""
 "\n"
@@ -358,40 +384,100 @@ msgid ""
 msgstr "\nHasználata: %s [OPCIÓK] DOMAIN-NAME|ID|UUID\n\n%s\n\n"
 
 #. Create the widgets
-#: ../src/virt-viewer-session-spice.c:382
+#: ../src/virt-viewer-session-spice.c:485
 msgid "Select USB devices for redirection"
-msgstr ""
+msgstr "Válasszon USB eszközöket az átirányításhoz"
 
-#: ../src/virt-viewer-session-vnc.c:141
+#: ../src/virt-viewer-session-vnc.c:147
 #, c-format
 msgid "Unsupported authentication type %d"
-msgstr ""
+msgstr "Nem támogatott azonosítási mód: %d"
 
-#: ../src/virt-viewer-window.c:859
+#: ../src/virt-viewer-window.c:576 ../src/virt-viewer.xml.h:13
+msgid "Ctrl+Alt+_Del"
+msgstr "Ctrl+Alt+_Del"
+
+#: ../src/virt-viewer-window.c:577 ../src/virt-viewer.xml.h:14
+msgid "Ctrl+Alt+_Backspace"
+msgstr "Ctrl+Alt+_Backspace"
+
+#: ../src/virt-viewer-window.c:579 ../src/virt-viewer.xml.h:15
+msgid "Ctrl+Alt+F_1"
+msgstr "Ctrl+Alt+F_1"
+
+#: ../src/virt-viewer-window.c:580 ../src/virt-viewer.xml.h:16
+msgid "Ctrl+Alt+F_2"
+msgstr "Ctrl+Alt+F_2"
+
+#: ../src/virt-viewer-window.c:581 ../src/virt-viewer.xml.h:17
+msgid "Ctrl+Alt+F_3"
+msgstr "Ctrl+Alt+F_3"
+
+#: ../src/virt-viewer-window.c:582 ../src/virt-viewer.xml.h:18
+msgid "Ctrl+Alt+F_4"
+msgstr "Ctrl+Alt+F_4"
+
+#: ../src/virt-viewer-window.c:583 ../src/virt-viewer.xml.h:19
+msgid "Ctrl+Alt+F_5"
+msgstr "Ctrl+Alt+F_5"
+
+#: ../src/virt-viewer-window.c:584 ../src/virt-viewer.xml.h:20
+msgid "Ctrl+Alt+F_6"
+msgstr "Ctrl+Alt+F_6"
+
+#: ../src/virt-viewer-window.c:585 ../src/virt-viewer.xml.h:21
+msgid "Ctrl+Alt+F_7"
+msgstr "Ctrl+Alt+F_7"
+
+#: ../src/virt-viewer-window.c:586 ../src/virt-viewer.xml.h:22
+msgid "Ctrl+Alt+F_8"
+msgstr "Ctrl+Alt+F_8"
+
+#: ../src/virt-viewer-window.c:587 ../src/virt-viewer.xml.h:23
+msgid "Ctrl+Alt+F_9"
+msgstr "Ctrl+Alt+F_9"
+
+#: ../src/virt-viewer-window.c:588 ../src/virt-viewer.xml.h:24
+msgid "Ctrl+Alt+F1_0"
+msgstr "Ctrl+Alt+F1_0"
+
+#: ../src/virt-viewer-window.c:589 ../src/virt-viewer.xml.h:25
+msgid "Ctrl+Alt+F11"
+msgstr "Ctrl+Alt+F11"
+
+#: ../src/virt-viewer-window.c:590 ../src/virt-viewer.xml.h:26
+msgid "Ctrl+Alt+F12"
+msgstr "Ctrl+Alt+F12"
+
+#: ../src/virt-viewer-window.c:877 ../src/virt-viewer.xml.h:2
+msgid "Screenshot"
+msgstr "Képernyőkép"
+
+#: ../src/virt-viewer-window.c:953
 msgid "Disconnect"
-msgstr ""
+msgstr "Leválasztás"
 
-#: ../src/virt-viewer-window.c:866 ../src/virt-viewer-window.c:867
+#: ../src/virt-viewer-window.c:960 ../src/virt-viewer-window.c:961
 #: ../src/virt-viewer.xml.h:3
 msgid "USB device selection"
-msgstr ""
+msgstr "USB eszköz kiválasztás"
 
-#: ../src/virt-viewer-window.c:875
+#: ../src/virt-viewer-window.c:969
 msgid "Send key combination"
-msgstr ""
+msgstr "Billentyűkombináció küldése"
 
-#: ../src/virt-viewer-window.c:884 ../src/virt-viewer-window.c:885
+#: ../src/virt-viewer-window.c:978 ../src/virt-viewer-window.c:979
 msgid "Leave fullscreen"
-msgstr ""
+msgstr "Teljes képernyő elhagyása"
 
-#: ../src/virt-viewer-window.c:964
+#: ../src/virt-viewer-window.c:1058
 msgid "Ctrl+Alt"
-msgstr ""
+msgstr "Ctrl+Alt"
 
-#: ../src/virt-viewer-window.c:967
+#: ../src/virt-viewer-window.c:1061
 #, c-format
 msgid "(Press %s to release pointer)"
-msgstr ""
+msgstr "(Nyomjon %s billentyűt hogy kiszabadítsa a mutatót)"
 
 #. translators:
 #. * This is "<ungrab (or empty)><space (or empty)><subtitle (or empty)> -
@@ -399,66 +485,70 @@ msgstr ""
 #. * Such as: "(Press Ctrl+Alt to release pointer) BigCorpTycoon MOTD - Virt
 #. Viewer"
 #. 
-#: ../src/virt-viewer-window.c:978
+#: ../src/virt-viewer-window.c:1072
 #, c-format
 msgid "%s%s%s - %s"
-msgstr ""
+msgstr "%s%s%s - %s"
 
 #. translators: <space>
-#: ../src/virt-viewer-window.c:982
+#: ../src/virt-viewer-window.c:1076
 msgid " "
-msgstr ""
+msgstr " "
 
 #: ../src/virt-viewer.c:144
 msgid "Waiting for guest domain to re-start"
-msgstr ""
+msgstr "Várakozás a vendégtartomány újraindulására"
 
-#: ../src/virt-viewer.c:308
+#: ../src/virt-viewer.c:329
 #, c-format
 msgid "Cannot determine the graphic type for the guest %s"
-msgstr ""
+msgstr "A vendég grafikus része nem meghatározható %s"
 
-#: ../src/virt-viewer.c:321
+#: ../src/virt-viewer.c:342
 #, c-format
 msgid "Cannot determine the graphic address for the guest %s"
-msgstr ""
+msgstr "A vendég grafikus címe nem meghatározható %s"
 
-#: ../src/virt-viewer.c:344
+#: ../src/virt-viewer.c:365
 #, c-format
 msgid "Cannot determine the host for the guest %s"
+msgstr "A vendég részére kiszolgáló nem meghatározható %s"
+
+#: ../src/virt-viewer.c:531
+msgid "Waiting for libvirt to start"
 msgstr ""
 
-#: ../src/virt-viewer.c:474
+#: ../src/virt-viewer.c:535
 msgid "Finding guest domain"
-msgstr ""
+msgstr "Vendég tartomány keresése"
 
-#: ../src/virt-viewer.c:478
+#: ../src/virt-viewer.c:539
 msgid "Waiting for guest domain to be created"
-msgstr ""
+msgstr "Várakozás a vendég tartomány elkészülésére"
 
-#: ../src/virt-viewer.c:483
+#: ../src/virt-viewer.c:544
 #, c-format
 msgid "Cannot find guest domain %s"
-msgstr ""
+msgstr "Vendég tartomány nem található %s"
 
-#: ../src/virt-viewer.c:490
+#: ../src/virt-viewer.c:551
 msgid "Checking guest domain status"
-msgstr ""
+msgstr "Vendég tartomány állapot ellenőrzése"
 
-#: ../src/virt-viewer.c:497
+#: ../src/virt-viewer.c:558
 msgid "Waiting for guest domain to start"
-msgstr ""
+msgstr "Várakozás a vendég tartomány indítására"
 
-#: ../src/virt-viewer.c:504
+#: ../src/virt-viewer.c:565
 msgid "Waiting for guest domain to start server"
-msgstr ""
+msgstr "Várakozás a vendég tartományra hogy elindítsa a kiszolgálót"
 
-#: ../src/virt-viewer.c:624
+#: ../src/virt-viewer.c:679
 #, c-format
 msgid "Unable to connect to libvirt with URI %s"
 msgstr "A %s címmel nem tudott csatlakozni a libvirthez"
 
-#: ../src/virt-viewer.c:625
+#: ../src/virt-viewer.c:680
 msgid "[none]"
 msgstr "[nincs]"
 
@@ -470,108 +560,48 @@ msgstr "[nincs]"
 #. 
 #: ../src/virt-viewer.xml.h:1
 msgid "_File"
-msgstr ""
-
-#: ../src/virt-viewer.xml.h:2
-msgid "Screenshot"
-msgstr ""
+msgstr "_Fájl"
 
 #: ../src/virt-viewer.xml.h:4
 msgid "Smartcard insertion"
-msgstr ""
+msgstr "Smartcard behelyezése"
 
 #: ../src/virt-viewer.xml.h:5
 msgid "Smartcard removal"
-msgstr ""
+msgstr "Smartcard eltávolítása"
 
 #: ../src/virt-viewer.xml.h:6
 msgid "_View"
-msgstr ""
+msgstr "Nézet"
 
 #: ../src/virt-viewer.xml.h:7
 msgid "Full screen"
-msgstr ""
+msgstr "Teljes képernyő"
 
 #: ../src/virt-viewer.xml.h:8
 msgid "_Zoom"
-msgstr ""
+msgstr "Nagyítás"
 
 #: ../src/virt-viewer.xml.h:9
 msgid "Automatically resize"
-msgstr ""
+msgstr "Automatikus átméretezés"
 
 #: ../src/virt-viewer.xml.h:10
 msgid "Displays"
-msgstr ""
+msgstr "Kijelzők"
 
 #: ../src/virt-viewer.xml.h:11
 msgid "Release cursor"
-msgstr ""
+msgstr "Kurzor eleresztése"
 
 #: ../src/virt-viewer.xml.h:12
 msgid "_Send key"
-msgstr ""
-
-#: ../src/virt-viewer.xml.h:13
-msgid "Ctrl+Alt+_Del"
-msgstr ""
-
-#: ../src/virt-viewer.xml.h:14
-msgid "Ctrl+Alt+_Backspace"
-msgstr ""
-
-#: ../src/virt-viewer.xml.h:15
-msgid "Ctrl+Alt+F_1"
-msgstr ""
-
-#: ../src/virt-viewer.xml.h:16
-msgid "Ctrl+Alt+F_2"
-msgstr ""
-
-#: ../src/virt-viewer.xml.h:17
-msgid "Ctrl+Alt+F_3"
-msgstr ""
-
-#: ../src/virt-viewer.xml.h:18
-msgid "Ctrl+Alt+F_4"
-msgstr ""
-
-#: ../src/virt-viewer.xml.h:19
-msgid "Ctrl+Alt+F_5"
-msgstr ""
-
-#: ../src/virt-viewer.xml.h:20
-msgid "Ctrl+Alt+F_6"
-msgstr ""
-
-#: ../src/virt-viewer.xml.h:21
-msgid "Ctrl+Alt+F_7"
-msgstr ""
-
-#: ../src/virt-viewer.xml.h:22
-msgid "Ctrl+Alt+F_8"
-msgstr ""
-
-#: ../src/virt-viewer.xml.h:23
-msgid "Ctrl+Alt+F_9"
-msgstr ""
-
-#: ../src/virt-viewer.xml.h:24
-msgid "Ctrl+Alt+F1_0"
-msgstr ""
-
-#: ../src/virt-viewer.xml.h:25
-msgid "Ctrl+Alt+F11"
-msgstr ""
-
-#: ../src/virt-viewer.xml.h:26
-msgid "Ctrl+Alt+F12"
-msgstr ""
+msgstr "Billentyű leütés"
 
 #: ../src/virt-viewer.xml.h:27
 msgid "_PrintScreen"
-msgstr ""
+msgstr "Képernyő mentése"
 
 #: ../src/virt-viewer.xml.h:28
 msgid "_Help"
-msgstr ""
+msgstr "Súgó"

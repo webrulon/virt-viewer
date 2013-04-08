@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: virt-viewer\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-09-18 14:26+0100\n"
-"PO-Revision-Date: 2012-09-18 13:26+0000\n"
+"POT-Creation-Date: 2013-04-08 11:18+0100\n"
+"PO-Revision-Date: 2013-04-08 10:19+0000\n"
 "Last-Translator: Daniel Berrange <dan-transifex@berrange.com>\n"
 "Language-Team: Swedish (http://www.transifex.com/projects/p/fedora/language/sv/)\n"
 "MIME-Version: 1.0\n"
@@ -16,6 +16,18 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Language: sv\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: ../data/remote-viewer.desktop.in.h:1 ../src/remote-viewer-main.c:235
+msgid "Remote Viewer"
+msgstr "Fjärrvisare"
+
+#: ../data/remote-viewer.desktop.in.h:2
+msgid "Access remote desktops"
+msgstr ""
+
+#: ../data/virt-viewer-mime.xml.in.h:1
+msgid "Virt-Viewer connection file"
+msgstr ""
 
 #: ../src/gbinding.c:637
 msgid "Source"
@@ -80,97 +92,106 @@ msgstr "URL:"
 msgid "Recent connections:"
 msgstr "Senaste anslutningar:"
 
-#: ../src/remote-viewer-main.c:209 ../src/virt-viewer-main.c:64
+#: ../src/remote-viewer-main.c:211 ../src/virt-viewer-main.c:65
 msgid "Display version information"
 msgstr "Visa versionsinformation"
 
-#: ../src/remote-viewer-main.c:211 ../src/virt-viewer-main.c:66
+#: ../src/remote-viewer-main.c:213 ../src/virt-viewer-main.c:67
 msgid "Display verbose information"
 msgstr "Visa utförlig information"
 
-#: ../src/remote-viewer-main.c:213 ../src/virt-viewer-main.c:68
+#: ../src/remote-viewer-main.c:215
+msgid "Set window title"
+msgstr ""
+
+#: ../src/remote-viewer-main.c:217 ../src/virt-viewer-main.c:69
 msgid "Direct connection with no automatic tunnels"
 msgstr "Direkt anslutning utan några automatiska tunnlar"
 
-#: ../src/remote-viewer-main.c:215 ../src/virt-viewer-main.c:78
+#: ../src/remote-viewer-main.c:219 ../src/virt-viewer-main.c:79
 msgid "Zoom level of window, in percentage"
 msgstr "Zoom-nivå för fönstret, i procent"
 
-#: ../src/remote-viewer-main.c:217 ../src/virt-viewer-main.c:80
+#: ../src/remote-viewer-main.c:221 ../src/virt-viewer-main.c:81
 msgid "Display debugging information"
 msgstr "Visa felsökningsinformation"
 
-#: ../src/remote-viewer-main.c:219
+#: ../src/remote-viewer-main.c:223
 msgid ""
 "Open in full screen mode (auto-conf adjusts guest resolution to fit the "
 "client's)."
-msgstr ""
+msgstr "Öppna i helskärmsläge (auto-konf justerar gästupplösningen till att passa klientens)."
 
-#: ../src/remote-viewer-main.c:219
+#: ../src/remote-viewer-main.c:223
 msgid "<auto-conf>"
-msgstr ""
+msgstr "<auto-konf>"
 
-#: ../src/remote-viewer-main.c:222
+#: ../src/remote-viewer-main.c:226
 msgid "Open connection using Spice controller communication"
 msgstr "Öppna anslutning med Spice-styrning av kommunikationen"
 
-#: ../src/remote-viewer-main.c:249
-msgid "Remote Viewer"
-msgstr "Fjärrvisare"
+#: ../src/remote-viewer-main.c:229 ../src/virt-viewer-main.c:85
+msgid "Customise hotkeys"
+msgstr ""
 
 #. Setup command line options
-#: ../src/remote-viewer-main.c:252
+#: ../src/remote-viewer-main.c:238
 msgid "- Remote viewer client"
 msgstr "- Fjärrvisarklient"
 
-#: ../src/remote-viewer-main.c:265
+#: ../src/remote-viewer-main.c:251
 #, c-format
 msgid ""
 "%s\n"
 "Run '%s --help' to see a full list of available command line options\n"
-msgstr ""
+msgstr "%s\nKör ”%s --help” för att se hela listan över tillgängliga kommandoradsflaggor\n"
 
-#: ../src/remote-viewer-main.c:277
+#: ../src/remote-viewer-main.c:263
 #, c-format
 msgid "Error: extra arguments given while using Spice controller\n"
-msgstr "Fel: extra argument angivna vid användning av Cpice-styrning\n"
+msgstr "Fel: extra argument angivna vid användning av Spice-styrning\n"
 
-#: ../src/remote-viewer-main.c:286
+#: ../src/remote-viewer-main.c:272
 #, c-format
 msgid "Error: can't handle multiple URIs\n"
 msgstr "Fel: kan inte hantera flera URI:er\n"
 
-#: ../src/remote-viewer-main.c:293 ../src/virt-viewer-main.c:131
+#: ../src/remote-viewer-main.c:279 ../src/virt-viewer-main.c:124
 #, c-format
 msgid "Zoom level must be within 10-200\n"
 msgstr "Zoom-nivån måste vara inom inom 10-200\n"
 
-#: ../src/remote-viewer.c:237 ../src/remote-viewer.c:784
+#: ../src/remote-viewer.c:243 ../src/remote-viewer.c:664
 msgid "Failed to initiate connection"
 msgstr "Misslyckades att initiera anslutningen"
 
-#: ../src/remote-viewer.c:250
+#: ../src/remote-viewer.c:258
 msgid "Display disabled by controller"
 msgstr "Visningen avaktiverad av styrenhet"
 
-#: ../src/remote-viewer.c:697
+#: ../src/remote-viewer.c:558
 #, c-format
 msgid "Controller connection failed: %s"
 msgstr "Styranslutning misslyckades: %s"
 
-#: ../src/remote-viewer.c:750
+#: ../src/remote-viewer.c:614
 msgid "Couldn't create a Spice session"
 msgstr "Kunde inte skapa en Spice-session"
 
-#: ../src/remote-viewer.c:764
+#: ../src/remote-viewer.c:628
 msgid "Setting up Spice session..."
 msgstr "Sätter upp en Spice-session …"
 
-#: ../src/remote-viewer.c:774
+#: ../src/remote-viewer.c:644
+#, c-format
+msgid "Invalid file %s"
+msgstr ""
+
+#: ../src/remote-viewer.c:651
 msgid "Cannot determine the connection type from URI"
 msgstr "Kan inte avgöra anslutningstypen från URI:n"
 
-#: ../src/remote-viewer.c:779
+#: ../src/remote-viewer.c:656
 #, c-format
 msgid "Couldn't create a session for this type: %s"
 msgstr "Kunde inte skapa en session för denna typ: %s"
@@ -197,7 +218,7 @@ msgstr "En fjärrskrivbordsklient byggt med GTK-VNC, SPICE-GTK och libvirt"
 
 #: ../src/virt-viewer-about.xml.h:5
 msgid "virt-manager.org"
-msgstr ""
+msgstr "virt-manager.org"
 
 #: ../src/virt-viewer-about.xml.h:6
 msgid ""
@@ -214,76 +235,80 @@ msgid ""
 "You should have received a copy of the GNU General Public License\n"
 "along with this program; if not, write to the Free Software\n"
 "Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA\n"
-msgstr ""
+msgstr "Detta program är fri programvara.  Du kan distribuera det och/eller modifiera det under villkoren i GNU General Public License, publicerad av Free Software Foundation, antingen version 2 eller (om du så vill) någon senare version.\n\nDetta program distribueras i hopp om att det ska vara användbart, men UTAN NÅGON GARANTI, även utan underförstådd garanti vid KÖP eller LÄMPLIGHET FÖR NÅGOT SPECIELLT ÄNDAMÅL. Se GNU General Public License för ytterligare information.\n\nDu bör ha fått en kopia av GNU General Public License tillsammans med detta program. Om inte, skriv till Free Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307  USA\n"
 
 #: ../src/virt-viewer-about.xml.h:20
 msgid "The Fedora Translation Team"
 msgstr "Fedoras översättningsgrupp"
 
-#: ../src/virt-viewer-app.c:284
-msgid "This is the last visible display. Do you want to quit?"
+#: ../src/virt-viewer-app.c:314
+msgid "Do you want to close the session?"
 msgstr ""
 
-#: ../src/virt-viewer-app.c:635
+#: ../src/virt-viewer-app.c:316
+msgid "Do not ask me again"
+msgstr ""
+
+#: ../src/virt-viewer-app.c:681
 #, c-format
 msgid "Waiting for display %d..."
-msgstr ""
+msgstr "Väntar på display %d …"
 
-#: ../src/virt-viewer-app.c:722
+#: ../src/virt-viewer-app.c:769
 #, c-format
 msgid "Unknown graphic type for the guest %s"
-msgstr ""
+msgstr "Okänd grafiktyp för gästen %s"
 
-#: ../src/virt-viewer-app.c:799
+#: ../src/virt-viewer-app.c:846
 msgid "Connect to ssh failed."
-msgstr ""
+msgstr "Anslutning till ssh misslyckades."
 
-#: ../src/virt-viewer-app.c:801
+#: ../src/virt-viewer-app.c:848
 msgid "Can't connect to channel, SSH only supported."
-msgstr ""
+msgstr "Kan inte ansluta till kanalen, endast SSH stödjs."
 
-#: ../src/virt-viewer-app.c:813
+#: ../src/virt-viewer-app.c:860
 msgid "Connect to channel unsupported."
-msgstr ""
+msgstr "Anslutning till kanalen stödjs inte."
 
-#: ../src/virt-viewer-app.c:893
+#: ../src/virt-viewer-app.c:942
 msgid "Connecting to graphic server"
-msgstr ""
+msgstr "Anslutning till grafikserver"
 
-#: ../src/virt-viewer-app.c:1023
+#: ../src/virt-viewer-app.c:1074
 msgid "Guest domain has shutdown"
-msgstr ""
+msgstr "Gästdomänen är avstängd"
 
-#: ../src/virt-viewer-app.c:1073
+#: ../src/virt-viewer-app.c:1124
 msgid "Connected to graphic server"
-msgstr ""
+msgstr "Ansluten till grafikserver"
 
-#: ../src/virt-viewer-app.c:1099
+#: ../src/virt-viewer-app.c:1150
 #, c-format
 msgid "Unable to connect to the graphic server %s"
-msgstr ""
+msgstr "Kan inte ansluta till grafikservern %s"
 
-#: ../src/virt-viewer-app.c:1128
+#: ../src/virt-viewer-app.c:1179
 #, c-format
 msgid ""
 "Unable to authenticate with remote desktop server at %s: %s\n"
 "Retry connection again?"
-msgstr ""
+msgstr "Kan inte autenticera med fjärskrivbordsservern på %s: %s\nFörsök ansluta igen?"
 
-#: ../src/virt-viewer-app.c:1148
+#: ../src/virt-viewer-app.c:1199
 #, c-format
 msgid "Unable to authenticate with remote desktop server: %s"
-msgstr ""
+msgstr "Kan inte autenticera med fjärskrivbordsserver: %s"
 
-#: ../src/virt-viewer-app.c:1156
+#: ../src/virt-viewer-app.c:1207
 #, c-format
 msgid "USB redirection error: %s"
-msgstr ""
+msgstr "USB-omdirigeringsfel: %s"
 
-#: ../src/virt-viewer-app.c:1652
+#: ../src/virt-viewer-app.c:1828
 #, c-format
 msgid "Display %d"
-msgstr ""
+msgstr "Display %d"
 
 #. * Local variables:
 #. *  c-indent-level: 4
@@ -293,60 +318,60 @@ msgstr ""
 #. 
 #: ../src/virt-viewer-auth.xml.h:1
 msgid "Authentication required"
-msgstr ""
+msgstr "Autenticering krävs"
 
 #: ../src/virt-viewer-auth.xml.h:2
 msgid "label"
-msgstr ""
+msgstr "etikett"
 
 #: ../src/virt-viewer-auth.xml.h:3
 msgid "Password:"
-msgstr ""
+msgstr "Lösenord:"
 
 #: ../src/virt-viewer-auth.xml.h:4
 msgid "Username:"
-msgstr ""
+msgstr "Användarnamn:"
 
 #: ../src/virt-viewer-main.c:38
 #, c-format
 msgid "%s version %s\n"
-msgstr ""
+msgstr "%s version %s\n"
 
-#: ../src/virt-viewer-main.c:70
+#: ../src/virt-viewer-main.c:71
 msgid "Attach to the local display using libvirt"
-msgstr ""
+msgstr "Koppla till den lokala displayen med libvirt"
 
-#: ../src/virt-viewer-main.c:72
+#: ../src/virt-viewer-main.c:73
 msgid "Connect to hypervisor"
-msgstr ""
+msgstr "Anslut till hypervisorn"
 
-#: ../src/virt-viewer-main.c:74
+#: ../src/virt-viewer-main.c:75
 msgid "Wait for domain to start"
-msgstr ""
+msgstr "Vänta på att domänen startar"
 
-#: ../src/virt-viewer-main.c:76
+#: ../src/virt-viewer-main.c:77
 msgid "Reconnect to domain upon restart"
-msgstr ""
+msgstr "Återanslut till domänen vid omstart"
 
-#: ../src/virt-viewer-main.c:82
+#: ../src/virt-viewer-main.c:83
 msgid "Open in full screen mode"
-msgstr ""
+msgstr "Öppna i helskärmsläge"
 
-#: ../src/virt-viewer-main.c:97
+#: ../src/virt-viewer-main.c:91
 msgid "Virt Viewer"
-msgstr ""
+msgstr "Virt Viewer"
 
-#: ../src/virt-viewer-main.c:101
+#: ../src/virt-viewer-main.c:94
 #, c-format
 msgid "Run '%s --help' to see a full list of available command line options"
-msgstr ""
+msgstr "Kör ”%s --help” för att se hela listan av tillgängliga kommandoradsflaggor"
 
 #. Setup command line options
-#: ../src/virt-viewer-main.c:106
+#: ../src/virt-viewer-main.c:99
 msgid "- Virtual machine graphical console"
-msgstr ""
+msgstr "- Grafisk konsol till virtuell maskin"
 
-#: ../src/virt-viewer-main.c:126
+#: ../src/virt-viewer-main.c:119
 #, c-format
 msgid ""
 "\n"
@@ -354,43 +379,103 @@ msgid ""
 "\n"
 "%s\n"
 "\n"
-msgstr ""
+msgstr "\nAnvändning: %s [FLAGGOR] DOMÄNNAMN|ID|UUID\n\n%s\n\n"
 
 #. Create the widgets
-#: ../src/virt-viewer-session-spice.c:382
+#: ../src/virt-viewer-session-spice.c:485
 msgid "Select USB devices for redirection"
-msgstr ""
+msgstr "Välj USB-enheter att omdirigera"
 
-#: ../src/virt-viewer-session-vnc.c:141
+#: ../src/virt-viewer-session-vnc.c:147
 #, c-format
 msgid "Unsupported authentication type %d"
-msgstr ""
+msgstr "Autenticeringstyp %d som inte stödjs"
 
-#: ../src/virt-viewer-window.c:859
+#: ../src/virt-viewer-window.c:576 ../src/virt-viewer.xml.h:13
+msgid "Ctrl+Alt+_Del"
+msgstr "Ctrl+Alt+_Del"
+
+#: ../src/virt-viewer-window.c:577 ../src/virt-viewer.xml.h:14
+msgid "Ctrl+Alt+_Backspace"
+msgstr "Ctrl+Alt+_Baksteg"
+
+#: ../src/virt-viewer-window.c:579 ../src/virt-viewer.xml.h:15
+msgid "Ctrl+Alt+F_1"
+msgstr "Ctrl+Alt+F_1"
+
+#: ../src/virt-viewer-window.c:580 ../src/virt-viewer.xml.h:16
+msgid "Ctrl+Alt+F_2"
+msgstr "Ctrl+Alt+F_2"
+
+#: ../src/virt-viewer-window.c:581 ../src/virt-viewer.xml.h:17
+msgid "Ctrl+Alt+F_3"
+msgstr "Ctrl+Alt+F_3"
+
+#: ../src/virt-viewer-window.c:582 ../src/virt-viewer.xml.h:18
+msgid "Ctrl+Alt+F_4"
+msgstr "Ctrl+Alt+F_4"
+
+#: ../src/virt-viewer-window.c:583 ../src/virt-viewer.xml.h:19
+msgid "Ctrl+Alt+F_5"
+msgstr "Ctrl+Alt+F_5"
+
+#: ../src/virt-viewer-window.c:584 ../src/virt-viewer.xml.h:20
+msgid "Ctrl+Alt+F_6"
+msgstr "Ctrl+Alt+F_6"
+
+#: ../src/virt-viewer-window.c:585 ../src/virt-viewer.xml.h:21
+msgid "Ctrl+Alt+F_7"
+msgstr "Ctrl+Alt+F_7"
+
+#: ../src/virt-viewer-window.c:586 ../src/virt-viewer.xml.h:22
+msgid "Ctrl+Alt+F_8"
+msgstr "Ctrl+Alt+F_8"
+
+#: ../src/virt-viewer-window.c:587 ../src/virt-viewer.xml.h:23
+msgid "Ctrl+Alt+F_9"
+msgstr "Ctrl+Alt+F_9"
+
+#: ../src/virt-viewer-window.c:588 ../src/virt-viewer.xml.h:24
+msgid "Ctrl+Alt+F1_0"
+msgstr "Ctrl+Alt+F1_0"
+
+#: ../src/virt-viewer-window.c:589 ../src/virt-viewer.xml.h:25
+msgid "Ctrl+Alt+F11"
+msgstr "Ctrl+Alt+F11"
+
+#: ../src/virt-viewer-window.c:590 ../src/virt-viewer.xml.h:26
+msgid "Ctrl+Alt+F12"
+msgstr "Ctrl+Alt+F12"
+
+#: ../src/virt-viewer-window.c:877 ../src/virt-viewer.xml.h:2
+msgid "Screenshot"
+msgstr "Skärmbild"
+
+#: ../src/virt-viewer-window.c:953
 msgid "Disconnect"
-msgstr ""
+msgstr "Koppla ifrån"
 
-#: ../src/virt-viewer-window.c:866 ../src/virt-viewer-window.c:867
+#: ../src/virt-viewer-window.c:960 ../src/virt-viewer-window.c:961
 #: ../src/virt-viewer.xml.h:3
 msgid "USB device selection"
-msgstr ""
+msgstr "Val av USB-enhet"
 
-#: ../src/virt-viewer-window.c:875
+#: ../src/virt-viewer-window.c:969
 msgid "Send key combination"
-msgstr ""
+msgstr "Skicka tangentbordskombination"
 
-#: ../src/virt-viewer-window.c:884 ../src/virt-viewer-window.c:885
+#: ../src/virt-viewer-window.c:978 ../src/virt-viewer-window.c:979
 msgid "Leave fullscreen"
-msgstr ""
+msgstr "Lämna helskärm"
 
-#: ../src/virt-viewer-window.c:964
+#: ../src/virt-viewer-window.c:1058
 msgid "Ctrl+Alt"
-msgstr ""
+msgstr "Ctrl+Alt"
 
-#: ../src/virt-viewer-window.c:967
+#: ../src/virt-viewer-window.c:1061
 #, c-format
 msgid "(Press %s to release pointer)"
-msgstr ""
+msgstr "(Tryck %s för att släppa markören)"
 
 #. translators:
 #. * This is "<ungrab (or empty)><space (or empty)><subtitle (or empty)> -
@@ -398,68 +483,72 @@ msgstr ""
 #. * Such as: "(Press Ctrl+Alt to release pointer) BigCorpTycoon MOTD - Virt
 #. Viewer"
 #. 
-#: ../src/virt-viewer-window.c:978
+#: ../src/virt-viewer-window.c:1072
 #, c-format
 msgid "%s%s%s - %s"
-msgstr ""
+msgstr "%s%s%s - %s"
 
 #. translators: <space>
-#: ../src/virt-viewer-window.c:982
+#: ../src/virt-viewer-window.c:1076
 msgid " "
-msgstr ""
+msgstr " "
 
 #: ../src/virt-viewer.c:144
 msgid "Waiting for guest domain to re-start"
-msgstr ""
+msgstr "Vänta på att gästdomänen startas om"
 
-#: ../src/virt-viewer.c:308
+#: ../src/virt-viewer.c:329
 #, c-format
 msgid "Cannot determine the graphic type for the guest %s"
-msgstr ""
+msgstr "Kan inte avgöra grafiktypen för gästen %s"
 
-#: ../src/virt-viewer.c:321
+#: ../src/virt-viewer.c:342
 #, c-format
 msgid "Cannot determine the graphic address for the guest %s"
-msgstr ""
+msgstr "Kan inte avgöra grafikadressen för gästen %s"
 
-#: ../src/virt-viewer.c:344
+#: ../src/virt-viewer.c:365
 #, c-format
 msgid "Cannot determine the host for the guest %s"
+msgstr "Kan inte avgöra värden för gästen %s"
+
+#: ../src/virt-viewer.c:531
+msgid "Waiting for libvirt to start"
 msgstr ""
 
-#: ../src/virt-viewer.c:474
+#: ../src/virt-viewer.c:535
 msgid "Finding guest domain"
-msgstr ""
+msgstr "Letar reda på gästdomänen"
 
-#: ../src/virt-viewer.c:478
+#: ../src/virt-viewer.c:539
 msgid "Waiting for guest domain to be created"
-msgstr ""
+msgstr "Väntar på att gästdomänen skall skapas"
 
-#: ../src/virt-viewer.c:483
+#: ../src/virt-viewer.c:544
 #, c-format
 msgid "Cannot find guest domain %s"
-msgstr ""
+msgstr "Kan inte hitta gästdomänen %s"
 
-#: ../src/virt-viewer.c:490
+#: ../src/virt-viewer.c:551
 msgid "Checking guest domain status"
-msgstr ""
+msgstr "Kontrollerar gästdomänens status"
 
-#: ../src/virt-viewer.c:497
+#: ../src/virt-viewer.c:558
 msgid "Waiting for guest domain to start"
-msgstr ""
+msgstr "Väntar på att gästdomänen skall starta"
 
-#: ../src/virt-viewer.c:504
+#: ../src/virt-viewer.c:565
 msgid "Waiting for guest domain to start server"
-msgstr ""
+msgstr "Väntar på att gästdomänen skall starta servern"
 
-#: ../src/virt-viewer.c:624
+#: ../src/virt-viewer.c:679
 #, c-format
 msgid "Unable to connect to libvirt with URI %s"
-msgstr ""
+msgstr "Kan inte ansluta till libvirt med URI %s"
 
-#: ../src/virt-viewer.c:625
+#: ../src/virt-viewer.c:680
 msgid "[none]"
-msgstr ""
+msgstr "[ingen]"
 
 #. * Local variables:
 #. *  c-indent-level: 4
@@ -469,108 +558,48 @@ msgstr ""
 #. 
 #: ../src/virt-viewer.xml.h:1
 msgid "_File"
-msgstr ""
-
-#: ../src/virt-viewer.xml.h:2
-msgid "Screenshot"
-msgstr ""
+msgstr "_Arkiv"
 
 #: ../src/virt-viewer.xml.h:4
 msgid "Smartcard insertion"
-msgstr ""
+msgstr "Insättning av smartkort"
 
 #: ../src/virt-viewer.xml.h:5
 msgid "Smartcard removal"
-msgstr ""
+msgstr "Uttag av smartkort"
 
 #: ../src/virt-viewer.xml.h:6
 msgid "_View"
-msgstr ""
+msgstr "_Visa"
 
 #: ../src/virt-viewer.xml.h:7
 msgid "Full screen"
-msgstr ""
+msgstr "Helskärm"
 
 #: ../src/virt-viewer.xml.h:8
 msgid "_Zoom"
-msgstr ""
+msgstr "_Zoom"
 
 #: ../src/virt-viewer.xml.h:9
 msgid "Automatically resize"
-msgstr ""
+msgstr "Ändra storlek automatiskt"
 
 #: ../src/virt-viewer.xml.h:10
 msgid "Displays"
-msgstr ""
+msgstr "Displayer"
 
 #: ../src/virt-viewer.xml.h:11
 msgid "Release cursor"
-msgstr ""
+msgstr "Släpp markören"
 
 #: ../src/virt-viewer.xml.h:12
 msgid "_Send key"
-msgstr ""
-
-#: ../src/virt-viewer.xml.h:13
-msgid "Ctrl+Alt+_Del"
-msgstr ""
-
-#: ../src/virt-viewer.xml.h:14
-msgid "Ctrl+Alt+_Backspace"
-msgstr ""
-
-#: ../src/virt-viewer.xml.h:15
-msgid "Ctrl+Alt+F_1"
-msgstr ""
-
-#: ../src/virt-viewer.xml.h:16
-msgid "Ctrl+Alt+F_2"
-msgstr ""
-
-#: ../src/virt-viewer.xml.h:17
-msgid "Ctrl+Alt+F_3"
-msgstr ""
-
-#: ../src/virt-viewer.xml.h:18
-msgid "Ctrl+Alt+F_4"
-msgstr ""
-
-#: ../src/virt-viewer.xml.h:19
-msgid "Ctrl+Alt+F_5"
-msgstr ""
-
-#: ../src/virt-viewer.xml.h:20
-msgid "Ctrl+Alt+F_6"
-msgstr ""
-
-#: ../src/virt-viewer.xml.h:21
-msgid "Ctrl+Alt+F_7"
-msgstr ""
-
-#: ../src/virt-viewer.xml.h:22
-msgid "Ctrl+Alt+F_8"
-msgstr ""
-
-#: ../src/virt-viewer.xml.h:23
-msgid "Ctrl+Alt+F_9"
-msgstr ""
-
-#: ../src/virt-viewer.xml.h:24
-msgid "Ctrl+Alt+F1_0"
-msgstr ""
-
-#: ../src/virt-viewer.xml.h:25
-msgid "Ctrl+Alt+F11"
-msgstr ""
-
-#: ../src/virt-viewer.xml.h:26
-msgid "Ctrl+Alt+F12"
-msgstr ""
+msgstr "_Skicka tangent"
 
 #: ../src/virt-viewer.xml.h:27
 msgid "_PrintScreen"
-msgstr ""
+msgstr "_PrintScreen"
 
 #: ../src/virt-viewer.xml.h:28
 msgid "_Help"
-msgstr ""
+msgstr "_Hjälp"

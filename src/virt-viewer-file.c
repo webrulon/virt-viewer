@@ -60,6 +60,7 @@
  * - disable-effects: string list
  * - enable-usb-autoshare: int
  * - usb-filter: string
+ * - secure-channels: string list
  *
  * (the file can be extended with extra groups or keys, which should
  * be prefixed with x- to avoid later conflicts)
@@ -99,6 +100,7 @@ enum  {
     PROP_USB_FILTER,
     PROP_PROXY,
     PROP_VERSION,
+    PROP_SECURE_CHANNELS,
 };
 
 VirtViewerFile*
@@ -541,6 +543,19 @@ virt_viewer_file_set_version(VirtViewerFile* self, const gchar* value)
     g_object_notify(G_OBJECT(self), "version");
 }
 
+gchar**
+virt_viewer_file_get_secure_channels(VirtViewerFile* self, gsize* length)
+{
+    return virt_viewer_file_get_string_list(self, "secure-channels", length);
+}
+
+void
+virt_viewer_file_set_secure_channels(VirtViewerFile* self, const gchar* const* value, gsize length)
+{
+    virt_viewer_file_set_string_list(self, "secure-channels", value, length);
+    g_object_notify(G_OBJECT(self), "secure-channels");
+}
+
 static void
 spice_hotkey_set_accel(VirtViewerApp *app, const gchar *accel_path, const gchar *key)
 {
@@ -690,6 +705,10 @@ virt_viewer_file_set_property(GObject* object, guint property_id,
     case PROP_VERSION:
         virt_viewer_file_set_version(self, g_value_get_string(value));
         break;
+    case PROP_SECURE_CHANNELS:
+        strv = g_value_get_boxed(value);
+        virt_viewer_file_set_secure_channels(self, (const gchar* const*)strv, g_strv_length(strv));
+        break;
     default:
         G_OBJECT_WARN_INVALID_PROPERTY_ID(object, property_id, pspec);
         break;
@@ -768,6 +787,9 @@ virt_viewer_file_get_property(GObject* object, guint property_id,
         break;
     case PROP_VERSION:
         g_value_take_string(value, virt_viewer_file_get_version(self));
+        break;
+    case PROP_SECURE_CHANNELS:
+        g_value_take_boxed(value, virt_viewer_file_get_secure_channels(self, NULL));
         break;
     default:
         G_OBJECT_WARN_INVALID_PROPERTY_ID(object, property_id, pspec);
@@ -891,4 +913,8 @@ virt_viewer_file_class_init(VirtViewerFileClass* klass)
     g_object_class_install_property(G_OBJECT_CLASS(klass), PROP_VERSION,
         g_param_spec_string("version", "version", "version", NULL,
                             G_PARAM_STATIC_STRINGS | G_PARAM_READWRITE));
+
+    g_object_class_install_property(G_OBJECT_CLASS(klass), PROP_SECURE_CHANNELS,
+        g_param_spec_boxed("secure-channels", "secure-channels", "secure-channels", G_TYPE_STRV,
+                           G_PARAM_STATIC_STRINGS | G_PARAM_READWRITE));
 }

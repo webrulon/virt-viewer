@@ -102,6 +102,8 @@ gchar* virt_viewer_file_get_proxy(VirtViewerFile* self);
 void virt_viewer_file_set_proxy(VirtViewerFile* self, const gchar* value);
 gchar* virt_viewer_file_get_version(VirtViewerFile* self);
 void virt_viewer_file_set_version(VirtViewerFile* self, const gchar* value);
+gchar** virt_viewer_file_get_secure_channels(VirtViewerFile* self, gsize* length);
+void virt_viewer_file_set_secure_channels(VirtViewerFile* self, const gchar* const* value, gsize length);
 
 G_END_DECLS
 

@@ -10,5 +10,6 @@ src/virt-viewer-main.c
 src/virt-viewer-session-spice.c
 src/virt-viewer-session-vnc.c
 src/virt-viewer-window.c
+src/virt-viewer-file.c
 src/virt-viewer.c
 [type: gettext/glade] src/virt-viewer.xml

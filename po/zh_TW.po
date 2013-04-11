@@ -148,7 +148,7 @@ msgstr "- 遠端檢視器客戶端"
 msgid ""
 "%s\n"
 "Run '%s --help' to see a full list of available command line options\n"
-msgstr "%s⏎ 執行 '%s --help' 以檢視可用指令選項的完整清單\\n"
+msgstr "%s⏎ 執行 '%s --help' 以檢視可用指令選項的完整清單\n"
 
 #: ../src/remote-viewer-main.c:263
 #, c-format

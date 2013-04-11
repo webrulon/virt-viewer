@@ -87,6 +87,6 @@
       <RemoveExistingProducts After="InstallValidate"/>
     </InstallExecuteSequence>
 
-    <Icon Id="virt-viewer.ico" SourceFile="virt-viewer.ico"/>
+    <Icon Id="virt-viewer.ico" SourceFile="../icons/virt-viewer.ico"/>
   </Product>
 </Wix>

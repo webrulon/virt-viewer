@@ -1,6 +1,18 @@
   Virt Viewer News
   ================
 
+0.5.6: Apr 12, 2013
+-------------------
+
+  - Add ovirt:// support to remote-viewer (needs libgovirt)
+  - Many fullscreen and multi-monitor fixes
+  - Add a minimum version check in connection file
+  - Fix sending key combinations from "Send Key" menu when the key names are
+    localized
+  - Fix build with older glib and gtk+
+  - Fix MSI x64 build
+  - Clean-ups (remove browser plugin entirely)
+
 0.5.5: Feb 13, 2013
 -------------------
 

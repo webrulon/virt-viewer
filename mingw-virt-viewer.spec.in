@@ -88,23 +88,17 @@ MinGW Windows virt-viewer MSI
 %mingw_configure --with-gtk=2.0 --with-buildid=-%{release}
 
 %mingw_make %{?_smp_mflags} V=1
-%if 0%{?mingw_build_win32} == 1
-make -C build_win32$MINGW_BUILDDIR_SUFFIX GLIB_ARCH="win32" MANUFACTURER="Fedora" -C data virt-viewer-%{version}.msi
-%endif
-
-%if 0%{?mingw_build_win64} == 1
-make -C build_win64$MINGW_BUILDDIR_SUFFIX GLIB_ARCH="win64" MANUFACTURER="Fedora" -C data virt-viewer-%{version}.msi
-%endif
+%mingw_make %{?_smp_mflags} V=1 -C data msi
 
 %install
 %mingw_make_install DESTDIR=$RPM_BUILD_ROOT
 
 %if 0%{?mingw_build_win32} == 1
-cp build_win32$MINGW_BUILDDIR_SUFFIX/data/virt-viewer-@VERSION@.msi $RPM_BUILD_ROOT/%{mingw32_datadir}/virt-viewer
+cp build_win32$MINGW_BUILDDIR_SUFFIX/data/virt-viewer-x86-@VERSION@.msi $RPM_BUILD_ROOT/%{mingw32_datadir}/virt-viewer
 %endif
 
 %if 0%{?mingw_build_win64} == 1
-cp build_win32$MINGW_BUILDDIR_SUFFIX/data/virt-viewer-@VERSION@.msi $RPM_BUILD_ROOT/%{mingw64_datadir}/virt-viewer
+cp build_win32$MINGW_BUILDDIR_SUFFIX/data/virt-viewer-x64-@VERSION@.msi $RPM_BUILD_ROOT/%{mingw64_datadir}/virt-viewer
 %endif
 
 %find_lang virt-viewer

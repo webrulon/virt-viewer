@@ -2,14 +2,30 @@
 
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
 
+  <?define Version = "@VERSION@"?>
+  <?define Arch = "@WIXL_ARCH@"?>
+  <?if $(var.Arch) = "x64"?>
+      <?define GLIB_ARCH = "win64"?>
+      <?define ArchString = "64-bit"?>
+      <?define ArchProgramFilesFolder = "ProgramFiles64Folder"?>
+      <?define Win64 = "yes"?>
+  <?else?>
+      <?define GLIB_ARCH = "win32"?>
+      <?define ArchString = "32-bit"?>
+      <?define ArchProgramFilesFolder = "ProgramFilesFolder"?>
+      <?define Win64 = "no"?>
+  <?endif?>
+
   <?require spice-gtk.wxi?>
   <?require gtk-vnc.wxi?>
   <?require libvirt.wxi?>
 
-  <?define Version = "@VERSION@"?>
   <?define UpgradeCode = "5B027138-1A63-49E6-877E-055E5EEC1903"?>
-  <Product Id="*" Name="VirtViewer" Manufacturer="$(env.MANUFACTURER)"
-           Version="$(var.Version)" UpgradeCode="$(var.UpgradeCode)"
+  <Product Id="*"
+           Name="VirtViewer $(var.Version) ($(var.ArchString))"
+           Manufacturer="$(env.MANUFACTURER)"
+           Version="$(var.Version)"
+           UpgradeCode="$(var.UpgradeCode)"
            Language="1033">
 
     <Package InstallerVersion="200" Compressed="yes" Comments="comments"/>
@@ -48,7 +64,7 @@
     </DirectoryRef>
 
     <Directory Id="TARGETDIR" Name="SourceDir">
-      <Directory Id="ProgramFilesFolder">
+      <Directory Id="$(var.ArchProgramFilesFolder)">
         <Directory Id="INSTALLDIR" Name="VirtViewer">
           <Component Id="CDepsFile" Guid="*">
             <File Id="filA1E799D196006E6DF67DACE15B8C6193" KeyPath="yes" Source="deps.txt"/>

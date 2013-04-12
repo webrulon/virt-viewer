@@ -26,6 +26,15 @@ AC_MSG_CHECKING([for native Win32])
 case "$host_os" in
      *mingw*|*cygwin*)
         os_win32=yes
+        case "$host" in
+            amd64*|x86_64*)
+                WIXL_ARCH="x64"
+            ;;
+            *)
+                WIXL_ARCH="x86"
+            ;;
+        esac
+        AC_SUBST(WIXL_ARCH)
         ;;
      *)
         os_win32=no

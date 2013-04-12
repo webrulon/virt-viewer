@@ -23,21 +23,25 @@ virt-viewer-$(VERSION).exe: virt-viewer.nsis deps.txt
 	makensis -NOCD -DDESTDIR=$$DESTDIR $< >/dev/null && \
 	rm -rf $$DESTDIR
 
-virt-viewer-$(VERSION).msi: virt-viewer.wxs deps.txt
-	$(AM_V_GEN)DESTDIR=`mktemp -d` && \
-	make -C $(top_builddir) install DESTDIR=$$DESTDIR >/dev/null && \
-	find $$DESTDIR | wixl-heat -p $$DESTDIR$(prefix)/ \
-	    --component-group CG.virt-viewer --var var.DESTDIR \
-	    --directory-ref=INSTALLDIR > virt-viewer-files.wxs && \
-	wixl -D SourceDir=$(prefix) \
-             -D DESTDIR=$$DESTDIR$(prefix) -o $@ \
-	     $< virt-viewer-files.wxs && \
+virt-viewer-$(WIXL_ARCH)-$(VERSION).msi: virt-viewer.wxs deps.txt
+	$(AM_V_GEN)DESTDIR=`mktemp -d` &&				\
+	make -C $(top_builddir) install DESTDIR=$$DESTDIR >/dev/null &&	\
+	find $$DESTDIR | wixl-heat -p $$DESTDIR$(prefix)/		\
+	    --component-group CG.virt-viewer --var var.DESTDIR		\
+	    --directory-ref=INSTALLDIR > virt-viewer-files.wxs &&	\
+	wixl -D SourceDir=$(prefix)					\
+             -D DESTDIR=$$DESTDIR$(prefix)				\
+             --arch $(WIXL_ARCH)					\
+             -o $@							\
+	     $< virt-viewer-files.wxs &&				\
 	rm -rf $$DESTDIR virt-viewer-files.wxs
+
+msi: virt-viewer-$(WIXL_ARCH)-$(VERSION).msi
 
 CLEANFILES +=					\
 	deps.txt				\
 	virt-viewer-$(VERSION).exe		\
-	virt-viewer-$(VERSION).msi		\
+	virt-viewer-$(WIXL_ARCH)-$(VERSION).msi	\
 	$(NULL)
 
 else #!WIN32

@@ -1893,7 +1893,7 @@ virt_viewer_app_set_connect_info(VirtViewerApp *self,
     priv->host = g_strdup(host);
     priv->ghost = g_strdup(ghost);
     priv->gport = g_strdup(gport);
-    priv->gtlsport = gtlsport ? g_strdup(gtlsport) : NULL;
+    priv->gtlsport = g_strdup(gtlsport);
     priv->transport = g_strdup(transport);
     priv->unixsock = g_strdup(unixsock);
     priv->user = g_strdup(user);

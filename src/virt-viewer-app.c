@@ -1673,11 +1673,12 @@ virt_viewer_app_update_pretty_address(VirtViewerApp *self)
 
     priv = self->priv;
     g_free(priv->pretty_address);
+    priv->pretty_address = NULL;
     if (priv->guri)
         priv->pretty_address = g_strdup(priv->guri);
     else if (priv->gport)
         priv->pretty_address = g_strdup_printf("%s:%s", priv->ghost, priv->gport);
-    else
+    else if (priv->host && priv->unixsock)
         priv->pretty_address = g_strdup_printf("%s:%s", priv->host, priv->unixsock);
 }
 

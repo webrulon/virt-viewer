@@ -481,9 +481,9 @@ ViewOvBoxUnrealize(GtkWidget *widget) // IN
 /*
  *-----------------------------------------------------------------------------
  *
- * ViewOvBoxSizeRequest --
+ * ViewOvBoxRealSizeRequest --
  *
- *      "size_request" method of a ViewOvBox.
+ *      "size_request" method, generalized to work with both gtk-2 and 3.
  *
  * Results:
  *      None
@@ -494,12 +494,12 @@ ViewOvBoxUnrealize(GtkWidget *widget) // IN
  *-----------------------------------------------------------------------------
  */
 static void
-ViewOvBoxSizeRequest(GtkWidget *widget,           // IN
-                     GtkRequisition *requisition) // OUT
+ViewOvBoxRealSizeRequest(GtkWidget *widget,           // IN
+   GtkRequisition *min_in, GtkRequisition *nat_in,      // IN
+   GtkRequisition *min_out, GtkRequisition *nat_out)    // OUT
 {
    ViewOvBox *that;
    ViewOvBoxPrivate *priv;
-   GtkRequisition underR;
    gboolean expand;
    gboolean fill;
    guint padding;
@@ -509,10 +509,8 @@ ViewOvBoxSizeRequest(GtkWidget *widget,           // IN
    priv = that->priv;
 
 #if GTK_CHECK_VERSION(3, 0, 0)
-   gtk_widget_get_preferred_size(priv->under, NULL, &underR);
    gtk_widget_get_preferred_size(priv->over, NULL, &priv->overR);
 #else
-   gtk_widget_size_request(priv->under, &underR);
    gtk_widget_size_request(priv->over, &priv->overR);
 #endif
 
@@ -521,10 +519,19 @@ ViewOvBoxSizeRequest(GtkWidget *widget,           // IN
                            "fill", &fill,
                            "padding", &padding,
                            NULL);
-   requisition->width = MAX(underR.width,
-                            priv->overR.width + ((expand || fill) ? 0 : padding));
+
    min = ViewOvBoxGetActualMin(that);
-   requisition->height = MAX(underR.height + min, priv->overR.height);
+
+   if (min_out) {
+      min_out->width = MAX(min_in->width, priv->overR.width +
+                                            ((expand || fill) ? 0 : padding));
+      min_out->height = MAX(min_in->height + min, priv->overR.height);
+   }
+   if (nat_out) {
+      nat_out->width = MAX(nat_in->width, priv->overR.width +
+                                            ((expand || fill) ? 0 : padding));
+      nat_out->height = MAX(nat_in->height + min, priv->overR.height);
+   }
 }
 
 #if GTK_CHECK_VERSION(3, 0, 0)
@@ -533,11 +540,15 @@ ViewOvBox_get_preferred_width (GtkWidget *widget,
                                gint      *minimal_width,
                                gint      *natural_width)
 {
-  GtkRequisition requisition;
+   ViewOvBoxPrivate *priv = VIEW_OV_BOX(widget)->priv;
+   GtkRequisition min_in, nat_in, min_out, nat_out;
 
-  ViewOvBoxSizeRequest (widget, &requisition);
+   gtk_widget_get_preferred_size(priv->under, &min_in, &nat_in);
 
-  *minimal_width = *natural_width = requisition.width;
+   ViewOvBoxRealSizeRequest(widget, &min_in, &nat_in, &min_out, &nat_out);
+
+   *minimal_width = min_out.width;
+   *natural_width = nat_out.width;
 }
 
 static void
@@ -545,11 +556,29 @@ ViewOvBox_get_preferred_height (GtkWidget *widget,
                                 gint      *minimal_height,
                                 gint      *natural_height)
 {
-  GtkRequisition requisition;
+   ViewOvBoxPrivate *priv = VIEW_OV_BOX(widget)->priv;
+   GtkRequisition min_in, nat_in, min_out, nat_out;
 
-  ViewOvBoxSizeRequest (widget, &requisition);
+   gtk_widget_get_preferred_size(priv->under, &min_in, &nat_in);
 
-  *minimal_height = *natural_height = requisition.height;
+   ViewOvBoxRealSizeRequest(widget, &min_in, &nat_in, &min_out, &nat_out);
+
+   *minimal_height = min_out.height;
+   *natural_height = nat_out.height;
+}
+
+#else
+
+static void
+ViewOvBoxSizeRequest(GtkWidget *widget,           // IN
+                     GtkRequisition *requisition) // OUT
+{
+   ViewOvBoxPrivate *priv = VIEW_OV_BOX(widget)->priv;
+   GtkRequisition min;
+
+   gtk_widget_size_request(priv->under, &min);
+
+   ViewOvBoxRealSizeRequest(widget, &min, NULL, requisition, NULL);
 }
 #endif
 

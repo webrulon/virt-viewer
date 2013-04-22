@@ -355,46 +355,21 @@ G_MODULE_EXPORT void
 virt_viewer_window_menu_view_zoom_out(GtkWidget *menu G_GNUC_UNUSED,
                                       VirtViewerWindow *self)
 {
-    VirtViewerWindowPrivate *priv = self->priv;
-
-    if (priv->zoomlevel > 10)
-        priv->zoomlevel -= 10;
-
-    if (!priv->display)
-        return;
-
-    gtk_window_resize(GTK_WINDOW(priv->window), 1, 1);
-    if (priv->display)
-        virt_viewer_display_set_zoom_level(VIRT_VIEWER_DISPLAY(priv->display), priv->zoomlevel);
+    virt_viewer_window_set_zoom_level(self, self->priv->zoomlevel - 10);
 }
 
 G_MODULE_EXPORT void
 virt_viewer_window_menu_view_zoom_in(GtkWidget *menu G_GNUC_UNUSED,
                                      VirtViewerWindow *self)
 {
-    VirtViewerWindowPrivate *priv = self->priv;
-
-    if (priv->zoomlevel < 400)
-        priv->zoomlevel += 10;
-
-    if (!priv->display)
-        return;
-
-    gtk_window_resize(GTK_WINDOW(priv->window), 1, 1);
-    if (priv->display)
-        virt_viewer_display_set_zoom_level(VIRT_VIEWER_DISPLAY(priv->display), priv->zoomlevel);
+    virt_viewer_window_set_zoom_level(self, self->priv->zoomlevel + 10);
 }
 
 G_MODULE_EXPORT void
 virt_viewer_window_menu_view_zoom_reset(GtkWidget *menu G_GNUC_UNUSED,
                                         VirtViewerWindow *self)
 {
-    VirtViewerWindowPrivate *priv = self->priv;
-    gtk_window_resize(GTK_WINDOW(priv->window), 1, 1);
-    priv->zoomlevel = 100;
-
-    if (priv->display)
-        virt_viewer_display_set_zoom_level(VIRT_VIEWER_DISPLAY(priv->display), priv->zoomlevel);
+    virt_viewer_window_set_zoom_level(self, 100);
 }
 
 /*
@@ -1203,10 +1178,23 @@ virt_viewer_window_hide(VirtViewerWindow *self)
 void
 virt_viewer_window_set_zoom_level(VirtViewerWindow *self, gint zoom_level)
 {
-    g_return_if_fail(VIRT_VIEWER_IS_WINDOW(self));
+    VirtViewerWindowPrivate *priv;
 
-    /* FIXME: turn into a dynamic property */
-    self->priv->zoomlevel = zoom_level;
+    g_return_if_fail(VIRT_VIEWER_IS_WINDOW(self));
+    priv = self->priv;
+
+    if (zoom_level < 10)
+        zoom_level = 10;
+    if (zoom_level > 400)
+        zoom_level = 400;
+    priv->zoomlevel = zoom_level;
+
+    if (!priv->display)
+        return;
+
+    gtk_window_resize(GTK_WINDOW(priv->window), 1, 1);
+
+    virt_viewer_display_set_zoom_level(VIRT_VIEWER_DISPLAY(priv->display), priv->zoomlevel);
 }
 
 gint virt_viewer_window_get_zoom_level(VirtViewerWindow *self)

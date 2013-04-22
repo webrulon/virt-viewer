@@ -485,9 +485,9 @@ void virt_viewer_display_set_desktop_size(VirtViewerDisplay *display,
 
     priv->desktopWidth = width;
     priv->desktopHeight = height;
-    priv->dirty = TRUE;
 
-    gtk_widget_queue_resize(GTK_WIDGET(display));
+    virt_viewer_display_queue_resize(display);
+
     g_signal_emit_by_name(display, "display-desktop-resize");
 }
 

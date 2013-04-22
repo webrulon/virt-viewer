@@ -36,7 +36,9 @@
 
 struct _VirtViewerDisplayPrivate
 {
+#if !GTK_CHECK_VERSION(3, 0, 0)
     gboolean dirty;
+#endif
     guint desktopWidth;
     guint desktopHeight;
     guint zoom_level;
@@ -48,9 +50,10 @@ struct _VirtViewerDisplayPrivate
     gboolean auto_resize;
 };
 
+#if !GTK_CHECK_VERSION(3, 0, 0)
 static void virt_viewer_display_size_request(GtkWidget *widget,
                                              GtkRequisition *requisition);
-#if GTK_CHECK_VERSION(3, 0, 0)
+#else
 static void virt_viewer_display_get_preferred_width(GtkWidget *widget,
                                                     int *minwidth,
                                                     int *defwidth);
@@ -255,8 +258,10 @@ virt_viewer_display_init(VirtViewerDisplay *display)
     display->priv->desktopHeight = 100;
     display->priv->zoom_level = 100;
     display->priv->zoom = TRUE;
-    display->priv->dirty = TRUE;
     display->priv->auto_resize = TRUE;
+#if !GTK_CHECK_VERSION(3, 0, 0)
+    display->priv->dirty = TRUE;
+#endif
 }
 
 GtkWidget*
@@ -350,6 +355,7 @@ virt_viewer_display_grab_focus(GtkWidget *widget)
 }
 
 
+#if !GTK_CHECK_VERSION(3, 0, 0)
 static gboolean
 virt_viewer_display_idle(gpointer opaque)
 {
@@ -390,17 +396,24 @@ virt_viewer_display_size_request(GtkWidget *widget,
               priv->desktopWidth, priv->desktopHeight);
 }
 
+#else
 
-#if GTK_CHECK_VERSION(3, 0, 0)
 static void virt_viewer_display_get_preferred_width(GtkWidget *widget,
                                                     int *minwidth,
                                                     int *defwidth)
 {
-    GtkRequisition req;
+    VirtViewerDisplay *display = VIRT_VIEWER_DISPLAY(widget);
+    VirtViewerDisplayPrivate *priv = display->priv;
+    int border_width = gtk_container_get_border_width(GTK_CONTAINER(widget));
 
-    virt_viewer_display_size_request(widget, &req);
+    *minwidth = 50 + 2 * border_width;
 
-    *minwidth = *defwidth = req.width;
+    if (priv->zoom) {
+        *defwidth = round(priv->desktopWidth * priv->zoom_level / 100.0) +
+                    2 * border_width;
+    } else {
+        *defwidth = priv->desktopWidth + 2 * border_width;
+    }
 }
 
 
@@ -408,11 +421,18 @@ static void virt_viewer_display_get_preferred_height(GtkWidget *widget,
                                                      int *minheight,
                                                      int *defheight)
 {
-    GtkRequisition req;
+    VirtViewerDisplay *display = VIRT_VIEWER_DISPLAY(widget);
+    VirtViewerDisplayPrivate *priv = display->priv;
+    int border_height = gtk_container_get_border_width(GTK_CONTAINER(widget));
 
-    virt_viewer_display_size_request(widget, &req);
+    *minheight = 50 + 2 * border_height;
 
-    *minheight = *defheight = req.height;
+    if (priv->zoom) {
+        *defheight = round(priv->desktopHeight * priv->zoom_level / 100.0) +
+                    2 * border_height;
+    } else {
+        *defheight = priv->desktopHeight + 2 * border_height;
+    }
 }
 #endif
 
@@ -436,7 +456,11 @@ virt_viewer_display_size_allocate(GtkWidget *widget,
 
     if (priv->desktopWidth == 0 ||
         priv->desktopHeight == 0)
+#if !GTK_CHECK_VERSION(3, 0, 0)
         goto end;
+#else
+        return;
+#endif
 
     desktopAspect = (double)priv->desktopWidth / (double)priv->desktopHeight;
 
@@ -462,6 +486,7 @@ virt_viewer_display_size_allocate(GtkWidget *widget,
         gtk_widget_size_allocate(child, &child_allocation);
     }
 
+#if !GTK_CHECK_VERSION(3, 0, 0)
 end:
     /* This unsets the size request, so that the user can
      * manually resize the window smaller again
@@ -471,6 +496,7 @@ end:
         if (gtk_widget_get_mapped(widget))
             priv->dirty = FALSE;
     }
+#endif
 }
 
 
@@ -505,11 +531,12 @@ void virt_viewer_display_get_desktop_size(VirtViewerDisplay *display,
 
 void virt_viewer_display_queue_resize(VirtViewerDisplay *display)
 {
-    VirtViewerDisplayPrivate *priv = display->priv;
     GtkWidget *child = gtk_bin_get_child(GTK_BIN(display));
 
     if (child && gtk_widget_get_visible(child)) {
-        priv->dirty = TRUE;
+#if !GTK_CHECK_VERSION(3, 0, 0)
+        display->priv->dirty = TRUE;
+#endif
         gtk_widget_queue_resize(GTK_WIDGET(display));
     }
 }

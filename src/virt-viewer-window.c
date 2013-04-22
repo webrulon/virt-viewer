@@ -372,6 +372,22 @@ virt_viewer_window_menu_view_zoom_reset(GtkWidget *menu G_GNUC_UNUSED,
     virt_viewer_window_set_zoom_level(self, 100);
 }
 
+/* Kick GtkWindow to tell it to adjust to our new widget sizes */
+static void
+virt_viewer_window_queue_resize(VirtViewerWindow *self)
+{
+    VirtViewerWindowPrivate *priv = self->priv;
+#if GTK_CHECK_VERSION(3, 0, 0)
+    GtkRequisition nat;
+
+    gtk_window_set_default_size(GTK_WINDOW(priv->window), -1, -1);
+    gtk_widget_get_preferred_size(GTK_WIDGET(priv->window), NULL, &nat);
+    gtk_window_resize(GTK_WINDOW(priv->window), nat.width, nat.height);
+#else
+    gtk_window_resize(GTK_WINDOW(priv->window), 1, 1);
+#endif
+}
+
 /*
  * This code attempts to resize the top level window to be large enough
  * to contain the entire display desktop at 1:1 ratio. If the local desktop
@@ -398,9 +414,6 @@ virt_viewer_window_resize(VirtViewerWindow *self, gboolean keep_win_size)
         DEBUG_LOG("Skipping inactive resize");
         return;
     }
-
-    if (!keep_win_size)
-        gtk_window_resize(GTK_WINDOW(priv->window), 1, 1);
 
     virt_viewer_display_get_desktop_size(VIRT_VIEWER_DISPLAY(priv->display),
                                          &desktopWidth, &desktopHeight);
@@ -441,6 +454,9 @@ virt_viewer_window_resize(VirtViewerWindow *self, gboolean keep_win_size)
 
     virt_viewer_display_set_desktop_size(VIRT_VIEWER_DISPLAY(priv->display),
                                          width, height);
+
+    if (!keep_win_size)
+        virt_viewer_window_queue_resize(self);
 }
 
 static void
@@ -1192,9 +1208,9 @@ virt_viewer_window_set_zoom_level(VirtViewerWindow *self, gint zoom_level)
     if (!priv->display)
         return;
 
-    gtk_window_resize(GTK_WINDOW(priv->window), 1, 1);
-
     virt_viewer_display_set_zoom_level(VIRT_VIEWER_DISPLAY(priv->display), priv->zoomlevel);
+
+    virt_viewer_window_queue_resize(self);
 }
 
 gint virt_viewer_window_get_zoom_level(VirtViewerWindow *self)

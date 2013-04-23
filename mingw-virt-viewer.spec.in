@@ -98,7 +98,7 @@ cp build_win32$MINGW_BUILDDIR_SUFFIX/data/virt-viewer-x86-@VERSION@.msi $RPM_BUI
 %endif
 
 %if 0%{?mingw_build_win64} == 1
-cp build_win32$MINGW_BUILDDIR_SUFFIX/data/virt-viewer-x64-@VERSION@.msi $RPM_BUILD_ROOT/%{mingw64_datadir}/virt-viewer
+cp build_win64$MINGW_BUILDDIR_SUFFIX/data/virt-viewer-x64-@VERSION@.msi $RPM_BUILD_ROOT/%{mingw64_datadir}/virt-viewer
 %endif
 
 %find_lang virt-viewer

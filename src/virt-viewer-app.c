@@ -260,6 +260,52 @@ virt_viewer_app_quit(VirtViewerApp *self)
     gtk_main_quit();
 }
 
+void
+virt_viewer_app_maybe_quit(VirtViewerApp *self, VirtViewerWindow *window)
+{
+    GError *error = NULL;
+
+    gboolean ask = g_key_file_get_boolean(self->priv->config,
+                                          "virt-viewer", "ask-quit", &error);
+    if (error) {
+        ask = TRUE;
+        g_clear_error(&error);
+    }
+
+    if (ask) {
+        GtkWidget *dialog =
+            gtk_message_dialog_new (virt_viewer_window_get_window(window),
+                    GTK_DIALOG_DESTROY_WITH_PARENT,
+                    GTK_MESSAGE_QUESTION,
+                    GTK_BUTTONS_OK_CANCEL,
+                    _("Do you want to close the session?"));
+
+        GtkWidget *check = gtk_check_button_new_with_label(_("Do not ask me again"));
+        gtk_container_add(GTK_CONTAINER(gtk_dialog_get_content_area(GTK_DIALOG(dialog))), check);
+        gtk_widget_show(check);
+
+        gint result = gtk_dialog_run(GTK_DIALOG(dialog));
+
+        gboolean dont_ask = FALSE;
+        g_object_get(check, "active", &dont_ask, NULL);
+        if (dont_ask)
+            g_key_file_set_boolean(self->priv->config,
+                    "virt-viewer", "ask-quit", FALSE);
+
+        gtk_widget_destroy(dialog);
+        switch (result) {
+            case GTK_RESPONSE_OK:
+                virt_viewer_app_quit(self);
+                break;
+            default:
+                break;
+        }
+    } else {
+        virt_viewer_app_quit(self);
+    }
+
+}
+
 static void count_window_visible(gpointer key G_GNUC_UNUSED,
                                  gpointer value,
                                  gpointer user_data)
@@ -284,8 +330,6 @@ virt_viewer_app_window_set_visible(VirtViewerApp *self,
                                    VirtViewerWindow *window,
                                    gboolean visible)
 {
-    GError *error = NULL;
-
     g_return_val_if_fail(VIRT_VIEWER_IS_APP(self), FALSE);
     g_return_val_if_fail(VIRT_VIEWER_IS_WINDOW(window), FALSE);
 
@@ -298,46 +342,7 @@ virt_viewer_app_window_set_visible(VirtViewerApp *self,
             return FALSE;
         }
 
-        gboolean ask = g_key_file_get_boolean(self->priv->config,
-                                              "virt-viewer", "ask-quit", &error);
-        if (error) {
-            ask = TRUE;
-            g_clear_error(&error);
-        }
-
-        if (ask) {
-            GtkWidget *dialog =
-                gtk_message_dialog_new (virt_viewer_window_get_window(window),
-                                        GTK_DIALOG_DESTROY_WITH_PARENT,
-                                        GTK_MESSAGE_QUESTION,
-                                        GTK_BUTTONS_OK_CANCEL,
-                                        _("Do you want to close the session?"));
-
-            GtkWidget *check = gtk_check_button_new_with_label(_("Do not ask me again"));
-            gtk_container_add(GTK_CONTAINER(gtk_dialog_get_content_area(GTK_DIALOG(dialog))), check);
-            gtk_widget_show(check);
-
-            gint result = gtk_dialog_run(GTK_DIALOG(dialog));
-
-            gboolean dont_ask = FALSE;
-            g_object_get(check, "active", &dont_ask, NULL);
-            if (dont_ask)
-                g_key_file_set_boolean(self->priv->config,
-                                       "virt-viewer", "ask-quit", FALSE);
-
-            gtk_widget_destroy(dialog);
-            switch (result) {
-            case GTK_RESPONSE_OK:
-                virt_viewer_app_quit(self);
-                break;
-            default:
-                break;
-            }
-            return FALSE;
-        } else {
-            virt_viewer_app_quit(self);
-            return FALSE;
-        }
+        virt_viewer_app_maybe_quit(self, window);
     }
 
     g_warn_if_reached();

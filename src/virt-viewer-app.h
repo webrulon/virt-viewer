@@ -65,6 +65,7 @@ void virt_viewer_app_set_title(VirtViewerApp *app, const char *title);
 void virt_viewer_app_set_debug(gboolean debug);
 gboolean virt_viewer_app_start(VirtViewerApp *app);
 void virt_viewer_app_quit(VirtViewerApp *self);
+void virt_viewer_app_maybe_quit(VirtViewerApp *self, VirtViewerWindow *window);
 VirtViewerWindow* virt_viewer_app_get_main_window(VirtViewerApp *self);
 void virt_viewer_app_trace(VirtViewerApp *self, const char *fmt, ...);
 void virt_viewer_app_simple_message_dialog(VirtViewerApp *self, const char *fmt, ...);

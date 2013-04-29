@@ -3,13 +3,13 @@
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
-# Ani Peter <apeter@redhat.com>, 2010,2012.
+# Ani Peter <apeter@redhat.com>, 2010,2012-2013
 msgid ""
 msgstr ""
 "Project-Id-Version: virt-viewer\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-04-08 11:18+0100\n"
-"PO-Revision-Date: 2013-04-08 10:19+0000\n"
+"POT-Creation-Date: 2013-04-29 18:06+0100\n"
+"PO-Revision-Date: 2013-04-29 17:06+0000\n"
 "Last-Translator: Daniel Berrange <dan-transifex@berrange.com>\n"
 "Language-Team: Malayalam <discuss@lists.smc.org.in>\n"
 "MIME-Version: 1.0\n"
@@ -24,11 +24,11 @@ msgstr "റിമോട്ട് വ്യൂവര്‍"
 
 #: ../data/remote-viewer.desktop.in.h:2
 msgid "Access remote desktops"
-msgstr ""
+msgstr "വിദൂര പണിയിടങ്ങളിലേക്കു് പ്രവേശിയ്ക്കുക"
 
 #: ../data/virt-viewer-mime.xml.in.h:1
 msgid "Virt-Viewer connection file"
-msgstr ""
+msgstr "Virt-Viewer കണക്ഷന്‍ ഫയല്‍"
 
 #: ../src/gbinding.c:637
 msgid "Source"
@@ -103,7 +103,7 @@ msgstr "വെര്‍ബോസ് വിവരം കാണിയ്ക്ക�
 
 #: ../src/remote-viewer-main.c:215
 msgid "Set window title"
-msgstr ""
+msgstr "ജാലകത്തിന്റെ തലക്കെട്ട് സജ്ജമാക്കുക"
 
 #: ../src/remote-viewer-main.c:217 ../src/virt-viewer-main.c:69
 msgid "Direct connection with no automatic tunnels"
@@ -133,7 +133,7 @@ msgstr "സ്പയിസ് കണ്ട്രോളര്‍ ആശയവി�
 
 #: ../src/remote-viewer-main.c:229 ../src/virt-viewer-main.c:85
 msgid "Customise hotkeys"
-msgstr ""
+msgstr "എഴുപ്പവഴികള്‍ യഥേഷ്ടമാക്കുക"
 
 #. Setup command line options
 #: ../src/remote-viewer-main.c:238
@@ -162,37 +162,41 @@ msgstr "പിശക്: അനവധി യുആര്‍ഐ കൈകാര�
 msgid "Zoom level must be within 10-200\n"
 msgstr "സൂം ലവല്‍ 10-200 ആയിരിയ്ക്കണം\n"
 
-#: ../src/remote-viewer.c:243 ../src/remote-viewer.c:664
+#: ../src/remote-viewer.c:247 ../src/remote-viewer.c:885
 msgid "Failed to initiate connection"
 msgstr "കണക്ഷന്‍ ആരംഭിയ്ക്കുന്നതില്‍ പരാജയം"
 
-#: ../src/remote-viewer.c:258
+#: ../src/remote-viewer.c:262
 msgid "Display disabled by controller"
 msgstr "കണ്ട്രോളര്‍ പ്രദര്‍ശനം പ്രവര്‍ത്തന രഹിതമാക്കിയിരിയ്ക്കുന്നു"
 
-#: ../src/remote-viewer.c:558
+#: ../src/remote-viewer.c:563
 #, c-format
 msgid "Controller connection failed: %s"
 msgstr "കണ്ട്രോളറിനുള്ള കണക്ഷന്‍ പരാജയപ്പെട്ടു: %s"
 
-#: ../src/remote-viewer.c:614
+#: ../src/remote-viewer.c:826
 msgid "Couldn't create a Spice session"
 msgstr "ഒരു സ്പയിസ് സെഷന്‍ തയ്യാറാക്കുവാന്‍ സാധ്യമല്ല"
 
-#: ../src/remote-viewer.c:628
+#: ../src/remote-viewer.c:840
 msgid "Setting up Spice session..."
 msgstr "സ്പയിസ് സെഷന്‍ സജ്ജമാക്കുന്നു..."
 
-#: ../src/remote-viewer.c:644
+#: ../src/remote-viewer.c:856
 #, c-format
 msgid "Invalid file %s"
-msgstr ""
+msgstr "തെറ്റായ ഫയല്‍ %s"
 
-#: ../src/remote-viewer.c:651
+#: ../src/remote-viewer.c:863
 msgid "Cannot determine the connection type from URI"
 msgstr "യുആര്‍ഐയില്‍ നിന്നും കണക്ഷന്‍ രീതി കണ്ടുപിടിയ്ക്കുവാന്‍ സാധ്യമല്ല"
 
-#: ../src/remote-viewer.c:656
+#: ../src/remote-viewer.c:869
+msgid "Couldn't open oVirt session"
+msgstr ""
+
+#: ../src/remote-viewer.c:876
 #, c-format
 msgid "Couldn't create a session for this type: %s"
 msgstr "ഈ തരത്തിനുള്ളൊരു സെഷന്‍ തയ്യാറാക്കുവാന്‍ സാധ്യമല്ല: %s"
@@ -242,71 +246,71 @@ msgstr "ഈ പ്രോഗ്രാം സ്വതന്ത്ര സോഫ്
 msgid "The Fedora Translation Team"
 msgstr "ഫെഡോറാ പ്രാദേശികവത്കരണ സംഘം"
 
-#: ../src/virt-viewer-app.c:314
+#: ../src/virt-viewer-app.c:281
 msgid "Do you want to close the session?"
-msgstr ""
+msgstr "ഈ സെഷന്‍ അടയ്ക്കണമോ?"
 
-#: ../src/virt-viewer-app.c:316
+#: ../src/virt-viewer-app.c:283
 msgid "Do not ask me again"
-msgstr ""
+msgstr "ഇനി ചോദിയ്ക്കരുതു്"
 
-#: ../src/virt-viewer-app.c:681
+#: ../src/virt-viewer-app.c:686
 #, c-format
 msgid "Waiting for display %d..."
 msgstr "%d പ്രദര്‍ശനത്തിനായി കാത്തിരിയ്ക്കുന്നു..."
 
-#: ../src/virt-viewer-app.c:769
+#: ../src/virt-viewer-app.c:774
 #, c-format
 msgid "Unknown graphic type for the guest %s"
 msgstr "ഗസ്റ്റ് %s-നുള്ള അപരിചിതമായ ഗ്രാഫിക് രീതി"
 
-#: ../src/virt-viewer-app.c:846
+#: ../src/virt-viewer-app.c:851
 msgid "Connect to ssh failed."
 msgstr "ssh-ലേക്കുള്ള കണക്ഷന്‍ പരാജയപ്പെട്ടു."
 
-#: ../src/virt-viewer-app.c:848
+#: ../src/virt-viewer-app.c:853
 msgid "Can't connect to channel, SSH only supported."
 msgstr "ചാനലിലേക്കു് കണക്ട് ചെയ്യുവാന്‍ സാധ്യമല്ല, എസ്എസ്എചിനു് മാത്രം പിന്തുണ ലഭ്യമുള്ളൂ."
 
-#: ../src/virt-viewer-app.c:860
+#: ../src/virt-viewer-app.c:865
 msgid "Connect to channel unsupported."
 msgstr "ചാനലിലേക്കുള്ള കണക്ഷനു് പിന്തുണയില്ല."
 
-#: ../src/virt-viewer-app.c:942
+#: ../src/virt-viewer-app.c:947
 msgid "Connecting to graphic server"
 msgstr "ഗ്രാഫിക് സര്‍വറിലേക്കു് കണക്ട് ചെയ്യുന്നു"
 
-#: ../src/virt-viewer-app.c:1074
+#: ../src/virt-viewer-app.c:1079
 msgid "Guest domain has shutdown"
 msgstr "ഗസ്റ്റ് ഡൊമെയിന്‍ അടച്ചുപൂട്ടിയിരിയ്ക്കുന്നു"
 
-#: ../src/virt-viewer-app.c:1124
+#: ../src/virt-viewer-app.c:1129
 msgid "Connected to graphic server"
 msgstr "ഗ്രാഫിക് സര്‍വറിലേക്കു് കണക്ട് ചെയ്തിരിയ്ക്കുന്നു"
 
-#: ../src/virt-viewer-app.c:1150
+#: ../src/virt-viewer-app.c:1155
 #, c-format
 msgid "Unable to connect to the graphic server %s"
 msgstr "ഗ്രാഫിക് സര്‍വര്‍ %s-ലേക്കു് കണക്ട് ചെയ്യുവാന്‍ സാധ്യമല്ല"
 
-#: ../src/virt-viewer-app.c:1179
+#: ../src/virt-viewer-app.c:1184
 #, c-format
 msgid ""
 "Unable to authenticate with remote desktop server at %s: %s\n"
 "Retry connection again?"
 msgstr "%s-ല്‍ റിമോട്ട് ഡസ്ക്ടോപ്പ് സര്‍വറിലേക്കു് ആധികാരികത ഉറപ്പാക്കുവാന്‍ സാധ്യമല്ല: %s\nവീണ്ടും ശ്രമിയ്ക്കണമോ?"
 
-#: ../src/virt-viewer-app.c:1199
+#: ../src/virt-viewer-app.c:1204
 #, c-format
 msgid "Unable to authenticate with remote desktop server: %s"
 msgstr "റിമോട്ട് ഡസ്ക്ടോപ്പ് സര്‍വറിനൊപ്പം ആധികാരികത ഉറപ്പാക്കുവാന്‍ സാധ്യമല്ല: %s"
 
-#: ../src/virt-viewer-app.c:1207
+#: ../src/virt-viewer-app.c:1212
 #, c-format
 msgid "USB redirection error: %s"
 msgstr "യുഎസ്ബി റീഡയറക്ഷന്‍ പിശക്: %s"
 
-#: ../src/virt-viewer-app.c:1828
+#: ../src/virt-viewer-app.c:1834
 #, c-format
 msgid "Display %d"
 msgstr "%d പ്രദര്‍ശിപ്പിയ്ക്കുക"
@@ -383,7 +387,7 @@ msgid ""
 msgstr "\nUsage: %s [OPTIONS] DOMAIN-NAME|ID|UUID\n\n%s\n\n"
 
 #. Create the widgets
-#: ../src/virt-viewer-session-spice.c:485
+#: ../src/virt-viewer-session-spice.c:491
 msgid "Select USB devices for redirection"
 msgstr "യുഎസ്ബി ഡിവൈസുകള്‍ തെരഞ്ഞെടുക്കുക"
 
@@ -392,88 +396,88 @@ msgstr "യുഎസ്ബി ഡിവൈസുകള്‍ തെരഞ്ഞ�
 msgid "Unsupported authentication type %d"
 msgstr "പിന്തുണയില്ലാത്ത ആധികാരികത ഉറപ്പാക്കല്‍ രീതി %d"
 
-#: ../src/virt-viewer-window.c:576 ../src/virt-viewer.xml.h:13
+#: ../src/virt-viewer-window.c:567 ../src/virt-viewer.xml.h:13
 msgid "Ctrl+Alt+_Del"
 msgstr "Ctrl+Alt+_Del"
 
-#: ../src/virt-viewer-window.c:577 ../src/virt-viewer.xml.h:14
+#: ../src/virt-viewer-window.c:568 ../src/virt-viewer.xml.h:14
 msgid "Ctrl+Alt+_Backspace"
 msgstr "Ctrl+Alt+_Backspace"
 
-#: ../src/virt-viewer-window.c:579 ../src/virt-viewer.xml.h:15
+#: ../src/virt-viewer-window.c:570 ../src/virt-viewer.xml.h:15
 msgid "Ctrl+Alt+F_1"
 msgstr "Ctrl+Alt+F_1"
 
-#: ../src/virt-viewer-window.c:580 ../src/virt-viewer.xml.h:16
+#: ../src/virt-viewer-window.c:571 ../src/virt-viewer.xml.h:16
 msgid "Ctrl+Alt+F_2"
 msgstr "Ctrl+Alt+F_2"
 
-#: ../src/virt-viewer-window.c:581 ../src/virt-viewer.xml.h:17
+#: ../src/virt-viewer-window.c:572 ../src/virt-viewer.xml.h:17
 msgid "Ctrl+Alt+F_3"
 msgstr "Ctrl+Alt+F_3"
 
-#: ../src/virt-viewer-window.c:582 ../src/virt-viewer.xml.h:18
+#: ../src/virt-viewer-window.c:573 ../src/virt-viewer.xml.h:18
 msgid "Ctrl+Alt+F_4"
 msgstr "Ctrl+Alt+F_4"
 
-#: ../src/virt-viewer-window.c:583 ../src/virt-viewer.xml.h:19
+#: ../src/virt-viewer-window.c:574 ../src/virt-viewer.xml.h:19
 msgid "Ctrl+Alt+F_5"
 msgstr "Ctrl+Alt+F_5"
 
-#: ../src/virt-viewer-window.c:584 ../src/virt-viewer.xml.h:20
+#: ../src/virt-viewer-window.c:575 ../src/virt-viewer.xml.h:20
 msgid "Ctrl+Alt+F_6"
 msgstr "Ctrl+Alt+F_6"
 
-#: ../src/virt-viewer-window.c:585 ../src/virt-viewer.xml.h:21
+#: ../src/virt-viewer-window.c:576 ../src/virt-viewer.xml.h:21
 msgid "Ctrl+Alt+F_7"
 msgstr "Ctrl+Alt+F_7"
 
-#: ../src/virt-viewer-window.c:586 ../src/virt-viewer.xml.h:22
+#: ../src/virt-viewer-window.c:577 ../src/virt-viewer.xml.h:22
 msgid "Ctrl+Alt+F_8"
 msgstr "Ctrl+Alt+F_8"
 
-#: ../src/virt-viewer-window.c:587 ../src/virt-viewer.xml.h:23
+#: ../src/virt-viewer-window.c:578 ../src/virt-viewer.xml.h:23
 msgid "Ctrl+Alt+F_9"
 msgstr "Ctrl+Alt+F_9"
 
-#: ../src/virt-viewer-window.c:588 ../src/virt-viewer.xml.h:24
+#: ../src/virt-viewer-window.c:579 ../src/virt-viewer.xml.h:24
 msgid "Ctrl+Alt+F1_0"
 msgstr "Ctrl+Alt+F1_0"
 
-#: ../src/virt-viewer-window.c:589 ../src/virt-viewer.xml.h:25
+#: ../src/virt-viewer-window.c:580 ../src/virt-viewer.xml.h:25
 msgid "Ctrl+Alt+F11"
 msgstr "Ctrl+Alt+F11"
 
-#: ../src/virt-viewer-window.c:590 ../src/virt-viewer.xml.h:26
+#: ../src/virt-viewer-window.c:581 ../src/virt-viewer.xml.h:26
 msgid "Ctrl+Alt+F12"
 msgstr "Ctrl+Alt+F12"
 
-#: ../src/virt-viewer-window.c:877 ../src/virt-viewer.xml.h:2
+#: ../src/virt-viewer-window.c:868 ../src/virt-viewer.xml.h:2
 msgid "Screenshot"
 msgstr "സ്ക്രീന്‍ഷോട്ട്"
 
-#: ../src/virt-viewer-window.c:953
+#: ../src/virt-viewer-window.c:944
 msgid "Disconnect"
 msgstr "കണക്ഷന്‍ വിഛേദിയ്ക്കുക"
 
-#: ../src/virt-viewer-window.c:960 ../src/virt-viewer-window.c:961
+#: ../src/virt-viewer-window.c:951 ../src/virt-viewer-window.c:952
 #: ../src/virt-viewer.xml.h:3
 msgid "USB device selection"
 msgstr "യുഎസ്ബി ഡിവൈസ് തെരഞ്ഞെടുക്കല്‍"
 
-#: ../src/virt-viewer-window.c:969
+#: ../src/virt-viewer-window.c:960
 msgid "Send key combination"
 msgstr "കീ കൂട്ടം അയയ്ക്കുക"
 
-#: ../src/virt-viewer-window.c:978 ../src/virt-viewer-window.c:979
+#: ../src/virt-viewer-window.c:969 ../src/virt-viewer-window.c:970
 msgid "Leave fullscreen"
 msgstr "പൂര്‍ണ്ണസ്ക്രീനില്‍ നിന്നും മാറുക"
 
-#: ../src/virt-viewer-window.c:1058
+#: ../src/virt-viewer-window.c:1049
 msgid "Ctrl+Alt"
 msgstr "Ctrl+Alt"
 
-#: ../src/virt-viewer-window.c:1061
+#: ../src/virt-viewer-window.c:1052
 #, c-format
 msgid "(Press %s to release pointer)"
 msgstr "(പോയിന്റര്‍ വിടുന്നതിനായി %s അമര്‍ത്തുക)"
@@ -484,15 +488,20 @@ msgstr "(പോയിന്റര്‍ വിടുന്നതിനായി 
 #. * Such as: "(Press Ctrl+Alt to release pointer) BigCorpTycoon MOTD - Virt
 #. Viewer"
 #. 
-#: ../src/virt-viewer-window.c:1072
+#: ../src/virt-viewer-window.c:1063
 #, c-format
 msgid "%s%s%s - %s"
 msgstr "%s%s%s - %s"
 
 #. translators: <space>
-#: ../src/virt-viewer-window.c:1076
+#: ../src/virt-viewer-window.c:1067
 msgid " "
 msgstr " "
+
+#: ../src/virt-viewer-file.c:588
+#, c-format
+msgid "At least %s version %s is required to setup this connection"
+msgstr ""
 
 #: ../src/virt-viewer.c:144
 msgid "Waiting for guest domain to re-start"
@@ -515,7 +524,7 @@ msgstr "ഗസ്റ്റ് %s-നുള്ള ഹോസ്റ്റ് കണ
 
 #: ../src/virt-viewer.c:531
 msgid "Waiting for libvirt to start"
-msgstr ""
+msgstr "ആരംഭിയ്ക്കുന്നതിനായി libvirt-നു് വേണ്ടി കാത്തിരിയ്ക്കുന്നു"
 
 #: ../src/virt-viewer.c:535
 msgid "Finding guest domain"

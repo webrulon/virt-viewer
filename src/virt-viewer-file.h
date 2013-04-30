@@ -104,6 +104,8 @@ gchar* virt_viewer_file_get_version(VirtViewerFile* self);
 void virt_viewer_file_set_version(VirtViewerFile* self, const gchar* value);
 gchar** virt_viewer_file_get_secure_channels(VirtViewerFile* self, gsize* length);
 void virt_viewer_file_set_secure_channels(VirtViewerFile* self, const gchar* const* value, gsize length);
+gint virt_viewer_file_get_delete_this_file(VirtViewerFile* self);
+void virt_viewer_file_set_delete_this_file(VirtViewerFile* self, gint value);
 
 G_END_DECLS
 

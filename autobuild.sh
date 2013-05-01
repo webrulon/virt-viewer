@@ -61,6 +61,7 @@ fi
 if [ -x /usr/bin/i686-w64-mingw32-gcc ]; then
   make distclean
 
+  PKG_CONFIG_LIBDIR="/usr/i686-w64-mingw32/sys-root/mingw/lib/pkgconfig:/usr/i686-w64-mingw32/sys-root/mingw/share/pkgconfig" \
   PKG_CONFIG_PATH="$AUTOBUILD_INSTALL_ROOT/i686-w64-mingw32/sys-root/mingw/lib/pkgconfig" \
   CC="i686-w64-mingw32-gcc" \
   ../configure \
@@ -76,6 +77,7 @@ if [ -x /usr/bin/i686-w64-mingw32-gcc ]; then
   PKG_CONFIG_LIBDIR=/usr/i686-w64-mingw32/sys-root/mingw/lib/pkgconfig pkg-config gtk+-3.0 1>/dev/null 2>&1
   if test $? = 0 ; then
     make distclean
+    PKG_CONFIG_LIBDIR="/usr/i686-w64-mingw32/sys-root/mingw/lib/pkgconfig:/usr/i686-w64-mingw32/sys-root/mingw/share/pkgconfig" \
     PKG_CONFIG_PATH="$AUTOBUILD_INSTALL_ROOT/i686-w64-mingw32/sys-root/mingw/lib/pkgconfig" \
     CC="i686-w64-mingw32-gcc" \
     ../configure --prefix=$AUTOBUILD_INSTALL_ROOT \
@@ -92,6 +94,7 @@ fi
 if [ -x /usr/bin/x86_64-w64-mingw32-gcc ]; then
   make distclean
 
+  PKG_CONFIG_LIBDIR="/usr/x86_64-w64-mingw32/sys-root/mingw/lib/pkgconfig:/usr/x86_64-w64-mingw32/sys-root/mingw/share/pkgconfig" \
   PKG_CONFIG_PATH="$AUTOBUILD_INSTALL_ROOT/x86_64-w64-mingw32/sys-root/mingw/lib/pkgconfig" \
   CC="x86_64-w64-mingw32-gcc" \
   ../configure \
@@ -107,6 +110,7 @@ if [ -x /usr/bin/x86_64-w64-mingw32-gcc ]; then
   PKG_CONFIG_LIBDIR=/usr/x86_64-w64-mingw32/sys-root/mingw/lib/pkgconfig pkg-config gtk+-3.0 1>/dev/null 2>&1
   if test $? = 0 ; then
     make distclean
+    PKG_CONFIG_LIBDIR="/usr/x86_64-w64-mingw32/sys-root/mingw/lib/pkgconfig:/usr/x86_64-w64-mingw32/sys-root/mingw/share/pkgconfig" \
     PKG_CONFIG_PATH="$AUTOBUILD_INSTALL_ROOT/x86_64-w64-mingw32/sys-root/mingw/lib/pkgconfig" \
     CC="x86_64-w64-mingw32-gcc" \
     ../configure --prefix=$AUTOBUILD_INSTALL_ROOT \

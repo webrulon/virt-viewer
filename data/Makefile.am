@@ -1,5 +1,6 @@
 NULL =
 CLEANFILES =
+MANUFACTURER = Virt Manager Project
 
 EXTRA_DIST =					\
 	spice-xpi-client-remote-viewer		\
@@ -29,7 +30,7 @@ virt-viewer-$(WIXL_ARCH)-$(VERSION).msi: virt-viewer.wxs deps.txt
 	find $$DESTDIR | wixl-heat -p $$DESTDIR$(prefix)/		\
 	    --component-group CG.virt-viewer --var var.DESTDIR		\
 	    --directory-ref=INSTALLDIR > virt-viewer-files.wxs &&	\
-	wixl -D SourceDir=$(prefix)					\
+	MANUFACTURER="$(MANUFACTURER)" wixl -D SourceDir=$(prefix)	\
              -D DESTDIR=$$DESTDIR$(prefix)				\
              --arch $(WIXL_ARCH)					\
              -o $@							\

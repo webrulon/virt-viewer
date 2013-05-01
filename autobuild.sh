@@ -4,6 +4,7 @@ set -e
 set -v
 
 test -n "$1" && RESULTS=$1 || RESULTS=results.log
+: ${AUTOBUILD_INSTALL_ROOT=$HOME/builder}
 
 # Make things clean.
 test -f Makefile && make -k distclean || :

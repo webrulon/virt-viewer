@@ -3,7 +3,7 @@
 # Default to skipping autoreconf.  Distros can change just this one line
 # (or provide a command-line override) if they backport any patches that
 # touch configure.ac or Makefile.am.
-%{!?enable_autotools:%define enable_autotools 1}
+%{!?enable_autotools:%define enable_autotools 0}
 
 %define with_gtk3 0
 %if 0%{?fedora} >= 15
@@ -16,13 +16,16 @@
 %endif
 
 %define with_govirt 0
+%if 0%{?fedora} >= 19
+%define with_govirt 1
+%endif
 
 %if 0%{?rhel} >= 6
 %define with_spice 1
 %endif
 
-# spice-gtk is x86 x86_64 only currently:
-%ifnarch %{ix86} x86_64
+# spice-gtk is x86 x86_64 arm only currently:
+%ifnarch %{ix86} x86_64 %{arm}
 %define with_spice 0
 %endif
 
@@ -71,6 +74,9 @@ BuildRequires: spice-protocol >= 0.10.1
 %endif
 BuildRequires: /usr/bin/pod2man
 BuildRequires: intltool
+%if %{with_govirt}
+BuildRequires: libgovirt-devel >= 0.0.3
+%endif
 
 %description
 Virtual Machine Viewer provides a graphical console client for connecting
@@ -84,9 +90,6 @@ the display, and libvirt for looking up VNC/SPICE server details.
 
 %if 0%{?enable_autotools}
 autoreconf -if
-%endif
-%if %{with_govirt}
-BuildRequires: libgovirt-devel >= 0.0.3
 %endif
 
 %if %{with_spice}

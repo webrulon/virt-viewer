@@ -581,7 +581,7 @@ virt_viewer_session_spice_display_monitors(SpiceChannel *channel,
         display = g_ptr_array_index(displays, monitor->id);
         g_return_if_fail(display != NULL);
 
-        if (monitor->width == 0 || monitor->width == 0)
+        if (monitor->width == 0 || monitor->height == 0)
             continue;
 
         virt_viewer_display_set_enabled(VIRT_VIEWER_DISPLAY(display), TRUE);

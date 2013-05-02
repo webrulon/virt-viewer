@@ -1183,11 +1183,7 @@ virt_viewer_window_hide(VirtViewerWindow *self)
 
     if (self->priv->display) {
         VirtViewerDisplay *display = self->priv->display;
-        guint nth;
-
-        g_object_get(display, "nth-display", &nth, NULL);
-        if (nth != 0)
-            virt_viewer_display_set_enabled(display, FALSE);
+        virt_viewer_display_set_enabled(display, FALSE);
     }
 }
 

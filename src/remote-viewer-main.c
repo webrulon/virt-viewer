@@ -299,10 +299,8 @@ main(int argc, char **argv)
         goto cleanup;
 
     app = VIRT_VIEWER_APP(viewer);
-    g_object_set(app,
-                 "fullscreen", fullscreen,
-                 "fullscreen-auto-conf", fullscreen_auto_conf,
-                 NULL);
+    g_object_set(app, "fullscreen-auto-conf", fullscreen_auto_conf, NULL);
+    g_object_set(app, "fullscreen", fullscreen, NULL);
     virt_viewer_window_set_zoom_level(virt_viewer_app_get_main_window(app), zoom);
     virt_viewer_app_set_direct(app, direct);
     virt_viewer_app_set_hotkeys(app, hotkeys);

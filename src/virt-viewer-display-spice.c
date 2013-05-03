@@ -146,16 +146,14 @@ virt_viewer_display_spice_get_pixbuf(VirtViewerDisplay *display)
 }
 
 static void
-display_ready(GObject *display,
-              GParamSpec *pspec G_GNUC_UNUSED,
-              VirtViewerDisplay *self)
+update_display_ready(VirtViewerDisplaySpice *self)
 {
     gboolean ready;
 
-    g_object_get(display, "ready", &ready, NULL);
-    DEBUG_LOG("display %p ready:%d", self, ready);
+    g_object_get(self->priv->display, "ready", &ready, NULL);
 
-    virt_viewer_display_set_show_hint(self, VIRT_VIEWER_DISPLAY_SHOW_HINT_READY, ready);
+    virt_viewer_display_set_show_hint(VIRT_VIEWER_DISPLAY(self),
+                                      VIRT_VIEWER_DISPLAY_SHOW_HINT_READY, ready);
 }
 
 static void
@@ -304,7 +302,9 @@ virt_viewer_display_spice_new(VirtViewerSessionSpice *session,
     g_object_unref(s);
 
     virt_viewer_signal_connect_object(self->priv->display, "notify::ready",
-                                      G_CALLBACK(display_ready), self, 0);
+                                      G_CALLBACK(update_display_ready), self,
+                                      G_CONNECT_SWAPPED);
+    update_display_ready(self);
 
     gtk_container_add(GTK_CONTAINER(self), g_object_ref(self->priv->display));
     gtk_widget_show(GTK_WIDGET(self->priv->display));

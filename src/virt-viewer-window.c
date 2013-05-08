@@ -752,7 +752,10 @@ virt_viewer_window_menu_view_fullscreen(GtkWidget *menu,
 {
     gboolean fullscreen = gtk_check_menu_item_get_active(GTK_CHECK_MENU_ITEM(menu));
 
-    g_object_set(self->priv->app, "fullscreen", fullscreen, NULL);
+    if (fullscreen)
+        virt_viewer_window_enter_fullscreen(self, -1);
+    else
+        virt_viewer_window_leave_fullscreen(self);
 }
 
 G_MODULE_EXPORT void

@@ -5,12 +5,15 @@ remote-viewer - a simple remote desktop client
 
 =head1 SYNOPSIS
 
-B<remote-viewer> [OPTIONS] -- URI
+B<remote-viewer> [OPTIONS] -- [URI]
 
 =head1 DESCRIPTION
 
 B<remote-viewer> is a simple remote display client. The supported
 protocols are SPICE and VNC.
+
+Starting remote-viewer without URI will open a simple dialog with an
+entry and a list of previously successfully access URI.
 
 =head1 OPTIONS
 

@@ -5,7 +5,7 @@ remote-viewer - a simple remote desktop client
 
 =head1 SYNOPSIS
 
-B<remote-viewer> [OPTIONS] URI
+B<remote-viewer> [OPTIONS] -- URI
 
 =head1 DESCRIPTION
 

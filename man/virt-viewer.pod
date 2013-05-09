@@ -5,7 +5,7 @@ virt-viewer - display the graphical console for a virtual machine
 
 =head1 SYNOPSIS
 
-B<virt-viewer> [OPTIONS] DOMAIN-NAME|ID|UUID
+B<virt-viewer> [OPTIONS] -- DOMAIN-NAME|ID|UUID
 
 =head1 DESCRIPTION
 

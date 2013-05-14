@@ -718,7 +718,12 @@ static void
 virt_viewer_window_toolbar_leave_fullscreen(GtkWidget *button G_GNUC_UNUSED,
                                             VirtViewerWindow *self)
 {
-    g_object_set(self->priv->app, "fullscreen", FALSE, NULL);
+    /* leave all windows fullscreen state */
+    if (virt_viewer_app_get_fullscreen(self->priv->app))
+        g_object_set(self->priv->app, "fullscreen", FALSE, NULL);
+    /* or just this window */
+    else
+        virt_viewer_window_leave_fullscreen(self);
 }
 
 static void keycombo_menu_location(GtkMenu *menu G_GNUC_UNUSED, gint *x, gint *y,

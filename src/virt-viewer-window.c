@@ -726,11 +726,12 @@ static void keycombo_menu_location(GtkMenu *menu G_GNUC_UNUSED, gint *x, gint *y
 {
     VirtViewerWindow *self = user_data;
     GtkAllocation allocation;
+    GtkWidget *toplevel = gtk_widget_get_toplevel(self->priv->toolbar_send_key);
 
     *push_in = TRUE;
-    gdk_window_get_origin(gtk_widget_get_window(self->priv->toolbar_send_key), x, y);
-    gtk_widget_translate_coordinates(self->priv->toolbar_send_key, gtk_widget_get_toplevel(self->priv->toolbar_send_key),
-                                     0, 0, x, y);
+    gdk_window_get_origin(gtk_widget_get_window(toplevel), x, y);
+    gtk_widget_translate_coordinates(self->priv->toolbar_send_key, toplevel,
+                                     *x, *y, x, y);
     gtk_widget_get_allocation(self->priv->toolbar_send_key, &allocation);
     *y += allocation.height;
 }

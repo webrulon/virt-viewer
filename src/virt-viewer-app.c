@@ -632,6 +632,24 @@ viewer_window_focus_out_cb(GtkWindow *window G_GNUC_UNUSED,
     return FALSE;
 }
 
+static void
+app_window_try_fullscreen(VirtViewerApp *self, VirtViewerWindow *win, gint nth)
+{
+    GdkScreen *screen = gdk_screen_get_default();
+    gboolean move =
+        virt_viewer_app_get_n_windows_visible(self) > 1 ||
+        self->priv->fullscreen_auto_conf;
+
+    if (!move)
+        nth = -1;
+    else if (nth >= gdk_screen_get_n_monitors(screen)) {
+        DEBUG_LOG("skipping display %d", nth);
+        return;
+    }
+
+    virt_viewer_window_enter_fullscreen(win, nth);
+}
+
 static VirtViewerWindow*
 virt_viewer_app_window_new(VirtViewerApp *self, GtkWidget *container, gint nth)
 {
@@ -645,10 +663,10 @@ virt_viewer_app_window_new(VirtViewerApp *self, GtkWidget *container, gint nth)
     if (self->priv->main_window)
         virt_viewer_window_set_zoom_level(window, virt_viewer_window_get_zoom_level(self->priv->main_window));
     virt_viewer_app_set_nth_window(self, nth, window);
-    w = virt_viewer_window_get_window(window);
+    if (self->priv->fullscreen)
+        app_window_try_fullscreen(self, window, nth);
 
-    /* this will set new window to fullscreen if necessary */
-    virt_viewer_app_set_fullscreen(self, self->priv->fullscreen);
+    w = virt_viewer_window_get_window(window);
     g_signal_connect(w, "hide", G_CALLBACK(viewer_window_visible_cb), self);
     g_signal_connect(w, "show", G_CALLBACK(viewer_window_visible_cb), self);
     g_signal_connect(w, "focus-in-event", G_CALLBACK(viewer_window_focus_in_cb), self);
@@ -1688,8 +1706,8 @@ virt_viewer_app_update_pretty_address(VirtViewerApp *self)
 }
 
 typedef struct {
+    VirtViewerApp *app;
     gboolean fullscreen;
-    gboolean move;
 } FullscreenOptions;
 
 static void fullscreen_cb(gpointer key,
@@ -1701,15 +1719,9 @@ static void fullscreen_cb(gpointer key,
     VirtViewerWindow *vwin = VIRT_VIEWER_WINDOW(value);
 
     DEBUG_LOG("fullscreen display %d: %d", nth, options->fullscreen);
-    if (options->fullscreen) {
-        GdkScreen *screen = gdk_screen_get_default();
-
-        if (nth >= gdk_screen_get_n_monitors(screen)) {
-            DEBUG_LOG("skipping display %d", nth);
-            return;
-        }
-        virt_viewer_window_enter_fullscreen(vwin, options->move ? nth : -1);
-    } else
+    if (options->fullscreen)
+        app_window_try_fullscreen(options->app, vwin, nth);
+    else
         virt_viewer_window_leave_fullscreen(vwin);
 }
 
@@ -1734,8 +1746,8 @@ virt_viewer_app_set_fullscreen(VirtViewerApp *self, gboolean fullscreen)
 {
     VirtViewerAppPrivate *priv = self->priv;
     FullscreenOptions options  = {
+        .app = self,
         .fullscreen = fullscreen,
-        .move = virt_viewer_app_get_n_windows_visible(self) > 1 || self->priv->fullscreen_auto_conf,
     };
 
     /* we iterate unconditionnaly, even if it was set before to update new windows */

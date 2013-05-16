@@ -98,7 +98,6 @@ struct _VirtViewerWindowPrivate {
     GSList *accel_list;
     gboolean enable_mnemonics_save;
     gboolean grabbed;
-    gboolean before_saved;
     GdkRectangle before_fullscreen;
     gint fullscreen_monitor;
     gboolean desktop_resize_pending;
@@ -503,22 +502,21 @@ virt_viewer_window_leave_fullscreen(VirtViewerWindow *self)
 #endif
     gtk_window_unfullscreen(GTK_WINDOW(priv->window));
 
-    if (priv->before_saved) {
-        gtk_window_move(GTK_WINDOW(priv->window),
-                        priv->before_fullscreen.x,
-                        priv->before_fullscreen.y);
-        gtk_window_resize(GTK_WINDOW(priv->window),
-                          priv->before_fullscreen.width,
-                          priv->before_fullscreen.height);
-    } else {
-#ifdef G_OS_WIN32
-        /* win32 window manager isn't smart enough to place
-         * the window so that titlebar would be visible */
-        gtk_window_maximize(GTK_WINDOW(priv->window));
-#else
-        virt_viewer_display_queue_resize(priv->display);
-#endif
-    }
+    gtk_window_move(GTK_WINDOW(priv->window),
+                    priv->before_fullscreen.x,
+                    priv->before_fullscreen.y);
+    gtk_window_resize(GTK_WINDOW(priv->window),
+                      priv->before_fullscreen.width,
+                      priv->before_fullscreen.height);
+}
+
+static gboolean
+mapped(GtkWidget *widget, GdkEvent *event G_GNUC_UNUSED,
+       VirtViewerWindow *self)
+{
+    g_signal_handlers_disconnect_by_func(widget, mapped, self);
+    virt_viewer_window_enter_fullscreen(self, self->priv->fullscreen_monitor);
+    return FALSE;
 }
 
 void
@@ -530,17 +528,22 @@ virt_viewer_window_enter_fullscreen(VirtViewerWindow *self, gint monitor)
 
     if (priv->fullscreen)
         return;
+
+    priv->fullscreen_monitor = monitor;
+
+    if (!gtk_widget_get_mapped(priv->window)) {
+        g_signal_connect(priv->window, "map-event", G_CALLBACK(mapped), self);
+        return;
+    }
+
     priv->fullscreen = TRUE;
 
-    if (gtk_widget_get_realized(priv->window)) {
-        gtk_window_get_position(GTK_WINDOW(priv->window),
-                                &priv->before_fullscreen.x,
-                                &priv->before_fullscreen.y);
-        gtk_window_get_size(GTK_WINDOW(priv->window),
-                            &priv->before_fullscreen.width,
-                            &priv->before_fullscreen.height);
-        priv->before_saved = TRUE;
-    }
+    gtk_window_get_position(GTK_WINDOW(priv->window),
+                            &priv->before_fullscreen.x,
+                            &priv->before_fullscreen.y);
+    gtk_window_get_size(GTK_WINDOW(priv->window),
+                        &priv->before_fullscreen.width,
+                        &priv->before_fullscreen.height);
 
     gtk_check_menu_item_set_active(check, TRUE);
     gtk_widget_hide(menu);
@@ -548,7 +551,6 @@ virt_viewer_window_enter_fullscreen(VirtViewerWindow *self, gint monitor)
     ViewAutoDrawer_SetActive(VIEW_AUTODRAWER(priv->layout), TRUE);
     ViewAutoDrawer_Close(VIEW_AUTODRAWER(priv->layout));
 
-    priv->fullscreen_monitor = monitor;
     if (priv->display)
         virt_viewer_display_set_monitor(priv->display, monitor);
     virt_viewer_window_move_to_monitor(self);

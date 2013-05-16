@@ -378,7 +378,7 @@ default_transform_from (GBinding     *binding,
 }
 
 static void
-on_source_notify (GObject    *gobject,
+on_source_notify (GObject    *gobject G_GNUC_UNUSED,
                   GParamSpec *pspec,
                   GBinding   *binding)
 {
@@ -419,7 +419,7 @@ on_source_notify (GObject    *gobject,
 }
 
 static void
-on_target_notify (GObject    *gobject,
+on_target_notify (GObject    *gobject G_GNUC_UNUSED,
                   GParamSpec *pspec,
                   GBinding   *binding)
 {
@@ -706,7 +706,7 @@ g_binding_class_init (GBindingClass *klass)
 }
 
 static void
-g_binding_init (GBinding *binding)
+g_binding_init (GBinding *binding G_GNUC_UNUSED)
 {
 }
 

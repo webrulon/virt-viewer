@@ -246,11 +246,11 @@ main(int argc, char **argv)
 #endif
     g_option_context_parse (context, &argc, &argv, &error);
     if (error) {
-        char *basename;
-        basename = g_path_get_basename(argv[0]);
+        char *base_name;
+        base_name = g_path_get_basename(argv[0]);
         g_printerr(_("%s\nRun '%s --help' to see a full list of available command line options\n"),
-                   error->message, basename);
-        g_free(basename);
+                   error->message, base_name);
+        g_free(base_name);
         g_error_free(error);
         goto cleanup;
     }

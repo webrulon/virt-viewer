@@ -58,7 +58,7 @@ int main(int argc, char **argv)
     gboolean reconnect = FALSE;
     gboolean fullscreen = FALSE;
     VirtViewer *viewer = NULL;
-    char *basename;
+    char *base_name;
     char *help_msg = NULL;
     const GOptionEntry options [] = {
         { "version", 'V', G_OPTION_FLAG_NO_ARG, G_OPTION_ARG_CALLBACK,
@@ -90,10 +90,10 @@ int main(int argc, char **argv)
 
     virt_viewer_util_init(_("Virt Viewer"));
 
-    basename = g_path_get_basename(argv[0]);
+    base_name = g_path_get_basename(argv[0]);
     help_msg = g_strdup_printf(_("Run '%s --help' to see a full list of available command line options"),
-                               basename);
-    g_free(basename);
+                               base_name);
+    g_free(base_name);
 
     /* Setup command line options */
     context = g_option_context_new (_("- Virtual machine graphical console"));

@@ -129,7 +129,7 @@ int main(int argc, char **argv)
 
     virt_viewer_app_set_debug(debug);
 
-    viewer = virt_viewer_new(uri, args[0], zoom, direct, attach, waitvm, reconnect, verbose, NULL);
+    viewer = virt_viewer_new(uri, args[0], zoom, direct, attach, waitvm, reconnect, verbose);
     if (viewer == NULL)
         goto cleanup;
 

@@ -75,13 +75,11 @@ enum {
     PROP_WINDOW,
     PROP_DISPLAY,
     PROP_SUBTITLE,
-    PROP_CONTAINER,
     PROP_APP,
 };
 
 struct _VirtViewerWindowPrivate {
     VirtViewerApp *app;
-    GtkContainer *container; /* if any, then there is no window */
 
     GtkBuilder *builder;
     GtkWidget *window;
@@ -128,10 +126,6 @@ virt_viewer_window_get_property (GObject *object, guint property_id,
         g_value_set_object(value, virt_viewer_window_get_display(self));
         break;
 
-    case PROP_CONTAINER:
-        g_value_set_object(value, priv->container);
-        break;
-
     case PROP_APP:
         g_value_set_object(value, priv->app);
         break;
@@ -152,11 +146,6 @@ virt_viewer_window_set_property (GObject *object, guint property_id,
         g_free(priv->subtitle);
         priv->subtitle = g_value_dup_string(value);
         virt_viewer_window_update_title(VIRT_VIEWER_WINDOW(object));
-        break;
-
-    case PROP_CONTAINER:
-        g_return_if_fail(priv->container == NULL);
-        priv->container = g_value_dup_object(value);
         break;
 
     case PROP_APP:
@@ -242,17 +231,6 @@ virt_viewer_window_class_init (VirtViewerWindowClass *klass)
                                                         "VirtDisplay",
                                                         VIRT_VIEWER_TYPE_DISPLAY,
                                                         G_PARAM_READABLE |
-                                                        G_PARAM_STATIC_STRINGS));
-
-    g_object_class_install_property(object_class,
-                                    PROP_CONTAINER,
-                                    g_param_spec_object("container",
-                                                        "Container",
-                                                        "Container widget",
-                                                        VIRT_VIEWER_TYPE_DISPLAY,
-                                                        G_PARAM_READABLE |
-                                                        G_PARAM_WRITABLE |
-                                                        G_PARAM_CONSTRUCT_ONLY |
                                                         G_PARAM_STATIC_STRINGS));
 
     g_object_class_install_property(object_class,

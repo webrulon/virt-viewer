@@ -106,7 +106,6 @@ static void virt_viewer_app_update_menu_displays(VirtViewerApp *self);
 struct _VirtViewerAppPrivate {
     VirtViewerWindow *main_window;
     GtkWidget *main_notebook;
-    GtkWidget *container;
     GHashTable *windows;
     gchar *clipboard;
 
@@ -152,7 +151,6 @@ G_DEFINE_ABSTRACT_TYPE(VirtViewerApp, virt_viewer_app, G_TYPE_OBJECT)
 enum {
     PROP_0,
     PROP_VERBOSE,
-    PROP_CONTAINER,
     PROP_SESSION,
     PROP_GUEST_NAME,
     PROP_GURI,
@@ -651,15 +649,12 @@ app_window_try_fullscreen(VirtViewerApp *self, VirtViewerWindow *win, gint nth)
 }
 
 static VirtViewerWindow*
-virt_viewer_app_window_new(VirtViewerApp *self, GtkWidget *container, gint nth)
+virt_viewer_app_window_new(VirtViewerApp *self, gint nth)
 {
     VirtViewerWindow* window;
     GtkWindow *w;
 
-    window = g_object_new(VIRT_VIEWER_TYPE_WINDOW,
-                          "app", self,
-                          "container", container,
-                          NULL);
+    window = g_object_new(VIRT_VIEWER_TYPE_WINDOW, "app", self, NULL);
     if (self->priv->main_window)
         virt_viewer_window_set_zoom_level(window, virt_viewer_window_get_zoom_level(self->priv->main_window));
     virt_viewer_app_set_nth_window(self, nth, window);
@@ -721,13 +716,8 @@ virt_viewer_app_display_added(VirtViewerSession *session G_GNUC_UNUSED,
     if (nth == 0) {
         window = priv->main_window;
     } else {
-        if (priv->container) {
-            g_warning("multi-head not yet supported within container");
-            return;
-        }
-
         g_return_if_fail(virt_viewer_app_get_nth_window(self, nth) == NULL);
-        window = virt_viewer_app_window_new(self, NULL, nth);
+        window = virt_viewer_app_window_new(self, nth);
     }
 
     virt_viewer_window_set_display(window, display);
@@ -1243,10 +1233,6 @@ virt_viewer_app_get_property (GObject *object, guint property_id,
         g_value_set_boolean(value, priv->verbose);
         break;
 
-    case PROP_CONTAINER:
-        g_value_set_object(value, priv->container);
-        break;
-
     case PROP_SESSION:
         g_value_set_object(value, priv->session);
         break;
@@ -1297,11 +1283,6 @@ virt_viewer_app_set_property (GObject *object, guint property_id,
         priv->verbose = g_value_get_boolean(value);
         break;
 
-    case PROP_CONTAINER:
-        g_return_if_fail(priv->container == NULL);
-        priv->container = g_value_dup_object(value);
-        break;
-
     case PROP_GUEST_NAME:
         g_free(priv->guest_name);
         priv->guest_name = g_value_dup_string(value);
@@ -1348,11 +1329,6 @@ virt_viewer_app_dispose (GObject *object)
         priv->windows = NULL;
         priv->main_window = NULL;
         g_hash_table_unref(tmp);
-    }
-
-    if (priv->container) {
-        g_object_unref(priv->container);
-        priv->container = NULL;
     }
 
     if (priv->session) {
@@ -1430,7 +1406,7 @@ virt_viewer_app_constructor (GType gtype,
     self = VIRT_VIEWER_APP(obj);
     priv = self->priv;
 
-    priv->main_window = virt_viewer_app_window_new(self, priv->container, 0);
+    priv->main_window = virt_viewer_app_window_new(self, 0);
     priv->main_notebook = GTK_WIDGET(virt_viewer_window_get_notebook(priv->main_window));
 
     gtk_accel_map_add_entry("<virt-viewer>/file/smartcard-insert", GDK_F8, GDK_SHIFT_MASK);
@@ -1468,17 +1444,6 @@ virt_viewer_app_class_init (VirtViewerAppClass *klass)
                                                          G_PARAM_READABLE |
                                                          G_PARAM_WRITABLE |
                                                          G_PARAM_STATIC_STRINGS));
-
-    g_object_class_install_property(object_class,
-                                    PROP_CONTAINER,
-                                    g_param_spec_object("container",
-                                                        "Container",
-                                                        "Widget container",
-                                                        GTK_TYPE_WIDGET,
-                                                        G_PARAM_READABLE |
-                                                        G_PARAM_WRITABLE |
-                                                        G_PARAM_CONSTRUCT_ONLY |
-                                                        G_PARAM_STATIC_STRINGS));
 
     g_object_class_install_property(object_class,
                                     PROP_SESSION,

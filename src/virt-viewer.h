@@ -56,8 +56,7 @@ virt_viewer_new(const char *uri,
                 gboolean attach,
                 gboolean waitvm,
                 gboolean reconnect,
-                gboolean verbose,
-                GtkWidget *container);
+                gboolean verbose);
 
 G_END_DECLS
 

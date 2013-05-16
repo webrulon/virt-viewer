@@ -733,15 +733,13 @@ virt_viewer_new(const char *uri,
                 gboolean attach,
                 gboolean waitvm,
                 gboolean reconnect,
-                gboolean verbose,
-                GtkWidget *container)
+                gboolean verbose)
 {
     VirtViewer *self;
     VirtViewerApp *app;
     VirtViewerPrivate *priv;
 
     self = g_object_new(VIRT_VIEWER_TYPE,
-                        "container", container,
                         "verbose", verbose,
                         "guest-name", name,
                         NULL);

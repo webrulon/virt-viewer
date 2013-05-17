@@ -24,6 +24,12 @@ virt-viewer-$(VERSION).exe: virt-viewer.nsis deps.txt
 	makensis -NOCD -DDESTDIR=$$DESTDIR $< >/dev/null && \
 	rm -rf $$DESTDIR
 
+virt-viewer-debug-$(VERSION).exe: virt-viewer-debug.nsis
+	$(AM_V_GEN)DESTDIR=`mktemp -d` && \
+	make -C $(top_builddir) install DESTDIR=$$DESTDIR >/dev/null && \
+	makensis -NOCD -DDESTDIR=$$DESTDIR $< >/dev/null && \
+	rm -rf $$DESTDIR
+
 virt-viewer-$(WIXL_ARCH)-$(VERSION).msi: virt-viewer.wxs deps.txt
 	$(AM_V_GEN)DESTDIR=`mktemp -d` &&				\
 	make -C $(top_builddir) install DESTDIR=$$DESTDIR >/dev/null &&	\

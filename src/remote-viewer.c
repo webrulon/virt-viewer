@@ -56,6 +56,7 @@ struct _RemoteViewerPrivate {
 #endif
     GtkWidget *controller_menu;
     GtkWidget *foreign_menu;
+    gboolean open_recent_dialog;
 };
 
 G_DEFINE_TYPE (RemoteViewer, remote_viewer, VIRT_VIEWER_TYPE_APP)
@@ -67,6 +68,7 @@ enum {
     PROP_0,
     PROP_CONTROLLER,
     PROP_CTRL_FOREIGN_MENU,
+    PROP_OPEN_RECENT_DIALOG
 };
 #endif
 
@@ -90,6 +92,9 @@ remote_viewer_get_property (GObject *object, guint property_id,
     case PROP_CTRL_FOREIGN_MENU:
         g_value_set_object(value, priv->ctrl_foreign_menu);
         break;
+    case PROP_OPEN_RECENT_DIALOG:
+        g_value_set_boolean(value, priv->open_recent_dialog);
+        break;
     default:
         G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
     }
@@ -110,6 +115,9 @@ remote_viewer_set_property (GObject *object, guint property_id,
     case PROP_CTRL_FOREIGN_MENU:
         g_return_if_fail(priv->ctrl_foreign_menu == NULL);
         priv->ctrl_foreign_menu = g_value_dup_object(value);
+        break;
+    case PROP_OPEN_RECENT_DIALOG:
+        priv->open_recent_dialog = g_value_get_boolean(value);
         break;
     default:
         G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
@@ -178,6 +186,15 @@ remote_viewer_class_init (RemoteViewerClass *klass)
                                                         G_PARAM_CONSTRUCT_ONLY |
                                                         G_PARAM_STATIC_STRINGS));
 #endif
+    g_object_class_install_property(object_class,
+                                    PROP_OPEN_RECENT_DIALOG,
+                                    g_param_spec_boolean("open-recent-dialog",
+                                                         "Open recent dialog",
+                                                         "Open recent dialog",
+                                                         FALSE,
+                                                         G_PARAM_READWRITE |
+                                                         G_PARAM_CONSTRUCT_ONLY |
+                                                         G_PARAM_STATIC_STRINGS));
 }
 
 static void
@@ -193,6 +210,7 @@ remote_viewer_new(const gchar *uri, const gchar *title, gboolean verbose)
                         "guri", uri,
                         "verbose", verbose,
                         "title", title,
+                        "open-recent-dialog", uri == NULL,
                         NULL);
 }
 
@@ -802,6 +820,97 @@ error:
 
 #endif
 
+static void
+recent_selection_changed_dialog_cb(GtkRecentChooser *chooser, gpointer data)
+{
+    GtkRecentInfo *info;
+    GtkWidget *entry = data;
+    const gchar *uri;
+
+    info = gtk_recent_chooser_get_current_item(chooser);
+    if (info == NULL)
+        return;
+
+    uri = gtk_recent_info_get_uri(info);
+    g_return_if_fail(uri != NULL);
+
+    gtk_entry_set_text(GTK_ENTRY(entry), uri);
+
+    gtk_recent_info_unref(info);
+}
+
+static void
+recent_item_activated_dialog_cb(GtkRecentChooser *chooser G_GNUC_UNUSED, gpointer data)
+{
+   gtk_dialog_response(GTK_DIALOG (data), GTK_RESPONSE_ACCEPT);
+}
+
+static gint
+connect_dialog(gchar **uri)
+{
+    GtkWidget *dialog, *area, *label, *entry, *recent;
+    GtkRecentFilter *rfilter;
+    GtkTable *table;
+    gint retval;
+
+    /* Create the widgets */
+    dialog = gtk_dialog_new_with_buttons(_("Connection details"),
+                                         NULL,
+                                         GTK_DIALOG_DESTROY_WITH_PARENT,
+                                         GTK_STOCK_CANCEL,
+                                         GTK_RESPONSE_REJECT,
+                                         GTK_STOCK_CONNECT,
+                                         GTK_RESPONSE_ACCEPT,
+                                         NULL);
+    gtk_dialog_set_default_response(GTK_DIALOG(dialog), GTK_RESPONSE_ACCEPT);
+    area = gtk_dialog_get_content_area(GTK_DIALOG(dialog));
+    table = GTK_TABLE(gtk_table_new(1, 2, 0));
+    gtk_box_pack_start(GTK_BOX(area), GTK_WIDGET(table), TRUE, TRUE, 0);
+    gtk_table_set_row_spacings(table, 5);
+    gtk_table_set_col_spacings(table, 5);
+
+    label = gtk_label_new(_("URL:"));
+    gtk_misc_set_alignment(GTK_MISC(label), 0, 0.5);
+    gtk_table_attach_defaults(table, label, 0, 1, 0, 1);
+    entry = GTK_WIDGET(gtk_entry_new());
+    gtk_entry_set_activates_default(GTK_ENTRY(entry), TRUE);
+    g_object_set(entry, "width-request", 200, NULL);
+    gtk_table_attach_defaults(table, entry, 1, 2, 0, 1);
+
+    label = gtk_label_new(_("Recent connections:"));
+    gtk_box_pack_start(GTK_BOX(area), label, TRUE, TRUE, 0);
+    gtk_misc_set_alignment(GTK_MISC(label), 0, 0.5);
+
+    recent = GTK_WIDGET(gtk_recent_chooser_widget_new());
+    gtk_recent_chooser_set_show_icons(GTK_RECENT_CHOOSER(recent), FALSE);
+    gtk_recent_chooser_set_sort_type(GTK_RECENT_CHOOSER(recent), GTK_RECENT_SORT_MRU);
+    gtk_box_pack_start(GTK_BOX(area), recent, TRUE, TRUE, 0);
+
+    rfilter = gtk_recent_filter_new();
+    gtk_recent_filter_add_mime_type(rfilter, "application/x-spice");
+    gtk_recent_filter_add_mime_type(rfilter, "application/x-vnc");
+    gtk_recent_filter_add_mime_type(rfilter, "application/x-virt-viewer");
+    gtk_recent_chooser_set_filter(GTK_RECENT_CHOOSER(recent), rfilter);
+    gtk_recent_chooser_set_local_only(GTK_RECENT_CHOOSER(recent), FALSE);
+    g_signal_connect(recent, "selection-changed",
+                     G_CALLBACK(recent_selection_changed_dialog_cb), entry);
+    g_signal_connect(recent, "item-activated",
+                     G_CALLBACK(recent_item_activated_dialog_cb), dialog);
+
+    /* show and wait for response */
+    gtk_widget_show_all(dialog);
+    if (gtk_dialog_run(GTK_DIALOG(dialog)) == GTK_RESPONSE_ACCEPT) {
+        *uri = g_strdup(gtk_entry_get_text(GTK_ENTRY(entry)));
+        retval = 0;
+    } else {
+        *uri = NULL;
+        retval = -1;
+    }
+    gtk_widget_destroy(dialog);
+
+    return retval;
+}
+
 static gboolean
 remote_viewer_start(VirtViewerApp *app)
 {
@@ -840,7 +949,13 @@ remote_viewer_start(VirtViewerApp *app)
         virt_viewer_app_show_status(VIRT_VIEWER_APP(self), _("Setting up Spice session..."));
     } else {
 #endif
-        g_object_get(app, "guri", &guri, NULL);
+        if (priv->open_recent_dialog) {
+            if (connect_dialog(&guri) != 0)
+                return FALSE;
+            g_object_set(app, "guri", guri, NULL);
+        } else
+            g_object_get(app, "guri", &guri, NULL);
+
         g_return_val_if_fail(guri != NULL, FALSE);
 
         DEBUG_LOG("Opening display to %s", guri);
@@ -899,6 +1014,7 @@ cleanup:
     g_clear_object(&vvfile);
     g_free(guri);
     g_free(type);
+
     return ret;
 }
 

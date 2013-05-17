@@ -65,7 +65,7 @@ G_DEFINE_TYPE (VirtViewer, virt_viewer, VIRT_VIEWER_TYPE_APP)
 
 static gboolean virt_viewer_initial_connect(VirtViewerApp *self, GError **error);
 static gboolean virt_viewer_open_connection(VirtViewerApp *self, int *fd);
-static void virt_viewer_deactivated(VirtViewerApp *self);
+static void virt_viewer_deactivated(VirtViewerApp *self, gboolean connect_error);
 static gboolean virt_viewer_start(VirtViewerApp *self);
 
 static void
@@ -125,7 +125,7 @@ virt_viewer_init(VirtViewer *self)
 }
 
 static void
-virt_viewer_deactivated(VirtViewerApp *app)
+virt_viewer_deactivated(VirtViewerApp *app, gboolean connect_error)
 {
     VirtViewer *self = VIRT_VIEWER(app);
     VirtViewerPrivate *priv = self->priv;
@@ -144,7 +144,7 @@ virt_viewer_deactivated(VirtViewerApp *app)
         virt_viewer_app_show_status(app, _("Waiting for guest domain to re-start"));
         virt_viewer_app_trace(app, "Guest %s display has disconnected, waiting to reconnect", priv->domkey);
     } else {
-        VIRT_VIEWER_APP_CLASS(virt_viewer_parent_class)->deactivated(app);
+        VIRT_VIEWER_APP_CLASS(virt_viewer_parent_class)->deactivated(app, connect_error);
     }
 }
 

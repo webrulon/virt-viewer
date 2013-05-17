@@ -77,6 +77,7 @@ static gboolean remote_viewer_start(VirtViewerApp *self);
 static gboolean remote_viewer_activate(VirtViewerApp *self, GError **error);
 static void remote_viewer_window_added(VirtViewerApp *self, VirtViewerWindow *win);
 static void spice_foreign_menu_updated(RemoteViewer *self);
+static gint connect_dialog(gchar **uri);
 
 static void
 remote_viewer_get_property (GObject *object, guint property_id,
@@ -145,6 +146,20 @@ remote_viewer_dispose (GObject *object)
 #endif
 
 static void
+remote_viewer_deactivated(VirtViewerApp *app, gboolean connect_error)
+{
+    RemoteViewer *self = REMOTE_VIEWER(app);
+    RemoteViewerPrivate *priv = self->priv;
+
+    if (connect_error && priv->open_recent_dialog) {
+        virt_viewer_app_start(app);
+        return;
+    }
+
+    VIRT_VIEWER_APP_CLASS(remote_viewer_parent_class)->deactivated(app, connect_error);
+}
+
+static void
 remote_viewer_class_init (RemoteViewerClass *klass)
 {
 #ifdef HAVE_SPICE_GTK
@@ -161,6 +176,7 @@ remote_viewer_class_init (RemoteViewerClass *klass)
 #endif
 
     app_class->start = remote_viewer_start;
+    app_class->deactivated = remote_viewer_deactivated;
 #ifdef HAVE_SPICE_GTK
     app_class->activate = remote_viewer_activate;
     app_class->window_added = remote_viewer_window_added;

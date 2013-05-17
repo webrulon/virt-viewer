@@ -54,7 +54,7 @@ typedef struct {
     gboolean (*start) (VirtViewerApp *self);
     gboolean (*initial_connect) (VirtViewerApp *self, GError **error);
     gboolean (*activate) (VirtViewerApp *self, GError **error);
-    void (*deactivated) (VirtViewerApp *self);
+    void (*deactivated) (VirtViewerApp *self, gboolean connect_error);
     gboolean (*open_connection)(VirtViewerApp *self, int *fd);
 } VirtViewerAppClass;
 

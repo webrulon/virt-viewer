@@ -1080,38 +1080,44 @@ virt_viewer_app_start_reconnect_poll(VirtViewerApp *self)
 }
 
 static void
-virt_viewer_app_default_deactivated(VirtViewerApp *self)
+virt_viewer_app_default_deactivated(VirtViewerApp *self, gboolean connect_error)
 {
     VirtViewerAppPrivate *priv = self->priv;
 
-    virt_viewer_app_show_status(self, _("Guest domain has shutdown"));
-    virt_viewer_app_trace(self, "Guest %s display has disconnected, shutting down",
-                          priv->guest_name);
+    if (!connect_error) {
+        virt_viewer_app_show_status(self, _("Guest domain has shutdown"));
+        virt_viewer_app_trace(self, "Guest %s display has disconnected, shutting down",
+                              priv->guest_name);
+    }
+
     gtk_main_quit();
 }
 
 static void
-virt_viewer_app_deactivated(VirtViewerApp *self)
+virt_viewer_app_deactivated(VirtViewerApp *self, gboolean connect_error)
 {
     VirtViewerAppClass *klass;
     klass = VIRT_VIEWER_APP_GET_CLASS(self);
 
-    klass->deactivated(self);
+    klass->deactivated(self, connect_error);
 }
 
 static void
-virt_viewer_app_deactivate(VirtViewerApp *self)
+virt_viewer_app_deactivate(VirtViewerApp *self, gboolean connect_error)
 {
     VirtViewerAppPrivate *priv = self->priv;
 
     if (!priv->active)
         return;
 
-    if (priv->session)
+    if (priv->session) {
         virt_viewer_session_close(VIRT_VIEWER_SESSION(priv->session));
+        g_clear_object(&priv->session);
+    }
 
     priv->connected = FALSE;
     priv->active = FALSE;
+    priv->started = FALSE;
 #if 0
     g_free(priv->pretty_address);
     priv->pretty_address = NULL;
@@ -1123,7 +1129,7 @@ virt_viewer_app_deactivate(VirtViewerApp *self)
         priv->authretry = FALSE;
         g_idle_add(virt_viewer_app_retryauth, self);
     } else
-        virt_viewer_app_deactivated(self);
+        virt_viewer_app_deactivated(self, connect_error);
 
 }
 
@@ -1154,17 +1160,18 @@ virt_viewer_app_disconnected(VirtViewerSession *session G_GNUC_UNUSED,
                              VirtViewerApp *self)
 {
     VirtViewerAppPrivate *priv = self->priv;
+    gboolean connect_error = !priv->connected && !priv->cancelled;
 
     if (priv->quiting)
         gtk_main_quit();
 
-    if (!priv->connected && !priv->cancelled) {
+    if (connect_error) {
         virt_viewer_app_simple_message_dialog(self,
                                               _("Unable to connect to the graphic server %s"),
                                               priv->pretty_address);
     }
     virt_viewer_app_set_usb_options_sensitive(self, FALSE);
-    virt_viewer_app_deactivate(self);
+    virt_viewer_app_deactivate(self, connect_error);
 }
 
 static void virt_viewer_app_cancelled(VirtViewerSession *session,
@@ -1331,10 +1338,7 @@ virt_viewer_app_dispose (GObject *object)
         g_hash_table_unref(tmp);
     }
 
-    if (priv->session) {
-        g_object_unref(priv->session);
-        priv->session = NULL;
-    }
+    g_clear_object(&priv->session);
     g_free(priv->title);
     priv->title = NULL;
     g_free(priv->guest_name);

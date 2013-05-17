@@ -8,10 +8,10 @@ BEGIN
     BLOCK "040904E4"
     BEGIN
       VALUE "CompanyName", "virt-manager.org"
-      VALUE "FileDescription", "A remote desktop client"
+      VALUE "FileDescription", "VirtViewer desktop client"
       VALUE "FileVersion", "@VERSION@"
       VALUE "InternalName", "@PACKAGE_STRING@"
-      VALUE "LegalCopyright", "Copyright (C) 2007-2012 Red Hat, Inc."
+      VALUE "LegalCopyright", "Copyright (C) 2007-2013 Red Hat, Inc."
       VALUE "OriginalFilename", "virt-viewer.exe"
       VALUE "ProductName", "VirtViewer"
       VALUE "ProductVersion", "@VERSION@"

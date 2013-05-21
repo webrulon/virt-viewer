@@ -177,11 +177,13 @@ main(int argc, char **argv)
         }
     } else
 #endif
-    if (g_strv_length(args) > 1) {
-        g_printerr(_("Error: can't handle multiple URIs\n"));
-        goto cleanup;
-    } else if (g_strv_length(args) == 1) {
-        uri = g_strdup(args[0]);
+    if (args) {
+        if (g_strv_length(args) > 1) {
+            g_printerr(_("Error: can't handle multiple URIs\n"));
+            goto cleanup;
+        } else if (g_strv_length(args) == 1) {
+            uri = g_strdup(args[0]);
+        }
     }
 
     if (zoom < 10 || zoom > 200) {

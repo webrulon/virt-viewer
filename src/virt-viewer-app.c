@@ -631,16 +631,12 @@ viewer_window_focus_out_cb(GtkWindow *window G_GNUC_UNUSED,
 }
 
 static void
-app_window_try_fullscreen(VirtViewerApp *self, VirtViewerWindow *win, gint nth)
+app_window_try_fullscreen(VirtViewerApp *self G_GNUC_UNUSED,
+                          VirtViewerWindow *win, gint nth)
 {
     GdkScreen *screen = gdk_screen_get_default();
-    gboolean move =
-        virt_viewer_app_get_n_windows_visible(self) > 1 ||
-        self->priv->fullscreen_auto_conf;
 
-    if (!move)
-        nth = -1;
-    else if (nth >= gdk_screen_get_n_monitors(screen)) {
+    if (nth >= gdk_screen_get_n_monitors(screen)) {
         DEBUG_LOG("skipping display %d", nth);
         return;
     }

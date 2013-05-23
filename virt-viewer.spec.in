@@ -78,6 +78,11 @@ BuildRequires: intltool
 BuildRequires: libgovirt-devel >= 0.0.3
 %endif
 
+%if 0{?fedora} >= 20
+Obsoletes: spice-client < 0.12.3-2
+%endif
+
+
 %description
 Virtual Machine Viewer provides a graphical console client for connecting
 to virtual machines. It uses the GTK-VNC or SPICE-GTK widgets to provide

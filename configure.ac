@@ -178,7 +178,7 @@ AC_ARG_WITH([ovirt],
     AS_HELP_STRING([--without-ovirt], [Ignore presence of librest and disable oVirt support]))
 
 AS_IF([test "x$with_ovirt" != "xno"],
-      [PKG_CHECK_MODULES([OVIRT], [govirt-1.0],
+      [PKG_CHECK_MODULES([OVIRT], [govirt-1.0 >= 0.1.0],
                          [have_ovirt=yes], [have_ovirt=no])],
       [have_ovirt=no])
 

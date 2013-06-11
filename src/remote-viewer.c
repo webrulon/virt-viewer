@@ -730,6 +730,7 @@ create_ovirt_session(VirtViewerApp *app, const char *uri)
     gchar *gtlsport = NULL;
     gchar *ghost = NULL;
     gchar *ticket = NULL;
+    gchar *host_subject = NULL;
 
     g_return_val_if_fail(VIRT_VIEWER_IS_APP(app), FALSE);
 
@@ -777,6 +778,7 @@ create_ovirt_session(VirtViewerApp *app, const char *uri)
                  "port", &port,
                  "secure-port", &secure_port,
                  "ticket", &ticket,
+                 "host-subject", &host_subject,
                  NULL);
     gport = g_strdup_printf("%d", port);
     gtlsport = g_strdup_printf("%d", secure_port);
@@ -806,6 +808,7 @@ create_ovirt_session(VirtViewerApp *app, const char *uri)
         g_object_set(G_OBJECT(session),
                      "ca", ca_cert,
                      "password", ticket,
+                     "cert-subject", host_subject,
                      NULL);
         g_byte_array_unref(ca_cert);
     }
@@ -820,6 +823,7 @@ error:
     g_free(gport);
     g_free(gtlsport);
     g_free(ghost);
+    g_free(host_subject);
 
     if (error != NULL)
         g_error_free(error);

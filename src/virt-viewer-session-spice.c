@@ -52,6 +52,7 @@ struct _VirtViewerSessionSpicePrivate {
     const SpiceAudio *audio;
     int channel_count;
     int usbredir_channel_count;
+    gboolean has_sw_smartcard_reader;
 };
 
 #define VIRT_VIEWER_SESSION_SPICE_GET_PRIVATE(o) (G_TYPE_INSTANCE_GET_PRIVATE((o), VIRT_VIEWER_TYPE_SESSION_SPICE, VirtViewerSessionSpicePrivate))
@@ -59,6 +60,7 @@ struct _VirtViewerSessionSpicePrivate {
 enum {
     PROP_0,
     PROP_SPICE_SESSION,
+    PROP_SW_SMARTCARD_READER,
 };
 
 
@@ -88,6 +90,9 @@ virt_viewer_session_spice_get_property(GObject *object, guint property_id,
     switch (property_id) {
     case PROP_SPICE_SESSION:
         g_value_set_object(value, priv->session);
+        break;
+    case PROP_SW_SMARTCARD_READER:
+        g_value_set_boolean(value, priv->has_sw_smartcard_reader);
         break;
     default:
         G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
@@ -160,6 +165,9 @@ virt_viewer_session_spice_class_init(VirtViewerSessionSpiceClass *klass)
                                                         SPICE_TYPE_SESSION,
                                                         G_PARAM_READABLE |
                                                         G_PARAM_STATIC_STRINGS));
+    g_object_class_override_property(oclass,
+                                     PROP_SW_SMARTCARD_READER,
+                                     "software-smartcard-reader");
 }
 
 static void
@@ -179,10 +187,46 @@ usb_connect_failed(GObject *object G_GNUC_UNUSED,
     g_signal_emit_by_name(self, "session-usb-failed", error->message);
 }
 
+static void virt_viewer_session_spice_set_has_sw_reader(VirtViewerSessionSpice *session,
+                                                        gboolean has_sw_reader)
+{
+    g_return_if_fail(VIRT_VIEWER_IS_SESSION_SPICE(session));
+
+    if (has_sw_reader != session->priv->has_sw_smartcard_reader) {
+        session->priv->has_sw_smartcard_reader = has_sw_reader;
+        g_object_notify(G_OBJECT(session), "software-smartcard-reader");
+    }
+}
+
+static void reader_added_cb(SpiceSmartcardManager *manager G_GNUC_UNUSED,
+                            SpiceSmartcardReader *reader,
+                            gpointer user_data)
+{
+    VirtViewerSessionSpice *session;
+
+    session = VIRT_VIEWER_SESSION_SPICE(user_data);
+    if (spice_smartcard_reader_is_software(reader)) {
+        virt_viewer_session_spice_set_has_sw_reader(session, TRUE);
+    }
+}
+
+static void reader_removed_cb(SpiceSmartcardManager *manager G_GNUC_UNUSED,
+                              SpiceSmartcardReader *reader,
+                              gpointer user_data)
+{
+    VirtViewerSessionSpice *session;
+
+    session = VIRT_VIEWER_SESSION_SPICE(user_data);
+    if (spice_smartcard_reader_is_software(reader)) {
+        virt_viewer_session_spice_set_has_sw_reader(session, FALSE);
+    }
+}
+
 static void
 create_spice_session(VirtViewerSessionSpice *self)
 {
-    SpiceUsbDeviceManager *manager;
+    SpiceUsbDeviceManager *usb_manager;
+    SpiceSmartcardManager *smartcard_manager;
 
     g_return_if_fail(self != NULL);
     g_return_if_fail(self->priv->session == NULL);
@@ -198,17 +242,36 @@ create_spice_session(VirtViewerSessionSpice *self)
     virt_viewer_signal_connect_object(self->priv->session, "channel-destroy",
         G_CALLBACK(virt_viewer_session_spice_channel_destroy), self, 0);
 
-    manager = spice_usb_device_manager_get(self->priv->session, NULL);
-    if (manager) {
-        g_signal_connect(manager, "auto-connect-failed",
+    usb_manager = spice_usb_device_manager_get(self->priv->session, NULL);
+    if (usb_manager) {
+        g_signal_connect(usb_manager, "auto-connect-failed",
                          G_CALLBACK(usb_connect_failed), self);
-        g_signal_connect(manager, "device-error",
+        g_signal_connect(usb_manager, "device-error",
                          G_CALLBACK(usb_connect_failed), self);
     }
-
     g_object_bind_property(self, "auto-usbredir",
                            self->priv->gtk_session, "auto-usbredir",
                            G_BINDING_BIDIRECTIONAL | G_BINDING_SYNC_CREATE);
+
+    smartcard_manager = spice_smartcard_manager_get();
+    if (smartcard_manager) {
+        GList *readers;
+        GList *it;
+        g_signal_connect(smartcard_manager, "reader-added",
+                         (GCallback)reader_added_cb, self);
+        g_signal_connect(smartcard_manager, "reader-removed",
+                         (GCallback)reader_removed_cb, self);
+        readers = spice_smartcard_manager_get_readers(smartcard_manager);
+        for (it = readers; it != NULL; it = it->next) {
+            SpiceSmartcardReader *reader;
+            reader = (SpiceSmartcardReader *)it->data;
+            if (spice_smartcard_reader_is_software(reader)) {
+                virt_viewer_session_spice_set_has_sw_reader(self, TRUE);
+            }
+            g_boxed_free(SPICE_TYPE_SMARTCARD_READER, reader);
+        }
+        g_list_free(readers);
+    }
 }
 
 static void

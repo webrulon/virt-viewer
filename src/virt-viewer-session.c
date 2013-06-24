@@ -50,7 +50,8 @@ enum {
     PROP_APP,
     PROP_AUTO_USBREDIR,
     PROP_HAS_USBREDIR,
-    PROP_FILE
+    PROP_FILE,
+    PROP_SW_SMARTCARD_READER,
 };
 
 static void
@@ -127,6 +128,10 @@ virt_viewer_session_get_property(GObject *object,
         g_value_set_object(value, self->priv->file);
         break;
 
+    case PROP_SW_SMARTCARD_READER:
+        g_value_set_boolean(value, FALSE);
+        break;
+
     default:
         G_OBJECT_WARN_INVALID_PROPERTY_ID(object, prop_id, pspec);
         break;
@@ -180,6 +185,15 @@ virt_viewer_session_class_init(VirtViewerSessionClass *class)
                                                          VIRT_VIEWER_TYPE_FILE,
                                                          G_PARAM_READWRITE |
                                                          G_PARAM_CONSTRUCT |
+                                                         G_PARAM_STATIC_STRINGS));
+
+    g_object_class_install_property(object_class,
+                                    PROP_SW_SMARTCARD_READER,
+                                    g_param_spec_boolean("software-smartcard-reader",
+                                                         "Software smartcard reader",
+                                                         "Indicates whether a software smartcard reader is available",
+                                                         FALSE,
+                                                         G_PARAM_READABLE |
                                                          G_PARAM_STATIC_STRINGS));
 
     g_signal_new("session-connected",

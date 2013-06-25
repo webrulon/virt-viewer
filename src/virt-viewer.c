@@ -683,7 +683,7 @@ virt_viewer_connect(VirtViewerApp *app)
 
     if (!virt_viewer_app_initial_connect(app, &error)) {
         if (error)
-            g_warning(error->message);
+            g_warning("%s", error->message);
         g_clear_error(&error);
         return -1;
     }

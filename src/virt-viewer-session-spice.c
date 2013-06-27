@@ -51,6 +51,7 @@ struct _VirtViewerSessionSpicePrivate {
     SpiceMainChannel *main_channel;
     const SpiceAudio *audio;
     int channel_count;
+    int usbredir_channel_count;
 };
 
 #define VIRT_VIEWER_SESSION_SPICE_GET_PRIVATE(o) (G_TYPE_INSTANCE_GET_PRIVATE((o), VIRT_VIEWER_TYPE_SESSION_SPICE, VirtViewerSessionSpicePrivate))
@@ -66,7 +67,6 @@ static gboolean virt_viewer_session_spice_open_fd(VirtViewerSession *session, in
 static gboolean virt_viewer_session_spice_open_host(VirtViewerSession *session, const gchar *host, const gchar *port, const gchar *tlsport);
 static gboolean virt_viewer_session_spice_open_uri(VirtViewerSession *session, const gchar *uri, GError **error);
 static gboolean virt_viewer_session_spice_channel_open_fd(VirtViewerSession *session, VirtViewerSessionChannel *channel, int fd);
-static gboolean virt_viewer_session_spice_has_usb(VirtViewerSession *session);
 static void virt_viewer_session_spice_usb_device_selection(VirtViewerSession *session, GtkWindow *parent);
 static void virt_viewer_session_spice_channel_new(SpiceSession *s,
                                                   SpiceChannel *channel,
@@ -145,7 +145,6 @@ virt_viewer_session_spice_class_init(VirtViewerSessionSpiceClass *klass)
     dclass->open_host = virt_viewer_session_spice_open_host;
     dclass->open_uri = virt_viewer_session_spice_open_uri;
     dclass->channel_open_fd = virt_viewer_session_spice_channel_open_fd;
-    dclass->has_usb = virt_viewer_session_spice_has_usb;
     dclass->usb_device_selection = virt_viewer_session_spice_usb_device_selection;
     dclass->smartcard_insert = virt_viewer_session_spice_smartcard_insert;
     dclass->smartcard_remove = virt_viewer_session_spice_smartcard_remove;
@@ -461,17 +460,6 @@ virt_viewer_session_spice_main_channel_event(SpiceChannel *channel G_GNUC_UNUSED
     g_free(password);
 }
 
-static gboolean
-virt_viewer_session_spice_has_usb(VirtViewerSession *session)
-{
-    VirtViewerSessionSpice *self = VIRT_VIEWER_SESSION_SPICE(session);
-    VirtViewerSessionSpicePrivate *priv = self->priv;
-
-    return spice_usb_device_manager_get(priv->session, NULL) &&
-        spice_session_has_channel_type(priv->session,
-                                       SPICE_CHANNEL_USBREDIR);
-}
-
 static void remove_cb(GtkContainer   *container G_GNUC_UNUSED,
                       GtkWidget      *widget G_GNUC_UNUSED,
                       void           *user_data)
@@ -645,6 +633,13 @@ virt_viewer_session_spice_channel_new(SpiceSession *s,
             self->priv->audio = spice_audio_get(s, NULL);
     }
 
+    if (SPICE_IS_USBREDIR_CHANNEL(channel)) {
+        DEBUG_LOG("new usbredir channel");
+        self->priv->usbredir_channel_count++;
+        if (spice_usb_device_manager_get(self->priv->session, NULL))
+            virt_viewer_session_set_has_usbredir(session, TRUE);
+    }
+
     self->priv->channel_count++;
 }
 
@@ -727,6 +722,13 @@ virt_viewer_session_spice_channel_destroy(G_GNUC_UNUSED SpiceSession *s,
     if (SPICE_IS_PLAYBACK_CHANNEL(channel) && self->priv->audio) {
         DEBUG_LOG("zap audio channel");
         self->priv->audio = NULL;
+    }
+
+    if (SPICE_IS_USBREDIR_CHANNEL(channel)) {
+        DEBUG_LOG("zap usbredir channel");
+        self->priv->usbredir_channel_count--;
+        if (self->priv->usbredir_channel_count == 0)
+            virt_viewer_session_set_has_usbredir(session, FALSE);
     }
 
     self->priv->channel_count--;

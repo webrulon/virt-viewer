@@ -37,6 +37,7 @@ struct _VirtViewerSessionPrivate
     GList *displays;
     VirtViewerApp *app;
     gboolean auto_usbredir;
+    gboolean has_usbredir;
     gchar *uri;
     VirtViewerFile *file;
 };
@@ -48,6 +49,7 @@ enum {
 
     PROP_APP,
     PROP_AUTO_USBREDIR,
+    PROP_HAS_USBREDIR,
     PROP_FILE
 };
 
@@ -82,6 +84,10 @@ virt_viewer_session_set_property(GObject *object,
         virt_viewer_session_set_auto_usbredir(self, g_value_get_boolean(value));
         break;
 
+    case PROP_HAS_USBREDIR:
+        self->priv->has_usbredir = g_value_get_boolean(value);
+        break;
+
     case PROP_APP:
         self->priv->app = g_value_get_object(value);
         break;
@@ -107,6 +113,10 @@ virt_viewer_session_get_property(GObject *object,
     switch (prop_id) {
     case PROP_AUTO_USBREDIR:
         g_value_set_boolean(value, virt_viewer_session_get_auto_usbredir(self));
+        break;
+
+    case PROP_HAS_USBREDIR:
+        g_value_set_boolean(value, self->priv->has_usbredir);
         break;
 
     case PROP_APP:
@@ -138,6 +148,16 @@ virt_viewer_session_class_init(VirtViewerSessionClass *class)
                                                          "USB redirection",
                                                          "USB redirection",
                                                          TRUE,
+                                                         G_PARAM_READWRITE |
+                                                         G_PARAM_CONSTRUCT |
+                                                         G_PARAM_STATIC_STRINGS));
+
+    g_object_class_install_property(object_class,
+                                    PROP_HAS_USBREDIR,
+                                    g_param_spec_boolean("has-usbredir",
+                                                         "has USB redirection",
+                                                         "has USB redirection",
+                                                         FALSE,
                                                          G_PARAM_READWRITE |
                                                          G_PARAM_CONSTRUCT |
                                                          G_PARAM_STATIC_STRINGS));
@@ -429,17 +449,22 @@ gboolean virt_viewer_session_get_auto_usbredir(VirtViewerSession *self)
     return self->priv->auto_usbredir;
 }
 
-gboolean virt_viewer_session_has_usb(VirtViewerSession *self)
+void virt_viewer_session_set_has_usbredir(VirtViewerSession *self, gboolean has_usbredir)
 {
-    VirtViewerSessionClass *klass;
+    g_return_if_fail(VIRT_VIEWER_IS_SESSION(self));
 
+    if (self->priv->has_usbredir == has_usbredir)
+        return;
+
+    self->priv->has_usbredir = has_usbredir;
+    g_object_notify(G_OBJECT(self), "has-usbredir");
+}
+
+gboolean virt_viewer_session_get_has_usbredir(VirtViewerSession *self)
+{
     g_return_val_if_fail(VIRT_VIEWER_IS_SESSION(self), FALSE);
 
-    klass = VIRT_VIEWER_SESSION_GET_CLASS(self);
-    if (klass->has_usb == NULL)
-        return FALSE;
-
-    return klass->has_usb(self);
+    return self->priv->has_usbredir;
 }
 
 void virt_viewer_session_usb_device_selection(VirtViewerSession   *self,

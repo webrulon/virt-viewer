@@ -589,8 +589,8 @@ virt_viewer_app_set_nth_window(VirtViewerApp *self, gint nth, VirtViewerWindow *
     virt_viewer_app_set_window_subtitle(self, win, nth);
     virt_viewer_app_update_menu_displays(self);
     if (self->priv->session) {
-        gboolean has_usb = virt_viewer_session_has_usb(self->priv->session);
-        virt_viewer_window_set_usb_options_sensitive(win, has_usb);
+        virt_viewer_window_set_usb_options_sensitive(win,
+                    virt_viewer_session_get_has_usbredir(self->priv->session));
     }
 
     g_signal_emit(self, signals[SIGNAL_WINDOW_ADDED], 0, win);
@@ -748,6 +748,15 @@ virt_viewer_app_display_updated(VirtViewerSession *session G_GNUC_UNUSED,
     virt_viewer_app_update_menu_displays(self);
 }
 
+static void
+virt_viewer_app_has_usbredir_updated(VirtViewerSession *session,
+                                     GParamSpec *pspec G_GNUC_UNUSED,
+                                     VirtViewerApp *self)
+{
+    virt_viewer_app_set_usb_options_sensitive(self,
+                    virt_viewer_session_get_has_usbredir(session));
+}
+
 int
 virt_viewer_app_create_session(VirtViewerApp *self, const gchar *type)
 {
@@ -800,6 +809,8 @@ virt_viewer_app_create_session(VirtViewerApp *self, const gchar *type)
                      G_CALLBACK(virt_viewer_app_display_removed), self);
     g_signal_connect(priv->session, "session-display-updated",
                      G_CALLBACK(virt_viewer_app_display_updated), self);
+    g_signal_connect(priv->session, "notify::has-usbredir",
+                     G_CALLBACK(virt_viewer_app_has_usbredir_updated), self);
 
     g_signal_connect(priv->session, "session-cut-text",
                      G_CALLBACK(virt_viewer_app_server_cut_text), self);
@@ -1145,10 +1156,7 @@ static void
 virt_viewer_app_initialized(VirtViewerSession *session G_GNUC_UNUSED,
                             VirtViewerApp *self)
 {
-    gboolean has_usb = virt_viewer_session_has_usb(self->priv->session);
-
     virt_viewer_app_update_title(self);
-    virt_viewer_app_set_usb_options_sensitive(self, has_usb);
 }
 
 static void

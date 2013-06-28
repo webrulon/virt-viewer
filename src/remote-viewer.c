@@ -63,14 +63,14 @@ G_DEFINE_TYPE (RemoteViewer, remote_viewer, VIRT_VIEWER_TYPE_APP)
 #define GET_PRIVATE(o)                                                        \
     (G_TYPE_INSTANCE_GET_PRIVATE ((o), REMOTE_VIEWER_TYPE, RemoteViewerPrivate))
 
-#ifdef HAVE_SPICE_GTK
 enum {
     PROP_0,
+#ifdef HAVE_SPICE_GTK
     PROP_CONTROLLER,
     PROP_CTRL_FOREIGN_MENU,
+#endif
     PROP_OPEN_RECENT_DIALOG
 };
-#endif
 
 static gboolean remote_viewer_start(VirtViewerApp *self);
 #ifdef HAVE_SPICE_GTK
@@ -78,52 +78,6 @@ static gboolean remote_viewer_activate(VirtViewerApp *self, GError **error);
 static void remote_viewer_window_added(VirtViewerApp *self, VirtViewerWindow *win);
 static void spice_foreign_menu_updated(RemoteViewer *self);
 static gint connect_dialog(gchar **uri);
-
-static void
-remote_viewer_get_property (GObject *object, guint property_id,
-                            GValue *value, GParamSpec *pspec)
-{
-    RemoteViewer *self = REMOTE_VIEWER(object);
-    RemoteViewerPrivate *priv = self->priv;
-
-    switch (property_id) {
-    case PROP_CONTROLLER:
-        g_value_set_object(value, priv->controller);
-        break;
-    case PROP_CTRL_FOREIGN_MENU:
-        g_value_set_object(value, priv->ctrl_foreign_menu);
-        break;
-    case PROP_OPEN_RECENT_DIALOG:
-        g_value_set_boolean(value, priv->open_recent_dialog);
-        break;
-    default:
-        G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
-    }
-}
-
-static void
-remote_viewer_set_property (GObject *object, guint property_id,
-                            const GValue *value, GParamSpec *pspec)
-{
-    RemoteViewer *self = REMOTE_VIEWER(object);
-    RemoteViewerPrivate *priv = self->priv;
-
-    switch (property_id) {
-    case PROP_CONTROLLER:
-        g_return_if_fail(priv->controller == NULL);
-        priv->controller = g_value_dup_object(value);
-        break;
-    case PROP_CTRL_FOREIGN_MENU:
-        g_return_if_fail(priv->ctrl_foreign_menu == NULL);
-        priv->ctrl_foreign_menu = g_value_dup_object(value);
-        break;
-    case PROP_OPEN_RECENT_DIALOG:
-        priv->open_recent_dialog = g_value_get_boolean(value);
-        break;
-    default:
-        G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
-    }
-}
 
 static void
 remote_viewer_dispose (GObject *object)
@@ -146,6 +100,56 @@ remote_viewer_dispose (GObject *object)
 #endif
 
 static void
+remote_viewer_get_property (GObject *object, guint property_id,
+                            GValue *value, GParamSpec *pspec)
+{
+    RemoteViewer *self = REMOTE_VIEWER(object);
+    RemoteViewerPrivate *priv = self->priv;
+
+    switch (property_id) {
+#ifdef HAVE_SPICE_GTK
+    case PROP_CONTROLLER:
+        g_value_set_object(value, priv->controller);
+        break;
+    case PROP_CTRL_FOREIGN_MENU:
+        g_value_set_object(value, priv->ctrl_foreign_menu);
+        break;
+#endif
+    case PROP_OPEN_RECENT_DIALOG:
+        g_value_set_boolean(value, priv->open_recent_dialog);
+        break;
+    default:
+        G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
+    }
+}
+
+static void
+remote_viewer_set_property (GObject *object, guint property_id,
+                            const GValue *value, GParamSpec *pspec)
+{
+    RemoteViewer *self = REMOTE_VIEWER(object);
+    RemoteViewerPrivate *priv = self->priv;
+
+    switch (property_id) {
+#ifdef HAVE_SPICE_GTK
+    case PROP_CONTROLLER:
+        g_return_if_fail(priv->controller == NULL);
+        priv->controller = g_value_dup_object(value);
+        break;
+    case PROP_CTRL_FOREIGN_MENU:
+        g_return_if_fail(priv->ctrl_foreign_menu == NULL);
+        priv->ctrl_foreign_menu = g_value_dup_object(value);
+        break;
+#endif
+    case PROP_OPEN_RECENT_DIALOG:
+        priv->open_recent_dialog = g_value_get_boolean(value);
+        break;
+    default:
+        G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
+    }
+}
+
+static void
 remote_viewer_deactivated(VirtViewerApp *app, gboolean connect_error)
 {
     RemoteViewer *self = REMOTE_VIEWER(app);
@@ -162,22 +166,18 @@ remote_viewer_deactivated(VirtViewerApp *app, gboolean connect_error)
 static void
 remote_viewer_class_init (RemoteViewerClass *klass)
 {
-#ifdef HAVE_SPICE_GTK
     GObjectClass *object_class = G_OBJECT_CLASS (klass);
-#endif
     VirtViewerAppClass *app_class = VIRT_VIEWER_APP_CLASS (klass);
 
     g_type_class_add_private (klass, sizeof (RemoteViewerPrivate));
 
-#ifdef HAVE_SPICE_GTK
     object_class->get_property = remote_viewer_get_property;
     object_class->set_property = remote_viewer_set_property;
-    object_class->dispose = remote_viewer_dispose;
-#endif
 
     app_class->start = remote_viewer_start;
     app_class->deactivated = remote_viewer_deactivated;
 #ifdef HAVE_SPICE_GTK
+    object_class->dispose = remote_viewer_dispose;
     app_class->activate = remote_viewer_activate;
     app_class->window_added = remote_viewer_window_added;
 #endif
@@ -935,10 +935,8 @@ remote_viewer_start(VirtViewerApp *app)
 {
     g_return_val_if_fail(REMOTE_VIEWER_IS(app), FALSE);
 
-#ifdef HAVE_SPICE_GTK
     RemoteViewer *self = REMOTE_VIEWER(app);
     RemoteViewerPrivate *priv = self->priv;
-#endif
     GFile *file = NULL;
     VirtViewerFile *vvfile = NULL;
     gboolean ret = FALSE;

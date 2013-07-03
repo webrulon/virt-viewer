@@ -81,7 +81,7 @@ int main(int argc, char **argv)
           N_("Display debugging information"), NULL },
         { "full-screen", 'f', 0, G_OPTION_ARG_NONE, &fullscreen,
           N_("Open in full screen mode"), NULL },
-        { "hotkeys", 'h', 0, G_OPTION_ARG_STRING, &hotkeys,
+        { "hotkeys", 'H', 0, G_OPTION_ARG_STRING, &hotkeys,
           N_("Customise hotkeys"), NULL },
         { G_OPTION_REMAINING, '\0', 0, G_OPTION_ARG_STRING_ARRAY, &args,
           NULL, "-- DOMAIN-NAME|ID|UUID" },

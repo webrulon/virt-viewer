@@ -137,7 +137,7 @@ main(int argc, char **argv)
         { "spice-controller", '\0', 0, G_OPTION_ARG_NONE, &controller,
           N_("Open connection using Spice controller communication"), NULL },
 #endif
-        { "hotkeys", 'h', 0, G_OPTION_ARG_STRING, &hotkeys,
+        { "hotkeys", 'H', 0, G_OPTION_ARG_STRING, &hotkeys,
           N_("Customise hotkeys"), NULL },
         { G_OPTION_REMAINING, '\0', 0, G_OPTION_ARG_STRING_ARRAY, &args,
           NULL, "-- URI" },

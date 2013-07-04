@@ -4,6 +4,6 @@ _Comment=Access remote desktops
 Exec=remote-viewer %u
 Type=Application
 Terminal=false
-MimeType=x-scheme-handler/spice;application/x-virt-viewer
+MimeType=x-scheme-handler/spice;application/x-virt-viewer;
 StartupNotify=true
 Categories=GNOME;GTK;Network;RemoteAccess;

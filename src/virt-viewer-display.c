@@ -48,6 +48,7 @@ struct _VirtViewerDisplayPrivate
     guint show_hint;
     VirtViewerSession *session;
     gboolean auto_resize;
+    gboolean fullscreen;
 };
 
 #if !GTK_CHECK_VERSION(3, 0, 0)
@@ -80,6 +81,7 @@ enum {
 
     PROP_DESKTOP_WIDTH,
     PROP_DESKTOP_HEIGHT,
+    PROP_FULLSCREEN,
     PROP_NTH_DISPLAY,
     PROP_ZOOM,
     PROP_ZOOM_LEVEL,
@@ -192,6 +194,14 @@ virt_viewer_display_class_init(VirtViewerDisplayClass *class)
                                                      -1,
                                                      G_PARAM_READWRITE |
                                                      G_PARAM_CONSTRUCT));
+
+    g_object_class_install_property(object_class,
+                                    PROP_FULLSCREEN,
+                                    g_param_spec_boolean("fullscreen",
+                                                         "Fullscreen",
+                                                         "Fullscreen",
+                                                         FALSE,
+                                                         G_PARAM_READABLE));
 
     g_signal_new("display-pointer-grab",
                  G_OBJECT_CLASS_TYPE(object_class),
@@ -337,6 +347,9 @@ virt_viewer_display_get_property(GObject *object,
         break;
     case PROP_MONITOR:
         g_value_set_int(value, priv->monitor);
+        break;
+    case PROP_FULLSCREEN:
+        g_value_set_boolean(value, virt_viewer_display_get_fullscreen(display));
         break;
 
     default:
@@ -703,6 +716,24 @@ void virt_viewer_display_close(VirtViewerDisplay *self)
     g_return_if_fail(klass->close != NULL);
 
     klass->close(self);
+}
+
+void virt_viewer_display_set_fullscreen(VirtViewerDisplay *self, gboolean fullscreen)
+{
+    g_return_if_fail(VIRT_VIEWER_IS_DISPLAY(self));
+
+    if (self->priv->fullscreen == fullscreen)
+        return;
+
+    self->priv->fullscreen = fullscreen;
+    g_object_notify(G_OBJECT(self), "fullscreen");
+}
+
+gboolean virt_viewer_display_get_fullscreen(VirtViewerDisplay *self)
+{
+    g_return_val_if_fail(VIRT_VIEWER_IS_DISPLAY(self), FALSE);
+
+    return self->priv->fullscreen;
 }
 
 /*

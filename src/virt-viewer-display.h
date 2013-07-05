@@ -118,6 +118,8 @@ void virt_viewer_display_set_auto_resize(VirtViewerDisplay *display, gboolean au
 gboolean virt_viewer_display_get_auto_resize(VirtViewerDisplay *display);
 void virt_viewer_display_set_monitor(VirtViewerDisplay *display, gint monitor);
 gint virt_viewer_display_get_monitor(VirtViewerDisplay *display);
+void virt_viewer_display_set_fullscreen(VirtViewerDisplay *display, gboolean fullscreen);
+gboolean virt_viewer_display_get_fullscreen(VirtViewerDisplay *display);
 void virt_viewer_display_release_cursor(VirtViewerDisplay *display);
 
 void virt_viewer_display_close(VirtViewerDisplay *display);

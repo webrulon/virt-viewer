@@ -470,8 +470,10 @@ virt_viewer_window_leave_fullscreen(VirtViewerWindow *self)
     gtk_check_menu_item_set_active(check, FALSE);
     priv->fullscreen = FALSE;
     priv->fullscreen_monitor = -1;
-    if (priv->display)
+    if (priv->display) {
         virt_viewer_display_set_monitor(priv->display, -1);
+        virt_viewer_display_set_fullscreen(priv->display, FALSE);
+    }
     ViewAutoDrawer_SetActive(VIEW_AUTODRAWER(priv->layout), FALSE);
     gtk_widget_show(menu);
     gtk_widget_hide(priv->toolbar);
@@ -529,8 +531,10 @@ virt_viewer_window_enter_fullscreen(VirtViewerWindow *self, gint monitor)
     ViewAutoDrawer_SetActive(VIEW_AUTODRAWER(priv->layout), TRUE);
     ViewAutoDrawer_Close(VIEW_AUTODRAWER(priv->layout));
 
-    if (priv->display)
+    if (priv->display) {
         virt_viewer_display_set_monitor(priv->display, monitor);
+        virt_viewer_display_set_fullscreen(priv->display, TRUE);
+    }
     virt_viewer_window_move_to_monitor(self);
 
     gtk_window_fullscreen(GTK_WINDOW(priv->window));
@@ -1122,6 +1126,7 @@ virt_viewer_window_set_display(VirtViewerWindow *self, VirtViewerDisplay *displa
         virt_viewer_display_set_zoom_level(VIRT_VIEWER_DISPLAY(priv->display), priv->zoomlevel);
         virt_viewer_display_set_auto_resize(VIRT_VIEWER_DISPLAY(priv->display), priv->auto_resize);
         virt_viewer_display_set_monitor(VIRT_VIEWER_DISPLAY(priv->display), priv->fullscreen_monitor);
+        virt_viewer_display_set_fullscreen(VIRT_VIEWER_DISPLAY(priv->display), priv->fullscreen);
 
         gtk_widget_show_all(GTK_WIDGET(display));
         gtk_notebook_append_page(GTK_NOTEBOOK(priv->notebook), GTK_WIDGET(display), NULL);

@@ -257,11 +257,11 @@ enable_accel_changed(VirtViewerApp *app,
 }
 
 static void
-fullscreen_changed(VirtViewerApp *app,
+fullscreen_changed(VirtViewerDisplaySpice *self,
                    GParamSpec *pspec G_GNUC_UNUSED,
-                   VirtViewerDisplaySpice *self)
+                   VirtViewerApp *app)
 {
-    if (virt_viewer_app_get_fullscreen(app)) {
+    if (virt_viewer_display_get_fullscreen(VIRT_VIEWER_DISPLAY(self))) {
         gboolean auto_conf;
         g_object_get(app, "fullscreen-auto-conf", &auto_conf, NULL);
         if (auto_conf)
@@ -326,9 +326,9 @@ virt_viewer_display_spice_new(VirtViewerSessionSpice *session,
     app = virt_viewer_session_get_app(VIRT_VIEWER_SESSION(session));
     virt_viewer_signal_connect_object(app, "notify::enable-accel",
                                       G_CALLBACK(enable_accel_changed), self, 0);
-    virt_viewer_signal_connect_object(app, "notify::fullscreen",
-                                      G_CALLBACK(fullscreen_changed), self, 0);
-    fullscreen_changed(app, NULL, self);
+    virt_viewer_signal_connect_object(self, "notify::fullscreen",
+                                      G_CALLBACK(fullscreen_changed), app, 0);
+    fullscreen_changed(self, NULL, app);
     enable_accel_changed(app, NULL, self);
 
     return GTK_WIDGET(self);

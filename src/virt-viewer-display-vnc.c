@@ -53,6 +53,14 @@ virt_viewer_display_vnc_finalize(GObject *obj)
 
 
 static void
+virt_viewer_display_vnc_release_cursor(VirtViewerDisplay *display)
+{
+    VirtViewerDisplayVnc *self = VIRT_VIEWER_DISPLAY_VNC(display);
+
+    vnc_display_force_grab(self->priv->vnc, FALSE);
+}
+
+static void
 virt_viewer_display_vnc_class_init(VirtViewerDisplayVncClass *klass)
 {
     VirtViewerDisplayClass *dclass = VIRT_VIEWER_DISPLAY_CLASS(klass);
@@ -63,6 +71,7 @@ virt_viewer_display_vnc_class_init(VirtViewerDisplayVncClass *klass)
     dclass->send_keys = virt_viewer_display_vnc_send_keys;
     dclass->get_pixbuf = virt_viewer_display_vnc_get_pixbuf;
     dclass->close = virt_viewer_display_vnc_close;
+    dclass->release_cursor = virt_viewer_display_vnc_release_cursor;
 
     g_type_class_add_private(klass, sizeof(VirtViewerDisplayVncPrivate));
 }

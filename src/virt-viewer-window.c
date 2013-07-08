@@ -694,7 +694,7 @@ G_MODULE_EXPORT void
 virt_viewer_window_menu_file_quit(GtkWidget *src G_GNUC_UNUSED,
                                   VirtViewerWindow *self)
 {
-    virt_viewer_app_quit(self->priv->app);
+    virt_viewer_app_maybe_quit(self->priv->app, self);
 }
 
 

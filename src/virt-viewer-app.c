@@ -239,7 +239,7 @@ virt_viewer_app_save_config(VirtViewerApp *self)
     g_free(data);
 }
 
-void
+static void
 virt_viewer_app_quit(VirtViewerApp *self)
 {
     g_return_if_fail(VIRT_VIEWER_IS_APP(self));

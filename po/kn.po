@@ -10,9 +10,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: virt-viewer\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-04-29 18:06+0100\n"
-"PO-Revision-Date: 2013-04-29 17:06+0000\n"
-"Last-Translator: Daniel Berrange <dan-transifex@berrange.com>\n"
+"POT-Creation-Date: 2013-07-09 21:09+0100\n"
+"PO-Revision-Date: 2013-05-03 11:37+0000\n"
+"Last-Translator: shanky <prasad.mvs@gmail.com>\n"
 "Language-Team: Kannada (http://www.transifex.com/projects/p/fedora/language/kn/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -20,7 +20,7 @@ msgstr ""
 "Language: kn\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
-#: ../data/remote-viewer.desktop.in.h:1 ../src/remote-viewer-main.c:235
+#: ../data/remote-viewer.desktop.in.h:1 ../src/remote-viewer-main.c:147
 msgid "Remote Viewer"
 msgstr "ದೂರಸ್ಥ ವೀಕ್ಷಕ"
 
@@ -82,123 +82,123 @@ msgstr "ದೂರದ-ವೀಕ್ಷಕದ ಆವೃತ್ತಿ %s\n"
 msgid "Invalid full-screen argument: %s"
 msgstr "ಅಮಾನ್ಯವಾದ ಪೂರ್ಣ-ತೆರೆ ಆರ್ಗ್ಯುಮೆಂಟ್: %s"
 
-#. Create the widgets
-#: ../src/remote-viewer-main.c:104
-msgid "Connection details"
-msgstr "ಸಂಪರ್ಕ ವಿವರಗಳು"
-
-#: ../src/remote-viewer-main.c:119
-msgid "URL:"
-msgstr " URL:"
-
-#: ../src/remote-viewer-main.c:127
-msgid "Recent connections:"
-msgstr "ಇತ್ತೀಚಿನ ಸಂಪರ್ಕಗಳು:"
-
-#: ../src/remote-viewer-main.c:211 ../src/virt-viewer-main.c:65
+#: ../src/remote-viewer-main.c:123 ../src/virt-viewer-main.c:65
 msgid "Display version information"
 msgstr "ಪ್ರದರ್ಶನ ಆವೃತ್ತಿ ಮಾಹಿತಿ"
 
-#: ../src/remote-viewer-main.c:213 ../src/virt-viewer-main.c:67
+#: ../src/remote-viewer-main.c:125 ../src/virt-viewer-main.c:67
 msgid "Display verbose information"
 msgstr "ವರ್ಬೋಸ್ ಮಾಹಿತಿಯನ್ನು ತೋರಿಸು"
 
-#: ../src/remote-viewer-main.c:215
+#: ../src/remote-viewer-main.c:127
 msgid "Set window title"
 msgstr "ಕಿಟಕಿಯ ಶೀರ್ಷಿಕೆಯನ್ನು ಹೊಂದಿಸು"
 
-#: ../src/remote-viewer-main.c:217 ../src/virt-viewer-main.c:69
+#: ../src/remote-viewer-main.c:129 ../src/virt-viewer-main.c:69
 msgid "Direct connection with no automatic tunnels"
 msgstr "ಯಾವುದೆ ಸ್ವಯಂಚಾಲಿತ ಟನಲ್‌ಗಳ ನೇರವಾದ ಸಂಪರ್ಕ "
 
-#: ../src/remote-viewer-main.c:219 ../src/virt-viewer-main.c:79
+#: ../src/remote-viewer-main.c:131 ../src/virt-viewer-main.c:79
 msgid "Zoom level of window, in percentage"
 msgstr "ಕಿಟಕಿಯ ಗಾತ್ರ ಬದಲಾವಣೆ, ಪ್ರತಿಶತದಲ್ಲಿ"
 
-#: ../src/remote-viewer-main.c:221 ../src/virt-viewer-main.c:81
+#: ../src/remote-viewer-main.c:133 ../src/virt-viewer-main.c:81
 msgid "Display debugging information"
 msgstr "ದೋಷನಿದಾನ ಮಾಹಿತಿಯನ್ನು ತೋರಿಸು"
 
-#: ../src/remote-viewer-main.c:223
+#: ../src/remote-viewer-main.c:135
 msgid ""
 "Open in full screen mode (auto-conf adjusts guest resolution to fit the "
 "client's)."
 msgstr "ಪೂರ್ಣತೆರೆ ಕ್ರಮದಲ್ಲಿ ತೆರೆ (ಕಕ್ಷಿಯ/ಕ್ಲೈಂಟ್‌ನ ರೆಸಲ್ಯೂಶನ್‌ಗೆ ಹೊಂದಿಕೆಯಾಗುವಂತೆ auto-conf ಅತಿಥಿಯನ್ನು ಸರಿಹೊಂದಿಸುತ್ತದೆ)."
 
-#: ../src/remote-viewer-main.c:223
+#: ../src/remote-viewer-main.c:135
 msgid "<auto-conf>"
 msgstr "<auto-conf>"
 
-#: ../src/remote-viewer-main.c:226
+#: ../src/remote-viewer-main.c:138
 msgid "Open connection using Spice controller communication"
 msgstr "ಸ್ಪೈಸ್ ನಿಯಂತ್ರಣ ವ್ಯವಹಾರವನ್ನು ಬಳಸಿಕೊಂಡು ಸಂಪರ್ಕವನ್ನು ತೆರೆ"
 
-#: ../src/remote-viewer-main.c:229 ../src/virt-viewer-main.c:85
+#: ../src/remote-viewer-main.c:141 ../src/virt-viewer-main.c:85
 msgid "Customise hotkeys"
 msgstr "ಹಾಟ್‌ಕೀಲಿಗಳನ್ನು ಅಗತ್ಯಾನುಗುಣಗೊಳಿಸು"
 
 #. Setup command line options
-#: ../src/remote-viewer-main.c:238
+#: ../src/remote-viewer-main.c:150
 msgid "- Remote viewer client"
 msgstr "- ದೂರದ ವೀಕ್ಷಕದ ಆವೃತ್ತಿ"
 
-#: ../src/remote-viewer-main.c:251
+#: ../src/remote-viewer-main.c:163
 #, c-format
 msgid ""
 "%s\n"
 "Run '%s --help' to see a full list of available command line options\n"
 msgstr "%s\nಲಭ್ಯವಿರುವ ಆಜ್ಞಾಸಾಲಿನ ಆಯ್ಕೆಗಳ ಸಂಪೂರ್ಣ ಪಟ್ಟಿಗಾಗಿ  '%s --help' ಅನ್ನು ಚಲಾಯಿಸಿ\n"
 
-#: ../src/remote-viewer-main.c:263
+#: ../src/remote-viewer-main.c:175
 #, c-format
 msgid "Error: extra arguments given while using Spice controller\n"
 msgstr "ದೋಷ: ಸ್ಪೈಸ್‌ ನಿಯಂತ್ರಕವನ್ನು ಬಳಸುವಾಗ ಹೆಚ್ಚುವರಿ ಆರ್ಗ್ಯುಮೆಂಟ್‌ಗಳು\n"
 
-#: ../src/remote-viewer-main.c:272
+#: ../src/remote-viewer-main.c:182
 #, c-format
 msgid "Error: can't handle multiple URIs\n"
 msgstr "ದೋಷ: ಅನೇಕ URLಗಳನ್ನು ನಿಭಾಯಿಸಲು ಸಾಧ್ಯವಾಗಿಲ್ಲ\n"
 
-#: ../src/remote-viewer-main.c:279 ../src/virt-viewer-main.c:124
+#: ../src/remote-viewer-main.c:190 ../src/virt-viewer-main.c:124
 #, c-format
 msgid "Zoom level must be within 10-200\n"
 msgstr "ಗಾತ್ರ ಬದಲಾವಣೆ ಮಟ್ಟವು 10-200ರ ನಡುವೆ ಇರಬೇಕು\n"
 
-#: ../src/remote-viewer.c:247 ../src/remote-viewer.c:885
+#: ../src/remote-viewer.c:281 ../src/remote-viewer.c:1017
 msgid "Failed to initiate connection"
 msgstr "ಸಂಪರ್ಕವನ್ನು ಆರಂಭಿಸುವಲ್ಲಿ ವಿಫಲಗೊಂಡಿದೆ"
 
-#: ../src/remote-viewer.c:262
+#: ../src/remote-viewer.c:296
 msgid "Display disabled by controller"
 msgstr "ನಿಯಂತ್ರಕದಿಂದ ಪ್ರದರ್ಶಕವನ್ನು ನಿಷ್ಕ್ರಿಯಗೊಳಿಸಲಾಗಿದೆ"
 
-#: ../src/remote-viewer.c:563
+#: ../src/remote-viewer.c:596
 #, c-format
 msgid "Controller connection failed: %s"
 msgstr "ನಿಯಂತ್ರಕದ ಸಂಪರ್ಕವು ವಿಫಲಗೊಂಡಿದೆ: %s"
 
-#: ../src/remote-viewer.c:826
+#. Create the widgets
+#: ../src/remote-viewer.c:876
+msgid "Connection details"
+msgstr "ಸಂಪರ್ಕ ವಿವರಗಳು"
+
+#: ../src/remote-viewer.c:891
+msgid "URL:"
+msgstr " URL:"
+
+#: ../src/remote-viewer.c:899
+msgid "Recent connections:"
+msgstr "ಇತ್ತೀಚಿನ ಸಂಪರ್ಕಗಳು:"
+
+#: ../src/remote-viewer.c:952
 msgid "Couldn't create a Spice session"
 msgstr "ಸ್ಪೈಸ್ ಅಧಿವೇಶನವನ್ನು ರಚಿಸಲು ಸಾಧ್ಯವಾಗಿಲ್ಲ"
 
-#: ../src/remote-viewer.c:840
+#: ../src/remote-viewer.c:966
 msgid "Setting up Spice session..."
 msgstr "ಸ್ಪೈಸ್ ಅಧಿವೇಶನವನ್ನು ಸಿದ್ಧಗೊಳಿಸಲಾಗುತ್ತಿದೆ..."
 
-#: ../src/remote-viewer.c:856
+#: ../src/remote-viewer.c:988
 #, c-format
 msgid "Invalid file %s"
 msgstr "ಅಮಾನ್ಯವಾದ ಕಡತ %s"
 
-#: ../src/remote-viewer.c:863
+#: ../src/remote-viewer.c:995
 msgid "Cannot determine the connection type from URI"
 msgstr "URI ಇಂದ ಸಂಪರ್ಕದ ಬಗೆಯನ್ನು ನಿರ್ಧರಿಸಲು ಸಾಧ್ಯವಾಗಿಲ್ಲ"
 
-#: ../src/remote-viewer.c:869
+#: ../src/remote-viewer.c:1001
 msgid "Couldn't open oVirt session"
-msgstr ""
+msgstr "oVirt ಅಧಿವೇಶನವನ್ನು ತೆರೆಯಲು ಸಾಧ್ಯವಾಗಿಲ್ಲ"
 
-#: ../src/remote-viewer.c:876
+#: ../src/remote-viewer.c:1008
 #, c-format
 msgid "Couldn't create a session for this type: %s"
 msgstr "ಈ ಬಗೆಗಾಗಿ ಒಂದು ಅಧಿವೇಶನವನ್ನು ರಚಿಸಲು ಸಾಧ್ಯವಾಗಿಲ್ಲ:%s"
@@ -248,71 +248,71 @@ msgstr "This program is free software; you can redistribute it and/or modify\nit
 msgid "The Fedora Translation Team"
 msgstr "ಫೆಡೋರ ಟ್ರಾನ್ಸಲೇಶನ್ ಟೀಮ್"
 
-#: ../src/virt-viewer-app.c:281
+#: ../src/virt-viewer-app.c:279
 msgid "Do you want to close the session?"
 msgstr "ನೀವು ಈ ಅಧಿವೇಶನವನ್ನು ಮುಚ್ಚಲು ಬಯಸುವಿರಾ?"
 
-#: ../src/virt-viewer-app.c:283
+#: ../src/virt-viewer-app.c:281
 msgid "Do not ask me again"
 msgstr "ಪುನಃ ನನ್ನನ್ನು ಕೇಳಬೇಡ"
 
-#: ../src/virt-viewer-app.c:686
+#: ../src/virt-viewer-app.c:695
 #, c-format
 msgid "Waiting for display %d..."
 msgstr "%d ಪ್ರದರ್ಶಕಕ್ಕಾಗಿ ಕಾಯಲಾಗುತ್ತಿದೆ..."
 
-#: ../src/virt-viewer-app.c:774
+#: ../src/virt-viewer-app.c:787
 #, c-format
 msgid "Unknown graphic type for the guest %s"
 msgstr "%s ಅತಿಥಿಗಾಗಿ ಗೊತ್ತಿರದ ಗ್ರಾಫಿಕ್ ಬಗೆ"
 
-#: ../src/virt-viewer-app.c:851
+#: ../src/virt-viewer-app.c:866
 msgid "Connect to ssh failed."
 msgstr "ssh ಗೆ ಸಂಪರ್ಕವು ವಿಫಲಗೊಂಡಿದೆ."
 
-#: ../src/virt-viewer-app.c:853
+#: ../src/virt-viewer-app.c:868
 msgid "Can't connect to channel, SSH only supported."
 msgstr "ಚಾನಲ್‌ನೊಂದಿಗೆ ಸಂಪರ್ಕಸಾಧಿಸಲು ಸಾಧ್ಯವಾಗಿಲ್ಲ, SSH ಅನ್ನು ಮಾತ್ರ ಬೆಂಬಲಿಸಲಾಗುತ್ತದೆ."
 
-#: ../src/virt-viewer-app.c:865
+#: ../src/virt-viewer-app.c:880
 msgid "Connect to channel unsupported."
 msgstr "ಚಾನಲ್‌ನೊಂದಿಗೆ ಸಂಪರ್ಕಸಾಧಿಸುವುದನ್ನು ಬೆಂಬಲಿಸಲಾಗುತ್ತದೆ."
 
-#: ../src/virt-viewer-app.c:947
+#: ../src/virt-viewer-app.c:962
 msgid "Connecting to graphic server"
 msgstr "ಗ್ರಾಫಿಕ್ ಪೂರೈಕೆಗಣಕದೊಂದಿಗೆ ಸಂಪರ್ಕಸಾಧಿಸಲಾಗುತ್ತಿದೆ"
 
-#: ../src/virt-viewer-app.c:1079
+#: ../src/virt-viewer-app.c:1095
 msgid "Guest domain has shutdown"
 msgstr "ಅತಿಥಿ ಡೊಮೈನ್ ಅನ್ನು ಸ್ಥಗಿತಗೊಳಿಸಲಾಗಿದೆ"
 
-#: ../src/virt-viewer-app.c:1129
+#: ../src/virt-viewer-app.c:1150
 msgid "Connected to graphic server"
 msgstr "ಗ್ರಾಫಿಕ್ ಪೂರೈಕೆಗಣಕದೊಂದಿಗೆ ಸಂಪರ್ಕಿತಗೊಂಡಿದೆ"
 
-#: ../src/virt-viewer-app.c:1155
+#: ../src/virt-viewer-app.c:1174
 #, c-format
 msgid "Unable to connect to the graphic server %s"
 msgstr "%s ಎಂಬ ಗ್ರಾಫಿಕ್ ಪೂರೈಕೆಗಣಕದೊಂದಿಗೆ ಸಂಪರ್ಕಿತಗೊಂಡಿದೆ"
 
-#: ../src/virt-viewer-app.c:1184
+#: ../src/virt-viewer-app.c:1203
 #, c-format
 msgid ""
 "Unable to authenticate with remote desktop server at %s: %s\n"
 "Retry connection again?"
 msgstr "%s ನಲ್ಲಿನ ದೂರದ ಗಣಕತೆರೆ ಪೂರೈಕೆಗಣಕದೊಂದಿಗೆ ದೃಢೀಕರಿಸಲು ಸಾಧ್ಯವಾಗಿಲ್ಲ: %s\nಸಂಪರ್ಕಕ್ಕಾಗಿ ಇನ್ನೊಮ್ಮೆ ಪ್ರಯತ್ನಿಸಬೇಕೆ?"
 
-#: ../src/virt-viewer-app.c:1204
+#: ../src/virt-viewer-app.c:1223
 #, c-format
 msgid "Unable to authenticate with remote desktop server: %s"
 msgstr "ದೂರದ ಗಣಕತೆರೆ ಪೂರೈಕೆಗಣಕದೊಂದಿಗೆ ದೃಢೀಕರಿಸಲು ಸಾಧ್ಯವಾಗಿಲ್ಲ: %s"
 
-#: ../src/virt-viewer-app.c:1212
+#: ../src/virt-viewer-app.c:1231
 #, c-format
 msgid "USB redirection error: %s"
 msgstr "USB ಮರುನಿರ್ದೇಶನ ದೋಷ: %s"
 
-#: ../src/virt-viewer-app.c:1834
+#: ../src/virt-viewer-app.c:1817
 #, c-format
 msgid "Display %d"
 msgstr "%d ಅನ್ನು ತೋರಿಸು"
@@ -389,7 +389,7 @@ msgid ""
 msgstr "\nಬಳಕೆ: %s [OPTIONS] DOMAIN-NAME|ID|UUID\n\n%s\n\n"
 
 #. Create the widgets
-#: ../src/virt-viewer-session-spice.c:491
+#: ../src/virt-viewer-session-spice.c:479
 msgid "Select USB devices for redirection"
 msgstr "ಮರುನಿರ್ದೇಶನಕ್ಕಾಗಿ USB ಸಾಧನಗಳನ್ನು ಆರಿಸಿ"
 
@@ -398,88 +398,88 @@ msgstr "ಮರುನಿರ್ದೇಶನಕ್ಕಾಗಿ USB ಸಾಧನಗ�
 msgid "Unsupported authentication type %d"
 msgstr "ಬೆಂಬಲವಿರದ ದೃಢೀಕರಣದ ಬಗೆ %d"
 
-#: ../src/virt-viewer-window.c:567 ../src/virt-viewer.xml.h:13
+#: ../src/virt-viewer-window.c:551 ../src/virt-viewer.xml.h:13
 msgid "Ctrl+Alt+_Del"
 msgstr "Ctrl+Alt+_Del"
 
-#: ../src/virt-viewer-window.c:568 ../src/virt-viewer.xml.h:14
+#: ../src/virt-viewer-window.c:552 ../src/virt-viewer.xml.h:14
 msgid "Ctrl+Alt+_Backspace"
 msgstr "Ctrl+Alt+_Backspace"
 
-#: ../src/virt-viewer-window.c:570 ../src/virt-viewer.xml.h:15
+#: ../src/virt-viewer-window.c:554 ../src/virt-viewer.xml.h:15
 msgid "Ctrl+Alt+F_1"
 msgstr "Ctrl+Alt+F_1"
 
-#: ../src/virt-viewer-window.c:571 ../src/virt-viewer.xml.h:16
+#: ../src/virt-viewer-window.c:555 ../src/virt-viewer.xml.h:16
 msgid "Ctrl+Alt+F_2"
 msgstr "Ctrl+Alt+F_2"
 
-#: ../src/virt-viewer-window.c:572 ../src/virt-viewer.xml.h:17
+#: ../src/virt-viewer-window.c:556 ../src/virt-viewer.xml.h:17
 msgid "Ctrl+Alt+F_3"
 msgstr "Ctrl+Alt+F_3"
 
-#: ../src/virt-viewer-window.c:573 ../src/virt-viewer.xml.h:18
+#: ../src/virt-viewer-window.c:557 ../src/virt-viewer.xml.h:18
 msgid "Ctrl+Alt+F_4"
 msgstr "Ctrl+Alt+F_4"
 
-#: ../src/virt-viewer-window.c:574 ../src/virt-viewer.xml.h:19
+#: ../src/virt-viewer-window.c:558 ../src/virt-viewer.xml.h:19
 msgid "Ctrl+Alt+F_5"
 msgstr "Ctrl+Alt+F_5"
 
-#: ../src/virt-viewer-window.c:575 ../src/virt-viewer.xml.h:20
+#: ../src/virt-viewer-window.c:559 ../src/virt-viewer.xml.h:20
 msgid "Ctrl+Alt+F_6"
 msgstr "Ctrl+Alt+F_6"
 
-#: ../src/virt-viewer-window.c:576 ../src/virt-viewer.xml.h:21
+#: ../src/virt-viewer-window.c:560 ../src/virt-viewer.xml.h:21
 msgid "Ctrl+Alt+F_7"
 msgstr "Ctrl+Alt+F_7"
 
-#: ../src/virt-viewer-window.c:577 ../src/virt-viewer.xml.h:22
+#: ../src/virt-viewer-window.c:561 ../src/virt-viewer.xml.h:22
 msgid "Ctrl+Alt+F_8"
 msgstr "Ctrl+Alt+F_8"
 
-#: ../src/virt-viewer-window.c:578 ../src/virt-viewer.xml.h:23
+#: ../src/virt-viewer-window.c:562 ../src/virt-viewer.xml.h:23
 msgid "Ctrl+Alt+F_9"
 msgstr "Ctrl+Alt+F_9"
 
-#: ../src/virt-viewer-window.c:579 ../src/virt-viewer.xml.h:24
+#: ../src/virt-viewer-window.c:563 ../src/virt-viewer.xml.h:24
 msgid "Ctrl+Alt+F1_0"
 msgstr "Ctrl+Alt+F1_0"
 
-#: ../src/virt-viewer-window.c:580 ../src/virt-viewer.xml.h:25
+#: ../src/virt-viewer-window.c:564 ../src/virt-viewer.xml.h:25
 msgid "Ctrl+Alt+F11"
 msgstr "Ctrl+Alt+F11"
 
-#: ../src/virt-viewer-window.c:581 ../src/virt-viewer.xml.h:26
+#: ../src/virt-viewer-window.c:565 ../src/virt-viewer.xml.h:26
 msgid "Ctrl+Alt+F12"
 msgstr "Ctrl+Alt+F12"
 
-#: ../src/virt-viewer-window.c:868 ../src/virt-viewer.xml.h:2
+#: ../src/virt-viewer-window.c:861 ../src/virt-viewer.xml.h:2
 msgid "Screenshot"
 msgstr "ತೆರೆಚಿತ್ರ"
 
-#: ../src/virt-viewer-window.c:944
+#: ../src/virt-viewer-window.c:937
 msgid "Disconnect"
 msgstr "ಸಂಪರ್ಕ ಕಡಿದುಹಾಕು"
 
-#: ../src/virt-viewer-window.c:951 ../src/virt-viewer-window.c:952
+#: ../src/virt-viewer-window.c:944 ../src/virt-viewer-window.c:945
 #: ../src/virt-viewer.xml.h:3
 msgid "USB device selection"
 msgstr "USB ಸಾಧನವನ್ನು ಆರಿಸುವಿಕೆ"
 
-#: ../src/virt-viewer-window.c:960
+#: ../src/virt-viewer-window.c:953
 msgid "Send key combination"
 msgstr "ಕೀಲಿಯ ಸಂಯೋಜನೆಯನ್ನು ಕಳುಹಿಸು"
 
-#: ../src/virt-viewer-window.c:969 ../src/virt-viewer-window.c:970
+#: ../src/virt-viewer-window.c:962 ../src/virt-viewer-window.c:963
 msgid "Leave fullscreen"
 msgstr "ಪೂರ್ಣತೆರೆಯಿಂದ ನಿರ್ಗಮಿಸು"
 
-#: ../src/virt-viewer-window.c:1049
+#: ../src/virt-viewer-window.c:1042
 msgid "Ctrl+Alt"
 msgstr "Ctrl+Alt"
 
-#: ../src/virt-viewer-window.c:1052
+#: ../src/virt-viewer-window.c:1045
 #, c-format
 msgid "(Press %s to release pointer)"
 msgstr "(ಸೂಚಕವನ್ನು ಮುಕ್ತಗೊಳಿಸಲು %s ಅನ್ನು ಒತ್ತಿ)"
@@ -490,20 +490,20 @@ msgstr "(ಸೂಚಕವನ್ನು ಮುಕ್ತಗೊಳಿಸಲು %s ಅ
 #. * Such as: "(Press Ctrl+Alt to release pointer) BigCorpTycoon MOTD - Virt
 #. Viewer"
 #. 
-#: ../src/virt-viewer-window.c:1063
+#: ../src/virt-viewer-window.c:1056
 #, c-format
 msgid "%s%s%s - %s"
 msgstr "%s%s%s - %s"
 
 #. translators: <space>
-#: ../src/virt-viewer-window.c:1067
+#: ../src/virt-viewer-window.c:1060
 msgid " "
 msgstr " "
 
-#: ../src/virt-viewer-file.c:588
+#: ../src/virt-viewer-file.c:610
 #, c-format
 msgid "At least %s version %s is required to setup this connection"
-msgstr ""
+msgstr "ಈ ಸಂಪರ್ಕವನ್ನು ಸಿದ್ಧಗೊಳಿಸಲು ಕನಿಷ್ಟ %s ಆವೃತ್ತಿ %s ಅಗತ್ಯವಿದೆ"
 
 #: ../src/virt-viewer.c:144
 msgid "Waiting for guest domain to re-start"

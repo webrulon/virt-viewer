@@ -6,14 +6,15 @@
 # Felix I <ifelix25@gmail.com>, 2012
 # I. Felix <ifelix@redhat.com>, 2010
 # shkumar <shkumar@redhat.com>, 2012
+# shkumar <shkumar@redhat.com>, 2013
 # shkumar <shkumar@redhat.com>, 2012-2013
 msgid ""
 msgstr ""
 "Project-Id-Version: virt-viewer\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-04-29 18:06+0100\n"
-"PO-Revision-Date: 2013-04-29 17:06+0000\n"
-"Last-Translator: Daniel Berrange <dan-transifex@berrange.com>\n"
+"POT-Creation-Date: 2013-07-09 21:09+0100\n"
+"PO-Revision-Date: 2013-04-30 10:04+0000\n"
+"Last-Translator: shkumar <shkumar@redhat.com>\n"
 "Language-Team: Tamil <tamil-users@lists.fedoraproject.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -21,7 +22,7 @@ msgstr ""
 "Language: ta\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: ../data/remote-viewer.desktop.in.h:1 ../src/remote-viewer-main.c:235
+#: ../data/remote-viewer.desktop.in.h:1 ../src/remote-viewer-main.c:147
 msgid "Remote Viewer"
 msgstr "தொலைநிலை காட்டி"
 
@@ -83,123 +84,123 @@ msgstr "remote-viewer பதிப்பு %s\n"
 msgid "Invalid full-screen argument: %s"
 msgstr "தவறான முழுத்திரை அளவுரு: %s"
 
-#. Create the widgets
-#: ../src/remote-viewer-main.c:104
-msgid "Connection details"
-msgstr "இணைப்பு விவரங்கள்"
-
-#: ../src/remote-viewer-main.c:119
-msgid "URL:"
-msgstr "URL:"
-
-#: ../src/remote-viewer-main.c:127
-msgid "Recent connections:"
-msgstr "சமீபத்திய இணைப்புகள்:"
-
-#: ../src/remote-viewer-main.c:211 ../src/virt-viewer-main.c:65
+#: ../src/remote-viewer-main.c:123 ../src/virt-viewer-main.c:65
 msgid "Display version information"
 msgstr "காட்சி பதிப்பு தகவல்"
 
-#: ../src/remote-viewer-main.c:213 ../src/virt-viewer-main.c:67
+#: ../src/remote-viewer-main.c:125 ../src/virt-viewer-main.c:67
 msgid "Display verbose information"
 msgstr "காட்சி வெர்போஸ் தகவல்"
 
-#: ../src/remote-viewer-main.c:215
+#: ../src/remote-viewer-main.c:127
 msgid "Set window title"
 msgstr "சாளர தலைப்பை அமைக்கவும்"
 
-#: ../src/remote-viewer-main.c:217 ../src/virt-viewer-main.c:69
+#: ../src/remote-viewer-main.c:129 ../src/virt-viewer-main.c:69
 msgid "Direct connection with no automatic tunnels"
 msgstr "தானியக்க டனல்கள் இல்லாமல் நேரடி இணைப்பு"
 
-#: ../src/remote-viewer-main.c:219 ../src/virt-viewer-main.c:79
+#: ../src/remote-viewer-main.c:131 ../src/virt-viewer-main.c:79
 msgid "Zoom level of window, in percentage"
 msgstr "சாளரத்தின் அளவிடும் நிலை, சதவீதத்தில்"
 
-#: ../src/remote-viewer-main.c:221 ../src/virt-viewer-main.c:81
+#: ../src/remote-viewer-main.c:133 ../src/virt-viewer-main.c:81
 msgid "Display debugging information"
 msgstr "பிழைத்திருத்த தகவலை காட்டவும்"
 
-#: ../src/remote-viewer-main.c:223
+#: ../src/remote-viewer-main.c:135
 msgid ""
 "Open in full screen mode (auto-conf adjusts guest resolution to fit the "
 "client's)."
 msgstr "முழுத்திரை பயன்முறையில் திறக்கவும் (auto-conf ஆனது கிளையன்ட்டின் தெளிவுத்திறனுக்குப் பொருந்தும் விதத்தில் விருந்தினரின் தெளிவுத்திறனை சரி செய்யும்)."
 
-#: ../src/remote-viewer-main.c:223
+#: ../src/remote-viewer-main.c:135
 msgid "<auto-conf>"
 msgstr "<auto-conf>"
 
-#: ../src/remote-viewer-main.c:226
+#: ../src/remote-viewer-main.c:138
 msgid "Open connection using Spice controller communication"
 msgstr "ஸ்பைஸ் கட்டுப்படுத்தி தொடர்பை பயன்படுத்தி இணைப்பை திறக்கவும்"
 
-#: ../src/remote-viewer-main.c:229 ../src/virt-viewer-main.c:85
+#: ../src/remote-viewer-main.c:141 ../src/virt-viewer-main.c:85
 msgid "Customise hotkeys"
 msgstr "குறுக்குவிசைகளை தனிப்பயனாக்கவும்"
 
 #. Setup command line options
-#: ../src/remote-viewer-main.c:238
+#: ../src/remote-viewer-main.c:150
 msgid "- Remote viewer client"
 msgstr "- Remote viewer client"
 
-#: ../src/remote-viewer-main.c:251
+#: ../src/remote-viewer-main.c:163
 #, c-format
 msgid ""
 "%s\n"
 "Run '%s --help' to see a full list of available command line options\n"
 msgstr "%s\nகிடைக்கும் கட்டளை வரி விருப்பங்களின் முழு பட்டியலைக் காண '%s --help' கட்டளையை இயக்கவும்\n"
 
-#: ../src/remote-viewer-main.c:263
+#: ../src/remote-viewer-main.c:175
 #, c-format
 msgid "Error: extra arguments given while using Spice controller\n"
 msgstr "பிழை: ஸ்பைஸ் கன்ட்ரோலரைப் பயன்படுத்தும் போது கூடுதல் அளவுருக்கள் கொடுக்கப்பட்டன\n"
 
-#: ../src/remote-viewer-main.c:272
+#: ../src/remote-viewer-main.c:182
 #, c-format
 msgid "Error: can't handle multiple URIs\n"
 msgstr "பிழை: பல URIகளைக் கையாள முடியாது\n"
 
-#: ../src/remote-viewer-main.c:279 ../src/virt-viewer-main.c:124
+#: ../src/remote-viewer-main.c:190 ../src/virt-viewer-main.c:124
 #, c-format
 msgid "Zoom level must be within 10-200\n"
 msgstr "அளவிடும் நிலை 10-200-க்குள் இருக்க வேண்டும்\n"
 
-#: ../src/remote-viewer.c:247 ../src/remote-viewer.c:885
+#: ../src/remote-viewer.c:281 ../src/remote-viewer.c:1017
 msgid "Failed to initiate connection"
 msgstr "இணைப்பை துவக்க முடியவில்லை"
 
-#: ../src/remote-viewer.c:262
+#: ../src/remote-viewer.c:296
 msgid "Display disabled by controller"
 msgstr "கட்டுப்படுத்தியால் காட்சி செயல்நீக்கப்பட்டது"
 
-#: ../src/remote-viewer.c:563
+#: ../src/remote-viewer.c:596
 #, c-format
 msgid "Controller connection failed: %s"
 msgstr "கட்டுப்படுத்தி இணைப்பு தோல்வியுற்றது: %s"
 
-#: ../src/remote-viewer.c:826
+#. Create the widgets
+#: ../src/remote-viewer.c:876
+msgid "Connection details"
+msgstr "இணைப்பு விவரங்கள்"
+
+#: ../src/remote-viewer.c:891
+msgid "URL:"
+msgstr "URL:"
+
+#: ../src/remote-viewer.c:899
+msgid "Recent connections:"
+msgstr "சமீபத்திய இணைப்புகள்:"
+
+#: ../src/remote-viewer.c:952
 msgid "Couldn't create a Spice session"
 msgstr "ஒரு ஸ்பைஸ் அமர்வை உருவாக்க முடியவில்லை"
 
-#: ../src/remote-viewer.c:840
+#: ../src/remote-viewer.c:966
 msgid "Setting up Spice session..."
 msgstr "ஸ்பைஸ் அமர்வை அமைக்கிறது..."
 
-#: ../src/remote-viewer.c:856
+#: ../src/remote-viewer.c:988
 #, c-format
 msgid "Invalid file %s"
 msgstr "செல்லுபடியாகாத கோப்பு %s"
 
-#: ../src/remote-viewer.c:863
+#: ../src/remote-viewer.c:995
 msgid "Cannot determine the connection type from URI"
 msgstr "URI-இலிருந்து இணைப்பு வகையை வரையறுக்க முடியாது"
 
-#: ../src/remote-viewer.c:869
+#: ../src/remote-viewer.c:1001
 msgid "Couldn't open oVirt session"
-msgstr ""
+msgstr "oVirt அமர்வைத் திறக்க முடியவில்லை"
 
-#: ../src/remote-viewer.c:876
+#: ../src/remote-viewer.c:1008
 #, c-format
 msgid "Couldn't create a session for this type: %s"
 msgstr "இந்த வகைக்கு ஒரு அமர்வை உருவாக்க முடியாது: %s"
@@ -249,71 +250,71 @@ msgstr "This program is free software; you can redistribute it and/or modify\nit
 msgid "The Fedora Translation Team"
 msgstr "Fedora மொழிபெயர்ப்பு குழு"
 
-#: ../src/virt-viewer-app.c:281
+#: ../src/virt-viewer-app.c:279
 msgid "Do you want to close the session?"
 msgstr "அமர்வை மூட வேண்டுமா?"
 
-#: ../src/virt-viewer-app.c:283
+#: ../src/virt-viewer-app.c:281
 msgid "Do not ask me again"
 msgstr "மீண்டும் என்னிடம் கேட்க வேண்டாம்"
 
-#: ../src/virt-viewer-app.c:686
+#: ../src/virt-viewer-app.c:695
 #, c-format
 msgid "Waiting for display %d..."
 msgstr "காட்சி %d-க்கு காத்திருக்கிறது..."
 
-#: ../src/virt-viewer-app.c:774
+#: ../src/virt-viewer-app.c:787
 #, c-format
 msgid "Unknown graphic type for the guest %s"
 msgstr "விருந்தினர் %sக்கான தெரியாத வரைகலை வகை"
 
-#: ../src/virt-viewer-app.c:851
+#: ../src/virt-viewer-app.c:866
 msgid "Connect to ssh failed."
 msgstr "ssh-உடன் இணைக்க முடியவில்லை."
 
-#: ../src/virt-viewer-app.c:853
+#: ../src/virt-viewer-app.c:868
 msgid "Can't connect to channel, SSH only supported."
 msgstr "சேனலுடன் இணைக்க வேண்டாம், SSH மட்டும் துணைபுரிகிறது."
 
-#: ../src/virt-viewer-app.c:865
+#: ../src/virt-viewer-app.c:880
 msgid "Connect to channel unsupported."
 msgstr "சேனலுடன் இணைப்பு துணைபுரியவில்லை."
 
-#: ../src/virt-viewer-app.c:947
+#: ../src/virt-viewer-app.c:962
 msgid "Connecting to graphic server"
 msgstr "வரைகலை சேவையகத்துடன் இணைக்கிறது"
 
-#: ../src/virt-viewer-app.c:1079
+#: ../src/virt-viewer-app.c:1095
 msgid "Guest domain has shutdown"
 msgstr "விருந்தினர் டொமைன் நிறுத்தப்பட்டது"
 
-#: ../src/virt-viewer-app.c:1129
+#: ../src/virt-viewer-app.c:1150
 msgid "Connected to graphic server"
 msgstr "வரைகலை சேவையகத்துடன் இணைக்கப்பட்டது"
 
-#: ../src/virt-viewer-app.c:1155
+#: ../src/virt-viewer-app.c:1174
 #, c-format
 msgid "Unable to connect to the graphic server %s"
 msgstr "வரைகலை சேவையகம் %s-க்கு இணைக்க முடியவில்லை"
 
-#: ../src/virt-viewer-app.c:1184
+#: ../src/virt-viewer-app.c:1203
 #, c-format
 msgid ""
 "Unable to authenticate with remote desktop server at %s: %s\n"
 "Retry connection again?"
 msgstr "தொலை பணிமேடை சேவையகம் %s-இலில் அங்கீகரிக்க முடியவில்லை: %s\nஇணைப்பை மீண்டும் முயற்சிக்கவும்?"
 
-#: ../src/virt-viewer-app.c:1204
+#: ../src/virt-viewer-app.c:1223
 #, c-format
 msgid "Unable to authenticate with remote desktop server: %s"
 msgstr "தொலை பணிமேடை சேவையகத்துடன் அங்கீகரிக்க முடியவில்லை: %s"
 
-#: ../src/virt-viewer-app.c:1212
+#: ../src/virt-viewer-app.c:1231
 #, c-format
 msgid "USB redirection error: %s"
 msgstr "USB மறுதிசையிடல் பிழை: %s"
 
-#: ../src/virt-viewer-app.c:1834
+#: ../src/virt-viewer-app.c:1817
 #, c-format
 msgid "Display %d"
 msgstr "%d ஐக் காண்பி"
@@ -390,7 +391,7 @@ msgid ""
 msgstr "\nபயன்பாடு: %s [OPTIONS] DOMAIN-NAME|ID|UUID\n\n%s\n\n"
 
 #. Create the widgets
-#: ../src/virt-viewer-session-spice.c:491
+#: ../src/virt-viewer-session-spice.c:479
 msgid "Select USB devices for redirection"
 msgstr "மறுதிசையிட USB சாதனங்களை தேர்ந்தெடுக்கவும்"
 
@@ -399,88 +400,88 @@ msgstr "மறுதிசையிட USB சாதனங்களை தேர
 msgid "Unsupported authentication type %d"
 msgstr "துணைபுரியாத அங்கீகார வகை %d"
 
-#: ../src/virt-viewer-window.c:567 ../src/virt-viewer.xml.h:13
+#: ../src/virt-viewer-window.c:551 ../src/virt-viewer.xml.h:13
 msgid "Ctrl+Alt+_Del"
 msgstr "Ctrl+Alt+_Del"
 
-#: ../src/virt-viewer-window.c:568 ../src/virt-viewer.xml.h:14
+#: ../src/virt-viewer-window.c:552 ../src/virt-viewer.xml.h:14
 msgid "Ctrl+Alt+_Backspace"
 msgstr "Ctrl+Alt+_Backspace"
 
-#: ../src/virt-viewer-window.c:570 ../src/virt-viewer.xml.h:15
+#: ../src/virt-viewer-window.c:554 ../src/virt-viewer.xml.h:15
 msgid "Ctrl+Alt+F_1"
 msgstr "Ctrl+Alt+F_1"
 
-#: ../src/virt-viewer-window.c:571 ../src/virt-viewer.xml.h:16
+#: ../src/virt-viewer-window.c:555 ../src/virt-viewer.xml.h:16
 msgid "Ctrl+Alt+F_2"
 msgstr "Ctrl+Alt+F_2"
 
-#: ../src/virt-viewer-window.c:572 ../src/virt-viewer.xml.h:17
+#: ../src/virt-viewer-window.c:556 ../src/virt-viewer.xml.h:17
 msgid "Ctrl+Alt+F_3"
 msgstr "Ctrl+Alt+F_3"
 
-#: ../src/virt-viewer-window.c:573 ../src/virt-viewer.xml.h:18
+#: ../src/virt-viewer-window.c:557 ../src/virt-viewer.xml.h:18
 msgid "Ctrl+Alt+F_4"
 msgstr "Ctrl+Alt+F_4"
 
-#: ../src/virt-viewer-window.c:574 ../src/virt-viewer.xml.h:19
+#: ../src/virt-viewer-window.c:558 ../src/virt-viewer.xml.h:19
 msgid "Ctrl+Alt+F_5"
 msgstr "Ctrl+Alt+F_5"
 
-#: ../src/virt-viewer-window.c:575 ../src/virt-viewer.xml.h:20
+#: ../src/virt-viewer-window.c:559 ../src/virt-viewer.xml.h:20
 msgid "Ctrl+Alt+F_6"
 msgstr "Ctrl+Alt+F_6"
 
-#: ../src/virt-viewer-window.c:576 ../src/virt-viewer.xml.h:21
+#: ../src/virt-viewer-window.c:560 ../src/virt-viewer.xml.h:21
 msgid "Ctrl+Alt+F_7"
 msgstr "Ctrl+Alt+F_7"
 
-#: ../src/virt-viewer-window.c:577 ../src/virt-viewer.xml.h:22
+#: ../src/virt-viewer-window.c:561 ../src/virt-viewer.xml.h:22
 msgid "Ctrl+Alt+F_8"
 msgstr "Ctrl+Alt+F_8"
 
-#: ../src/virt-viewer-window.c:578 ../src/virt-viewer.xml.h:23
+#: ../src/virt-viewer-window.c:562 ../src/virt-viewer.xml.h:23
 msgid "Ctrl+Alt+F_9"
 msgstr "Ctrl+Alt+F_9"
 
-#: ../src/virt-viewer-window.c:579 ../src/virt-viewer.xml.h:24
+#: ../src/virt-viewer-window.c:563 ../src/virt-viewer.xml.h:24
 msgid "Ctrl+Alt+F1_0"
 msgstr "Ctrl+Alt+F1_0"
 
-#: ../src/virt-viewer-window.c:580 ../src/virt-viewer.xml.h:25
+#: ../src/virt-viewer-window.c:564 ../src/virt-viewer.xml.h:25
 msgid "Ctrl+Alt+F11"
 msgstr "Ctrl+Alt+F11"
 
-#: ../src/virt-viewer-window.c:581 ../src/virt-viewer.xml.h:26
+#: ../src/virt-viewer-window.c:565 ../src/virt-viewer.xml.h:26
 msgid "Ctrl+Alt+F12"
 msgstr "Ctrl+Alt+F12"
 
-#: ../src/virt-viewer-window.c:868 ../src/virt-viewer.xml.h:2
+#: ../src/virt-viewer-window.c:861 ../src/virt-viewer.xml.h:2
 msgid "Screenshot"
 msgstr "திரைப்பிடிப்பு"
 
-#: ../src/virt-viewer-window.c:944
+#: ../src/virt-viewer-window.c:937
 msgid "Disconnect"
 msgstr "துண்டி"
 
-#: ../src/virt-viewer-window.c:951 ../src/virt-viewer-window.c:952
+#: ../src/virt-viewer-window.c:944 ../src/virt-viewer-window.c:945
 #: ../src/virt-viewer.xml.h:3
 msgid "USB device selection"
 msgstr "USB சாதன தேர்வு"
 
-#: ../src/virt-viewer-window.c:960
+#: ../src/virt-viewer-window.c:953
 msgid "Send key combination"
 msgstr "விசைச் சேர்க்கையை அனுப்பு"
 
-#: ../src/virt-viewer-window.c:969 ../src/virt-viewer-window.c:970
+#: ../src/virt-viewer-window.c:962 ../src/virt-viewer-window.c:963
 msgid "Leave fullscreen"
 msgstr "முழுத்திரையை விட்டுவிலகு"
 
-#: ../src/virt-viewer-window.c:1049
+#: ../src/virt-viewer-window.c:1042
 msgid "Ctrl+Alt"
 msgstr "Ctrl+Alt"
 
-#: ../src/virt-viewer-window.c:1052
+#: ../src/virt-viewer-window.c:1045
 #, c-format
 msgid "(Press %s to release pointer)"
 msgstr "(சுட்டியை விடுவிக்க %s ஐ அழுத்தவும்)"
@@ -491,20 +492,20 @@ msgstr "(சுட்டியை விடுவிக்க %s ஐ அழு�
 #. * Such as: "(Press Ctrl+Alt to release pointer) BigCorpTycoon MOTD - Virt
 #. Viewer"
 #. 
-#: ../src/virt-viewer-window.c:1063
+#: ../src/virt-viewer-window.c:1056
 #, c-format
 msgid "%s%s%s - %s"
 msgstr "%s%s%s - %s"
 
 #. translators: <space>
-#: ../src/virt-viewer-window.c:1067
+#: ../src/virt-viewer-window.c:1060
 msgid " "
 msgstr " "
 
-#: ../src/virt-viewer-file.c:588
+#: ../src/virt-viewer-file.c:610
 #, c-format
 msgid "At least %s version %s is required to setup this connection"
-msgstr ""
+msgstr "இந்த இணைப்பை அமைக்க குறைந்தது %s பதிப்பு %s தேவை"
 
 #: ../src/virt-viewer.c:144
 msgid "Waiting for guest domain to re-start"

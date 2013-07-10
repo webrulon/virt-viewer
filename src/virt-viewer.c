@@ -335,24 +335,24 @@ virt_viewer_extract_connect_info(VirtViewer *self,
         goto cleanup;
 
     xpath = g_strdup_printf("string(/domain/devices/graphics[@type='%s']/@port)", type);
-    if ((gport = virt_viewer_extract_xpath_string(xmldesc, xpath)) == NULL) {
-        free(xpath);
+    gport = virt_viewer_extract_xpath_string(xmldesc, xpath);
+    g_free(xpath);
+    if (g_str_equal(type, "spice")) {
+        xpath = g_strdup_printf("string(/domain/devices/graphics[@type='%s']/@tlsPort)", type);
+        gtlsport = virt_viewer_extract_xpath_string(xmldesc, xpath);
+        g_free(xpath);
+    }
+
+    if (gport || gtlsport) {
+        xpath = g_strdup_printf("string(/domain/devices/graphics[@type='%s']/@listen)", type);
+        ghost = virt_viewer_extract_xpath_string(xmldesc, xpath);
+    } else {
         xpath = g_strdup_printf("string(/domain/devices/graphics[@type='%s']/@socket)", type);
         if ((unixsock = virt_viewer_extract_xpath_string(xmldesc, xpath)) == NULL) {
             virt_viewer_app_simple_message_dialog(app, _("Cannot determine the graphic address for the guest %s"),
                                                   priv->domkey);
             goto cleanup;
         }
-    } else {
-        if (g_str_equal(type, "spice")) {
-            free(xpath);
-            xpath = g_strdup_printf("string(/domain/devices/graphics[@type='%s']/@tlsPort)", type);
-            gtlsport = virt_viewer_extract_xpath_string(xmldesc, xpath);
-        }
-
-        free(xpath);
-        xpath = g_strdup_printf("string(/domain/devices/graphics[@type='%s']/@listen)", type);
-        ghost = virt_viewer_extract_xpath_string(xmldesc, xpath);
     }
 
     if (ghost && gport)

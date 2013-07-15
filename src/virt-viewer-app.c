@@ -715,7 +715,8 @@ display_show_hint(VirtViewerDisplay *display,
         if (win != self->priv->main_window &&
             g_getenv("VIRT_VIEWER_HIDE"))
             virt_viewer_window_hide(win);
-        virt_viewer_notebook_show_status(nb, _("Waiting for display %d..."), nth + 1);
+        if (!self->priv->kiosk)
+            virt_viewer_notebook_show_status(nb, _("Waiting for display %d..."), nth + 1);
     }
     virt_viewer_app_update_menu_displays(self);
 
@@ -1179,7 +1180,11 @@ virt_viewer_app_connected(VirtViewerSession *session G_GNUC_UNUSED,
     VirtViewerAppPrivate *priv = self->priv;
 
     priv->connected = TRUE;
-    virt_viewer_app_show_status(self, _("Connected to graphic server"));
+
+    if (self->priv->kiosk)
+        virt_viewer_app_show_status(self, "");
+    else
+        virt_viewer_app_show_status(self, _("Connected to graphic server"));
 }
 
 

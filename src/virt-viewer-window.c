@@ -1260,6 +1260,23 @@ virt_viewer_window_set_display(VirtViewerWindow *self, VirtViewerDisplay *displa
     }
 }
 
+static void
+virt_viewer_window_enable_kiosk(VirtViewerWindow *self)
+{
+    VirtViewerWindowPrivate *priv;
+
+    g_return_if_fail(VIRT_VIEWER_IS_WINDOW(self));
+    priv = self->priv;
+
+    ViewOvBox_SetOver(VIEW_OV_BOX(priv->layout), gtk_drawing_area_new());
+    ViewAutoDrawer_SetActive(VIEW_AUTODRAWER(priv->layout), FALSE);
+    ViewAutoDrawer_SetOverlapPixels(VIEW_AUTODRAWER(priv->layout), 0);
+
+    /* You probably also want X11 Option "DontVTSwitch" "true" */
+    /* and perhaps more distro/desktop-specific options */
+    virt_viewer_window_disable_modifiers(self);
+}
+
 void
 virt_viewer_window_show(VirtViewerWindow *self)
 {
@@ -1272,6 +1289,9 @@ virt_viewer_window_show(VirtViewerWindow *self)
         virt_viewer_window_resize(self, FALSE);
         self->priv->desktop_resize_pending = FALSE;
     }
+
+    if (self->priv->kiosk)
+        virt_viewer_window_enable_kiosk(self);
 
     virt_viewer_window_move_to_monitor(self);
 }
@@ -1349,6 +1369,11 @@ virt_viewer_window_set_kiosk(VirtViewerWindow *self, gboolean enabled)
         return;
 
     self->priv->kiosk = enabled;
+
+    if (enabled)
+        virt_viewer_window_enable_kiosk(self);
+    else
+        g_debug("disabling kiosk not implemented yet");
 }
 
 /*

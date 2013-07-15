@@ -148,6 +148,7 @@ struct _VirtViewerAppPrivate {
     GdkModifierType insert_smartcard_accel_mods;
     guint remove_smartcard_accel_key;
     GdkModifierType remove_smartcard_accel_mods;
+    gboolean quit_on_disconnect;
 };
 
 
@@ -167,6 +168,7 @@ enum {
     PROP_HAS_FOCUS,
     PROP_FULLSCREEN_AUTO_CONF,
     PROP_KIOSK,
+    PROP_QUIT_ON_DISCONNECT,
 };
 
 enum {
@@ -1130,7 +1132,8 @@ virt_viewer_app_default_deactivated(VirtViewerApp *self, gboolean connect_error)
                               priv->guest_name);
     }
 
-    gtk_main_quit();
+    if (self->priv->quit_on_disconnect)
+        gtk_main_quit();
 }
 
 static void
@@ -1339,6 +1342,10 @@ virt_viewer_app_get_property (GObject *object, guint property_id,
         g_value_set_boolean(value, priv->kiosk);
         break;
 
+    case PROP_QUIT_ON_DISCONNECT:
+        g_value_set_boolean(value, priv->quit_on_disconnect);
+        break;
+
     default:
         G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
     }
@@ -1386,6 +1393,10 @@ virt_viewer_app_set_property (GObject *object, guint property_id,
 
     case PROP_KIOSK:
         virt_viewer_app_set_kiosk(self, g_value_get_boolean(value));
+        break;
+
+    case PROP_QUIT_ON_DISCONNECT:
+        priv->quit_on_disconnect = g_value_get_boolean(value);
         break;
 
     default:
@@ -1456,6 +1467,7 @@ static gboolean opt_debug = FALSE;
 static gboolean opt_fullscreen = FALSE;
 static gboolean opt_fullscreen_auto_conf = FALSE;
 static gboolean opt_kiosk = FALSE;
+static gboolean opt_kiosk_quit = FALSE;
 
 static void
 virt_viewer_app_init (VirtViewerApp *self)
@@ -1485,6 +1497,7 @@ virt_viewer_app_init (VirtViewerApp *self)
 
     self->priv->verbose = opt_verbose;
     self->priv->fullscreen_auto_conf = opt_fullscreen_auto_conf;
+    self->priv->quit_on_disconnect = opt_kiosk ? opt_kiosk_quit : TRUE;
 }
 
 static void
@@ -1679,6 +1692,15 @@ virt_viewer_app_class_init (VirtViewerAppClass *klass)
                                                          "Kiosk mode",
                                                          FALSE,
                                                          G_PARAM_CONSTRUCT |
+                                                         G_PARAM_READWRITE |
+                                                         G_PARAM_STATIC_STRINGS));
+
+    g_object_class_install_property(object_class,
+                                    PROP_QUIT_ON_DISCONNECT,
+                                    g_param_spec_boolean("quit-on-disconnect",
+                                                         "Quit on disconnect",
+                                                         "Quit on disconnect",
+                                                         TRUE,
                                                          G_PARAM_READWRITE |
                                                          G_PARAM_STATIC_STRINGS));
 
@@ -2149,6 +2171,24 @@ option_fullscreen(G_GNUC_UNUSED const gchar *option_name,
     return FALSE;
 }
 
+static gboolean
+option_kiosk_quit(G_GNUC_UNUSED const gchar *option_name,
+                  const gchar *value,
+                  G_GNUC_UNUSED gpointer data, GError **error)
+{
+    if (g_str_equal(value, "never")) {
+        opt_kiosk_quit = FALSE;
+        return TRUE;
+    }
+    if (g_str_equal(value, "on-disconnect")) {
+        opt_kiosk_quit = TRUE;
+        return TRUE;
+    }
+
+    g_set_error(error, G_OPTION_ERROR, G_OPTION_ERROR_FAILED, _("Invalid kiosk-quit argument: %s"), value);
+    return FALSE;
+}
+
 const GOptionEntry *
 virt_viewer_app_get_options(void)
 {
@@ -2161,6 +2201,8 @@ virt_viewer_app_get_options(void)
           N_("Customise hotkeys"), NULL },
         { "kiosk", 'k', 0, G_OPTION_ARG_NONE, &opt_kiosk,
           N_("Enable kiosk mode"), NULL },
+        { "kiosk-quit", '\0', 0, G_OPTION_ARG_CALLBACK, option_kiosk_quit,
+          N_("Quit on given condition in kiosk mode"), N_("<never|on-disconnect>") },
         { "verbose", 'v', 0, G_OPTION_ARG_NONE, &opt_verbose,
           N_("Display verbose information"), NULL },
         { "debug", '\0', 0, G_OPTION_ARG_NONE, &opt_debug,

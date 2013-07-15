@@ -90,6 +90,13 @@ to lock down the OS. In particular, you must configure or disable the
 window manager, limit the session capabilities, use some
 restart/watchdog mechanism, disable VT switching etc.
 
+=item --kiosk-quit <never|on-disconnect>
+
+By default, when kiosk mode is enabled, virt-viewer will remain open
+when the connection to the remote server is terminated. By setting
+kiosk-quit option to "on-disconnect" value, virt-viewer will quit
+instead.
+
 =back
 
 =head1 HOTKEY

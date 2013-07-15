@@ -1299,6 +1299,11 @@ virt_viewer_window_show(VirtViewerWindow *self)
 void
 virt_viewer_window_hide(VirtViewerWindow *self)
 {
+    if (self->priv->kiosk) {
+        g_warning("Can't hide windows in kiosk mode");
+        return;
+    }
+
     gtk_widget_hide(self->priv->window);
 
     if (self->priv->display) {

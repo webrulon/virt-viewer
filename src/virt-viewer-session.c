@@ -323,13 +323,6 @@ virt_viewer_session_init(VirtViewerSession *session)
     session->priv = VIRT_VIEWER_SESSION_GET_PRIVATE(session);
 }
 
-GtkWidget*
-virt_viewer_session_new(void)
-{
-    return g_object_new(VIRT_VIEWER_TYPE_SESSION, NULL);
-}
-
-
 void virt_viewer_session_add_display(VirtViewerSession *session,
                                      VirtViewerDisplay *display)
 {

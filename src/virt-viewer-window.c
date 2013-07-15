@@ -192,6 +192,7 @@ virt_viewer_window_dispose (GObject *object)
     priv->subtitle = NULL;
 
     g_value_unset(&priv->accel_setting);
+    g_clear_object(&priv->toolbar);
 }
 
 static void
@@ -1031,7 +1032,7 @@ virt_viewer_window_toolbar_setup(VirtViewerWindow *self)
     GtkWidget *button;
     VirtViewerWindowPrivate *priv = self->priv;
 
-    priv->toolbar = gtk_toolbar_new();
+    priv->toolbar = g_object_ref(gtk_toolbar_new());
     gtk_toolbar_set_show_arrow(GTK_TOOLBAR(priv->toolbar), FALSE);
     gtk_widget_set_no_show_all(priv->toolbar, TRUE);
     gtk_toolbar_set_style(GTK_TOOLBAR(priv->toolbar), GTK_TOOLBAR_BOTH_HORIZ);

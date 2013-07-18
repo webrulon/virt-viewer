@@ -54,6 +54,7 @@ struct _VirtViewerDisplayPrivate
 #if !GTK_CHECK_VERSION(3, 0, 0)
 static void virt_viewer_display_size_request(GtkWidget *widget,
                                              GtkRequisition *requisition);
+static void virt_viewer_display_map(GtkWidget *widget);
 #else
 static void virt_viewer_display_get_preferred_width(GtkWidget *widget,
                                                     int *minwidth,
@@ -105,6 +106,7 @@ virt_viewer_display_class_init(VirtViewerDisplayClass *class)
     widget_class->get_preferred_height = virt_viewer_display_get_preferred_height;
 #else
     widget_class->size_request = virt_viewer_display_size_request;
+    widget_class->map = virt_viewer_display_map;
 #endif
     widget_class->size_allocate = virt_viewer_display_size_allocate;
     widget_class->grab_focus = virt_viewer_display_grab_focus;
@@ -409,6 +411,29 @@ virt_viewer_display_size_request(GtkWidget *widget,
               priv->desktopWidth, priv->desktopHeight);
 }
 
+static void
+virt_viewer_display_make_resizable(VirtViewerDisplay *self)
+{
+    VirtViewerDisplayPrivate *priv = self->priv;
+
+    /* This unsets the size request, so that the user can
+     * manually resize the window smaller again
+     */
+    if (priv->dirty) {
+        g_idle_add(virt_viewer_display_idle, GTK_WIDGET(self));
+        if (gtk_widget_get_mapped(GTK_WIDGET(self)))
+            priv->dirty = FALSE;
+    }
+}
+
+static void
+virt_viewer_display_map(GtkWidget *widget)
+{
+    GTK_WIDGET_CLASS(virt_viewer_display_parent_class)->map(widget);
+
+    virt_viewer_display_make_resizable(VIRT_VIEWER_DISPLAY(widget));
+}
+
 #else
 
 static void virt_viewer_display_get_preferred_width(GtkWidget *widget,
@@ -501,14 +526,7 @@ virt_viewer_display_size_allocate(GtkWidget *widget,
 
 #if !GTK_CHECK_VERSION(3, 0, 0)
 end:
-    /* This unsets the size request, so that the user can
-     * manually resize the window smaller again
-     */
-    if (priv->dirty) {
-        g_idle_add(virt_viewer_display_idle, widget);
-        if (gtk_widget_get_mapped(widget))
-            priv->dirty = FALSE;
-    }
+    virt_viewer_display_make_resizable(VIRT_VIEWER_DISPLAY(widget));
 #endif
 }
 

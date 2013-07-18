@@ -1131,6 +1131,7 @@ virt_viewer_window_set_display(VirtViewerWindow *self, VirtViewerDisplay *displa
 
         gtk_widget_show_all(GTK_WIDGET(display));
         gtk_notebook_append_page(GTK_NOTEBOOK(priv->notebook), GTK_WIDGET(display), NULL);
+        gtk_widget_realize(GTK_WIDGET(display));
 
         virt_viewer_signal_connect_object(priv->window, "key-press-event",
                                           G_CALLBACK(window_key_pressed), display, 0);

@@ -331,6 +331,8 @@ virt_viewer_app_window_set_visible(VirtViewerApp *self,
     g_return_val_if_fail(VIRT_VIEWER_IS_APP(self), FALSE);
     g_return_val_if_fail(VIRT_VIEWER_IS_WINDOW(window), FALSE);
 
+    self->priv->fullscreen_auto_conf = FALSE;
+
     if (visible) {
         virt_viewer_window_show(window);
         return TRUE;

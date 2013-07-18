@@ -685,7 +685,10 @@ display_show_hint(VirtViewerDisplay *display,
                  "show-hint", &hint,
                  NULL);
 
-    if (hint & VIRT_VIEWER_DISPLAY_SHOW_HINT_DISABLED) {
+    if (self->priv->fullscreen_auto_conf &&
+        nth >= gdk_screen_get_n_monitors(gdk_screen_get_default())) {
+        virt_viewer_window_hide(win);
+    } else if (hint & VIRT_VIEWER_DISPLAY_SHOW_HINT_DISABLED) {
         virt_viewer_window_hide(win);
     } else if (hint & VIRT_VIEWER_DISPLAY_SHOW_HINT_READY) {
         virt_viewer_notebook_show_display(nb);

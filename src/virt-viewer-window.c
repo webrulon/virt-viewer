@@ -265,6 +265,7 @@ virt_viewer_window_init (VirtViewerWindow *self)
     self->priv = GET_PRIVATE(self);
     priv = self->priv;
 
+    priv->fullscreen_monitor = -1;
     priv->auto_resize = TRUE;
     g_value_init(&priv->accel_setting, G_TYPE_STRING);
 

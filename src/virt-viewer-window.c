@@ -626,6 +626,70 @@ virt_viewer_menu_add_combo(VirtViewerWindow *self, GtkMenu *menu,
     gtk_container_add(GTK_CONTAINER(menu), item);
 }
 
+static guint*
+accel_key_to_keys(const GtkAccelKey *key)
+{
+    guint val;
+    GArray *a = g_array_new(FALSE, FALSE, sizeof(guint));
+
+    val = key->accel_key;
+    g_array_append_val(a, val);
+
+    g_warn_if_fail((key->accel_mods &
+                    ~(GDK_SHIFT_MASK | GDK_CONTROL_MASK | GDK_MOD1_MASK)) == 0);
+
+    if (key->accel_mods & GDK_SHIFT_MASK) {
+        val = GDK_Shift_L;
+        g_array_append_val(a, val);
+    }
+
+    if (key->accel_mods & GDK_CONTROL_MASK) {
+        val = GDK_Control_L;
+        g_array_append_val(a, val);
+    }
+
+    if (key->accel_mods & GDK_MOD1_MASK) {
+        val = GDK_Alt_L;
+        g_array_append_val(a, val);
+    }
+
+    val = GDK_VoidSymbol;
+    g_array_append_val(a, val);
+
+    return g_array_free(a, FALSE);
+}
+
+struct accelCbData
+{
+    VirtViewerWindow *self;
+    GtkWidget *menu;
+};
+
+static void
+accel_map_item_cb(gpointer data,
+                  const gchar *accel_path,
+                  guint accel_key,
+                  GdkModifierType accel_mods,
+                  gboolean changed G_GNUC_UNUSED)
+{
+    struct accelCbData *d = data;
+    GtkAccelKey key = {
+        .accel_key = accel_key,
+        .accel_mods = accel_mods
+    };
+
+    if (!g_str_has_prefix(accel_path, "<virt-viewer>"))
+        return;
+    if (accel_key == GDK_VoidSymbol || accel_key == 0)
+        return;
+
+    guint *keys = accel_key_to_keys(&key);
+    gchar *label = gtk_accelerator_get_label(accel_key, accel_mods);
+    virt_viewer_menu_add_combo(d->self, d->menu, keys, label);
+    g_free(label);
+    g_free(keys);
+}
+
 static GtkMenu*
 virt_viewer_window_get_keycombo_menu(VirtViewerWindow *self)
 {
@@ -635,6 +699,15 @@ virt_viewer_window_get_keycombo_menu(VirtViewerWindow *self)
 
     for (i = 0 ; i < G_N_ELEMENTS(keyCombos); i++) {
         virt_viewer_menu_add_combo(self, menu, keyCombos[i].keys, keyCombos[i].label);
+    }
+
+    if (virt_viewer_app_get_enable_accel(priv->app)) {
+        struct accelCbData d = {
+            .self = self,
+            .menu = menu
+        };
+
+        gtk_accel_map_foreach(&d, accel_map_item_cb);
     }
 
     gtk_widget_show_all(GTK_WIDGET(menu));

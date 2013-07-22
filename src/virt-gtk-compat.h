@@ -34,6 +34,8 @@ G_BEGIN_DECLS
 #endif
 
 #if GTK_CHECK_VERSION(3, 0, 0)
+#define GDK_Shift_L GDK_KEY_Shift_L
+#define GDK_VoidSymbol GDK_KEY_VoidSymbol
 #define GDK_Control_L GDK_KEY_Control_L
 #define GDK_Alt_L GDK_KEY_Alt_L
 #define GDK_Delete GDK_KEY_Delete

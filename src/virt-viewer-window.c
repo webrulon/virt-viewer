@@ -194,6 +194,33 @@ virt_viewer_window_dispose (GObject *object)
 }
 
 static void
+rebuild_combo_menu(GObject    *gobject G_GNUC_UNUSED,
+                   GParamSpec *pspec G_GNUC_UNUSED,
+                   gpointer    user_data)
+{
+    VirtViewerWindow *self = user_data;
+    GtkWidget *menu;
+
+    menu = GTK_WIDGET(gtk_builder_get_object(self->priv->builder, "menu-send"));
+    gtk_menu_item_set_submenu(GTK_MENU_ITEM(menu),
+                              GTK_WIDGET(virt_viewer_window_get_keycombo_menu(self)));
+    gtk_widget_set_sensitive(menu, FALSE);
+}
+
+static void
+virt_viewer_window_constructed(GObject *object)
+{
+    VirtViewerWindowPrivate *priv = VIRT_VIEWER_WINDOW(object)->priv;
+
+    if (G_OBJECT_CLASS(virt_viewer_window_parent_class)->constructed)
+        G_OBJECT_CLASS(virt_viewer_window_parent_class)->constructed(object);
+
+    g_signal_connect(priv->app, "notify::enable-accel",
+                     G_CALLBACK(rebuild_combo_menu), object);
+    rebuild_combo_menu(NULL, NULL, object);
+}
+
+static void
 virt_viewer_window_class_init (VirtViewerWindowClass *klass)
 {
     GObjectClass *object_class = G_OBJECT_CLASS (klass);
@@ -203,6 +230,7 @@ virt_viewer_window_class_init (VirtViewerWindowClass *klass)
     object_class->get_property = virt_viewer_window_get_property;
     object_class->set_property = virt_viewer_window_set_property;
     object_class->dispose = virt_viewer_window_dispose;
+    object_class->constructed = virt_viewer_window_constructed;
 
     g_object_class_install_property(object_class,
                                     PROP_SUBTITLE,
@@ -609,9 +637,8 @@ virt_viewer_window_get_keycombo_menu(VirtViewerWindow *self)
         virt_viewer_menu_add_combo(self, menu, keyCombos[i].keys, keyCombos[i].label);
     }
 
-    gtk_menu_attach_to_widget(menu, GTK_WIDGET(priv->window), NULL);
     gtk_widget_show_all(GTK_WIDGET(menu));
-    return g_object_ref_sink(menu);
+    return menu;
 }
 
 void
@@ -731,6 +758,8 @@ virt_viewer_window_toolbar_send_key(GtkWidget *button G_GNUC_UNUSED,
                                     VirtViewerWindow *self)
 {
     GtkMenu *menu = virt_viewer_window_get_keycombo_menu(self);
+    gtk_menu_attach_to_widget(menu, GTK_WIDGET(self->priv->window), NULL);
+    g_object_ref_sink(menu);
     gtk_menu_popup(menu, NULL, NULL, keycombo_menu_location, self,
                    0, gtk_get_current_event_time());
     g_object_unref(menu);

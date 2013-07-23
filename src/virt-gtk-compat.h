@@ -51,6 +51,7 @@ G_BEGIN_DECLS
 #define GDK_F10 GDK_KEY_F10
 #define GDK_F11 GDK_KEY_F11
 #define GDK_F12 GDK_KEY_F12
+#define GDK_0 GDK_KEY_0
 #endif
 
 #if !GTK_CHECK_VERSION(3, 0, 0)

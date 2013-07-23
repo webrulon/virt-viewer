@@ -181,9 +181,9 @@ virt_viewer_display_spice_mouse_grab(SpiceDisplay *display G_GNUC_UNUSED,
 
 
 static void
-virt_viewer_display_spice_size_allocate(VirtViewerDisplaySpice *self,
-                                        GtkAllocation *allocation,
-                                        gpointer data G_GNUC_UNUSED)
+virt_viewer_display_spice_resize(VirtViewerDisplaySpice *self,
+                                 GtkAllocation *allocation,
+                                 gboolean resize_guest)
 {
     gdouble dw = allocation->width, dh = allocation->height;
     guint zoom = 100;
@@ -228,7 +228,7 @@ virt_viewer_display_spice_size_allocate(VirtViewerDisplaySpice *self,
 
     g_object_get(self, "nth-display", &nth, NULL);
 
-    if (self->priv->auto_resize != AUTO_RESIZE_NEVER) {
+    if (resize_guest) {
         g_object_set(get_main(VIRT_VIEWER_DISPLAY(self)),
                      "disable-display-position", disable_display_position,
                      "disable-display-align", !disable_display_position,
@@ -236,6 +236,16 @@ virt_viewer_display_spice_size_allocate(VirtViewerDisplaySpice *self,
         spice_main_set_display(get_main(VIRT_VIEWER_DISPLAY(self)),
                                nth, x, y, dw, dh);
     }
+}
+
+static void
+virt_viewer_display_spice_size_allocate(VirtViewerDisplaySpice *self,
+                                        GtkAllocation *allocation,
+                                        gpointer data G_GNUC_UNUSED)
+{
+    virt_viewer_display_spice_resize(self, allocation,
+                                     self->priv->auto_resize != AUTO_RESIZE_NEVER);
+
     if (self->priv->auto_resize == AUTO_RESIZE_FULLSCREEN)
         self->priv->auto_resize = AUTO_RESIZE_NEVER;
 }

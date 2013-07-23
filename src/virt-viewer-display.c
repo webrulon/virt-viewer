@@ -566,6 +566,7 @@ void virt_viewer_display_set_zoom_level(VirtViewerDisplay *display,
     priv->zoom_level = zoom;
 
     virt_viewer_display_queue_resize(display);
+    g_object_notify(G_OBJECT(display), "zoom-level");
 }
 
 

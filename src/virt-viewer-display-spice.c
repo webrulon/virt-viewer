@@ -251,6 +251,20 @@ virt_viewer_display_spice_size_allocate(VirtViewerDisplaySpice *self,
 }
 
 static void
+zoom_level_changed(VirtViewerDisplaySpice *self,
+                   GParamSpec *pspec G_GNUC_UNUSED,
+                   VirtViewerApp *app G_GNUC_UNUSED)
+{
+    GtkAllocation allocation;
+
+    if (self->priv->auto_resize != AUTO_RESIZE_NEVER)
+        return;
+
+    gtk_widget_get_allocation(GTK_WIDGET(self), &allocation);
+    virt_viewer_display_spice_resize(self, &allocation, TRUE);
+}
+
+static void
 enable_accel_changed(VirtViewerApp *app,
                      GParamSpec *pspec G_GNUC_UNUSED,
                      VirtViewerDisplaySpice *self)
@@ -338,6 +352,8 @@ virt_viewer_display_spice_new(VirtViewerSessionSpice *session,
                                       G_CALLBACK(enable_accel_changed), self, 0);
     virt_viewer_signal_connect_object(self, "notify::fullscreen",
                                       G_CALLBACK(fullscreen_changed), app, 0);
+    virt_viewer_signal_connect_object(self, "notify::zoom-level",
+                                      G_CALLBACK(zoom_level_changed), app, 0);
     fullscreen_changed(self, NULL, app);
     enable_accel_changed(app, NULL, self);
 

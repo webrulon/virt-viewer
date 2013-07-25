@@ -67,6 +67,7 @@ static gboolean virt_viewer_initial_connect(VirtViewerApp *self, GError **error)
 static gboolean virt_viewer_open_connection(VirtViewerApp *self, int *fd);
 static void virt_viewer_deactivated(VirtViewerApp *self, gboolean connect_error);
 static gboolean virt_viewer_start(VirtViewerApp *self);
+static void virt_viewer_dispose (GObject *object);
 
 static void
 virt_viewer_get_property (GObject *object, guint property_id,
@@ -86,18 +87,6 @@ virt_viewer_set_property (GObject *object, guint property_id,
     default:
         G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
     }
-}
-
-static void
-virt_viewer_dispose (GObject *object)
-{
-    VirtViewer *self = VIRT_VIEWER(object);
-    VirtViewerPrivate *priv = self->priv;
-    if (priv->dom)
-        virDomainFree(priv->dom);
-    if (priv->conn)
-        virConnectClose(priv->conn);
-    G_OBJECT_CLASS(virt_viewer_parent_class)->dispose (object);
 }
 
 static void
@@ -511,6 +500,24 @@ virt_viewer_conn_event(virConnectPtr conn G_GNUC_UNUSED,
     priv->conn = NULL;
 
     virt_viewer_app_start_reconnect_poll(app);
+}
+
+static void
+virt_viewer_dispose (GObject *object)
+{
+    VirtViewer *self = VIRT_VIEWER(object);
+    VirtViewerPrivate *priv = self->priv;
+
+    if (priv->withEvents)
+        virConnectDomainEventDeregister(priv->conn,
+                                        virt_viewer_domain_event);
+    virConnectUnregisterCloseCallback(priv->conn,
+                                      virt_viewer_conn_event);
+    if (priv->dom)
+        virDomainFree(priv->dom);
+    if (priv->conn)
+        virConnectClose(priv->conn);
+    G_OBJECT_CLASS(virt_viewer_parent_class)->dispose (object);
 }
 
 static int virt_viewer_connect(VirtViewerApp *app);

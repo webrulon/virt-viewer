@@ -136,7 +136,7 @@ msgstr "- Remote-Viewer Client"
 msgid ""
 "%s\n"
 "Run '%s --help' to see a full list of available command line options\n"
-msgstr "%s\nFühren Sie '%s --help' aus, zum Anzeigen aller verfügbaren Kommandozeilen-Optionen\\n"
+msgstr "%s\nFühren Sie '%s --help' aus, zum Anzeigen aller verfügbaren Kommandozeilen-Optionen\n"
 
 #: ../src/remote-viewer-main.c:175
 #, c-format

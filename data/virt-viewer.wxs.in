@@ -2,7 +2,7 @@
 
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
 
-  <?define Version = "@VERSION@"?>
+  <?define Version = "@WINDOWS_PRODUCTVERSION@"?>
   <?define Arch = "@WIXL_ARCH@"?>
   <?if $(var.Arch) = "x64"?>
       <?define GLIB_ARCH = "win64"?>
@@ -22,7 +22,7 @@
 
   <?define UpgradeCode = "5B027138-1A63-49E6-877E-055E5EEC1903"?>
   <Product Id="*"
-           Name="VirtViewer $(var.Version) ($(var.ArchString))"
+           Name="VirtViewer @VERSION@@BUILDID@ ($(var.ArchString))"
            Manufacturer="$(env.MANUFACTURER)"
            Version="$(var.Version)"
            UpgradeCode="$(var.UpgradeCode)"

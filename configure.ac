@@ -201,6 +201,20 @@ fi
 AC_ARG_WITH([buildid],
     AS_HELP_STRING([--with-buildid=id], [Set additional build version details]))
 AC_DEFINE_UNQUOTED([BUILDID], "$with_buildid", [Build version details])
+if test "x$with_buildid" != x; then
+    AC_SUBST([BUILDID], "-$with_buildid")
+fi
+
+major=`echo $PACKAGE_VERSION | cut -d. -f1`
+minor=`echo $PACKAGE_VERSION | cut -d. -f2`
+micro=`echo $PACKAGE_VERSION | cut -d. -f3`
+buildid=`echo $with_buildid | cut -d. -f1`
+if test "x$buildid" = x; then
+   buildid=0
+fi
+build=`expr $micro \* 256 + $buildid`
+WINDOWS_PRODUCTVERSION="$major.$minor.$build"
+AC_SUBST([WINDOWS_PRODUCTVERSION])
 
 AC_CONFIG_FILES([
     Makefile

@@ -63,6 +63,7 @@
  * - usb-filter: string
  * - secure-channels: string list
  * - delete-this-file: int (0 or 1 atm)
+ * - proxy: proxy URL, like http://user:pass@foobar:8080
  *
  * (the file can be extended with extra groups or keys, which should
  * be prefixed with x- to avoid later conflicts)

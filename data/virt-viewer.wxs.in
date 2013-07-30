@@ -76,6 +76,29 @@
       </Directory>
     </Directory>
 
+    <DirectoryRef Id="INSTALLDIR">
+      <Directory Id="DirShare" Name="share">
+        <Directory Id="DirHwdata" Name="hwdata">
+          <Component Id="CHwdataUSB" Guid="*">
+            <File Id="FHwdataUSB" KeyPath="yes" Source="/usr/share/hwdata/usb.ids"/>
+          </Component>
+        </Directory>
+
+        <Directory Id="DirIcons" Name="icons">
+          <Directory Id="DirIconsHi" Name="hicolor">
+            <Directory Id="DirIconsHi16x16" Name="16x16">
+              <Directory Id="DirIconsHi16x16Apps" Name="apps">
+                <Component Id="CIconsHi16x16Apps" Guid="*">
+                  <File Id="FIconskeyboardshortcuts" KeyPath="yes"
+                        Source="/usr/share/icons/gnome/16x16/apps/preferences-desktop-keyboard-shortcuts.png"/>
+                </Component>
+              </Directory>
+            </Directory>
+          </Directory>
+        </Directory>
+      </Directory>
+    </DirectoryRef>
+
     <DirectoryRef Id="MENUDIR">
       <Component Id="CShortcut" Guid="*">
         <Shortcut Id="ApplicationStartMenuShortcut"
@@ -97,6 +120,8 @@
       <ComponentRef Id="CShortcut"/>
       <ComponentRef Id="CRegistryEntries"/>
       <ComponentRef Id="CProgIds"/>
+      <ComponentRef Id="CIconsHi16x16Apps"/>
+      <ComponentRef Id="CHwdataUSB"/>
     </Feature>
 
     <InstallExecuteSequence>

@@ -656,13 +656,13 @@ accel_key_to_keys(const GtkAccelKey *key)
     val = GDK_VoidSymbol;
     g_array_append_val(a, val);
 
-    return g_array_free(a, FALSE);
+    return (guint*)g_array_free(a, FALSE);
 }
 
 struct accelCbData
 {
     VirtViewerWindow *self;
-    GtkWidget *menu;
+    GtkMenu *menu;
 };
 
 static void

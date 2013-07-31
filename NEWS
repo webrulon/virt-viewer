@@ -1,6 +1,21 @@
   Virt Viewer News
   ================
 
+0.5.7: Jul 31, 2013
+-------------------
+
+  - Many fixes to full screen / window positioning handling
+  - Reshow connect dialog if connection fails
+  - Misc man page fixes
+  - Mark RPM as obsoleting spice-client
+  - Set the host subject to fix SSL connections with ovirt
+  - Use -H as short variant of --hotkeys
+  - Add missing trailing ';' in desktop file
+  - Allow TLS only SPICE connections
+  - Use dynamic key send menu
+  - Enable smartcard shortcuts only when smartcard reader is present
+  - Misc other bug fixes
+
 0.5.6: Apr 12, 2013
 -------------------
 

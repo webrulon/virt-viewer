@@ -53,6 +53,7 @@ struct _VirtViewerSessionSpicePrivate {
     int channel_count;
     int usbredir_channel_count;
     gboolean has_sw_smartcard_reader;
+    guint pass_try;
 };
 
 #define VIRT_VIEWER_SESSION_SPICE_GET_PRIVATE(o) (G_TYPE_INSTANCE_GET_PRIVATE((o), VIRT_VIEWER_TYPE_SESSION_SPICE, VirtViewerSessionSpicePrivate))
@@ -488,6 +489,12 @@ virt_viewer_session_spice_main_channel_event(SpiceChannel *channel G_GNUC_UNUSED
         break;
     case SPICE_CHANNEL_ERROR_AUTH:
         DEBUG_LOG("main channel: auth failure (wrong password?)");
+
+        if (self->priv->pass_try > 0)
+            g_signal_emit_by_name(session, "session-auth-failed",
+                                  _("invalid password"));
+        self->priv->pass_try++;
+
         int ret = virt_viewer_auth_collect_credentials(self->priv->main_window,
                                                        "SPICE",
                                                        NULL,

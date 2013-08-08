@@ -13,7 +13,10 @@ B<remote-viewer> is a simple remote display client. The supported
 protocols are SPICE and VNC.
 
 Starting remote-viewer without URI will open a simple dialog with an
-entry and a list of previously successfully access URI.
+entry and a list of previously successfully accessed URI.
+
+The URI can also point to a connection settings file, see FILE section
+for a description of the format.
 
 =head1 OPTIONS
 
@@ -62,10 +65,10 @@ Print debugging information
 
 =item -H HOTKEYS, --hotkeys HOTKEYS
 
-Override the default hotkey bindings with B<HOTKEYS>. Where B<HOTKEYS> is
-<action1>=<key1>[+<key2>][,<action2>=<key3>[+<key4>]]. Key-names are
-case-insensitive, valid actions are: toggle-fullscreen, release-cursor,
-smartcard-insert and smartcard-remove. Examples:
+Override the default hotkey bindings with B<HOTKEYS>. Where B<HOTKEYS>
+is <action1>=<hotkey1>,<action2>=<hotkey2>... Valid
+actions are: toggle-fullscreen, release-cursor, smartcard-insert and
+smartcard-remove. Examples:
 
   --hotkeys=toggle-fullscreen=shift+f11,release-cursor=shift+f12
 
@@ -73,6 +76,169 @@ smartcard-insert and smartcard-remove. Examples:
 
 Note that hotkeys for which no binding is given are disabled, specifying an
 empty string disables all hotkeys.
+
+=back
+
+=head1 HOTKEY
+
+A key binding combination is described by a series of key strings
+seperated by '+' that must be pressed together in order to activate
+the associated action.
+
+It must be composed of modifiers (shift, ctrl or alt) and a
+non-modifier key. For example, "shift+f11".
+
+=head1 FILE
+
+B<remote-viewer> connection file is of INI file format, with a
+mandatory [virt-viewer] group and "type" key.
+
+=head2 Example
+
+Opening a file with the following content will start remote-viewer in
+fullscreen and connect to the host "betsiboka" using the SPICE
+protocol:
+
+ [virt-viewer]
+ type=spice
+ host=betsiboka
+ port=5900
+ fullscreen=1
+
+=head2 Key list
+
+=over 4
+
+=item C<version> (string)
+
+If remote-viewer version isn't at superior or equal to the required
+version, an error is raised with the version expected.
+
+The version format accepted is a list of integers seperated by '.'.
+
+=item C<type> (string, mandatory)
+
+The session type, either "spice", "vnc" or "ovirt".
+
+=item C<host> (string, mandatory)
+
+The server host to connect to.
+
+=item C<port> (integer)
+
+The server port to connect to.
+
+=item C<tls-port> (integer)
+
+The server TLS/SSL port to connect to.
+
+=item C<username> (string)
+
+The username for the session authentication.
+
+=item C<password> (string)
+
+The password for the session authentication.
+
+=item C<disable-channels> (string list)
+
+The list of session channels to disable.
+
+The current SPICE channels are: main, display, inputs, cursor, playback, record, smartcard, usbredir.
+
+=item C<tls-ciphers> (string)
+
+Set the cipher list to use for the secure connection, in textual
+OpenSSL cipher list format. (see ciphers(1))
+
+=item C<title> (string)
+
+String to present in the window title.
+
+=item C<fullscreen> (boolean)
+
+Opens the client windows in fullscreen.
+
+=item C<ca> (string)
+
+CA certificate in PEM format (using "\n" to seperate the lines), for verification purposes.
+
+=item C<host-subject> (string)
+
+Verify the certificate subject matches with the given subject.
+
+=item C<toggle-fullscreen> (hotkey string)
+
+Key binding for entering and leaving fullscreen mode. (see L<HOTKEY> for description of expected string)
+
+=item C<release-cursor> (hotkey string)
+
+Key binding for releasing cursor grab. (see L<HOTKEY> for description of expected string)
+
+=item C<smartcard-insert> (hotkey string)
+
+Key binding for inserting emulated smartcard. (see L<HOTKEY> for description of expected string)
+
+=item C<smartcard-remove> (hotkey string)
+
+Key binding for removing emulated smartcard. (see L<HOTKEY> for description of expected string)
+
+=item C<color-depth> (integer)
+
+Set the color depth of the guest display (16 or 32).
+
+=item C<disable-effects> (string list)
+
+A list of desktop effects to disable in the remote guest.
+
+The effects that can be disabled with SPICE are: wallpaper,
+font-smooth, animation or all.
+
+=item C<enable-smartcard> (boolean)
+
+Set to 1 to enable client smartcard redirection.
+
+=item C<enable-usbredir> (boolean)
+
+Set to 1 to enable client USB device redirection.
+
+=item C<enable-usb-autoshare> (boolean)
+
+Set to 1 to enable client USB devices auto-sharing.
+
+=item C<usb-filter> (string)
+
+Set a string specifying a filter to use to determine which USB devices
+to autoconnect when plugged in, a filter consists of one or more
+rules. Where each rule has the form of:
+
+C<class,vendor,product,version,allow>
+
+Use -1 for class/vendor/product/version to accept any value.
+
+And the rules are themselves are concatonated like this:
+
+C<rule1|rule2|rule3>
+
+=item C<secure-channels> (string list)
+
+The list of session channels to secure.
+
+The current SPICE channels are: main, display, inputs, cursor, playback, record, smartcard, usbredir.
+
+=item C<delete-this-file> (boolean)
+
+Set to 1 for the client to remove this connection file (if it can't, it will fail silentely)
+
+=item C<proxy> (string)
+
+A proxy URL to tunnel the connection through.
+
+At the time of writing this documentation, the only supported proxy
+method with Spice is HTTP CONNECT.
+
+For example, to tunnel connection through foobar host HTTP proxy on
+port 8080, use the value "http://foobar:8080".
 
 =back
 

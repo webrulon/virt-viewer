@@ -112,7 +112,6 @@ main(int argc, char **argv)
     char *hotkeys = NULL;
     gboolean verbose = FALSE;
     gboolean debug = FALSE;
-    gboolean direct = FALSE;
     RemoteViewer *viewer = NULL;
 #ifdef HAVE_SPICE_GTK
     gboolean controller = FALSE;
@@ -125,8 +124,6 @@ main(int argc, char **argv)
           N_("Display verbose information"), NULL },
         { "title", 't', 0, G_OPTION_ARG_STRING, &title,
           N_("Set window title"), NULL },
-        { "direct", 'd', 0, G_OPTION_ARG_NONE, &direct,
-          N_("Direct connection with no automatic tunnels"), NULL },
         { "zoom", 'z', 0, G_OPTION_ARG_INT, &zoom,
           N_("Zoom level of window, in percentage"), "ZOOM" },
         { "debug", '\0', 0, G_OPTION_ARG_NONE, &debug,
@@ -213,7 +210,6 @@ main(int argc, char **argv)
     g_object_set(app, "fullscreen-auto-conf", fullscreen_auto_conf, NULL);
     g_object_set(app, "fullscreen", fullscreen, NULL);
     virt_viewer_window_set_zoom_level(virt_viewer_app_get_main_window(app), zoom);
-    virt_viewer_app_set_direct(app, direct);
     virt_viewer_app_set_hotkeys(app, hotkeys);
 
     if (!virt_viewer_app_start(app))

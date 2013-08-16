@@ -735,19 +735,16 @@ virt_viewer_start(VirtViewerApp *app)
 VirtViewer *
 virt_viewer_new(const char *uri,
                 const char *name,
-                gint zoom,
                 gboolean direct,
                 gboolean attach,
                 gboolean waitvm,
-                gboolean reconnect,
-                gboolean verbose)
+                gboolean reconnect)
 {
     VirtViewer *self;
     VirtViewerApp *app;
     VirtViewerPrivate *priv;
 
     self = g_object_new(VIRT_VIEWER_TYPE,
-                        "verbose", verbose,
                         "guest-name", name,
                         NULL);
     app = VIRT_VIEWER_APP(self);
@@ -757,7 +754,6 @@ virt_viewer_new(const char *uri,
      * UUID, or NAME string. To be replaced with the real guest name later
      */
     g_object_set(app, "title", name, NULL);
-    virt_viewer_window_set_zoom_level(virt_viewer_app_get_main_window(app), zoom);
     virt_viewer_app_set_direct(app, direct);
     virt_viewer_app_set_attach(app, attach);
 

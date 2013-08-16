@@ -51,12 +51,10 @@ GType virt_viewer_get_type (void);
 VirtViewer *
 virt_viewer_new(const char *uri,
                 const char *name,
-                gint zoom,
                 gboolean direct,
                 gboolean attach,
                 gboolean waitvm,
-                gboolean reconnect,
-                gboolean verbose);
+                gboolean reconnect);
 
 G_END_DECLS
 

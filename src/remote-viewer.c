@@ -220,11 +220,10 @@ remote_viewer_init(RemoteViewer *self)
 }
 
 RemoteViewer *
-remote_viewer_new(const gchar *uri, const gchar *title, gboolean verbose)
+remote_viewer_new(const gchar *uri, const gchar *title)
 {
     return g_object_new(REMOTE_VIEWER_TYPE,
                         "guri", uri,
-                        "verbose", verbose,
                         "title", title,
                         "open-recent-dialog", uri == NULL,
                         NULL);
@@ -250,7 +249,7 @@ foreign_menu_title_changed(SpiceCtrlForeignMenu *menu G_GNUC_UNUSED,
 }
 
 RemoteViewer *
-remote_viewer_new_with_controller(gboolean verbose)
+remote_viewer_new_with_controller(void)
 {
     RemoteViewer *self;
     SpiceCtrlController *ctrl = spice_ctrl_controller_new();
@@ -259,7 +258,6 @@ remote_viewer_new_with_controller(gboolean verbose)
     self =  g_object_new(REMOTE_VIEWER_TYPE,
                          "controller", ctrl,
                          "foreign-menu", menu,
-                         "verbose", verbose,
                          NULL);
     g_signal_connect(menu, "notify::title",
                      G_CALLBACK(foreign_menu_title_changed),

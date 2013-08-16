@@ -47,24 +47,17 @@ int main(int argc, char **argv)
     GError *error = NULL;
     int ret = 1;
     char *uri = NULL;
-    int zoom = 100;
     gchar **args = NULL;
-    gchar *hotkeys = NULL;
-    gboolean verbose = FALSE;
-    gboolean debug = FALSE;
     gboolean direct = FALSE;
     gboolean attach = FALSE;
     gboolean waitvm = FALSE;
     gboolean reconnect = FALSE;
-    gboolean fullscreen = FALSE;
     VirtViewer *viewer = NULL;
     char *base_name;
     char *help_msg = NULL;
     const GOptionEntry options [] = {
         { "version", 'V', G_OPTION_FLAG_NO_ARG, G_OPTION_ARG_CALLBACK,
           virt_viewer_version, N_("Display version information"), NULL },
-        { "verbose", 'v', 0, G_OPTION_ARG_NONE, &verbose,
-          N_("Display verbose information"), NULL },
         { "direct", 'd', 0, G_OPTION_ARG_NONE, &direct,
           N_("Direct connection with no automatic tunnels"), NULL },
         { "attach", 'a', 0, G_OPTION_ARG_NONE, &attach,
@@ -75,14 +68,6 @@ int main(int argc, char **argv)
           N_("Wait for domain to start"), NULL },
         { "reconnect", 'r', 0, G_OPTION_ARG_NONE, &reconnect,
           N_("Reconnect to domain upon restart"), NULL },
-        { "zoom", 'z', 0, G_OPTION_ARG_INT, &zoom,
-          N_("Zoom level of window, in percentage"), "ZOOM" },
-        { "debug", '\0', 0, G_OPTION_ARG_NONE, &debug,
-          N_("Display debugging information"), NULL },
-        { "full-screen", 'f', 0, G_OPTION_ARG_NONE, &fullscreen,
-          N_("Open in full screen mode"), NULL },
-        { "hotkeys", 'H', 0, G_OPTION_ARG_STRING, &hotkeys,
-          N_("Customise hotkeys"), NULL },
         { G_OPTION_REMAINING, '\0', 0, G_OPTION_ARG_STRING_ARRAY, &args,
           NULL, "-- DOMAIN-NAME|ID|UUID" },
         { NULL, 0, 0, G_OPTION_ARG_NONE, NULL, NULL, NULL }
@@ -98,6 +83,7 @@ int main(int argc, char **argv)
     /* Setup command line options */
     context = g_option_context_new (_("- Virtual machine graphical console"));
     g_option_context_add_main_entries (context, options, NULL);
+    g_option_context_add_main_entries (context, virt_viewer_app_get_options(), NULL);
     g_option_context_add_group (context, gtk_get_option_group (TRUE));
 #ifdef HAVE_GTK_VNC
     g_option_context_add_group (context, vnc_display_get_option_group ());
@@ -120,21 +106,10 @@ int main(int argc, char **argv)
         goto cleanup;
     }
 
-    if (zoom < 10 || zoom > 200) {
-        g_printerr(_("Zoom level must be within 10-200\n"));
-        goto cleanup;
-    }
-
-    gtk_window_set_default_icon_name("virt-viewer");
-
-    virt_viewer_app_set_debug(debug);
-
-    viewer = virt_viewer_new(uri, args[0], zoom, direct, attach, waitvm, reconnect, verbose);
+    viewer = virt_viewer_new(uri, args[0], direct, attach, waitvm, reconnect);
     if (viewer == NULL)
         goto cleanup;
 
-    g_object_set(viewer, "fullscreen", fullscreen, NULL);
-    virt_viewer_app_set_hotkeys(VIRT_VIEWER_APP(viewer), hotkeys);
     if (!virt_viewer_app_start(VIRT_VIEWER_APP(viewer)))
         goto cleanup;
 

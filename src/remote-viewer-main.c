@@ -48,28 +48,6 @@ remote_viewer_version(void)
     exit(EXIT_SUCCESS);
 }
 
-gboolean fullscreen = FALSE;
-gboolean fullscreen_auto_conf = FALSE;
-
-static gboolean
-option_fullscreen(G_GNUC_UNUSED const gchar *option_name,
-                  const gchar *value,
-                  G_GNUC_UNUSED gpointer data, GError **error)
-{
-    fullscreen = TRUE;
-
-    if (value == NULL)
-        return TRUE;
-
-    if (g_str_equal(value, "auto-conf")) {
-        fullscreen_auto_conf = TRUE;
-        return TRUE;
-    }
-
-    g_set_error(error, G_OPTION_ERROR, G_OPTION_ERROR_FAILED, _("Invalid full-screen argument: %s"), value);
-    return FALSE;
-}
-
 static void
 recent_add(gchar *uri, const gchar *mime_type)
 {
@@ -105,13 +83,9 @@ main(int argc, char **argv)
     GOptionContext *context;
     GError *error = NULL;
     int ret = 1;
-    int zoom = 100;
     gchar **args = NULL;
     gchar *uri = NULL;
     char *title = NULL;
-    char *hotkeys = NULL;
-    gboolean verbose = FALSE;
-    gboolean debug = FALSE;
     RemoteViewer *viewer = NULL;
 #ifdef HAVE_SPICE_GTK
     gboolean controller = FALSE;
@@ -120,22 +94,12 @@ main(int argc, char **argv)
     const GOptionEntry options [] = {
         { "version", 'V', G_OPTION_FLAG_NO_ARG, G_OPTION_ARG_CALLBACK,
           remote_viewer_version, N_("Display version information"), NULL },
-        { "verbose", 'v', 0, G_OPTION_ARG_NONE, &verbose,
-          N_("Display verbose information"), NULL },
         { "title", 't', 0, G_OPTION_ARG_STRING, &title,
           N_("Set window title"), NULL },
-        { "zoom", 'z', 0, G_OPTION_ARG_INT, &zoom,
-          N_("Zoom level of window, in percentage"), "ZOOM" },
-        { "debug", '\0', 0, G_OPTION_ARG_NONE, &debug,
-          N_("Display debugging information"), NULL },
-        { "full-screen", 'f', G_OPTION_FLAG_OPTIONAL_ARG, G_OPTION_ARG_CALLBACK, option_fullscreen,
-          N_("Open in full screen mode (auto-conf adjusts guest resolution to fit the client's)."), N_("<auto-conf>") },
 #ifdef HAVE_SPICE_GTK
         { "spice-controller", '\0', 0, G_OPTION_ARG_NONE, &controller,
           N_("Open connection using Spice controller communication"), NULL },
 #endif
-        { "hotkeys", 'H', 0, G_OPTION_ARG_STRING, &hotkeys,
-          N_("Customise hotkeys"), NULL },
         { G_OPTION_REMAINING, '\0', 0, G_OPTION_ARG_STRING_ARRAY, &args,
           NULL, "-- URI" },
         { NULL, 0, 0, G_OPTION_ARG_NONE, NULL, NULL, NULL }
@@ -145,6 +109,7 @@ main(int argc, char **argv)
 
     /* Setup command line options */
     context = g_option_context_new (_("- Remote viewer client"));
+    g_option_context_add_main_entries (context, virt_viewer_app_get_options(), NULL);
     g_option_context_add_main_entries (context, options, NULL);
     g_option_context_add_group (context, gtk_get_option_group (TRUE));
 #ifdef HAVE_GTK_VNC
@@ -183,22 +148,13 @@ main(int argc, char **argv)
         }
     }
 
-    if (zoom < 10 || zoom > 200) {
-        g_printerr(_("Zoom level must be within 10-200\n"));
-        goto cleanup;
-    }
-
-    gtk_window_set_default_icon_name("virt-viewer");
-
-    virt_viewer_app_set_debug(debug);
-
 #ifdef HAVE_SPICE_GTK
     if (controller) {
-        viewer = remote_viewer_new_with_controller(verbose);
+        viewer = remote_viewer_new_with_controller();
         g_object_set(viewer, "guest-name", "defined by Spice controller", NULL);
     } else {
 #endif
-        viewer = remote_viewer_new(uri, title, verbose);
+        viewer = remote_viewer_new(uri, title);
         g_object_set(viewer, "guest-name", uri, NULL);
 #ifdef HAVE_SPICE_GTK
     }
@@ -207,10 +163,6 @@ main(int argc, char **argv)
         goto cleanup;
 
     app = VIRT_VIEWER_APP(viewer);
-    g_object_set(app, "fullscreen-auto-conf", fullscreen_auto_conf, NULL);
-    g_object_set(app, "fullscreen", fullscreen, NULL);
-    virt_viewer_window_set_zoom_level(virt_viewer_app_get_main_window(app), zoom);
-    virt_viewer_app_set_hotkeys(app, hotkeys);
 
     if (!virt_viewer_app_start(app))
         goto cleanup;

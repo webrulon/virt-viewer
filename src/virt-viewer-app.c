@@ -1402,10 +1402,20 @@ gboolean virt_viewer_app_start(VirtViewerApp *self)
     return self->priv->started;
 }
 
+static int opt_zoom = 100;
+static gchar *opt_hotkeys = NULL;
+static gboolean opt_verbose = FALSE;
+static gboolean opt_debug = FALSE;
+static gboolean opt_fullscreen = FALSE;
+static gboolean opt_fullscreen_auto_conf = FALSE;
+
 static void
 virt_viewer_app_init (VirtViewerApp *self)
 {
     GError *error = NULL;
+
+    gtk_window_set_default_icon_name("virt-viewer");
+    virt_viewer_app_set_debug(opt_debug);
 
     self->priv = GET_PRIVATE(self);
     self->priv->windows = g_hash_table_new_full(g_int_hash, g_int_equal, g_free, g_object_unref);
@@ -1419,6 +1429,14 @@ virt_viewer_app_init (VirtViewerApp *self)
         g_debug("Couldn't load configuration: %s", error->message);
 
     g_clear_error(&error);
+
+    if (opt_zoom < 10 || opt_zoom > 200) {
+        g_printerr(_("Zoom level must be within 10-200\n"));
+        opt_zoom = 100;
+    }
+
+    self->priv->verbose = opt_verbose;
+    self->priv->fullscreen_auto_conf = opt_fullscreen_auto_conf;
 }
 
 static void
@@ -1494,6 +1512,10 @@ virt_viewer_app_constructor (GType gtype,
     gtk_accel_map_add_entry("<virt-viewer>/view/fullscreen", GDK_F11, 0);
     gtk_accel_map_add_entry("<virt-viewer>/view/release-cursor", GDK_F12, GDK_SHIFT_MASK);
     gtk_accel_map_add_entry("<virt-viewer>/view/zoom-reset", GDK_0, GDK_CONTROL_MASK);
+
+    virt_viewer_window_set_zoom_level(priv->main_window, opt_zoom);
+    virt_viewer_app_set_fullscreen(self, opt_fullscreen);
+    virt_viewer_app_set_hotkeys(self, opt_hotkeys);
 
     return obj;
 }
@@ -2047,6 +2069,45 @@ virt_viewer_app_get_windows(VirtViewerApp *self)
 {
     g_return_val_if_fail(VIRT_VIEWER_IS_APP(self), NULL);
     return self->priv->windows;
+}
+
+static gboolean
+option_fullscreen(G_GNUC_UNUSED const gchar *option_name,
+                  const gchar *value,
+                  G_GNUC_UNUSED gpointer data, GError **error)
+{
+    opt_fullscreen = TRUE;
+
+    if (value == NULL)
+        return TRUE;
+
+    if (g_str_equal(value, "auto-conf")) {
+        opt_fullscreen_auto_conf = TRUE;
+        return TRUE;
+    }
+
+    g_set_error(error, G_OPTION_ERROR, G_OPTION_ERROR_FAILED, _("Invalid full-screen argument: %s"), value);
+    return FALSE;
+}
+
+const GOptionEntry *
+virt_viewer_app_get_options(void)
+{
+    static const GOptionEntry options [] = {
+        { "zoom", 'z', 0, G_OPTION_ARG_INT, &opt_zoom,
+          N_("Zoom level of window, in percentage"), "ZOOM" },
+        { "full-screen", 'f', G_OPTION_FLAG_OPTIONAL_ARG, G_OPTION_ARG_CALLBACK, option_fullscreen,
+          N_("Open in full screen mode (auto-conf adjusts guest resolution to fit the client's)"), N_("<auto-conf>") },
+        { "hotkeys", 'H', 0, G_OPTION_ARG_STRING, &opt_hotkeys,
+          N_("Customise hotkeys"), NULL },
+        { "verbose", 'v', 0, G_OPTION_ARG_NONE, &opt_verbose,
+          N_("Display verbose information"), NULL },
+        { "debug", '\0', 0, G_OPTION_ARG_NONE, &opt_debug,
+          N_("Display debugging information"), NULL },
+        { NULL, 0, 0, G_OPTION_ARG_NONE, NULL, NULL, NULL }
+    };
+
+    return options;
 }
 
 /*

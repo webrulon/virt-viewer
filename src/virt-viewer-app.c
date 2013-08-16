@@ -119,6 +119,7 @@ struct _VirtViewerAppPrivate {
     gboolean fullscreen_auto_conf;
     gboolean attach;
     gboolean quiting;
+    gboolean kiosk;
 
     VirtViewerSession *session;
     gboolean active;
@@ -165,6 +166,7 @@ enum {
     PROP_ENABLE_ACCEL,
     PROP_HAS_FOCUS,
     PROP_FULLSCREEN_AUTO_CONF,
+    PROP_KIOSK,
 };
 
 enum {
@@ -250,6 +252,11 @@ virt_viewer_app_quit(VirtViewerApp *self)
 {
     g_return_if_fail(VIRT_VIEWER_IS_APP(self));
     VirtViewerAppPrivate *priv = self->priv;
+
+    if (self->priv->kiosk) {
+        g_warning("The app is in kiosk mode and can't quit");
+        return;
+    }
 
     virt_viewer_app_save_config(self);
 
@@ -663,6 +670,7 @@ virt_viewer_app_window_new(VirtViewerApp *self, gint nth)
         return window;
 
     window = g_object_new(VIRT_VIEWER_TYPE_WINDOW, "app", self, NULL);
+    virt_viewer_window_set_kiosk(window, self->priv->kiosk);
     if (self->priv->main_window)
         virt_viewer_window_set_zoom_level(window, virt_viewer_window_get_zoom_level(self->priv->main_window));
     virt_viewer_app_set_nth_window(self, nth, window);
@@ -1256,6 +1264,13 @@ static void virt_viewer_app_usb_failed(VirtViewerSession *session G_GNUC_UNUSED,
 }
 
 static void
+virt_viewer_app_set_kiosk(VirtViewerApp *self, gboolean enabled)
+{
+    self->priv->kiosk = enabled;
+}
+
+
+static void
 virt_viewer_app_get_property (GObject *object, guint property_id,
                               GValue *value G_GNUC_UNUSED, GParamSpec *pspec)
 {
@@ -1298,6 +1313,10 @@ virt_viewer_app_get_property (GObject *object, guint property_id,
 
     case PROP_FULLSCREEN_AUTO_CONF:
         g_value_set_boolean(value, virt_viewer_app_get_fullscreen_auto_conf(self));
+        break;
+
+    case PROP_KIOSK:
+        g_value_set_boolean(value, priv->kiosk);
         break;
 
     default:
@@ -1343,6 +1362,10 @@ virt_viewer_app_set_property (GObject *object, guint property_id,
 
     case PROP_FULLSCREEN_AUTO_CONF:
         priv->fullscreen_auto_conf = g_value_get_boolean(value);
+        break;
+
+    case PROP_KIOSK:
+        virt_viewer_app_set_kiosk(self, g_value_get_boolean(value));
         break;
 
     default:
@@ -1412,6 +1435,7 @@ static gboolean opt_verbose = FALSE;
 static gboolean opt_debug = FALSE;
 static gboolean opt_fullscreen = FALSE;
 static gboolean opt_fullscreen_auto_conf = FALSE;
+static gboolean opt_kiosk = FALSE;
 
 static void
 virt_viewer_app_init (VirtViewerApp *self)
@@ -1520,6 +1544,7 @@ virt_viewer_app_constructor (GType gtype,
     virt_viewer_window_set_zoom_level(priv->main_window, opt_zoom);
     virt_viewer_app_set_fullscreen(self, opt_fullscreen);
     virt_viewer_app_set_hotkeys(self, opt_hotkeys);
+    virt_viewer_app_set_kiosk(self, opt_kiosk);
 
     return obj;
 }
@@ -1625,6 +1650,16 @@ virt_viewer_app_class_init (VirtViewerAppClass *klass)
                                                          "Application has focus",
                                                          FALSE,
                                                          G_PARAM_READABLE |
+                                                         G_PARAM_STATIC_STRINGS));
+
+    g_object_class_install_property(object_class,
+                                    PROP_KIOSK,
+                                    g_param_spec_boolean("kiosk",
+                                                         "Kiosk",
+                                                         "Kiosk mode",
+                                                         FALSE,
+                                                         G_PARAM_CONSTRUCT |
+                                                         G_PARAM_READWRITE |
                                                          G_PARAM_STATIC_STRINGS));
 
     signals[SIGNAL_WINDOW_ADDED] =
@@ -2104,6 +2139,8 @@ virt_viewer_app_get_options(void)
           N_("Open in full screen mode (auto-conf adjusts guest resolution to fit the client's)"), N_("<auto-conf>") },
         { "hotkeys", 'H', 0, G_OPTION_ARG_STRING, &opt_hotkeys,
           N_("Customise hotkeys"), NULL },
+        { "kiosk", 'k', 0, G_OPTION_ARG_NONE, &opt_kiosk,
+          N_("Enable kiosk mode"), NULL },
         { "verbose", 'v', 0, G_OPTION_ARG_NONE, &opt_verbose,
           N_("Display verbose information"), NULL },
         { "debug", '\0', 0, G_OPTION_ARG_NONE, &opt_debug,

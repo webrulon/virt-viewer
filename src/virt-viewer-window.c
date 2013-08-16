@@ -98,6 +98,7 @@ struct _VirtViewerWindowPrivate {
     gboolean grabbed;
     gint fullscreen_monitor;
     gboolean desktop_resize_pending;
+    gboolean kiosk;
 
     gint zoomlevel;
     gboolean auto_resize;
@@ -1335,6 +1336,18 @@ virt_viewer_window_get_display(VirtViewerWindow *self)
     g_return_val_if_fail(VIRT_VIEWER_WINDOW(self), FALSE);
 
     return self->priv->display;
+}
+
+void
+virt_viewer_window_set_kiosk(VirtViewerWindow *self, gboolean enabled)
+{
+    g_return_if_fail(VIRT_VIEWER_IS_WINDOW(self));
+    g_return_if_fail(enabled == !!enabled);
+
+    if (self->priv->kiosk == enabled)
+        return;
+
+    self->priv->kiosk = enabled;
 }
 
 /*

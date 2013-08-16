@@ -77,6 +77,19 @@ smartcard-remove. Examples:
 Note that hotkeys for which no binding is given are disabled, specifying an
 empty string disables all hotkeys.
 
+=item -k, --kiosk
+
+Start in kiosk mode. In this mode, the application will start in
+fullscreen with minimal UI. It will prevent the user from quitting or
+performing any interaction outside of usage of the remote desktop
+session.
+
+Note that it can't offer a complete secure solution by itself. Your
+kiosk system must have additional configuration and security settings
+to lock down the OS. In particular, you must configure or disable the
+window manager, limit the session capabilities, use some
+restart/watchdog mechanism, disable VT switching etc.
+
 =back
 
 =head1 HOTKEY

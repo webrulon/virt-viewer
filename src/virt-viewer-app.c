@@ -658,6 +658,10 @@ virt_viewer_app_window_new(VirtViewerApp *self, gint nth)
     VirtViewerWindow* window;
     GtkWindow *w;
 
+    window = virt_viewer_app_get_nth_window(self, nth);
+    if (window)
+        return window;
+
     window = g_object_new(VIRT_VIEWER_TYPE_WINDOW, "app", self, NULL);
     if (self->priv->main_window)
         virt_viewer_window_set_zoom_level(window, virt_viewer_window_get_zoom_level(self->priv->main_window));

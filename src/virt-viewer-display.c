@@ -144,8 +144,8 @@ virt_viewer_display_class_init(VirtViewerDisplayClass *class)
                                     g_param_spec_int("zoom-level",
                                                      "Zoom",
                                                      "Zoom level",
-                                                     10,
-                                                     400,
+                                                     MIN_ZOOM_LEVEL,
+                                                     MAX_ZOOM_LEVEL,
                                                      100,
                                                      G_PARAM_READWRITE));
 
@@ -577,10 +577,10 @@ void virt_viewer_display_set_zoom_level(VirtViewerDisplay *display,
 {
     VirtViewerDisplayPrivate *priv = display->priv;
 
-    if (zoom < 10)
-        zoom = 10;
-    if (zoom > 400)
-        zoom = 400;
+    if (zoom < MIN_ZOOM_LEVEL)
+        zoom = MIN_ZOOM_LEVEL;
+    if (zoom > MAX_ZOOM_LEVEL)
+        zoom = MAX_ZOOM_LEVEL;
     priv->zoom_level = zoom;
 
     virt_viewer_display_queue_resize(display);

@@ -1430,8 +1430,8 @@ virt_viewer_app_init (VirtViewerApp *self)
 
     g_clear_error(&error);
 
-    if (opt_zoom < 10 || opt_zoom > 200) {
-        g_printerr(_("Zoom level must be within 10-200\n"));
+    if (opt_zoom < MIN_ZOOM_LEVEL || opt_zoom > MAX_ZOOM_LEVEL) {
+        g_printerr(_("Zoom level must be within %d-%d\n"), MIN_ZOOM_LEVEL, MAX_ZOOM_LEVEL);
         opt_zoom = 100;
     }
 

@@ -39,6 +39,7 @@ G_BEGIN_DECLS
 #define GDK_Control_L GDK_KEY_Control_L
 #define GDK_Alt_L GDK_KEY_Alt_L
 #define GDK_Delete GDK_KEY_Delete
+#define GDK_End GDK_KEY_End
 #define GDK_BackSpace GDK_KEY_BackSpace
 #define GDK_Print GDK_KEY_Print
 #define GDK_F1 GDK_KEY_F1

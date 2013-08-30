@@ -558,26 +558,27 @@ virt_viewer_window_enter_fullscreen(VirtViewerWindow *self, gint monitor)
 struct keyComboDef {
     guint keys[MAX_KEY_COMBO];
     const char *label;
+    const gchar* accel_path;
 };
 
 static const struct keyComboDef keyCombos[] = {
-    { { GDK_Control_L, GDK_Alt_L, GDK_Delete, GDK_VoidSymbol }, N_("Ctrl+Alt+_Del")},
-    { { GDK_Control_L, GDK_Alt_L, GDK_BackSpace, GDK_VoidSymbol }, N_("Ctrl+Alt+_Backspace")},
-    { { GDK_VoidSymbol }, "" },
-    { { GDK_Control_L, GDK_Alt_L, GDK_F1, GDK_VoidSymbol }, N_("Ctrl+Alt+F_1")},
-    { { GDK_Control_L, GDK_Alt_L, GDK_F2, GDK_VoidSymbol }, N_("Ctrl+Alt+F_2")},
-    { { GDK_Control_L, GDK_Alt_L, GDK_F3, GDK_VoidSymbol }, N_("Ctrl+Alt+F_3")},
-    { { GDK_Control_L, GDK_Alt_L, GDK_F4, GDK_VoidSymbol }, N_("Ctrl+Alt+F_4")},
-    { { GDK_Control_L, GDK_Alt_L, GDK_F5, GDK_VoidSymbol }, N_("Ctrl+Alt+F_5")},
-    { { GDK_Control_L, GDK_Alt_L, GDK_F6, GDK_VoidSymbol }, N_("Ctrl+Alt+F_6")},
-    { { GDK_Control_L, GDK_Alt_L, GDK_F7, GDK_VoidSymbol }, N_("Ctrl+Alt+F_7")},
-    { { GDK_Control_L, GDK_Alt_L, GDK_F8, GDK_VoidSymbol }, N_("Ctrl+Alt+F_8")},
-    { { GDK_Control_L, GDK_Alt_L, GDK_F9, GDK_VoidSymbol }, N_("Ctrl+Alt+F_9")},
-    { { GDK_Control_L, GDK_Alt_L, GDK_F10, GDK_VoidSymbol }, N_("Ctrl+Alt+F1_0")},
-    { { GDK_Control_L, GDK_Alt_L, GDK_F11, GDK_VoidSymbol }, N_("Ctrl+Alt+F11")},
-    { { GDK_Control_L, GDK_Alt_L, GDK_F12, GDK_VoidSymbol }, N_("Ctrl+Alt+F12")},
-    { { GDK_VoidSymbol }, "" },
-    { { GDK_Print, GDK_VoidSymbol }, "_PrintScreen"},
+    { { GDK_Control_L, GDK_Alt_L, GDK_Delete, GDK_VoidSymbol }, N_("Ctrl+Alt+_Del"), "<virt-viewer>/send/secure-attention"},
+    { { GDK_Control_L, GDK_Alt_L, GDK_BackSpace, GDK_VoidSymbol }, N_("Ctrl+Alt+_Backspace"), NULL},
+    { { GDK_VoidSymbol }, "" , NULL},
+    { { GDK_Control_L, GDK_Alt_L, GDK_F1, GDK_VoidSymbol }, N_("Ctrl+Alt+F_1"), NULL},
+    { { GDK_Control_L, GDK_Alt_L, GDK_F2, GDK_VoidSymbol }, N_("Ctrl+Alt+F_2"), NULL},
+    { { GDK_Control_L, GDK_Alt_L, GDK_F3, GDK_VoidSymbol }, N_("Ctrl+Alt+F_3"), NULL},
+    { { GDK_Control_L, GDK_Alt_L, GDK_F4, GDK_VoidSymbol }, N_("Ctrl+Alt+F_4"), NULL},
+    { { GDK_Control_L, GDK_Alt_L, GDK_F5, GDK_VoidSymbol }, N_("Ctrl+Alt+F_5"), NULL},
+    { { GDK_Control_L, GDK_Alt_L, GDK_F6, GDK_VoidSymbol }, N_("Ctrl+Alt+F_6"), NULL},
+    { { GDK_Control_L, GDK_Alt_L, GDK_F7, GDK_VoidSymbol }, N_("Ctrl+Alt+F_7"), NULL},
+    { { GDK_Control_L, GDK_Alt_L, GDK_F8, GDK_VoidSymbol }, N_("Ctrl+Alt+F_8"), NULL},
+    { { GDK_Control_L, GDK_Alt_L, GDK_F9, GDK_VoidSymbol }, N_("Ctrl+Alt+F_9"), NULL},
+    { { GDK_Control_L, GDK_Alt_L, GDK_F10, GDK_VoidSymbol }, N_("Ctrl+Alt+F1_0"), NULL},
+    { { GDK_Control_L, GDK_Alt_L, GDK_F11, GDK_VoidSymbol }, N_("Ctrl+Alt+F11"), NULL},
+    { { GDK_Control_L, GDK_Alt_L, GDK_F12, GDK_VoidSymbol }, N_("Ctrl+Alt+F12"), NULL},
+    { { GDK_VoidSymbol }, "" , NULL},
+    { { GDK_Print, GDK_VoidSymbol }, "_PrintScreen", NULL},
 };
 
 static guint
@@ -607,7 +608,7 @@ virt_viewer_window_menu_send(GtkWidget *menu,
 
 static void
 virt_viewer_menu_add_combo(VirtViewerWindow *self, GtkMenu *menu,
-                           const guint *keys, const gchar *label)
+                           const guint *keys, const gchar *label, const gchar* accel_path)
 {
     GtkWidget *item;
 
@@ -615,6 +616,8 @@ virt_viewer_menu_add_combo(VirtViewerWindow *self, GtkMenu *menu,
         item = gtk_separator_menu_item_new();
     } else {
         item = gtk_menu_item_new_with_mnemonic(label);
+        if (accel_path)
+            gtk_menu_item_set_accel_path(GTK_MENU_ITEM(item), accel_path);
         guint *ckeys = g_memdup(keys, (get_nkeys(keys) + 1) * sizeof(guint));
         g_object_set_data_full(G_OBJECT(item), "vv-keys", ckeys, g_free);
         g_signal_connect(item, "activate", G_CALLBACK(virt_viewer_window_menu_send), self);
@@ -682,7 +685,7 @@ accel_map_item_cb(gpointer data,
 
     guint *keys = accel_key_to_keys(&key);
     gchar *label = gtk_accelerator_get_label(accel_key, accel_mods);
-    virt_viewer_menu_add_combo(d->self, d->menu, keys, label);
+    virt_viewer_menu_add_combo(d->self, d->menu, keys, label, NULL);
     g_free(label);
     g_free(keys);
 }
@@ -693,9 +696,10 @@ virt_viewer_window_get_keycombo_menu(VirtViewerWindow *self)
     gint i;
     VirtViewerWindowPrivate *priv = self->priv;
     GtkMenu *menu = GTK_MENU(gtk_menu_new());
+    gtk_menu_set_accel_group(menu, priv->accel_group);
 
     for (i = 0 ; i < G_N_ELEMENTS(keyCombos); i++) {
-        virt_viewer_menu_add_combo(self, menu, keyCombos[i].keys, keyCombos[i].label);
+        virt_viewer_menu_add_combo(self, menu, keyCombos[i].keys, keyCombos[i].label, keyCombos[i].accel_path);
     }
 
     if (virt_viewer_app_get_enable_accel(priv->app)) {

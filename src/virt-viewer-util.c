@@ -366,7 +366,7 @@ ctrl_key_to_gtk_key(const gchar *key)
         { "pagedown", "Page_Down" },
 
         /* { "home", "home" }, */
-        /* { "end", "end" }, */
+        { "end", "End" },
         /* { "space", "space" }, */
 
         { "enter", "Return" },

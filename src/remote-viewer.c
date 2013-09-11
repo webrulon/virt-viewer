@@ -712,6 +712,8 @@ static gboolean
 create_ovirt_session(VirtViewerApp *app, const char *uri)
 {
     OvirtProxy *proxy = NULL;
+    OvirtApi *api = NULL;
+    OvirtCollection *vms;
     OvirtVm *vm = NULL;
     OvirtVmDisplay *display = NULL;
     OvirtVmState state;
@@ -746,13 +748,18 @@ create_ovirt_session(VirtViewerApp *app, const char *uri)
         goto error;
     }
 
-    ovirt_proxy_fetch_vms(proxy, &error);
+    api = ovirt_proxy_fetch_api(proxy, &error);
+    if (error != NULL) {
+        g_debug("failed to get oVirt 'api' collection: %s", error->message);
+        goto error;
+    }
+    vms = ovirt_api_get_vms(api);
+    ovirt_collection_fetch(vms, proxy, &error);
     if (error != NULL) {
         g_debug("failed to lookup %s: %s", vm_name, error->message);
         goto error;
     }
-
-    vm = ovirt_proxy_lookup_vm(proxy, vm_name);
+    vm = OVIRT_VM(ovirt_collection_lookup_resource(vms, vm_name));
     g_return_val_if_fail(vm != NULL, FALSE);
     g_object_get(G_OBJECT(vm), "state", &state, NULL);
     if (state != OVIRT_VM_STATE_UP) {
@@ -829,6 +836,8 @@ error:
         g_object_unref(display);
     if (vm != NULL)
         g_object_unref(vm);
+    if (api != NULL)
+        g_object_unref(api);
     if (proxy != NULL)
         g_object_unref(proxy);
 

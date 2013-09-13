@@ -6,7 +6,7 @@
 %{!?enable_autotools:%define enable_autotools 0}
 
 %define with_gtk3 0
-%if 0%{?fedora} >= 15
+%if 0%{?fedora} >= 15 || 0%{?rhel} >= 7
 %define with_gtk3 1
 %endif
 

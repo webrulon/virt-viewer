@@ -11,17 +11,13 @@
 %endif
 
 %define with_spice 0
-%if 0%{?fedora} >= 17
+%if 0%{?fedora} >= 17 || 0%{?rhel} >= 6
 %define with_spice 1
 %endif
 
 %define with_govirt 0
 %if 0%{?fedora} >= 19
 %define with_govirt 1
-%endif
-
-%if 0%{?rhel} >= 6
-%define with_spice 1
 %endif
 
 # spice-gtk is x86 x86_64 arm only currently:

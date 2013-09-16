@@ -739,6 +739,7 @@ create_ovirt_session(VirtViewerApp *app, const char *uri)
     proxy = ovirt_proxy_new(rest_uri);
     if (proxy == NULL)
         goto error;
+    ovirt_set_proxy_options(proxy);
     g_signal_connect(G_OBJECT(proxy), "authenticate",
                      G_CALLBACK(authenticate_cb), app);
 

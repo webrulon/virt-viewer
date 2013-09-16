@@ -36,6 +36,9 @@
 #ifdef HAVE_SPICE_GTK
 #include <spice-option.h>
 #endif
+#ifdef HAVE_OVIRT
+#include <govirt/ovirt-options.h>
+#endif
 
 #include "remote-viewer.h"
 #include "virt-viewer-app.h"
@@ -117,6 +120,9 @@ main(int argc, char **argv)
 #endif
 #ifdef HAVE_SPICE_GTK
     g_option_context_add_group (context, spice_get_option_group ());
+#endif
+#ifdef HAVE_OVIRT
+    g_option_context_add_group (context, ovirt_get_option_group ());
 #endif
     g_option_context_parse (context, &argc, &argv, &error);
     if (error) {

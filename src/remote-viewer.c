@@ -803,14 +803,18 @@ create_ovirt_session(VirtViewerApp *app, const char *uri)
         SpiceSession *session;
         GByteArray *ca_cert;
 
-        g_object_get(G_OBJECT(proxy), "ca-cert", &ca_cert, NULL);
         session = remote_viewer_get_spice_session(REMOTE_VIEWER(app));
         g_object_set(G_OBJECT(session),
-                     "ca", ca_cert,
                      "password", ticket,
                      "cert-subject", host_subject,
                      NULL);
-        g_byte_array_unref(ca_cert);
+        g_object_get(G_OBJECT(proxy), "ca-cert", &ca_cert, NULL);
+        if (ca_cert != NULL) {
+            g_object_set(G_OBJECT(session),
+                    "ca", ca_cert,
+                    NULL);
+            g_byte_array_unref(ca_cert);
+        }
     }
 #endif
 

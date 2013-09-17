@@ -743,12 +743,6 @@ create_ovirt_session(VirtViewerApp *app, const char *uri)
     g_signal_connect(G_OBJECT(proxy), "authenticate",
                      G_CALLBACK(authenticate_cb), app);
 
-    ovirt_proxy_fetch_ca_certificate(proxy, &error);
-    if (error != NULL) {
-        g_debug("failed to get CA certificate: %s", error->message);
-        goto error;
-    }
-
     api = ovirt_proxy_fetch_api(proxy, &error);
     if (error != NULL) {
         g_debug("failed to get oVirt 'api' collection: %s", error->message);

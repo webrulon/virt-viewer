@@ -632,12 +632,10 @@ accel_key_to_keys(const GtkAccelKey *key)
     guint val;
     GArray *a = g_array_new(FALSE, FALSE, sizeof(guint));
 
-    val = key->accel_key;
-    g_array_append_val(a, val);
-
     g_warn_if_fail((key->accel_mods &
                     ~(GDK_SHIFT_MASK | GDK_CONTROL_MASK | GDK_MOD1_MASK)) == 0);
 
+    /* first, send the modifiers */
     if (key->accel_mods & GDK_SHIFT_MASK) {
         val = GDK_Shift_L;
         g_array_append_val(a, val);
@@ -652,6 +650,10 @@ accel_key_to_keys(const GtkAccelKey *key)
         val = GDK_Alt_L;
         g_array_append_val(a, val);
     }
+
+    /* only after, the non-modifier key (ctrl-t, not t-ctrl) */
+    val = key->accel_key;
+    g_array_append_val(a, val);
 
     val = GDK_VoidSymbol;
     g_array_append_val(a, val);

@@ -110,7 +110,10 @@ static void
 virt_viewer_session_vnc_disconnected(VncDisplay *vnc G_GNUC_UNUSED,
                                      VirtViewerSessionVnc *session)
 {
-    GtkWidget *display = virt_viewer_display_vnc_new(session->priv->vnc);
+    GtkWidget *display;
+
+    virt_viewer_session_clear_displays(VIRT_VIEWER_SESSION(session));
+    display = virt_viewer_display_vnc_new(session->priv->vnc);
     DEBUG_LOG("Disconnected");
     g_signal_emit_by_name(session, "session-disconnected");
     virt_viewer_display_set_show_hint(VIRT_VIEWER_DISPLAY(display),

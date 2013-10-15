@@ -297,6 +297,7 @@ virt_viewer_app_maybe_quit(VirtViewerApp *self, VirtViewerWindow *window)
         gtk_container_add(GTK_CONTAINER(gtk_dialog_get_content_area(GTK_DIALOG(dialog))), check);
         gtk_widget_show(check);
 
+        gtk_dialog_set_default_response (GTK_DIALOG(dialog), GTK_RESPONSE_CANCEL);
         gint result = gtk_dialog_run(GTK_DIALOG(dialog));
 
         gboolean dont_ask = FALSE;

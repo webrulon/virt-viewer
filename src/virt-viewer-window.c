@@ -616,8 +616,11 @@ virt_viewer_menu_add_combo(VirtViewerWindow *self, GtkMenu *menu,
         item = gtk_separator_menu_item_new();
     } else {
         item = gtk_menu_item_new_with_mnemonic(label);
-        if (accel_path)
+        if (accel_path) {
             gtk_menu_item_set_accel_path(GTK_MENU_ITEM(item), accel_path);
+            /* make accel work in fullscreen */
+            g_signal_connect(item, "can-activate-accel", G_CALLBACK(can_activate_cb), self);
+        }
         guint *ckeys = g_memdup(keys, (get_nkeys(keys) + 1) * sizeof(guint));
         g_object_set_data_full(G_OBJECT(item), "vv-keys", ckeys, g_free);
         g_signal_connect(item, "activate", G_CALLBACK(virt_viewer_window_menu_send), self);

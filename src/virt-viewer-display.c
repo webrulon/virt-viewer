@@ -581,6 +581,10 @@ void virt_viewer_display_set_zoom_level(VirtViewerDisplay *display,
         zoom = MIN_ZOOM_LEVEL;
     if (zoom > MAX_ZOOM_LEVEL)
         zoom = MAX_ZOOM_LEVEL;
+
+    if (priv->zoom_level == zoom)
+        return;
+
     priv->zoom_level = zoom;
 
     virt_viewer_display_queue_resize(display);

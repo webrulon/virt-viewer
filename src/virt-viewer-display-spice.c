@@ -35,16 +35,16 @@
 
 G_DEFINE_TYPE (VirtViewerDisplaySpice, virt_viewer_display_spice, VIRT_VIEWER_TYPE_DISPLAY)
 
-struct _VirtViewerDisplaySpicePrivate {
-    SpiceChannel *channel; /* weak reference */
-    SpiceDisplay *display;
-    int auto_resize;
-};
-
-enum {
+typedef enum {
     AUTO_RESIZE_ALWAYS,
     AUTO_RESIZE_FULLSCREEN,
     AUTO_RESIZE_NEVER,
+} AutoResizeState;
+
+struct _VirtViewerDisplaySpicePrivate {
+    SpiceChannel *channel; /* weak reference */
+    SpiceDisplay *display;
+    AutoResizeState auto_resize;
 };
 
 #define VIRT_VIEWER_DISPLAY_SPICE_GET_PRIVATE(o) (G_TYPE_INSTANCE_GET_PRIVATE((o), VIRT_VIEWER_TYPE_DISPLAY_SPICE, VirtViewerDisplaySpicePrivate))
@@ -117,6 +117,7 @@ static void
 virt_viewer_display_spice_init(VirtViewerDisplaySpice *self G_GNUC_UNUSED)
 {
     self->priv = VIRT_VIEWER_DISPLAY_SPICE_GET_PRIVATE(self);
+    self->priv->auto_resize = AUTO_RESIZE_ALWAYS;
 
     g_signal_connect(self, "notify::show-hint", G_CALLBACK(show_hint_changed), NULL);
 }

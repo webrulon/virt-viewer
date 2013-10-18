@@ -1287,7 +1287,8 @@ virt_viewer_app_set_kiosk(VirtViewerApp *self, gboolean enabled)
     int i;
 
     self->priv->kiosk = enabled;
-    virt_viewer_app_set_fullscreen(self, enabled);
+    if (enabled)
+        virt_viewer_app_set_fullscreen(self, enabled);
 
     for (i = 0; i < gdk_screen_get_n_monitors(gdk_screen_get_default()); i++) {
         VirtViewerWindow *win = virt_viewer_app_get_nth_window(self, i);

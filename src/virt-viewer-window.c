@@ -516,6 +516,7 @@ mapped(GtkWidget *widget, GdkEvent *event G_GNUC_UNUSED,
        VirtViewerWindow *self)
 {
     g_signal_handlers_disconnect_by_func(widget, mapped, self);
+    self->priv->fullscreen = FALSE;
     virt_viewer_window_enter_fullscreen(self, self->priv->fullscreen_monitor);
     return FALSE;
 }
@@ -531,13 +532,12 @@ virt_viewer_window_enter_fullscreen(VirtViewerWindow *self, gint monitor)
         return;
 
     priv->fullscreen_monitor = monitor;
+    priv->fullscreen = TRUE;
 
     if (!gtk_widget_get_mapped(priv->window)) {
         g_signal_connect(priv->window, "map-event", G_CALLBACK(mapped), self);
         return;
     }
-
-    priv->fullscreen = TRUE;
 
     gtk_check_menu_item_set_active(check, TRUE);
     gtk_widget_hide(menu);

@@ -629,7 +629,6 @@ virt_viewer_session_spice_display_monitors(SpiceChannel *channel,
             g_ptr_array_index(displays, i) = g_object_ref(display);
         }
 
-        g_object_freeze_notify(G_OBJECT(display));
         virt_viewer_session_add_display(VIRT_VIEWER_SESSION(self),
                                         VIRT_VIEWER_DISPLAY(display));
     }
@@ -646,9 +645,6 @@ virt_viewer_session_spice_display_monitors(SpiceChannel *channel,
         virt_viewer_display_set_desktop_size(VIRT_VIEWER_DISPLAY(display),
                                              monitor->width, monitor->height);
     }
-
-    for (i = 0; i < monitors_max; i++)
-        g_object_thaw_notify(g_ptr_array_index(displays, i));
 
     g_clear_pointer(&monitors, g_array_unref);
 

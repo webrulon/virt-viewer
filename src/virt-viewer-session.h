@@ -94,6 +94,7 @@ struct _VirtViewerSessionClass {
     void (*session_cut_text)(VirtViewerSession *session, const gchar *str);
     void (*session_bell)(VirtViewerSession *session);
     void (*session_cancelled)(VirtViewerSession *session);
+    void (*apply_monitor_geometry)(VirtViewerSession *session, GdkRectangle* monitors, guint nmonitors);
 };
 
 GType virt_viewer_session_get_type(void);

@@ -82,6 +82,7 @@ static void virt_viewer_session_spice_channel_destroy(SpiceSession *s,
 static void virt_viewer_session_spice_smartcard_insert(VirtViewerSession *session);
 static void virt_viewer_session_spice_smartcard_remove(VirtViewerSession *session);
 static gboolean virt_viewer_session_spice_fullscreen_auto_conf(VirtViewerSessionSpice *self);
+static void virt_viewer_session_spice_apply_monitor_geometry(VirtViewerSession *self, GdkRectangle *monitors, guint nmonitors);
 
 static void
 virt_viewer_session_spice_get_property(GObject *object, guint property_id,
@@ -157,6 +158,7 @@ virt_viewer_session_spice_class_init(VirtViewerSessionSpiceClass *klass)
     dclass->smartcard_insert = virt_viewer_session_spice_smartcard_insert;
     dclass->smartcard_remove = virt_viewer_session_spice_smartcard_remove;
     dclass->mime_type = virt_viewer_session_spice_mime_type;
+    dclass->apply_monitor_geometry = virt_viewer_session_spice_apply_monitor_geometry;
 
     g_type_class_add_private(klass, sizeof(VirtViewerSessionSpicePrivate));
 
@@ -675,6 +677,10 @@ virt_viewer_session_spice_channel_new(SpiceSession *s,
         g_signal_connect(channel, "channel-event",
                          G_CALLBACK(virt_viewer_session_spice_main_channel_event), self);
         self->priv->main_channel = SPICE_MAIN_CHANNEL(channel);
+        g_object_set(G_OBJECT(channel),
+                     "disable-display-position", FALSE,
+                     "disable-display-align", TRUE,
+                     NULL);
 
         g_signal_connect(channel, "notify::agent-connected", G_CALLBACK(agent_connected_changed), self);
     }
@@ -752,11 +758,6 @@ virt_viewer_session_spice_fullscreen_auto_conf(VirtViewerSessionSpice *self)
         return FALSE;
     }
 
-
-    g_object_set(G_OBJECT(cmain),
-                 "disable-display-position", FALSE,
-                 "disable-display-align", TRUE,
-                 NULL);
     spice_main_set_display_enabled(cmain, -1, FALSE);
 
     ndisplays = virt_viewer_app_get_n_initial_displays(app);
@@ -885,6 +886,20 @@ static void
 virt_viewer_session_spice_smartcard_remove(VirtViewerSession *session G_GNUC_UNUSED)
 {
     spice_smartcard_manager_remove_card(spice_smartcard_manager_get());
+}
+
+void
+virt_viewer_session_spice_apply_monitor_geometry(VirtViewerSession *session, GdkRectangle *monitors, guint nmonitors)
+{
+    guint i;
+    VirtViewerSessionSpice *self = VIRT_VIEWER_SESSION_SPICE(session);
+
+    for (i = 0; i < nmonitors; i++) {
+        GdkRectangle* rect = &monitors[i];
+
+        spice_main_set_display(self->priv->main_channel, i, rect->x,
+                               rect->y, rect->width, rect->height);
+    }
 }
 
 /*

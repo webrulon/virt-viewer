@@ -255,6 +255,16 @@ virt_viewer_display_class_init(VirtViewerDisplayClass *class)
                  G_TYPE_NONE,
                  0);
 
+    g_signal_new("monitor-geometry-changed",
+                 G_OBJECT_CLASS_TYPE(object_class),
+                 G_SIGNAL_RUN_LAST | G_SIGNAL_NO_HOOKS,
+                 0,
+                 NULL,
+                 NULL,
+                 g_cclosure_marshal_VOID__VOID,
+                 G_TYPE_NONE,
+                 0);
+
     g_type_class_add_private(class, sizeof(VirtViewerDisplayPrivate));
 }
 
@@ -668,6 +678,12 @@ void virt_viewer_display_set_enabled(VirtViewerDisplay *self, gboolean enabled)
     virt_viewer_display_set_show_hint(self, VIRT_VIEWER_DISPLAY_SHOW_HINT_DISABLED, !enabled);
 }
 
+gboolean virt_viewer_display_get_enabled(VirtViewerDisplay *self)
+{
+    return ((self->priv->show_hint & VIRT_VIEWER_DISPLAY_SHOW_HINT_SET) &&
+        !(self->priv->show_hint & VIRT_VIEWER_DISPLAY_SHOW_HINT_DISABLED));
+}
+
 VirtViewerSession* virt_viewer_display_get_session(VirtViewerDisplay *self)
 {
     g_return_val_if_fail(VIRT_VIEWER_IS_DISPLAY(self), NULL);
@@ -757,6 +773,62 @@ gboolean virt_viewer_display_get_fullscreen(VirtViewerDisplay *self)
     g_return_val_if_fail(VIRT_VIEWER_IS_DISPLAY(self), FALSE);
 
     return self->priv->fullscreen;
+}
+
+void virt_viewer_display_get_preferred_monitor_geometry(VirtViewerDisplay* self,
+                                                        GdkRectangle* preferred)
+{
+    GtkWidget *top = NULL;
+    gint topx = 0, topy = 0;
+
+    g_return_if_fail(preferred != NULL);
+
+    if (!virt_viewer_display_get_enabled(VIRT_VIEWER_DISPLAY(self))) {
+        preferred->width = 0;
+        preferred->height = 0;
+        preferred->x = 0;
+        preferred->y = 0;
+        return;
+    }
+
+    top = gtk_widget_get_toplevel(GTK_WIDGET(self));
+    gtk_window_get_position(GTK_WINDOW(top), &topx, &topy);
+    topx = MAX(topx, 0);
+    topy = MAX(topy, 0);
+
+    if (virt_viewer_display_get_auto_resize(VIRT_VIEWER_DISPLAY(self)) == FALSE) {
+        guint w, h;
+        virt_viewer_display_get_desktop_size(self, &w, &h);
+        preferred->width = w;
+        preferred->height = h;
+        preferred->x = topx;
+        preferred->y = topy;
+    } else {
+        if (virt_viewer_display_get_fullscreen(VIRT_VIEWER_DISPLAY(self))) {
+            GdkRectangle physical_monitor;
+            GdkScreen *screen = gtk_widget_get_screen(GTK_WIDGET(self));
+            int n = virt_viewer_display_get_monitor(VIRT_VIEWER_DISPLAY(self));
+            if (n == -1)
+                n = gdk_screen_get_monitor_at_window(screen,
+                                                     gtk_widget_get_window(GTK_WIDGET(self)));
+            gdk_screen_get_monitor_geometry(screen, n, &physical_monitor);
+            preferred->x = physical_monitor.x;
+            preferred->y = physical_monitor.y;
+            preferred->width = physical_monitor.width;
+            preferred->height = physical_monitor.height;
+        } else {
+            gtk_widget_get_allocation(GTK_WIDGET(self), preferred);
+            preferred->x = topx;
+            preferred->y = topy;
+        }
+
+        if (virt_viewer_display_get_zoom(VIRT_VIEWER_DISPLAY(self))) {
+            guint zoom = virt_viewer_display_get_zoom_level(VIRT_VIEWER_DISPLAY(self));
+
+            preferred->width = round(preferred->width * 100 / zoom);
+            preferred->height = round(preferred->height * 100 / zoom);
+        }
+    }
 }
 
 /*

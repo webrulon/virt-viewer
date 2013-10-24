@@ -95,22 +95,31 @@ get_main(VirtViewerDisplay *self)
 }
 
 static void
+virt_viewer_display_spice_monitor_geometry_changed(VirtViewerDisplaySpice *self)
+{
+
+    if (virt_viewer_display_get_auto_resize(VIRT_VIEWER_DISPLAY(self)) == FALSE)
+        return;
+
+    g_signal_emit_by_name(self, "monitor-geometry-changed", NULL);
+
+}
+
+static void
 show_hint_changed(VirtViewerDisplay *self)
 {
     SpiceMainChannel *main_channel = get_main(self);
-    guint enabled = TRUE;
-    guint nth, hint = virt_viewer_display_get_show_hint(self);
+    guint enabled = virt_viewer_display_get_enabled(self);
+    guint nth;
 
     /* this may happen when finalizing */
     if (!main_channel)
         return;
 
     g_object_get(self, "nth-display", &nth, NULL);
-    if (!(hint & VIRT_VIEWER_DISPLAY_SHOW_HINT_SET) ||
-        hint & VIRT_VIEWER_DISPLAY_SHOW_HINT_DISABLED)
-        enabled = FALSE;
-
     spice_main_set_display_enabled(main_channel, nth, enabled);
+
+    virt_viewer_display_spice_monitor_geometry_changed(VIRT_VIEWER_DISPLAY_SPICE(self));
 }
 
 static void
@@ -182,70 +191,12 @@ virt_viewer_display_spice_mouse_grab(SpiceDisplay *display G_GNUC_UNUSED,
 
 
 static void
-virt_viewer_display_spice_resize(VirtViewerDisplaySpice *self,
-                                 GtkAllocation *allocation,
-                                 gboolean resize_guest)
-{
-    gdouble dw = allocation->width, dh = allocation->height;
-    guint zoom = 100;
-    guint nth;
-    gint x = 0, y = 0;
-    gboolean disable_display_position = TRUE;
-
-    if (virt_viewer_display_get_auto_resize(VIRT_VIEWER_DISPLAY(self)) == FALSE)
-        return;
-
-    if (virt_viewer_display_get_show_hint(VIRT_VIEWER_DISPLAY(self)) & VIRT_VIEWER_DISPLAY_SHOW_HINT_DISABLED)
-        return;
-
-    if (self->priv->auto_resize == AUTO_RESIZE_FULLSCREEN) {
-        GdkRectangle monitor;
-        GdkScreen *screen = gtk_widget_get_screen(GTK_WIDGET(self));
-        int n = virt_viewer_display_get_monitor(VIRT_VIEWER_DISPLAY(self));
-        if (n == -1)
-            n = gdk_screen_get_monitor_at_window(screen,
-                                     gtk_widget_get_window(GTK_WIDGET(self)));
-        gdk_screen_get_monitor_geometry(screen, n, &monitor);
-        disable_display_position = FALSE;
-        x = monitor.x;
-        y = monitor.y;
-        dw = monitor.width;
-        dh = monitor.height;
-    } else {
-        GtkWidget *top = gtk_widget_get_toplevel(GTK_WIDGET(self));
-        gtk_window_get_position(GTK_WINDOW(top), &x, &y);
-        if (x < 0)
-            x = 0;
-        if (y < 0)
-            y = 0;
-    }
-
-    if (virt_viewer_display_get_zoom(VIRT_VIEWER_DISPLAY(self))) {
-        zoom = virt_viewer_display_get_zoom_level(VIRT_VIEWER_DISPLAY(self));
-
-        dw = round(dw * 100 / zoom);
-        dh = round(dh * 100 / zoom);
-    }
-
-    g_object_get(self, "nth-display", &nth, NULL);
-
-    if (resize_guest) {
-        g_object_set(get_main(VIRT_VIEWER_DISPLAY(self)),
-                     "disable-display-position", disable_display_position,
-                     "disable-display-align", !disable_display_position,
-                     NULL);
-        spice_main_set_display(get_main(VIRT_VIEWER_DISPLAY(self)),
-                               nth, x, y, dw, dh);
-    }
-}
-
-static void
 virt_viewer_display_spice_size_allocate(VirtViewerDisplaySpice *self,
-                                        GtkAllocation *allocation,
+                                        GtkAllocation *allocation G_GNUC_UNUSED,
                                         gpointer data G_GNUC_UNUSED)
 {
-    virt_viewer_display_spice_resize(self, allocation,
-                                     self->priv->auto_resize != AUTO_RESIZE_NEVER);
+    if (self->priv->auto_resize != AUTO_RESIZE_NEVER)
+        virt_viewer_display_spice_monitor_geometry_changed(self);
 
     if (self->priv->auto_resize == AUTO_RESIZE_FULLSCREEN)
         self->priv->auto_resize = AUTO_RESIZE_NEVER;
@@ -256,13 +207,10 @@ zoom_level_changed(VirtViewerDisplaySpice *self,
                    GParamSpec *pspec G_GNUC_UNUSED,
                    VirtViewerApp *app G_GNUC_UNUSED)
 {
-    GtkAllocation allocation;
-
     if (self->priv->auto_resize != AUTO_RESIZE_NEVER)
         return;
 
-    gtk_widget_get_allocation(GTK_WIDGET(self), &allocation);
-    virt_viewer_display_spice_resize(self, &allocation, TRUE);
+    virt_viewer_display_spice_monitor_geometry_changed(self);
 }
 
 static void

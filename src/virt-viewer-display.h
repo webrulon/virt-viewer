@@ -124,8 +124,10 @@ void virt_viewer_display_release_cursor(VirtViewerDisplay *display);
 
 void virt_viewer_display_close(VirtViewerDisplay *display);
 void virt_viewer_display_set_enabled(VirtViewerDisplay *display, gboolean enabled);
+gboolean virt_viewer_display_get_enabled(VirtViewerDisplay *display);
 gboolean virt_viewer_display_get_selectable(VirtViewerDisplay *display);
 void virt_viewer_display_queue_resize(VirtViewerDisplay *display);
+void virt_viewer_display_get_preferred_monitor_geometry(VirtViewerDisplay *self, GdkRectangle* preferred);
 
 G_END_DECLS
 

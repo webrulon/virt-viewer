@@ -108,6 +108,7 @@ struct _VirtViewerAppPrivate {
     VirtViewerWindow *main_window;
     GtkWidget *main_notebook;
     GHashTable *windows;
+    GArray *initial_display_map;
     gchar *clipboard;
 
     gboolean direct;
@@ -269,6 +270,96 @@ virt_viewer_app_quit(VirtViewerApp *self)
     }
 
     gtk_main_quit();
+}
+
+gint virt_viewer_app_get_n_initial_displays(VirtViewerApp* self)
+{
+    if (self->priv->initial_display_map)
+        return self->priv->initial_display_map->len;
+
+    return gdk_screen_get_n_monitors(gdk_screen_get_default());
+}
+
+gint virt_viewer_app_get_initial_monitor_for_display(VirtViewerApp* self, gint display)
+{
+    gint monitor = -1;
+
+    if (self->priv->initial_display_map) {
+        if (display < self->priv->initial_display_map->len)
+            monitor = g_array_index(self->priv->initial_display_map, gint, display);
+    } else {
+        monitor = display;
+    }
+
+    return monitor;
+}
+
+static void
+app_window_try_fullscreen(VirtViewerApp *self G_GNUC_UNUSED,
+                          VirtViewerWindow *win, gint nth)
+{
+    GdkScreen *screen = gdk_screen_get_default();
+
+    if (nth >= gdk_screen_get_n_monitors(screen)) {
+        DEBUG_LOG("skipping display %d", nth);
+        return;
+    }
+
+    virt_viewer_window_enter_fullscreen(win, nth);
+}
+
+
+void virt_viewer_app_set_uuid_string(VirtViewerApp* self, const gchar* uuid_string)
+{
+    GArray* mapping = NULL;
+    GError* error = NULL;
+    gsize ndisplays = 0;
+    gint* displays = NULL;
+    gint nmonitors = gdk_screen_get_n_monitors(gdk_screen_get_default());
+
+    DEBUG_LOG("%s: UUID changed to %s", G_STRFUNC, uuid_string);
+
+    displays = g_key_file_get_integer_list(self->priv->config,
+                                           uuid_string, "monitor-mapping", &ndisplays, &error);
+    if (error) {
+        if (error->code != G_KEY_FILE_ERROR_GROUP_NOT_FOUND)
+            g_warning("Error reading monitor assignments: %s", error->message);
+        g_clear_error(&error);
+    } else {
+        int i = 0;
+        mapping = g_array_sized_new(FALSE, FALSE, sizeof(displays[0]), ndisplays);
+        // config file format is 1-based, not 0-based
+        for (i = 0; i < ndisplays; i++) {
+            gint val = displays[i] - 1;
+
+            // sanity check
+            if (val >= nmonitors)
+                g_warning("Initial monitor #%i for display #%i does not exist, skipping...", val, i);
+            else
+                g_array_append_val(mapping, val);
+        }
+        g_free(displays);
+    }
+
+    if (self->priv->initial_display_map)
+        g_array_unref(self->priv->initial_display_map);
+
+    self->priv->initial_display_map = mapping;
+
+    // if we're changing our initial display map, move any existing windows to
+    // the appropriate monitors according to the per-vm configuration
+    if (mapping && self->priv->fullscreen) {
+        GHashTableIter iter;
+        gpointer value;
+        gint i = 0;
+
+        g_hash_table_iter_init(&iter, self->priv->windows);
+        while (g_hash_table_iter_next(&iter, NULL, &value)) {
+            gint monitor = virt_viewer_app_get_initial_monitor_for_display(self, i);
+            app_window_try_fullscreen(self, VIRT_VIEWER_WINDOW(value), monitor);
+            i++;
+        }
+    }
 }
 
 void
@@ -658,20 +749,6 @@ viewer_window_focus_out_cb(GtkWindow *window G_GNUC_UNUSED,
     return FALSE;
 }
 
-static void
-app_window_try_fullscreen(VirtViewerApp *self G_GNUC_UNUSED,
-                          VirtViewerWindow *win, gint nth)
-{
-    GdkScreen *screen = gdk_screen_get_default();
-
-    if (nth >= gdk_screen_get_n_monitors(screen)) {
-        DEBUG_LOG("skipping display %d", nth);
-        return;
-    }
-
-    virt_viewer_window_enter_fullscreen(win, nth);
-}
-
 static VirtViewerWindow*
 virt_viewer_app_window_new(VirtViewerApp *self, gint nth)
 {
@@ -688,7 +765,8 @@ virt_viewer_app_window_new(VirtViewerApp *self, gint nth)
         virt_viewer_window_set_zoom_level(window, virt_viewer_window_get_zoom_level(self->priv->main_window));
     virt_viewer_app_set_nth_window(self, nth, window);
     if (self->priv->fullscreen)
-        app_window_try_fullscreen(self, window, nth);
+        app_window_try_fullscreen(self, window,
+                                  virt_viewer_app_get_initial_monitor_for_display(self, nth));
 
     w = virt_viewer_window_get_window(window);
     g_signal_connect(w, "hide", G_CALLBACK(viewer_window_visible_cb), self);
@@ -1448,6 +1526,7 @@ virt_viewer_app_dispose (GObject *object)
     g_free(priv->config_file);
     priv->config_file = NULL;
     g_clear_pointer(&priv->config, g_key_file_free);
+    g_clear_pointer(&priv->initial_display_map, g_array_unref);
 
     virt_viewer_app_free_connect_info(self);
 
@@ -1875,8 +1954,8 @@ static void fullscreen_cb(gpointer key,
                           gpointer value,
                           gpointer user_data)
 {
-    gint nth = *(gint*)key;
     FullscreenOptions *options = (FullscreenOptions *)user_data;
+    gint nth = virt_viewer_app_get_initial_monitor_for_display(options->app, *(gint*)key);
     VirtViewerWindow *vwin = VIRT_VIEWER_WINDOW(value);
 
     DEBUG_LOG("fullscreen display %d: %d", nth, options->fullscreen);

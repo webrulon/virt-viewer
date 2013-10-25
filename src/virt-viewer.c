@@ -530,6 +530,7 @@ virt_viewer_initial_connect(VirtViewerApp *app, GError **error)
     gboolean ret = FALSE;
     VirtViewer *self = VIRT_VIEWER(app);
     VirtViewerPrivate *priv = self->priv;
+    char uuid_string[VIR_UUID_STRING_BUFLEN];
 
     DEBUG_LOG("initial connect");
 
@@ -553,6 +554,12 @@ virt_viewer_initial_connect(VirtViewerApp *app, GError **error)
             DEBUG_LOG("Cannot find guest %s", priv->domkey);
             goto cleanup;
         }
+    }
+
+    if (virDomainGetUUIDString(dom, uuid_string) < 0) {
+        DEBUG_LOG("Couldn't get uuid from libvirt");
+    } else {
+        virt_viewer_app_set_uuid_string(app, uuid_string);
     }
 
     virt_viewer_app_show_status(app, _("Checking guest domain status"));

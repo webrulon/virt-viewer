@@ -28,6 +28,7 @@
 #include <glib/gi18n.h>
 
 #include <spice-option.h>
+#include <spice-util.h>
 #include <usb-device-widget.h>
 #include "virt-viewer-file.h"
 #include "virt-viewer-util.h"
@@ -579,8 +580,6 @@ agent_connected_changed(SpiceChannel *cmain G_GNUC_UNUSED,
 {
     // this will force refresh of application menu
     g_signal_emit_by_name(self, "session-display-updated");
-
-    virt_viewer_session_spice_fullscreen_auto_conf(self);
 }
 
 static void
@@ -677,7 +676,6 @@ virt_viewer_session_spice_channel_new(SpiceSession *s,
         self->priv->main_channel = SPICE_MAIN_CHANNEL(channel);
 
         g_signal_connect(channel, "notify::agent-connected", G_CALLBACK(agent_connected_changed), self);
-        virt_viewer_session_spice_fullscreen_auto_conf(self);
     }
 
     if (SPICE_IS_DISPLAY_CHANNEL(channel)) {
@@ -709,6 +707,14 @@ virt_viewer_session_spice_channel_new(SpiceSession *s,
     self->priv->channel_count++;
 }
 
+static void
+property_notify_do_auto_conf(GObject *gobject G_GNUC_UNUSED,
+                             GParamSpec *pspec G_GNUC_UNUSED,
+                             VirtViewerSessionSpice *self)
+{
+    virt_viewer_session_spice_fullscreen_auto_conf(self);
+}
+
 static gboolean
 virt_viewer_session_spice_fullscreen_auto_conf(VirtViewerSessionSpice *self)
 {
@@ -718,6 +724,7 @@ virt_viewer_session_spice_fullscreen_auto_conf(VirtViewerSessionSpice *self)
     GdkRectangle dest;
     gboolean agent_connected;
     gint i;
+    gsize ndisplays = 0;
 
     app = virt_viewer_session_get_app(VIRT_VIEWER_SESSION(self));
     g_return_val_if_fail(VIRT_VIEWER_IS_APP(app), TRUE);
@@ -733,18 +740,23 @@ virt_viewer_session_spice_fullscreen_auto_conf(VirtViewerSessionSpice *self)
     g_object_get(cmain, "agent-connected", &agent_connected, NULL);
     if (!agent_connected) {
         DEBUG_LOG("Agent not connected, skipping autoconf");
+        g_signal_connect(cmain, "notify::agent-connected", G_CALLBACK(property_notify_do_auto_conf), self);
         return FALSE;
     }
 
-    DEBUG_LOG("Performing full screen auto-conf, %d host monitors",
-              gdk_screen_get_n_monitors(screen));
+
     g_object_set(G_OBJECT(cmain),
                  "disable-display-position", FALSE,
                  "disable-display-align", TRUE,
                  NULL);
     spice_main_set_display_enabled(cmain, -1, FALSE);
-    for (i = 0; i < gdk_screen_get_n_monitors(screen); i++) {
-        gdk_screen_get_monitor_geometry(screen, i, &dest);
+
+    ndisplays = virt_viewer_app_get_n_initial_displays(app);
+    DEBUG_LOG("Performing full screen auto-conf, %zd host monitors", ndisplays);
+
+    for (i = 0; i < ndisplays; i++) {
+        gint j = virt_viewer_app_get_initial_monitor_for_display(app, i);
+        gdk_screen_get_monitor_geometry(screen, j, &dest);
         DEBUG_LOG("Set SPICE display %d to (%d,%d)-(%dx%d)",
                   i, dest.x, dest.y, dest.width, dest.height);
         spice_main_set_display(cmain, i, dest.x, dest.y, dest.width, dest.height);
@@ -796,11 +808,34 @@ virt_viewer_session_spice_channel_destroy(G_GNUC_UNUSED SpiceSession *s,
         g_signal_emit_by_name(self, "session-disconnected");
 }
 
+#define UUID_LEN 16
 static void
-fullscreen_changed(GObject *gobject G_GNUC_UNUSED,
-                   GParamSpec *pspec G_GNUC_UNUSED,
-                   VirtViewerSessionSpice *self)
+uuid_changed(GObject *gobject G_GNUC_UNUSED,
+             GParamSpec *pspec G_GNUC_UNUSED,
+             VirtViewerSessionSpice *self)
 {
+    guint8* uuid = NULL;
+    VirtViewerApp* app = virt_viewer_session_get_app(VIRT_VIEWER_SESSION(self));
+
+    g_object_get(self->priv->session, "uuid", &uuid, NULL);
+    if (uuid) {
+        int i;
+        gboolean uuid_empty = TRUE;
+
+        for (i = 0; i < UUID_LEN; i++) {
+            if (uuid[i] != 0) {
+                uuid_empty = FALSE;
+                break;
+            }
+        }
+
+        if (!uuid_empty) {
+            gchar* uuid_str = spice_uuid_to_string(uuid);
+            virt_viewer_app_set_uuid_string(app, uuid_str);
+            g_free(uuid_str);
+        }
+    }
+
     virt_viewer_session_spice_fullscreen_auto_conf(self);
 }
 
@@ -814,7 +849,11 @@ virt_viewer_session_spice_new(VirtViewerApp *app, GtkWindow *main_window)
     create_spice_session(self);
     self->priv->main_window = g_object_ref(main_window);
 
-    g_signal_connect(app, "notify::fullscreen", G_CALLBACK(fullscreen_changed),  self);
+    g_signal_connect(app, "notify::fullscreen", G_CALLBACK(property_notify_do_auto_conf), self);
+
+    /* notify::uuid is guaranteed to be emitted during connection startup even
+     * if the server is too old to support sending uuid */
+    g_signal_connect(self->priv->session, "notify::uuid", G_CALLBACK(uuid_changed), self);
 
     return VIRT_VIEWER_SESSION(self);
 }

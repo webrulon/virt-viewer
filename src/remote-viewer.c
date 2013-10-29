@@ -160,8 +160,9 @@ remote_viewer_deactivated(VirtViewerApp *app, gboolean connect_error)
     RemoteViewerPrivate *priv = self->priv;
 
     if (connect_error && priv->open_recent_dialog) {
-        virt_viewer_app_start(app);
-        return;
+        if (virt_viewer_app_start(app)) {
+            return;
+        }
     }
 
     VIRT_VIEWER_APP_CLASS(remote_viewer_parent_class)->deactivated(app, connect_error);

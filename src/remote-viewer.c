@@ -57,6 +57,10 @@ struct _RemoteViewerPrivate {
     GtkWidget *controller_menu;
     GtkWidget *foreign_menu;
     gboolean open_recent_dialog;
+
+    gboolean default_title; /* Whether the window title was set by the user, or
+                               is the default one (URI we are connecting to) */
+
 };
 
 G_DEFINE_TYPE (RemoteViewer, remote_viewer, VIRT_VIEWER_TYPE_APP)
@@ -981,8 +985,10 @@ remote_viewer_start(VirtViewerApp *app)
         g_return_val_if_fail(guri != NULL, FALSE);
 
         DEBUG_LOG("Opening display to %s", guri);
-        if (virt_viewer_app_get_title(app) == NULL)
+        if ((virt_viewer_app_get_title(app) == NULL) || priv->default_title) {
+            priv->default_title = TRUE;
             virt_viewer_app_set_title(app, guri);
+        }
 
         file = g_file_new_for_commandline_arg(guri);
         if (g_file_query_exists(file, NULL)) {

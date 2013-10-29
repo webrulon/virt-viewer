@@ -361,6 +361,19 @@ virt_viewer_app_window_set_visible(VirtViewerApp *self,
     return FALSE;
 }
 
+static void hide_one_window(gpointer key G_GNUC_UNUSED,
+                            gpointer value,
+                            gpointer user_data G_GNUC_UNUSED)
+{
+    virt_viewer_window_hide(VIRT_VIEWER_WINDOW(value));
+}
+
+static void
+virt_viewer_app_hide_all_windows(VirtViewerApp *app)
+{
+    g_hash_table_foreach(app->priv->windows, hide_one_window, NULL);
+}
+
 G_MODULE_EXPORT void
 virt_viewer_app_about_close(GtkWidget *dialog,
                             VirtViewerApp *self G_GNUC_UNUSED)
@@ -1212,6 +1225,7 @@ virt_viewer_app_disconnected(VirtViewerSession *session G_GNUC_UNUSED,
     VirtViewerAppPrivate *priv = self->priv;
     gboolean connect_error = !priv->connected && !priv->cancelled;
 
+    virt_viewer_app_hide_all_windows(self);
     if (priv->quitting)
         gtk_main_quit();
 

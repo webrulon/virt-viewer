@@ -976,6 +976,7 @@ remote_viewer_start(VirtViewerApp *app)
         virt_viewer_app_show_status(VIRT_VIEWER_APP(self), _("Setting up Spice session..."));
     } else {
 #endif
+retry_dialog:
         if (priv->open_recent_dialog) {
             if (connect_dialog(&guri) != 0)
                 return FALSE;
@@ -1043,6 +1044,10 @@ cleanup:
     g_clear_object(&vvfile);
     g_free(guri);
     g_free(type);
+
+    if (!ret && priv->open_recent_dialog) {
+        goto retry_dialog;
+    }
 
     return ret;
 }

@@ -918,6 +918,7 @@ connect_dialog(gchar **uri)
     gtk_widget_show_all(dialog);
     if (gtk_dialog_run(GTK_DIALOG(dialog)) == GTK_RESPONSE_ACCEPT) {
         *uri = g_strdup(gtk_entry_get_text(GTK_ENTRY(entry)));
+        g_strstrip(*uri);
         retval = 0;
     } else {
         *uri = NULL;

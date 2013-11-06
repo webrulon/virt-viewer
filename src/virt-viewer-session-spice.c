@@ -716,18 +716,12 @@ virt_viewer_session_spice_fullscreen_auto_conf(VirtViewerSessionSpice *self)
     SpiceMainChannel* cmain = virt_viewer_session_spice_get_main_channel(self);
     VirtViewerApp *app = NULL;
     GdkRectangle dest;
-    gboolean auto_conf, agent_connected;
+    gboolean agent_connected;
     gint i;
 
     app = virt_viewer_session_get_app(VIRT_VIEWER_SESSION(self));
     g_return_val_if_fail(VIRT_VIEWER_IS_APP(app), TRUE);
 
-    DEBUG_LOG("Checking full screen auto-conf");
-    g_object_get(app, "fullscreen-auto-conf", &auto_conf, NULL);
-    if (!auto_conf) {
-        DEBUG_LOG("auto-conf disabled");
-        return FALSE;
-    }
     if (!virt_viewer_app_get_fullscreen(app)) {
         DEBUG_LOG("app is not in full screen");
         return FALSE;

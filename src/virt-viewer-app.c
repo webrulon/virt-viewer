@@ -116,7 +116,6 @@ struct _VirtViewerAppPrivate {
     gboolean authretry;
     gboolean started;
     gboolean fullscreen;
-    gboolean fullscreen_auto_conf;
     gboolean attach;
     gboolean quitting;
     gboolean kiosk;
@@ -166,7 +165,6 @@ enum {
     PROP_TITLE,
     PROP_ENABLE_ACCEL,
     PROP_HAS_FOCUS,
-    PROP_FULLSCREEN_AUTO_CONF,
     PROP_KIOSK,
     PROP_QUIT_ON_DISCONNECT,
 };
@@ -346,8 +344,6 @@ virt_viewer_app_window_set_visible(VirtViewerApp *self,
 {
     g_return_val_if_fail(VIRT_VIEWER_IS_APP(self), FALSE);
     g_return_val_if_fail(VIRT_VIEWER_IS_WINDOW(window), FALSE);
-
-    self->priv->fullscreen_auto_conf = FALSE;
 
     if (visible) {
         virt_viewer_window_show(window);
@@ -706,7 +702,7 @@ display_show_hint(VirtViewerDisplay *display,
                  "show-hint", &hint,
                  NULL);
 
-    if (self->priv->fullscreen_auto_conf &&
+    if (self->priv->fullscreen &&
         nth >= gdk_screen_get_n_monitors(gdk_screen_get_default())) {
         virt_viewer_window_hide(win);
     } else if (hint & VIRT_VIEWER_DISPLAY_SHOW_HINT_DISABLED) {
@@ -1345,10 +1341,6 @@ virt_viewer_app_get_property (GObject *object, guint property_id,
         g_value_set_boolean(value, priv->focused > 0);
         break;
 
-    case PROP_FULLSCREEN_AUTO_CONF:
-        g_value_set_boolean(value, virt_viewer_app_get_fullscreen_auto_conf(self));
-        break;
-
     case PROP_KIOSK:
         g_value_set_boolean(value, priv->kiosk);
         break;
@@ -1396,10 +1388,6 @@ virt_viewer_app_set_property (GObject *object, guint property_id,
 
     case PROP_ENABLE_ACCEL:
         priv->enable_accel = g_value_get_boolean(value);
-        break;
-
-    case PROP_FULLSCREEN_AUTO_CONF:
-        priv->fullscreen_auto_conf = g_value_get_boolean(value);
         break;
 
     case PROP_KIOSK:
@@ -1476,7 +1464,6 @@ static gchar *opt_hotkeys = NULL;
 static gboolean opt_verbose = FALSE;
 static gboolean opt_debug = FALSE;
 static gboolean opt_fullscreen = FALSE;
-static gboolean opt_fullscreen_auto_conf = FALSE;
 static gboolean opt_kiosk = FALSE;
 static gboolean opt_kiosk_quit = FALSE;
 
@@ -1507,7 +1494,6 @@ virt_viewer_app_init (VirtViewerApp *self)
     }
 
     self->priv->verbose = opt_verbose;
-    self->priv->fullscreen_auto_conf = opt_fullscreen_auto_conf;
     self->priv->quit_on_disconnect = opt_kiosk ? opt_kiosk_quit : TRUE;
 }
 
@@ -1655,15 +1641,6 @@ virt_viewer_app_class_init (VirtViewerAppClass *klass)
                                     g_param_spec_boolean("fullscreen",
                                                          "Fullscreen",
                                                          "Fullscreen",
-                                                         FALSE,
-                                                         G_PARAM_READWRITE |
-                                                         G_PARAM_STATIC_STRINGS));
-
-    g_object_class_install_property(object_class,
-                                    PROP_FULLSCREEN_AUTO_CONF,
-                                    g_param_spec_boolean("fullscreen-auto-conf",
-                                                         "auto conf",
-                                                         "Automatic display configuration in full screen",
                                                          FALSE,
                                                          G_PARAM_READWRITE |
                                                          G_PARAM_STATIC_STRINGS));
@@ -1900,14 +1877,6 @@ virt_viewer_app_get_fullscreen(VirtViewerApp *self)
     g_return_val_if_fail(VIRT_VIEWER_IS_APP(self), FALSE);
 
     return self->priv->fullscreen;
-}
-
-gboolean
-virt_viewer_app_get_fullscreen_auto_conf(VirtViewerApp *self)
-{
-    g_return_val_if_fail(VIRT_VIEWER_IS_APP(self), FALSE);
-
-    return self->priv->fullscreen_auto_conf;
 }
 
 static void
@@ -2174,25 +2143,6 @@ virt_viewer_app_get_windows(VirtViewerApp *self)
 }
 
 static gboolean
-option_fullscreen(G_GNUC_UNUSED const gchar *option_name,
-                  const gchar *value,
-                  G_GNUC_UNUSED gpointer data, GError **error)
-{
-    opt_fullscreen = TRUE;
-
-    if (value == NULL)
-        return TRUE;
-
-    if (g_str_equal(value, "auto-conf")) {
-        opt_fullscreen_auto_conf = TRUE;
-        return TRUE;
-    }
-
-    g_set_error(error, G_OPTION_ERROR, G_OPTION_ERROR_FAILED, _("Invalid full-screen argument: %s"), value);
-    return FALSE;
-}
-
-static gboolean
 option_kiosk_quit(G_GNUC_UNUSED const gchar *option_name,
                   const gchar *value,
                   G_GNUC_UNUSED gpointer data, GError **error)
@@ -2216,8 +2166,8 @@ virt_viewer_app_get_options(void)
     static const GOptionEntry options [] = {
         { "zoom", 'z', 0, G_OPTION_ARG_INT, &opt_zoom,
           N_("Zoom level of window, in percentage"), "ZOOM" },
-        { "full-screen", 'f', G_OPTION_FLAG_OPTIONAL_ARG, G_OPTION_ARG_CALLBACK, option_fullscreen,
-          N_("Open in full screen mode (auto-conf adjusts guest resolution to fit the client's)"), N_("<auto-conf>") },
+        { "full-screen", 'f', 0, G_OPTION_ARG_NONE, &opt_fullscreen,
+          N_("Open in full screen mode (adjusts guest resolution to fit the client)"), NULL },
         { "hotkeys", 'H', 0, G_OPTION_ARG_STRING, &opt_hotkeys,
           N_("Customise hotkeys"), NULL },
         { "kiosk", 'k', 0, G_OPTION_ARG_NONE, &opt_kiosk,

@@ -40,14 +40,14 @@ Display information about the connection
 
 Zoom level of the display window in percentage. Range 10-200.
 
-=item -f, --full-screen=<auto-conf>
+=item -f, --full-screen
 
 Start with the windows maximized to fullscreen.
 
-If the argument 'auto-conf' is given, the remote display will be
-reconfigured to match at best the client physical monitor configuration
-on initialization, by enabling or disabling extra monitors as
-necessary. This is currently implemented by the Spice backend only.
+If supported, the remote display will be reconfigured to match at best the
+client physical monitor configuration on initialization, by enabling or
+disabling extra monitors as necessary. This is currently implemented by the
+Spice backend only.
 
 =item -t TITLE, --title TITLE
 

@@ -545,10 +545,8 @@ spice_ctrl_notified(SpiceCtrlController *ctrl,
         virt_viewer_app_set_title(app, g_value_get_string(&value));
     } else if (g_str_equal(pspec->name, "display-flags")) {
         guint flags = g_value_get_uint(&value);
-        gboolean fullscreen = !!(flags & CONTROLLER_SET_FULL_SCREEN);
-        gboolean auto_res = !!(flags & CONTROLLER_AUTO_DISPLAY_RES);
+        gboolean fullscreen = !!(flags & (CONTROLLER_SET_FULL_SCREEN | CONTROLLER_AUTO_DISPLAY_RES));
         g_object_set(G_OBJECT(self), "fullscreen", fullscreen, NULL);
-        g_object_set(G_OBJECT(self), "fullscreen-auto-conf", auto_res, NULL);
     } else if (g_str_equal(pspec->name, "menu")) {
         spice_ctrl_menu_updated(self);
     } else if (g_str_equal(pspec->name, "hotkeys")) {

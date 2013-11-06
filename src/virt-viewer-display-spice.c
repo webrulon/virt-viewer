@@ -288,7 +288,7 @@ fullscreen_changed(VirtViewerDisplaySpice *self,
 {
     if (virt_viewer_display_get_fullscreen(VIRT_VIEWER_DISPLAY(self))) {
         gboolean auto_conf;
-        g_object_get(app, "fullscreen-auto-conf", &auto_conf, NULL);
+        g_object_get(app, "fullscreen", &auto_conf, NULL);
         if (auto_conf)
             self->priv->auto_resize = AUTO_RESIZE_NEVER;
         else

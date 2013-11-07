@@ -621,28 +621,26 @@ virt_viewer_file_fill_app(VirtViewerFile* self, VirtViewerApp *app, GError **err
     if (virt_viewer_file_is_set(self, "title"))
         virt_viewer_app_set_title(app, virt_viewer_file_get_title(self));
 
-    if (virt_viewer_file_is_set(self, "release-cursor")) {
-        gchar *val = virt_viewer_file_get_release_cursor(self);
-        spice_hotkey_set_accel(app, "<virt-viewer>/view/release-cursor", val);
-        g_free(val);
-    }
+    {
+        gchar *val;
+        static const struct {
+            const char *prop;
+            const char *accel;
+        } accels[] = {
+            { "release-cursor", "<virt-viewer>/view/release-cursor" },
+            { "toggle-fullscreen", "<virt-viewer>/view/fullscreen" },
+            { "smartcard-insert", "<virt-viewer>/file/smartcard-insert" },
+            { "smartcard-remove", "<virt-viewer>/file/smartcard-remove" },
+        };
+        int i;
 
-    if (virt_viewer_file_is_set(self, "toggle-fullscreen")) {
-        gchar *val = virt_viewer_file_get_toggle_fullscreen(self);
-        spice_hotkey_set_accel(app, "<virt-viewer>/view/fullscreen", val);
-        g_free(val);
-    }
-
-    if (virt_viewer_file_is_set(self, "smartcard-remove")) {
-        gchar *val = virt_viewer_file_get_smartcard_remove(self);
-        spice_hotkey_set_accel(app, "<virt-viewer>/view/smartcard-remove", val);
-        g_free(val);
-    }
-
-    if (virt_viewer_file_is_set(self, "smartcard-insert")) {
-        gchar *val = virt_viewer_file_get_smartcard_insert(self);
-        spice_hotkey_set_accel(app, "<virt-viewer>/view/smartcard-insert", val);
-        g_free(val);
+        for (i = 0; i < G_N_ELEMENTS(accels); i++) {
+            if (!virt_viewer_file_is_set(self, accels[i].prop))
+                continue;
+            g_object_get(self, accels[i].prop, &val, NULL);
+            spice_hotkey_set_accel(app, accels[i].accel, val);
+            g_free(val);
+        }
     }
 
     if (virt_viewer_file_is_set(self, "fullscreen"))

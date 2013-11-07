@@ -486,12 +486,26 @@ virt_viewer_window_move_to_monitor(VirtViewerWindow *self)
                                 mon.height);
 }
 
+static gboolean
+mapped(GtkWidget *widget, GdkEvent *event G_GNUC_UNUSED,
+       VirtViewerWindow *self)
+{
+    g_signal_handlers_disconnect_by_func(widget, mapped, self);
+    self->priv->fullscreen = FALSE;
+    virt_viewer_window_enter_fullscreen(self, self->priv->fullscreen_monitor);
+    return FALSE;
+}
+
 void
 virt_viewer_window_leave_fullscreen(VirtViewerWindow *self)
 {
     VirtViewerWindowPrivate *priv = self->priv;
     GtkWidget *menu = GTK_WIDGET(gtk_builder_get_object(priv->builder, "top-menu"));
     GtkCheckMenuItem *check = GTK_CHECK_MENU_ITEM(gtk_builder_get_object(priv->builder, "menu-view-fullscreen"));
+
+    /* if we enter and leave fullscreen mode before being shown, make sure to
+     * disconnect the mapped signal handler */
+    g_signal_handlers_disconnect_by_func(priv->window, mapped, self);
 
     if (!priv->fullscreen)
         return;
@@ -509,16 +523,6 @@ virt_viewer_window_leave_fullscreen(VirtViewerWindow *self)
     gtk_widget_set_size_request(GTK_WIDGET(priv->window), -1, -1);
     gtk_window_unfullscreen(GTK_WINDOW(priv->window));
 
-}
-
-static gboolean
-mapped(GtkWidget *widget, GdkEvent *event G_GNUC_UNUSED,
-       VirtViewerWindow *self)
-{
-    g_signal_handlers_disconnect_by_func(widget, mapped, self);
-    self->priv->fullscreen = FALSE;
-    virt_viewer_window_enter_fullscreen(self, self->priv->fullscreen_monitor);
-    return FALSE;
 }
 
 void

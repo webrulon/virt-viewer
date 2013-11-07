@@ -595,7 +595,7 @@ virt_viewer_file_set_secure_channels(VirtViewerFile* self, const gchar* const* v
 }
 
 static void
-spice_hotkey_set_accel(VirtViewerApp *app, const gchar *accel_path, const gchar *key)
+spice_hotkey_set_accel(const gchar *accel_path, const gchar *key)
 {
     gchar *accel;
     guint accel_key;
@@ -606,8 +606,6 @@ spice_hotkey_set_accel(VirtViewerApp *app, const gchar *accel_path, const gchar 
     g_free(accel);
 
     gtk_accel_map_change_entry(accel_path, accel_key, accel_mods, TRUE);
-
-    g_object_set(G_OBJECT(app), "enable-accel", TRUE, NULL);
 }
 
 gboolean
@@ -636,6 +634,10 @@ virt_viewer_file_fill_app(VirtViewerFile* self, VirtViewerApp *app, GError **err
     if (virt_viewer_file_is_set(self, "title"))
         virt_viewer_app_set_title(app, virt_viewer_file_get_title(self));
 
+
+    virt_viewer_app_clear_hotkeys(app);
+    g_object_set(G_OBJECT(app), "enable-accel", TRUE, NULL);
+
     {
         gchar *val;
         static const struct {
@@ -654,7 +656,7 @@ virt_viewer_file_fill_app(VirtViewerFile* self, VirtViewerApp *app, GError **err
             if (!virt_viewer_file_is_set(self, accels[i].prop))
                 continue;
             g_object_get(self, accels[i].prop, &val, NULL);
-            spice_hotkey_set_accel(app, accels[i].accel, val);
+            spice_hotkey_set_accel(accels[i].accel, val);
             g_free(val);
         }
     }

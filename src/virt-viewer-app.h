@@ -99,6 +99,7 @@ VirtViewerSession* virt_viewer_app_get_session(VirtViewerApp *self);
 gboolean virt_viewer_app_get_fullscreen(VirtViewerApp *app);
 gboolean virt_viewer_app_get_fullscreen_auto_conf(VirtViewerApp *app);
 const GOptionEntry* virt_viewer_app_get_options(void);
+void virt_viewer_app_clear_hotkeys(VirtViewerApp *app);
 
 G_END_DECLS
 

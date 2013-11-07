@@ -1764,6 +1764,17 @@ virt_viewer_app_set_direct(VirtViewerApp *self, gboolean direct)
 }
 
 void
+virt_viewer_app_clear_hotkeys(VirtViewerApp *self)
+{
+    /* Disable default bindings and replace them with our own */
+    gtk_accel_map_change_entry("<virt-viewer>/view/toggle-fullscreen", 0, 0, TRUE);
+    gtk_accel_map_change_entry("<virt-viewer>/view/release-cursor", 0, 0, TRUE);
+    gtk_accel_map_change_entry("<virt-viewer>/send/secure-attention", 0, 0, TRUE);
+    virt_viewer_set_insert_smartcard_accel(self, 0, 0);
+    virt_viewer_set_remove_smartcard_accel(self, 0, 0);
+}
+
+void
 virt_viewer_app_set_hotkeys(VirtViewerApp *self, const gchar *hotkeys_str)
 {
     gchar **hotkey, **hotkeys = NULL;
@@ -1779,12 +1790,8 @@ virt_viewer_app_set_hotkeys(VirtViewerApp *self, const gchar *hotkeys_str)
         return;
     }
 
-    /* Disable default bindings and replace them with our own */
-    gtk_accel_map_change_entry("<virt-viewer>/view/toggle-fullscreen", 0, 0, TRUE);
-    gtk_accel_map_change_entry("<virt-viewer>/view/release-cursor", 0, 0, TRUE);
-    gtk_accel_map_change_entry("<virt-viewer>/send/secure-attention", 0, 0, TRUE);
-    virt_viewer_set_insert_smartcard_accel(self, 0, 0);
-    virt_viewer_set_remove_smartcard_accel(self, 0, 0);
+    virt_viewer_app_clear_hotkeys(self);
+    g_object_set(self, "enable-accel", TRUE, NULL);
 
     for (hotkey = hotkeys; *hotkey != NULL; hotkey++) {
         gchar *key = strstr(*hotkey, "=");
@@ -1816,7 +1823,6 @@ virt_viewer_app_set_hotkeys(VirtViewerApp *self, const gchar *hotkeys_str)
     }
     g_strfreev(hotkeys);
 
-    g_object_set(self, "enable-accel", TRUE, NULL);
     virt_viewer_update_smartcard_accels(self);
 }
 

@@ -107,7 +107,7 @@
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
                         <property name="use_action_appearance">False</property>
-                        <property name="accel_path">&lt;virt-viewer&gt;/view/fullscreen</property>
+                        <property name="accel_path">&lt;virt-viewer&gt;/view/toggle-fullscreen</property>
                         <property name="label" translatable="yes">Full screen</property>
                         <property name="use_underline">True</property>
                         <signal name="toggled" handler="virt_viewer_window_menu_view_fullscreen" swapped="no"/>

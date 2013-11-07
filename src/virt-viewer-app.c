@@ -1581,7 +1581,7 @@ virt_viewer_app_constructor (GType gtype,
 
     virt_viewer_set_insert_smartcard_accel(self, GDK_F8, GDK_SHIFT_MASK);
     virt_viewer_set_remove_smartcard_accel(self, GDK_F9, GDK_SHIFT_MASK);
-    gtk_accel_map_add_entry("<virt-viewer>/view/fullscreen", GDK_F11, 0);
+    gtk_accel_map_add_entry("<virt-viewer>/view/toggle-fullscreen", GDK_F11, 0);
     gtk_accel_map_add_entry("<virt-viewer>/view/release-cursor", GDK_F12, GDK_SHIFT_MASK);
     gtk_accel_map_add_entry("<virt-viewer>/view/zoom-reset", GDK_0, GDK_CONTROL_MASK);
     gtk_accel_map_add_entry("<virt-viewer>/send/secure-attention", GDK_End, GDK_CONTROL_MASK | GDK_MOD1_MASK);
@@ -1780,7 +1780,7 @@ virt_viewer_app_set_hotkeys(VirtViewerApp *self, const gchar *hotkeys_str)
     }
 
     /* Disable default bindings and replace them with our own */
-    gtk_accel_map_change_entry("<virt-viewer>/view/fullscreen", 0, 0, TRUE);
+    gtk_accel_map_change_entry("<virt-viewer>/view/toggle-fullscreen", 0, 0, TRUE);
     gtk_accel_map_change_entry("<virt-viewer>/view/release-cursor", 0, 0, TRUE);
     gtk_accel_map_change_entry("<virt-viewer>/send/secure-attention", 0, 0, TRUE);
     virt_viewer_set_insert_smartcard_accel(self, 0, 0);
@@ -1801,7 +1801,7 @@ virt_viewer_app_set_hotkeys(VirtViewerApp *self, const gchar *hotkeys_str)
         g_free(accel);
 
         if (g_str_equal(*hotkey, "toggle-fullscreen")) {
-            gtk_accel_map_change_entry("<virt-viewer>/view/fullscreen", accel_key, accel_mods, TRUE);
+            gtk_accel_map_change_entry("<virt-viewer>/view/toggle-fullscreen", accel_key, accel_mods, TRUE);
         } else if (g_str_equal(*hotkey, "release-cursor")) {
             gtk_accel_map_change_entry("<virt-viewer>/view/release-cursor", accel_key, accel_mods, TRUE);
         } else if (g_str_equal(*hotkey, "secure-attention")) {

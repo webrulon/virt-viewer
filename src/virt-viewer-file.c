@@ -628,7 +628,7 @@ virt_viewer_file_fill_app(VirtViewerFile* self, VirtViewerApp *app, GError **err
             const char *accel;
         } accels[] = {
             { "release-cursor", "<virt-viewer>/view/release-cursor" },
-            { "toggle-fullscreen", "<virt-viewer>/view/fullscreen" },
+            { "toggle-fullscreen", "<virt-viewer>/view/toggle-fullscreen" },
             { "smartcard-insert", "<virt-viewer>/file/smartcard-insert" },
             { "smartcard-remove", "<virt-viewer>/file/smartcard-remove" },
         };

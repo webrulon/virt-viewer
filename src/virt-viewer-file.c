@@ -55,6 +55,7 @@
  * - release-cursor: string in spice hotkey format
  * - smartcard-insert: string in spice hotkey format
  * - smartcard-remove: string in spice hotkey format
+ * - secure-attention: string in spice hotkey format
  * - enable-smartcard: int (0 or 1 atm)
  * - enable-usbredir: int (0 or 1 atm)
  * - color-depth: int
@@ -105,6 +106,7 @@ enum  {
     PROP_VERSION,
     PROP_SECURE_CHANNELS,
     PROP_DELETE_THIS_FILE,
+    PROP_SECURE_ATTENTION,
 };
 
 VirtViewerFile*
@@ -437,6 +439,19 @@ virt_viewer_file_set_release_cursor(VirtViewerFile* self, const gchar* value)
 }
 
 gchar*
+virt_viewer_file_get_secure_attention(VirtViewerFile* self)
+{
+    return virt_viewer_file_get_string(self, "secure-attention");
+}
+
+void
+virt_viewer_file_set_secure_attention(VirtViewerFile* self, const gchar* value)
+{
+    virt_viewer_file_set_string(self, "secure-attention", value);
+    g_object_notify(G_OBJECT(self), "secure-attention");
+}
+
+gchar*
 virt_viewer_file_get_smartcard_remove(VirtViewerFile* self)
 {
     return virt_viewer_file_get_string(self, "smartcard-remove");
@@ -631,6 +646,7 @@ virt_viewer_file_fill_app(VirtViewerFile* self, VirtViewerApp *app, GError **err
             { "toggle-fullscreen", "<virt-viewer>/view/toggle-fullscreen" },
             { "smartcard-insert", "<virt-viewer>/file/smartcard-insert" },
             { "smartcard-remove", "<virt-viewer>/file/smartcard-remove" },
+            { "secure-attention", "<virt-viewer>/send/secure-attention" }
         };
         int i;
 
@@ -700,6 +716,9 @@ virt_viewer_file_set_property(GObject* object, guint property_id,
         break;
     case PROP_RELEASE_CURSOR:
         virt_viewer_file_set_release_cursor(self, g_value_get_string(value));
+        break;
+    case PROP_SECURE_ATTENTION:
+        virt_viewer_file_set_secure_attention(self, g_value_get_string(value));
         break;
     case PROP_ENABLE_SMARTCARD:
         virt_viewer_file_set_enable_smartcard(self, g_value_get_int(value));
@@ -787,6 +806,9 @@ virt_viewer_file_get_property(GObject* object, guint property_id,
         break;
     case PROP_RELEASE_CURSOR:
         g_value_take_string(value, virt_viewer_file_get_release_cursor(self));
+        break;
+    case PROP_SECURE_ATTENTION:
+        g_value_take_string(value, virt_viewer_file_get_secure_attention(self));
         break;
     case PROP_ENABLE_SMARTCARD:
         g_value_set_int(value, virt_viewer_file_get_enable_smartcard(self));
@@ -903,6 +925,10 @@ virt_viewer_file_class_init(VirtViewerFileClass* klass)
 
     g_object_class_install_property(G_OBJECT_CLASS(klass), PROP_RELEASE_CURSOR,
         g_param_spec_string("release-cursor", "release-cursor", "release-cursor", NULL,
+                            G_PARAM_STATIC_STRINGS | G_PARAM_READWRITE));
+
+    g_object_class_install_property(G_OBJECT_CLASS(klass), PROP_SECURE_ATTENTION,
+        g_param_spec_string("secure-attention", "secure-attention", "secure-attention", NULL,
                             G_PARAM_STATIC_STRINGS | G_PARAM_READWRITE));
 
     g_object_class_install_property(G_OBJECT_CLASS(klass), PROP_ENABLE_SMARTCARD,

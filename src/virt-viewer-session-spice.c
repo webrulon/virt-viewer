@@ -55,6 +55,7 @@ struct _VirtViewerSessionSpicePrivate {
     int usbredir_channel_count;
     gboolean has_sw_smartcard_reader;
     guint pass_try;
+    gboolean did_auto_conf;
 };
 
 #define VIRT_VIEWER_SESSION_SPICE_GET_PRIVATE(o) (G_TYPE_INSTANCE_GET_PRIVATE((o), VIRT_VIEWER_TYPE_SESSION_SPICE, VirtViewerSessionSpicePrivate))
@@ -726,6 +727,13 @@ virt_viewer_session_spice_fullscreen_auto_conf(VirtViewerSessionSpice *self)
     gint i;
     gsize ndisplays = 0;
 
+    /* only do auto-conf once at startup. Avoid repeating auto-conf later due to
+     * agent disconnection/re-connection, etc */
+    if (self->priv->did_auto_conf) {
+        DEBUG_LOG("Already did auto-conf, skipping");
+        return FALSE;
+    }
+
     app = virt_viewer_session_get_app(VIRT_VIEWER_SESSION(self));
     g_return_val_if_fail(VIRT_VIEWER_IS_APP(app), TRUE);
 
@@ -764,6 +772,7 @@ virt_viewer_session_spice_fullscreen_auto_conf(VirtViewerSessionSpice *self)
     }
 
     spice_main_send_monitor_config(cmain);
+    self->priv->did_auto_conf = TRUE;
     return TRUE;
 }
 

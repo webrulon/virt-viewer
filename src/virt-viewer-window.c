@@ -496,12 +496,21 @@ mapped(GtkWidget *widget, GdkEvent *event G_GNUC_UNUSED,
     return FALSE;
 }
 
+static void
+virt_viewer_window_menu_fullscreen_set_active(VirtViewerWindow *self, gboolean active)
+{
+    GtkCheckMenuItem *check = GTK_CHECK_MENU_ITEM(gtk_builder_get_object(self->priv->builder, "menu-view-fullscreen"));
+
+    g_signal_handlers_block_by_func(check, virt_viewer_window_menu_view_fullscreen, self);
+    gtk_check_menu_item_set_active(check, active);
+    g_signal_handlers_unblock_by_func(check, virt_viewer_window_menu_view_fullscreen, self);
+}
+
 void
 virt_viewer_window_leave_fullscreen(VirtViewerWindow *self)
 {
     VirtViewerWindowPrivate *priv = self->priv;
     GtkWidget *menu = GTK_WIDGET(gtk_builder_get_object(priv->builder, "top-menu"));
-    GtkCheckMenuItem *check = GTK_CHECK_MENU_ITEM(gtk_builder_get_object(priv->builder, "menu-view-fullscreen"));
 
     /* if we enter and leave fullscreen mode before being shown, make sure to
      * disconnect the mapped signal handler */
@@ -510,9 +519,7 @@ virt_viewer_window_leave_fullscreen(VirtViewerWindow *self)
     if (!priv->fullscreen)
         return;
 
-    g_signal_handlers_block_by_func(check, virt_viewer_window_menu_view_fullscreen, self);
-    gtk_check_menu_item_set_active(check, FALSE);
-    g_signal_handlers_unblock_by_func(check, virt_viewer_window_menu_view_fullscreen, self);
+    virt_viewer_window_menu_fullscreen_set_active(self, FALSE);
     priv->fullscreen = FALSE;
     priv->fullscreen_monitor = -1;
     if (priv->display) {
@@ -532,7 +539,6 @@ virt_viewer_window_enter_fullscreen(VirtViewerWindow *self, gint monitor)
 {
     VirtViewerWindowPrivate *priv = self->priv;
     GtkWidget *menu = GTK_WIDGET(gtk_builder_get_object(priv->builder, "top-menu"));
-    GtkCheckMenuItem *check = GTK_CHECK_MENU_ITEM(gtk_builder_get_object(priv->builder, "menu-view-fullscreen"));
 
     if (priv->fullscreen && priv->fullscreen_monitor != monitor)
         virt_viewer_window_leave_fullscreen(self);
@@ -548,9 +554,7 @@ virt_viewer_window_enter_fullscreen(VirtViewerWindow *self, gint monitor)
         return;
     }
 
-    g_signal_handlers_block_by_func(check, virt_viewer_window_menu_view_fullscreen, self);
-    gtk_check_menu_item_set_active(check, TRUE);
-    g_signal_handlers_unblock_by_func(check, virt_viewer_window_menu_view_fullscreen, self);
+    virt_viewer_window_menu_fullscreen_set_active(self, TRUE);
     gtk_widget_hide(menu);
     gtk_widget_show(priv->toolbar);
     ViewAutoDrawer_SetActive(VIEW_AUTODRAWER(priv->layout), TRUE);

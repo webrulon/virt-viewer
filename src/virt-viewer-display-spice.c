@@ -118,8 +118,6 @@ show_hint_changed(VirtViewerDisplay *self)
 
     g_object_get(self, "nth-display", &nth, NULL);
     spice_main_set_display_enabled(main_channel, nth, enabled);
-
-    virt_viewer_display_spice_monitor_geometry_changed(VIRT_VIEWER_DISPLAY_SPICE(self));
 }
 
 static void

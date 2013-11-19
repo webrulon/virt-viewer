@@ -775,8 +775,7 @@ virt_viewer_session_spice_channel_destroy(G_GNUC_UNUSED SpiceSession *s,
     }
 
     if (SPICE_IS_DISPLAY_CHANNEL(channel)) {
-        VirtViewerDisplay *display = g_object_get_data(G_OBJECT(channel), "virt-viewer-display");
-        DEBUG_LOG("zap display channel (#%d, %p)", id, display);
+        DEBUG_LOG("zap display channel (#%d)", id);
     }
 
     if (SPICE_IS_PLAYBACK_CHANNEL(channel) && self->priv->audio) {

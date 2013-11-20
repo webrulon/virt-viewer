@@ -803,9 +803,6 @@ display_show_hint(VirtViewerDisplay *display,
         virt_viewer_notebook_show_display(nb);
         virt_viewer_window_show(win);
     } else {
-        if (win != self->priv->main_window &&
-            g_getenv("VIRT_VIEWER_HIDE"))
-            virt_viewer_window_hide(win);
         if (!self->priv->kiosk)
             virt_viewer_notebook_show_status(nb, _("Waiting for display %d..."), nth + 1);
     }

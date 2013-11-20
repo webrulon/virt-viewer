@@ -591,7 +591,8 @@ virt_viewer_app_remove_nth_window(VirtViewerApp *self, gint nth)
     g_return_val_if_fail(win != NULL, FALSE);
 
     DEBUG_LOG("Remove window %d %p", nth, win);
-    removed = g_hash_table_steal(self->priv->windows, &nth);
+    g_object_ref(win);
+    removed = g_hash_table_remove(self->priv->windows, &nth);
     g_warn_if_fail(removed);
     virt_viewer_app_update_menu_displays(self);
 

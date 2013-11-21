@@ -1571,6 +1571,8 @@ virt_viewer_app_init (VirtViewerApp *self)
     self->priv->config = g_key_file_new();
     self->priv->config_file = g_build_filename(g_get_user_config_dir(),
                                                "virt-viewer", "settings", NULL);
+    self->priv->main_window = virt_viewer_app_window_new(self, 0);
+    self->priv->main_notebook = GTK_WIDGET(virt_viewer_window_get_notebook(self->priv->main_window));
 
     g_key_file_load_from_file(self->priv->config, self->priv->config_file,
                     G_KEY_FILE_KEEP_COMMENTS|G_KEY_FILE_KEEP_TRANSLATIONS, &error);
@@ -1586,6 +1588,8 @@ virt_viewer_app_init (VirtViewerApp *self)
 
     self->priv->verbose = opt_verbose;
     self->priv->quit_on_disconnect = opt_kiosk ? opt_kiosk_quit : TRUE;
+
+    virt_viewer_window_set_zoom_level(self->priv->main_window, opt_zoom);
 }
 
 static void
@@ -1647,14 +1651,9 @@ virt_viewer_app_constructor (GType gtype,
 {
     GObject *obj;
     VirtViewerApp *self;
-    VirtViewerAppPrivate *priv;
 
     obj = G_OBJECT_CLASS (virt_viewer_app_parent_class)->constructor (gtype, n_properties, properties);
     self = VIRT_VIEWER_APP(obj);
-    priv = self->priv;
-
-    priv->main_window = virt_viewer_app_window_new(self, 0);
-    priv->main_notebook = GTK_WIDGET(virt_viewer_window_get_notebook(priv->main_window));
 
     virt_viewer_set_insert_smartcard_accel(self, GDK_F8, GDK_SHIFT_MASK);
     virt_viewer_set_remove_smartcard_accel(self, GDK_F9, GDK_SHIFT_MASK);
@@ -1663,7 +1662,6 @@ virt_viewer_app_constructor (GType gtype,
     gtk_accel_map_add_entry("<virt-viewer>/view/zoom-reset", GDK_0, GDK_CONTROL_MASK);
     gtk_accel_map_add_entry("<virt-viewer>/send/secure-attention", GDK_End, GDK_CONTROL_MASK | GDK_MOD1_MASK);
 
-    virt_viewer_window_set_zoom_level(priv->main_window, opt_zoom);
     virt_viewer_app_set_fullscreen(self, opt_fullscreen);
     virt_viewer_app_set_hotkeys(self, opt_hotkeys);
     virt_viewer_app_set_kiosk(self, opt_kiosk);

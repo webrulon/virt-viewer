@@ -448,7 +448,6 @@ virt_viewer_app_window_set_visible(VirtViewerApp *self,
         virt_viewer_app_maybe_quit(self, window);
     }
 
-    g_warn_if_reached();
     return FALSE;
 }
 

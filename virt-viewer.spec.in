@@ -16,7 +16,7 @@
 %endif
 
 %define with_govirt 0
-%if 0%{?fedora} >= 19 || 0%{?rhel} >= 7
+%if 0%{?fedora} > 19 || 0%{?rhel} >= 7
 %define with_govirt 1
 %endif
 
@@ -71,7 +71,7 @@ BuildRequires: spice-protocol >= 0.10.1
 BuildRequires: /usr/bin/pod2man
 BuildRequires: intltool
 %if %{with_govirt}
-BuildRequires: libgovirt-devel >= 0.0.3
+BuildRequires: libgovirt-devel >= 0.3.0
 %endif
 
 %if 0%{?fedora} >= 20

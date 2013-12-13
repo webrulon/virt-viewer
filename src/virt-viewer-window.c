@@ -1299,10 +1299,10 @@ virt_viewer_window_enable_kiosk(VirtViewerWindow *self)
 void
 virt_viewer_window_show(VirtViewerWindow *self)
 {
-    gtk_widget_show(self->priv->window);
-
     if (self->priv->display)
         virt_viewer_display_set_enabled(self->priv->display, TRUE);
+
+    gtk_widget_show(self->priv->window);
 
     if (self->priv->desktop_resize_pending) {
         virt_viewer_window_resize(self, FALSE);

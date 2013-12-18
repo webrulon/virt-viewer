@@ -109,7 +109,7 @@ autoreconf -if
 %define govirt_arg --with-ovirt
 %endif
 
-%configure %{spice_arg} %{gtk_arg} %{govirt_arg} --with-buildid=-%{release}
+%configure %{spice_arg} %{gtk_arg} %{govirt_arg} --with-buildid=-%{release} --disable-update-mimedb
 %__make %{?_smp_mflags}
 
 
@@ -129,6 +129,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_sbindir}/update-alternatives --install %{_libexecdir}/spice-xpi-client \
   spice-xpi-client %{_libexecdir}/spice-xpi-client-remote-viewer 25
 update-desktop-database -q %{_datadir}/applications
+%{_bindir}/update-mime-database %{_datadir}/mime &> /dev/null
 
 %postun
 if [ $1 -eq 0 ] ; then
@@ -137,6 +138,7 @@ if [ $1 -eq 0 ] ; then
   %{_sbindir}/update-alternatives --remove spice-xpi-client %{_libexecdir}/spice-xpi-client-remote-viewer
 fi
 update-desktop-database -q %{_datadir}/applications
+%{_bindir}/update-mime-database %{_datadir}/mime &> /dev/null
 
 %posttrans
 /usr/bin/gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :

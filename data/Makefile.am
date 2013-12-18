@@ -63,6 +63,18 @@ mimedir = $(datadir)/mime/packages
 mime_DATA = virt-viewer-mime.xml
 @INTLTOOL_XML_RULE@
 
+install-data-hook:
+if ENABLE_UPDATE_MIMEDB
+	@if $(AM_V_P); then set -x; else echo "  INSTALL  update-mime-database"; fi; \
+	$(UPDATE_MIME_DATABASE) "$(DESTDIR)$(datadir)/mime";
+endif
+
+uninstall-hook:
+if ENABLE_UPDATE_MIMEDB
+	@if $(AM_V_P); then set -x; else echo "  UNINSTALL update-mime-database"; fi; \
+	$(UPDATE_MIME_DATABASE) "$(DESTDIR)$(datadir)/mime";
+endif
+
 CLEANFILES += $(mime_DATA) $(desktop_DATA)
 EXTRA_DIST += $(MIMEFILES) $(DESKTOPFILES)
 

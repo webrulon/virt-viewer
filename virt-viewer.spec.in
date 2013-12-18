@@ -62,9 +62,9 @@ BuildRequires: gtk-vnc-devel >= 0.3.8
 %endif
 %if %{with_spice}
 %if %{with_gtk3}
-BuildRequires: spice-gtk3-devel >= 0.20
+BuildRequires: spice-gtk3-devel >= 0.22
 %else
-BuildRequires: spice-gtk-devel >= 0.20
+BuildRequires: spice-gtk-devel >= 0.22
 %endif
 BuildRequires: spice-protocol >= 0.10.1
 %endif

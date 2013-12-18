@@ -4,6 +4,7 @@ ACLOCAL_AMFLAGS = -I m4
 
 SUBDIRS = icons src man po data
 
+AM_DISTCHECK_CONFIGURE_FLAGS = --disable-update-mimedb
 EXTRA_DIST =					\
 	$(PACKAGE).spec				\
 	intltool-extract.in			\

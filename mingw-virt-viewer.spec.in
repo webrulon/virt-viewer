@@ -12,28 +12,28 @@ Source0:        ftp://virt-manager.org/downloads/virt-viewer/virt-viewer-%{versi
 
 BuildRequires:  mingw32-filesystem >= 23
 BuildRequires:  mingw64-filesystem >= 23
-BuildRequires:  mingw32-glib2 >= 2.22
-BuildRequires:  mingw64-glib2 >= 2.22
+BuildRequires:  mingw32-glib2 >= @GLIB2_REQUIRED@
+BuildRequires:  mingw64-glib2 >= @GLIB2_REQUIRED@
 BuildRequires:  mingw32-gstreamer-plugins-bad-free
 BuildRequires:  mingw64-gstreamer-plugins-bad-free
 BuildRequires:  mingw32-gstreamer-plugins-good
 BuildRequires:  mingw64-gstreamer-plugins-good
-BuildRequires:  mingw32-gtk2
-BuildRequires:  mingw64-gtk2
+BuildRequires:  mingw32-gtk2 >= @GTK2_REQUIRED@
+BuildRequires:  mingw64-gtk2 >= @GTK2_REQUIRED@
 BuildRequires:  mingw32-libusbx
 BuildRequires:  mingw64-libusbx
-BuildRequires:  mingw32-libvirt >= 0.9.7
-BuildRequires:  mingw64-libvirt >= 0.9.7
-BuildRequires:  mingw32-libxml2
-BuildRequires:  mingw64-libxml2
-BuildRequires:  mingw32-gtk-vnc >= 0.4.3
-BuildRequires:  mingw64-gtk-vnc >= 0.4.3
+BuildRequires:  mingw32-libvirt >= @LIBVIRT_REQUIRED@
+BuildRequires:  mingw64-libvirt >= @LIBVIRT_REQUIRED@
+BuildRequires:  mingw32-libxml2 >= @LIBXML2_REQUIRED@
+BuildRequires:  mingw64-libxml2 >= @LIBXML2_REQUIRED@
+BuildRequires:  mingw32-gtk-vnc >= @GTK_VNC1_REQUIRED@
+BuildRequires:  mingw64-gtk-vnc >= @GTK_VNC1_REQUIRED@
 BuildRequires:  mingw32-readline
 BuildRequires:  mingw64-readline
 BuildRequires:  mingw32-spice-glib
 BuildRequires:  mingw64-spice-glib
-BuildRequires:  mingw32-spice-gtk >= 0.22
-BuildRequires:  mingw64-spice-gtk >= 0.22
+BuildRequires:  mingw32-spice-gtk >= @SPICE_GTK_REQUIRED@
+BuildRequires:  mingw64-spice-gtk >= @SPICE_GTK_REQUIRED@
 BuildRequires:  mingw32-usbredir
 BuildRequires:  mingw64-usbredir
 BuildRequires:  pkgconfig

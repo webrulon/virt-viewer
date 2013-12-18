@@ -21,6 +21,18 @@ GTK_VNC1_REQUIRED="0.3.8"
 GTK_VNC2_REQUIRED="0.4.0"
 SPICE_GTK_REQUIRED="0.22"
 SPICE_PROTOCOL_REQUIRED="0.10.1"
+GOVIRT_REQUIRED="0.3.0"
+
+AC_SUBST([GLIB2_REQUIRED])
+AC_SUBST([LIBXML2_REQUIRED])
+AC_SUBST([LIBVIRT_REQUIRED])
+AC_SUBST([GTK2_REQUIRED])
+AC_SUBST([GTK3_REQUIRED])
+AC_SUBST([GTK_VNC1_REQUIRED])
+AC_SUBST([GTK_VNC2_REQUIRED])
+AC_SUBST([SPICE_GTK_REQUIRED])
+AC_SUBST([SPICE_PROTOCOL_REQUIRED])
+AC_SUBST([GOVIRT_REQUIRED])
 
 AC_MSG_CHECKING([for native Win32])
 case "$host_os" in
@@ -178,7 +190,7 @@ AC_ARG_WITH([ovirt],
     AS_HELP_STRING([--without-ovirt], [Ignore presence of librest and disable oVirt support]))
 
 AS_IF([test "x$with_ovirt" != "xno"],
-      [PKG_CHECK_MODULES([OVIRT], [govirt-1.0 >= 0.3.0],
+      [PKG_CHECK_MODULES([OVIRT], [govirt-1.0 >= $GOVIRT_REQUIRED],
                          [have_ovirt=yes], [have_ovirt=no])],
       [have_ovirt=no])
 

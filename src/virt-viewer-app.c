@@ -1834,6 +1834,7 @@ virt_viewer_app_clear_hotkeys(VirtViewerApp *self)
     /* Disable default bindings and replace them with our own */
     gtk_accel_map_change_entry("<virt-viewer>/view/toggle-fullscreen", 0, 0, TRUE);
     gtk_accel_map_change_entry("<virt-viewer>/view/release-cursor", 0, 0, TRUE);
+    gtk_accel_map_change_entry("<virt-viewer>/view/zoom-reset", 0, 0, TRUE);
     gtk_accel_map_change_entry("<virt-viewer>/send/secure-attention", 0, 0, TRUE);
     virt_viewer_set_insert_smartcard_accel(self, 0, 0);
     virt_viewer_set_remove_smartcard_accel(self, 0, 0);

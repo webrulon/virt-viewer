@@ -1476,7 +1476,7 @@ virt_viewer_app_set_property (GObject *object, guint property_id,
         break;
 
     case PROP_ENABLE_ACCEL:
-        priv->enable_accel = g_value_get_boolean(value);
+        virt_viewer_app_set_enable_accel(self, g_value_get_boolean(value));
         break;
 
     case PROP_KIOSK:
@@ -1840,6 +1840,13 @@ virt_viewer_app_clear_hotkeys(VirtViewerApp *self)
 }
 
 void
+virt_viewer_app_set_enable_accel(VirtViewerApp *self, gboolean enable)
+{
+    self->priv->enable_accel = enable;
+    g_object_notify(G_OBJECT(self), "enable-accel");
+}
+
+void
 virt_viewer_app_set_hotkeys(VirtViewerApp *self, const gchar *hotkeys_str)
 {
     gchar **hotkey, **hotkeys = NULL;
@@ -1851,12 +1858,12 @@ virt_viewer_app_set_hotkeys(VirtViewerApp *self, const gchar *hotkeys_str)
 
     if (!hotkeys || g_strv_length(hotkeys) == 0) {
         g_strfreev(hotkeys);
-        g_object_set(self, "enable-accel", FALSE, NULL);
+        virt_viewer_app_set_enable_accel(self, FALSE);
         return;
     }
 
     virt_viewer_app_clear_hotkeys(self);
-    g_object_set(self, "enable-accel", TRUE, NULL);
+    virt_viewer_app_set_enable_accel(self, TRUE);
 
     for (hotkey = hotkeys; *hotkey != NULL; hotkey++) {
         gchar *key = strstr(*hotkey, "=");

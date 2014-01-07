@@ -102,6 +102,7 @@ void virt_viewer_app_clear_hotkeys(VirtViewerApp *app);
 gint virt_viewer_app_get_n_initial_displays(VirtViewerApp* self);
 gint virt_viewer_app_get_initial_monitor_for_display(VirtViewerApp* self, gint display);
 void virt_viewer_app_set_uuid_string(VirtViewerApp* self, const gchar* uuid_string);
+void virt_viewer_app_set_enable_accel(VirtViewerApp *app, gboolean enable);
 
 G_END_DECLS
 

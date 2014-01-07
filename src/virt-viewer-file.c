@@ -636,7 +636,6 @@ virt_viewer_file_fill_app(VirtViewerFile* self, VirtViewerApp *app, GError **err
 
 
     virt_viewer_app_clear_hotkeys(app);
-    g_object_set(G_OBJECT(app), "enable-accel", TRUE, NULL);
 
     {
         gchar *val;
@@ -660,6 +659,8 @@ virt_viewer_file_fill_app(VirtViewerFile* self, VirtViewerApp *app, GError **err
             g_free(val);
         }
     }
+
+    virt_viewer_app_set_enable_accel(app, TRUE);
 
     if (virt_viewer_file_is_set(self, "fullscreen"))
         g_object_set(G_OBJECT(app), "fullscreen",

@@ -57,20 +57,26 @@ GtkBuilder *virt_viewer_util_load_ui(const char *name)
     if (stat(name, &sb) >= 0) {
         gtk_builder_add_from_file(builder, name, &error);
     } else {
-        const gchar * const * dirs = g_get_system_data_dirs();
-        g_return_val_if_fail(dirs != NULL, NULL);
+        gchar *path = g_build_filename(PACKAGE_DATADIR, "ui", name, NULL);
+        gboolean success = (gtk_builder_add_from_file(builder, path, NULL) != 0);
+        g_free(path);
 
-        while (dirs[0] != NULL) {
-            gchar *path = g_build_filename(dirs[0], PACKAGE, "ui", name, NULL);
-            if (gtk_builder_add_from_file(builder, path, NULL) != 0) {
+        if (!success) {
+            const gchar * const * dirs = g_get_system_data_dirs();
+            g_return_val_if_fail(dirs != NULL, NULL);
+
+            while (dirs[0] != NULL) {
+                path = g_build_filename(dirs[0], PACKAGE, "ui", name, NULL);
+                if (gtk_builder_add_from_file(builder, path, NULL) != 0) {
+                    g_free(path);
+                    break;
+                }
                 g_free(path);
-                break;
+                dirs++;
             }
-            g_free(path);
-            dirs++;
+            if (dirs[0] == NULL)
+                goto failed;
         }
-        if (dirs[0] == NULL)
-            goto failed;
     }
 
     if (error) {

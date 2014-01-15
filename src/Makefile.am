@@ -135,6 +135,8 @@ if OS_WIN32
 remote_viewer_LDFLAGS += -Wl,--subsystem,windows
 endif
 
+AM_CPPFLAGS = -DPACKAGE_DATADIR=\""$(pkgdatadir)"\"
+
 VIRT_VIEWER_RES = virt-viewer.rc virt-viewer.manifest
 ICONDIR = $(top_builddir)/icons
 MANIFESTDIR = $(srcdir)
